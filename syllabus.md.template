@@ -1,0 +1,162 @@
+syllabus-russ.txt
+
+CS 4307: Database Systems
+=========================
+
+Spring 2021 Syllabus
+--------------------
+
+An introduction to database systems. Topics include the design and
+implementation of relational databases (B-trees, indexing, query
+planning and execution, transactions, ACID semantics) as well as
+data modeling and querying for applications using databases
+
+
+### Prerequisites
+
+CS 2420, CS 2810, and CS 3005, each with a C- or better
+
+
+### Course fees
+
+{fees}
+
+
+### Sections
+
+One section:
+
+1.   MWF 9:00 am in Smith 108
+
+     CRN: 20642
+
+     Final exam: TBD
+
+
+### Instructor
+
+{instructor}
+
+
+Course learning outcomes
+------------------------
+
+At the successful conclusion of this course, students will be able to:
+
+1.  Design and implement the major components of a database
+    management system.
+2.  Analyze the storage needs of a software project and create a
+    data schema and query strategy to address those needs.
+3.  Construct substantial software that balances requirements of
+    data safety, performance, and complexity.
+4.  Debate and criticize modern approaches to data management.
+
+
+Resources
+---------
+
+### Text
+
+There is one required text for this course:
+
+*   [Database System Concepts, 7th Edition](https://google.com/search?q=9781260084504+pdf)<br>
+    by Abraham Silbershatz, Henry Korth, and S. Sudershan<br>
+    ISBN: 9781260084504
+
+
+### Computers
+
+{laptops}
+
+{labs}
+
+You can also use your own personal computer for the assignments,
+though no support will be provided by the instructor. You are responsible
+for installing the necessary software and ensuring that it is compatible
+with the projects and assignments.
+
+
+### Course web site
+
+{website}
+
+
+Assignments and exams
+---------------------
+
+### Reading
+
+The student is resposible for reading the assigned material. A reading
+schedule is provided with the class schedule on the course website.
+
+
+### Assignments
+
+There will be a project due almost every week during the
+semester. Projects are designed to take 10+ hours of work for
+successful completion. These assignments will involve various
+activities to promote a deeper understanding of the course
+materials. Most of the projects build upon previous work, so
+students who fall behind will not be able to complete the course
+successfully.
+
+
+### Final presentation
+
+There will be no exams, but there will be a final presentation.
+Each student will be assignment a research paper to read and present
+to the entire class. Details and the schedule will be discussed in
+class.
+
+
+### Grading
+
+Assignments, in-class activities, and presentations each
+contribute to your point total. In total, the assignments comprise
+60% of your grade, reading responses 25%,
+and the presentation counts for 15%.
+
+Letter grades are assigned based on the percentage of possible
+points attained, according to the following chart:
+
+{gradescale}
+
+
+Course policies
+---------------
+
+### COVID-19
+
+{covid}
+
+### Attendance
+
+{attendance}
+
+{notestout}
+
+### Distractions
+
+{nolaptops}
+
+### Time Commitment
+
+{timecommitment}
+
+### Late Policy
+
+{fillinmissing}
+
+### Collaboration
+
+{collaboration}
+
+### Cheating
+
+{cheating}
+
+
+College policies
+----------------
+
+{collegepolicies}
