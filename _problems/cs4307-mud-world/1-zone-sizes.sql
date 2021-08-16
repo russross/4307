@@ -1,0 +1,31 @@
+--
+-- the database schema is in the file .a-schema.sql, or you can
+-- query it from with the sqlite3 shell using ".schema"
+--
+
+--
+-- write a SQL query to count the number of rooms in each zone
+-- of the world, showing the largest zones first (use the zone name as a
+-- tie-breaker).
+--
+-- the output should look like:
+--
+--   zone_name                              room_count
+--   -------------------------------------  ----------
+--   {10 30} Anon    High Tower of Sorcery  184
+--   { 5 30} Diku    Sewer                  177
+--   { 5 15} Alfa    Moria                  121
+--   { All } Diku    Midgaard               101
+--   { 5 35} Chris   The Keep of Mahn-Tor   100
+--   { 5 35} Hatchet New Ofcol              100
+--   { 5 15} Vougon  Gnome Village          89
+--   {15 25} Dylan   Dylan's Area           88
+--   { 1 30} Kahn    Old Thalos             86
+--   {10 25} Anon    Kingdom of Juargan     86
+--   ...
+--
+-- write your query starting on the next line
+SELECT zones.name AS zone_name, COUNT(1) as room_count
+FROM zones JOIN rooms ON zones.id = rooms.zone_id
+GROUP BY zone_name
+ORDER BY room_count DESC, zone_name;

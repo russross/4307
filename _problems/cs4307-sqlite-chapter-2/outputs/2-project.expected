@@ -1,0 +1,18 @@
+ID          name        salary    
+----------  ----------  ----------
+10101       Srinivasan  65000     
+12121       Wu          90000     
+15151       Mozart      40000     
+22222       Einstein    95000     
+32343       El Said     60000     
+33456       Gold        87000     
+45565       Katz        75000     
+58583       Califieri   62000     
+76543       Singh       80000     
+76766       Crick       72000     
+83821       Brandt      92000     
+98345       Kim         80000     
+name      
+----------
+Einstein  
+Gold      

@@ -1,0 +1,83 @@
+10000
+delete
+normal
+title     
+----------
+Toy Story 
+A Bug's Li
+Toy Story 
+Monsters, 
+Finding Ne
+The Incred
+Cars      
+Ratatouill
+WALL-E    
+Up        
+Toy Story 
+Cars 2    
+Brave     
+Monsters U
+director     
+-------------
+John Lasseter
+John Lasseter
+John Lasseter
+Pete Docter  
+Andrew Stanto
+Brad Bird    
+John Lasseter
+Brad Bird    
+Andrew Stanto
+Pete Docter  
+Lee Unkrich  
+John Lasseter
+Brenda Chapma
+Dan Scanlon  
+title       director     
+----------  -------------
+Toy Story   John Lasseter
+A Bug's Li  John Lasseter
+Toy Story   John Lasseter
+Monsters,   Pete Docter  
+Finding Ne  Andrew Stanto
+The Incred  Brad Bird    
+Cars        John Lasseter
+Ratatouill  Brad Bird    
+WALL-E      Andrew Stanto
+Up          Pete Docter  
+Toy Story   Lee Unkrich  
+Cars 2      John Lasseter
+Brave       Brenda Chapma
+Monsters U  Dan Scanlon  
+title       year      
+----------  ----------
+Toy Story   1995      
+A Bug's Li  1998      
+Toy Story   1999      
+Monsters,   2001      
+Finding Ne  2003      
+The Incred  2004      
+Cars        2006      
+Ratatouill  2007      
+WALL-E      2008      
+Up          2009      
+Toy Story   2010      
+Cars 2      2011      
+Brave       2012      
+Monsters U  2013      
+id          title       director       year        length_minutes
+----------  ----------  -------------  ----------  --------------
+1           Toy Story   John Lasseter  1995        81            
+2           A Bug's Li  John Lasseter  1998        95            
+3           Toy Story   John Lasseter  1999        93            
+4           Monsters,   Pete Docter    2001        92            
+5           Finding Ne  Andrew Stanto  2003        107           
+6           The Incred  Brad Bird      2004        116           
+7           Cars        John Lasseter  2006        117           
+8           Ratatouill  Brad Bird      2007        115           
+9           WALL-E      Andrew Stanto  2008        104           
+10          Up          Pete Docter    2009        101           
+11          Toy Story   Lee Unkrich    2010        103           
+12          Cars 2      John Lasseter  2011        120           
+13          Brave       Brenda Chapma  2012        102           
+14          Monsters U  Dan Scanlon    2013        110           

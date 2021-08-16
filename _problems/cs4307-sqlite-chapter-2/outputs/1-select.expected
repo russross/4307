@@ -1,0 +1,10 @@
+ID          name        dept_name   salary    
+----------  ----------  ----------  ----------
+22222       Einstein    Physics     95000     
+33456       Gold        Physics     87000     
+ID          name        dept_name   salary    
+----------  ----------  ----------  ----------
+22222       Einstein    Physics     95000     
+dept_name   building    budget    
+----------  ----------  ----------
+Art         Art         40000     

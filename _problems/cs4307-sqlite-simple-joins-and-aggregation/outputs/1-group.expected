@@ -1,0 +1,16 @@
+dept_name   total_budget
+----------  ------------
+Comp. Sci.  232000      
+Physics     182000      
+Finance     170000      
+History     122000      
+Elec. Eng.  80000       
+Biology     72000       
+Music       40000       
+semester    year        total_classes
+----------  ----------  -------------
+Fall        2017        3            
+Spring      2017        3            
+Summer      2017        1            
+Spring      2018        7            
+Summer      2018        1            
