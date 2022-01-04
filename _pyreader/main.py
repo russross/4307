@@ -63,18 +63,18 @@ class Header:
     unused5: int
 
 @dataclass
-class Page:
-    number: int
-    page_type: int
-    right_child: int
-    cells: List[Cell]
-
-@dataclass
 class Cell:
     page_type: int
     left_child: int
     rowid: int
     fields: Tuple[Any, ...]
+
+@dataclass
+class Page:
+    number: int
+    page_type: int
+    right_child: int
+    cells: List[Cell]
 
 class Database:
     def __init__(self, filename: str):
