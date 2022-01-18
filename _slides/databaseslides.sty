@@ -1,0 +1,62 @@
+\NeedsTeXFormat{LaTeX2e}
+
+\title[CS 4307]{Database Systems}
+\author{Dr Russ Ross}
+\institute[DSU]{Dixie State University---Computing and Design}
+\date{Spring 2022}
+
+\mode<presentation>
+{
+  \usetheme{CambridgeUS}
+  \setbeamertemplate{navigation symbols}{}
+}
+
+%\usepackage{amsfonts}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{helvet}
+\usepackage[OT1]{fontenc}
+\usepackage{bold-extra}
+%\makeatletter\newcommand\@ptsize{0}\makeatother
+%\usepackage{emp,ifpdf}
+\usepackage{listings}
+\usepackage{hyperref}
+\hypersetup{pdfstartview=FitH}
+%\usepackage{graphicx}
+%\ifpdf\DeclareGraphicsRule{*}{mps}{*}{}\fi
+%\empprelude{input boxes; input theory}
+
+% use computer modern for math
+\usefonttheme[onlymath]{serif}
+
+% skip between paragraphs
+\addtolength{\parskip}{0.5\baselineskip}
+
+% add a bit more spacing around lists
+\newcommand{\itemspacing}{\setlength{\itemsep}{0.25\baselineskip}\setlength{\parskip}{0.25\baselineskip}}
+
+\definecolor{lightyellow}{rgb}{1.0,1.0,0.8}
+\definecolor{darkgreen}{rgb}{0.0,0.5,0.0}
+\lstset{
+  language=Oz,
+  morekeywords={conc, for, do},
+  extendedchars=true,
+  basicstyle=\scriptsize\tt,
+  keywordstyle=\color{blue}\bfseries,
+  commentstyle=\color{darkgreen},
+  showstringspaces=false,
+  frame=single,
+  backgroundcolor=\color{lightyellow},
+}
+
+% make inline listings normal size
+\makeatletter
+\lst@AddToHook{TextStyle}{\let\lst@basicstyle\ttfamily\normalsize\selectfont}
+\makeatother
+
+% number enumerated lists, and use triangles for itemized lists
+\setbeamertemplate{itemize items}[default]
+\setbeamertemplate{enumerate items}[default]
+
+\AtBeginSection{}
+\AtBeginSubsection{}

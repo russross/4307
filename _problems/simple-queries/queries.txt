@@ -1,0 +1,6 @@
+Number of "states"
+Total population of all states
+which states have oldest/youngest median populations
+states with minority white population
+top 10 states with most expensive houses
+top 10 states by cheapest housing compared to household income
