@@ -1,4 +1,4 @@
-SLIDES=week1
+SLIDES=week2
 
 .SUFFIXES:
 .SUFFIXES: .tex .md .pdf
