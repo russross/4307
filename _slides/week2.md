@@ -76,10 +76,12 @@ ORDER BY b.name
     returned
 
 *   Use `SELECT` to pick the columns you need
-
-
 ::::
 :::
 
+
+### Schema
+
+![University dataset schema](schema.png){height=75%}
 
 ### Book chapter 3

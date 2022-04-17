@@ -1,2 +1,0 @@
-<?xml version='1.0' encoding='utf-8'?>
-<testsuites disabled="0" errors="0" failures="0" skipped="0" tests="2" time="0.3110618591308594"><testsuite disabled="0" errors="0" failures="0" skipped="0" tests="2" time="0.3110618591308594"><testcase name="1-collaborations.sql" time="0.2370927333831787" /><testcase name="2-bacon-number.sql" time="0.07422018051147461" /></testsuite></testsuites>
