@@ -3,7 +3,7 @@ syllabus-russ.txt
 CS 4307: Database Systems
 =========================
 
-Spring 2021 Syllabus
+Spring 2022 Syllabus
 --------------------
 
 An introduction to database systems. Topics include the design and
@@ -14,10 +14,10 @@ data modeling and querying for applications using databases
 
 ### Prerequisites
 
-CS 2420, CS 2810, and CS 3005, each with a C- or better
+CS 2420, CS 2810, and CS 3005, each with a C or better
 
 
-### Course fees
+### Fees
 
 {fees}
 
@@ -26,11 +26,11 @@ CS 2420, CS 2810, and CS 3005, each with a C- or better
 
 One section:
 
-1.   MWF 9:00 am in Smith 108
+1.   MWF 10:00–10:50 am in Smith 109
 
-     CRN: 20642
+     CRN: 20597
 
-     Final exam: TBD
+     Final exam: Monday, May 2 at 9:00 AM
 
 
 ### Instructor
@@ -66,15 +66,7 @@ There is one required text for this course:
 
 ### Computers
 
-{laptops}
-
-{labs}
-
-You can also use your own personal computer for the assignments,
-though no support will be provided by the instructor. You are responsible
-for installing the necessary software and ensuring that it is compatible
-with the projects and assignments.
-
+{haveunix}
 
 ### Course web site
 
@@ -101,19 +93,16 @@ students who fall behind will not be able to complete the course
 successfully.
 
 
-### Final presentation
+### Final project
 
-There will be no exams, but there will be a final presentation.
-Each student will be assignment a research paper to read and present
-to the entire class. Details and the schedule will be discussed in
-class.
+{finalproject}
 
 
 ### Grading
 
 Assignments, in-class activities, and exams each contribute to your
-point total. The assignments and projects comprise 70% of your
-grade and exams the remaining 30%.
+point total. The assignments and projects comprise 75% of your
+grade and the final project the remaining 25%.
 
 Letter grades are assigned based on the percentage of possible
 points attained, according to the following chart:
@@ -124,17 +113,13 @@ points attained, according to the following chart:
 Course policies
 ---------------
 
-### COVID-19
-
-{covid}
-
 ### Attendance
 
 {attendance}
 
 {notestout}
 
-### Distractions
+### Laptops
 
 {nolaptops}
 
@@ -153,6 +138,10 @@ Course policies
 ### Cheating
 
 {cheating}
+
+### Special COVID-19 policies
+
+{covid}
 
 
 College policies
