@@ -1,0 +1,51 @@
+--
+-- write a query to calculate the “Bacon number” for all people in the database
+-- a person's Bacon number tells how many steps removed that person is from Kevin Bacon
+--
+-- Kevin Bacon has a Bacon number of 0
+-- anyone who worked on a film with Kevin Bacon has a Bacon number of 1
+-- anyone who worked on a film with someone with a Bacon number of 1 has a
+-- Bacon number of 2, and so forth.
+--
+-- return each person's id, name, and Bacon number
+-- ignore anyone with a Bacon number over 4
+-- sort the results from smallest to largest Bacon number
+-- sort by name as the tie breaker
+--
+-- Use a recursive common table expression with the following strategy:
+-- * Start with Kevin Bacon and assign him number 0
+-- * Add anyone working on a film with someone in the result set, assigning
+--   them the other person's number plus one
+-- * Do not add any new results greater than 4
+-- * Once finished, find the smallest Bacon number for each person for
+--   the final result list
+--
+-- The output should look like:
+--   
+--   +-----------+-----------------------------------+---+
+--   | person_id |               name                | n |
+--   +-----------+-----------------------------------+---+
+--   | 102       | Kevin Bacon                       | 0 |
+--   | 826714    | Zack Stentz                       | 1 |
+--   | 115310    | William Broyles Jr.               | 1 |
+--   | 158       | Tom Hanks                         | 1 |
+--   | 129       | Tom Cruise                        | 1 |
+--   | 209       | Tim Robbins                       | 1 |
+--   | 1417242   | Sheldon Turner                    | 1 |
+--   | 576       | Sean Penn                         | 1 |
+--   | 5377      | Sam Rockwell                      | 1 |
+--   | 165       | Ron Howard                        | 1 |
+--   ...
+--   | 718031    | Al Reinert                        | 1 |
+--   | 815070    | Aaron Sorkin                      | 1 |
+--   | 5939164   | Zazie Beetz                       | 2 |
+--   | 672015    | Zak Penn                          | 2 |
+--   | 340260    | Zach Grenier                      | 2 |
+--   | 1433      | Yaphet Kotto                      | 2 |
+--   | 437       | Woody Harrelson                   | 2 |
+--   | 583       | Wolfgang Petersen                 | 2 |
+--   | 525742    | Wolfgang Lukschy                  | 2 |
+--   | 343165    | Winston Groom                     | 2 |
+--   ...
+--
+-- write your query here:

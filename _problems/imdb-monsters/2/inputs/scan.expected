@@ -1,0 +1,3 @@
+rowid: 198781, row: (None, 'movie', 'Monsters, Inc.', 'Monsters, Inc.', 0, 2001, None, 92, 'Adventure,Animation,Comedy')
+read 403 pages with 2 table scans and 0 index scans
+scanned 2897 total rows and returned 2506 rows to the client app

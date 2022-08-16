@@ -1,0 +1,54 @@
++----------------+-------------------+-------------------+
+| collaborations |       name1       |       name2       |
++----------------+-------------------+-------------------+
+| 13             | Ethan Coen        | Joel Coen         |
+| 13             | Joel Coen         | Ethan Coen        |
+| 11             | Akira Kurosawa    | Toshirô Mifune    |
+| 11             | Ertem Egilmez     | Sadik Sendil      |
+| 11             | Sadik Sendil      | Ertem Egilmez     |
+| 11             | Toshirô Mifune    | Akira Kurosawa    |
+| 9              | Akira Kurosawa    | Hideo Oguni       |
+| 9              | Ertem Egilmez     | Kemal Sunal       |
+| 9              | Hideo Oguni       | Akira Kurosawa    |
+| 9              | Kemal Sunal       | Ertem Egilmez     |
+| 9              | Sener Sen         | Yavuz Turgul      |
+| 9              | Yavuz Turgul      | Sener Sen         |
+| 8              | Akira Kurosawa    | Ryûzô Kikushima   |
+| 8              | Daniel Radcliffe  | J.K. Rowling      |
+| 8              | Daniel Radcliffe  | Rupert Grint      |
+| 8              | Ertem Egilmez     | Sener Sen         |
+| 8              | Fran Walsh        | Peter Jackson     |
+| 8              | J.K. Rowling      | Daniel Radcliffe  |
+| 8              | J.K. Rowling      | Rupert Grint      |
+| 8              | J.K. Rowling      | Steve Kloves      |
+| 8              | Peter Jackson     | Fran Walsh        |
+| 8              | Rupert Grint      | Daniel Radcliffe  |
+| 8              | Rupert Grint      | J.K. Rowling      |
+| 8              | Ryûzô Kikushima   | Akira Kurosawa    |
+| 8              | Ryûzô Kikushima   | Toshirô Mifune    |
+| 8              | Sener Sen         | Ertem Egilmez     |
+| 8              | Steve Kloves      | J.K. Rowling      |
+| 8              | Toshirô Mifune    | Ryûzô Kikushima   |
+| 7              | Akira Kurosawa    | Shinobu Hashimoto |
+| 7              | Daniel Radcliffe  | Emma Watson       |
+| 7              | Daniel Radcliffe  | Steve Kloves      |
+| 7              | Emma Watson       | Daniel Radcliffe  |
+| 7              | Emma Watson       | J.K. Rowling      |
+| 7              | Emma Watson       | Rupert Grint      |
+| 7              | Ertem Egilmez     | Halit Akçatepe    |
+| 7              | Halit Akçatepe    | Ertem Egilmez     |
+| 7              | Hideo Oguni       | Ryûzô Kikushima   |
+| 7              | Hideo Oguni       | Toshirô Mifune    |
+| 7              | J.K. Rowling      | Emma Watson       |
+| 7              | Martin Scorsese   | Robert De Niro    |
+| 7              | Robert De Niro    | Martin Scorsese   |
+| 7              | Rupert Grint      | Emma Watson       |
+| 7              | Rupert Grint      | Steve Kloves      |
+| 7              | Ryûzô Kikushima   | Hideo Oguni       |
+| 7              | Shinobu Hashimoto | Akira Kurosawa    |
+| 7              | Steve Kloves      | Daniel Radcliffe  |
+| 7              | Steve Kloves      | Rupert Grint      |
+| 7              | Toshirô Mifune    | Hideo Oguni       |
+| 6              | Adile Nasit       | Ertem Egilmez     |
+| 6              | Akira Kurosawa    | Takashi Shimura   |
++----------------+-------------------+-------------------+

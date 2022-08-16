@@ -1,0 +1,21 @@
+CREATE TABLE people (
+    id INTEGER PRIMARY KEY,
+    name TEXT NOT NULL,
+    email TEXT NOT NULL UNIQUE,
+    created_at DATE NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE follows (
+    to_id INTEGER NOT NULL REFERENCES people (id),
+    from_id INTEGER NOT NULL,
+    created_at DATE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (from_id, to_id),
+    FOREIGN KEY (from_id) REFERENCES people (id)
+);
+
+CREATE TABLE post (
+    id INTEGER PRIMARY KEY,
+    person_id INTEGER NOT NULL REFERENCES people (id),
+    content TEXT NOT NULL,
+    posted_at DATE NOT NULL DEFAULT CURRENT_TIMESTAMP
+);

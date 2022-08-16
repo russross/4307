@@ -1,0 +1,17 @@
+rowid:423525 cell:(None, 'Axel Jodorowsky', None, None)
+rowid:423646 cell:(None, 'Roland Joffé', 1945, None)
+rowid:424060 cell:(None, 'Scarlett Johansson', 1984, None)
+rowid:424103 cell:(None, 'Karan Johar', 1972, None)
+rowid:424302 cell:(None, 'Dave Johns', None, None)
+rowid:424318 cell:(None, 'Glynis Johns', 1923, None)
+rowid:424345 cell:(None, 'Mervyn Johns', 1899, 1992)
+rowid:424565 cell:(None, 'Ben Johnson', 1918, 1996)
+rowid:424743 cell:(None, 'Celia Johnson', 1908, 1982)
+rowid:424848 cell:(None, 'Dakota Johnson', 1989, None)
+rowid:424901 cell:(None, 'David Leslie Johnson-McGoldrick', None, None)
+rowid:424956 cell:(None, 'Diane Johnson', 1934, None)
+rowid:424986 cell:(None, 'Dorothy M. Johnson', 1905, 1984)
+rowid:425005 cell:(None, 'Dwayne Johnson', 1972, None)
+rowid:425138 cell:(None, 'George Clayton Johnson', 1929, 2015)
+read 2 pages with 1 table scan and 0 index scans
+scanned 29 total rows and returned 16 rows to the client app
