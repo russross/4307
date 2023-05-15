@@ -66,4 +66,4 @@ SELECT people.person_id, people.name, MIN(n) AS n
 FROM bacon
 JOIN people ON people.person_id = bacon.person_id
 GROUP BY people.person_id, people.name
-ORDER BY n, name DESC;
+ORDER BY n, name;

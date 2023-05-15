@@ -1,0 +1,34 @@
+Prep:
+
+*   Give complete example .sql script to build a database
+*   Give complete example .py script to parse command line and run a query with results
+*   Give a starter build script with users, accounts, follows, and posts?
+*   Use a CLI library with subcommands?
+
+Core functionality:
+
+*   Users, accounts, followers, posts
+*   Must add at least two more tables to support additional features
+*   Queries to create users and accounts (no password necessary), follow, unfollow, post, display feed
+*   Scripts to build everything from scratch
+
+Ideas:
+
+*   Like (good), report (bad), block
+*   DMs
+*   @ mentions
+*   Boosts (some probability of showing up in non-follower feeds)
+*   Mute/friend but not follow
+*   Mute words
+*   Shadow ban accounts/users
+
+Interesting queries:
+
+*   For a given user, which other users are most similar (set similarity between follower lists)
+*   For a given user, suggest other users to follow (people who follow you follow... or people you follow follow...)
+*   Which posts from people you do NOT follow have been liked most by people you DO follow?
+*   Ranking users (come up with a method more interesting than just follow count, posts, etc.)
+*   Alt-likes: how many times does a user like their own posts using a different account?
+*   How far removed: bacon number measure between two accounts
+*   Who are your best follows? Who do you interact with the most, normalized for number of posts? One-way (fan) or two-way (friend)?
+*   Catch up: display highlights of a period (a week? a month?), i.e., best 10 posts during that period by some metric

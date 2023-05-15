@@ -1,0 +1,6 @@
+Focus on larger data sets (10G or so?)
+
+*   Require sqlite
+*   Require optimization sequence: slow query, query plan, index, fast query
+*   Require approximate calculation of work required: btree depth, expected steps in query
+

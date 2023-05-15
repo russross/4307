@@ -32,7 +32,7 @@ are a few helpful notes:
     definitions are in `btree.py`. Failing an assert is a simple way
     to check for this:
 
-        assert(page.page_type in (TABLE_LEAD, TABLE_INTERIOR))
+        assert(page.page_type in (TABLE_LEAF, TABLE_INTERIOR))
 
 *   When examining a page, always scan its cells from beginning to
     end. A binary search might be more efficient, but to match the

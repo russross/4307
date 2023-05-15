@@ -16,10 +16,8 @@ you find the root page of any table or index given its name. The
 catalog also contains the original CREATE statements, but we will
 ignore them for the purposes of this problem.
 
-First, copy your btree iterator code into `step.py`. Note that the
-type signature is updated to be a little more precise. You should
-keep the updated signature, but should not have to make any changes
-to your iterator code.
+First, copy your btree iterator code into `step.py`. You should not
+have to make any changes to your iterator code.
 
 Next, implement a function in `query.py` to read the schema catalog
 using your `step_table` function. You should scan the entire table

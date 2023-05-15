@@ -6,5 +6,10 @@ import sys
 
 FILENAME = 'database.db'
 
-db = Database(FILENAME)
-catalog = getCatalog(db)
+def main() -> None:
+    db = Database(FILENAME)
+    catalog = getCatalog(db)
+    findPeopleCoveringIndex(db, catalog, 'Monsters, Inc.')
+    report()
+
+main()

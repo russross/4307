@@ -4,7 +4,7 @@ header-includes:
 subtitle: Introduction and the Relational Model
 aspectratio: 169
 fontsize: 8pt
-date: Spring 2022
+date: Spring 2023
 ---
 
 \titlepage
@@ -56,9 +56,10 @@ Administrivia
     *   Assignment instructions, tips, etc.
     *   If you miss class, you may not be able to complete the
         homework
-*   I will try to record classes, but the AV system is flaky and
-    will probably fail on some days
-    *   Use recordings for review; do not depend on them
+*   This is an in-person class. I will attempt to stream it via Zoom
+    on request if there is a good reason, but the AV system is
+    flaky and it will probably fail on some days
+    *   Do not depend on Zoom
 *   You are expected to take notes: bring pen and paper
 *   Laptops and mobile devices are not allowed in class unless
     specifically called for
@@ -93,7 +94,10 @@ You should have a Linux (including WSL) or Mac OS environment to
 work on
 
 *   We will use CodeGrinder for autograding most assignments
+*   I recommend Debian 11 (Bullseye), NOT Ubuntu 20.04 LTS for WSL
+    users
 *   First steps: install CodeGrinder, sqlite3, and Python
+    * `sudo apt install sqlite3 python3`
 
 
 The Relational Model
@@ -232,7 +236,7 @@ made
 
 A *tuple* is a set of attribute values, also called a *record*.
 
-*   The values of a tuple and normally atomic/scalar, though modern
+*   The values of a tuple are normally atomic/scalar, though modern
     databases relax this
 *   The special value *NULL* is a member of every domain
 *   Tuples are often called *rows* and attributes *columns*

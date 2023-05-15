@@ -3,7 +3,7 @@ Finding people associated with a movie with no indices, plan 2
 
 Implement a function in `query.py` with the following name and type:
 
-    def findPeople1(db: Database, catalog: Dict[str, int], title: str) -> None:
+    def findPeople2(db: Database, catalog: Dict[str, int], title: str) -> None:
 
 This one performs the complete join query without using any indices:
 
@@ -21,6 +21,6 @@ but uses a different execution strategy (the one SQLite suggests):
     query into the title table and then check if the title is a
     match.
 
-*   If the title is a match, use the person ID from the crew entrie
+*   If the title is a match, use the person ID from the crew entry
     to perform a stabbing query into the people table and print the
     matching row.

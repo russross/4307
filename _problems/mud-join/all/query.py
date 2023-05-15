@@ -32,22 +32,17 @@ def incoming_rooms_index(db: Database, catalog: Dict[str, int]) -> None:
     (from_room_id, from_room_row) = next(rooms)
 
     # walk them in lock step
-    try:
-        for (index_key, index_row) in step_index(db, catalog['exits_by_from_room_to_room'], (0,)):
-            while from_room_id < index_row[0]:
-                (from_room_id, from_room_row) = next(rooms)
-            if from_room_id > index_row[0]:
-                continue
-            (to_room_id, to_room_row) = next(step_table(db, catalog['rooms'], index_row[1]))
-            if from_room_row[1] == to_room_row[1]:
-                continue
-            (zone_id, zone_row) = next(step_table(db, catalog['zones'], to_room_row[1]))
-            zone_name = zone_row[1]
-            if zone_name not in group_by:
-                group_by[zone_name] = 0
-            group_by[zone_name] += 1
-    except StopIteration:
-        pass
+    for (index_key, index_row) in step_index(db, catalog['exits_by_from_room_to_room'], (0,)):
+        while from_room_id < index_row[0]:
+            (from_room_id, from_room_row) = next(rooms)
+        (to_room_id, to_room_row) = next(step_table(db, catalog['rooms'], index_row[1]))
+        if from_room_row[1] == to_room_row[1]:
+            continue
+        (zone_id, zone_row) = next(step_table(db, catalog['zones'], to_room_row[1]))
+        zone_name = zone_row[1]
+        if zone_name not in group_by:
+            group_by[zone_name] = 0
+        group_by[zone_name] += 1
     lst = sorted(group_by.items(), key=lambda elt: (-elt[1], elt[0]))
     for pair in lst:
         print(pair)

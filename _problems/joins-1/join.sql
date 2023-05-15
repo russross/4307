@@ -7,7 +7,8 @@
 -- use the JOIN syntax, not a comma-separated list of tables.
 --
 SELECT course.course_id, title, dept_name, credits, prereq_id
-FROM course JOIN prereq ON course.course_id = prereq.course_id
+FROM course
+JOIN prereq ON course.course_id = prereq.course_id
 ORDER BY course.course_id;
 
 --
