@@ -3,7 +3,7 @@ syllabus-russ.txt
 CS 4307: Database Systems
 =========================
 
-Spring 2022 Syllabus
+Spring 2023 Syllabus
 --------------------
 
 An introduction to database systems. Topics include the design and
@@ -14,7 +14,7 @@ data modeling and querying for applications using databases
 
 ### Prerequisites
 
-CS 2420, CS 2810, and CS 3005, each with a C or better
+CS 2420 and CS 2810, each with a C or better
 
 
 ### Fees
@@ -26,17 +26,18 @@ CS 2420, CS 2810, and CS 3005, each with a C or better
 
 One section:
 
-1.   MWF 10:00–10:50 am in Smith 109
+1.   MW 12:00–1:15 PM in Smith 109
 
-     CRN: 20597
+     CRN: 20558
 
-     Final exam: Monday, May 2 at 9:00 AM
+     Final exam: Monday, May 1 at 11:00 AM
 
 
 ### Instructor
 
 {instructor}
 
+{plos}
 
 Course learning outcomes
 ------------------------
@@ -44,12 +45,12 @@ Course learning outcomes
 At the successful conclusion of this course, students will be able to:
 
 1.  Design and implement the major components of a database
-    management system.
+    management system. [PLO #1]
 2.  Analyze the storage needs of a software project and create a
-    data schema and query strategy to address those needs.
+    data schema and query strategy to address those needs. [PLO #2]
 3.  Construct substantial software that balances requirements of
-    data safety, performance, and complexity.
-4.  Debate and criticize modern approaches to data management.
+    data safety, performance, and complexity. [PLO #4]
+4.  Debate and criticize modern approaches to data management. [PLO #5]
 
 
 Resources
@@ -119,7 +120,7 @@ Course policies
 
 {notestout}
 
-### Laptops
+### Distractions
 
 {nolaptops}
 
@@ -138,10 +139,6 @@ Course policies
 ### Cheating
 
 {cheating}
-
-### Special COVID-19 policies
-
-{covid}
 
 
 College policies
