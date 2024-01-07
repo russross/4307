@@ -1,33 +1,23 @@
 CS 4307: Database Systems
 =========================
 
-Spring 2023                     | Reading                               | Project
---------------------------------|---------------------------------------|-------------------------------
-Jan 9–13                        | [2: relational model](week1.pdf)      | SQL: simple queries on single tables
-Jan 16–20 (*MLK Day*)           | [3: introduction to SQL](week2.pdf)   | SQL: aggregation on single tables
-Jan 23–27                       | 4: intermediate SQL                   | SQL: joins
-Jan 30–Feb 3                    | 5: advanced SQL                       | SQL: advanced topics
-Feb 6–10                        | 7: relational database design         |
-Feb 13–17                       |                                       | social network
-Feb 20–24 (*Presidents' Day*)   | 13: data storage structures           |
-Feb 27–Mar 3                    | 14: indexing                          | btree iterator
-Mar 6–10                        | 15: query processing                  | query execution: single tables
-Mar 13–17 (*Spring break*)      | —                                     | —
-Mar 20–24                       | 16: query optimization                | query execution: aggregation
-Mar 27–31                       |                                       | query execution: joins 1
-Apr 3–7                         | 17: transactions                      | query execution: joins 2
-Apr 10–14                       | 18: concurrency control               | query execution: advanced
-Apr 17–21                       | 19: recovery system                   | final project
-Apr 24–28 (*Wednesday last day*)| in-memory databases                   |
+Spring 2024                     | Reading
+--------------------------------|------------------------------------
+Jan 8–12                        | [6: relational model](week1.pdf)
+Jan 15–19 (*MLK Day*)           | [6: introduction to SQL](week2.pdf)
+Jan 22–26                       | 7: constraints and triggers
+Jan 29–Feb 2                    | 8: views and indexes, recursion
+Feb 5–9                         | 3: design theory
+Feb 12–16                       | 13: secondary storage management
+Feb 19–23 (*President's Day*)   | 14: index structures
+Feb 26–Mar 1                    | 15: query execution
+Mar 4–8                         |
+Mar 11–15 (*Spring Break*)      | —
+Mar 18–22                       | 16: the query compiler
+Mar 25–29                       |
+Apr 1–5                         | 17: coping with system failure
+Apr 8–12                        |
+Apr 15–19                       | 18: concurrency control
+Apr 22–26 (*Thursday last day*) |
 
-All readings are from the textbook.
-
-- - - - -
-
-Resources
----------
-
-*   [Syllabus](syllabus.php)
-*   [Textbook slides](https://www.db-book.com/slides-dir/index.html)
-*   [Stonebraker: One Size Fits None](https://slideshot.epfl.ch/play/suri_stonebraker) [alt link for video only](https://www.youtube.com/watch?v=qyDPqbpbA60)
-*   [Tree fringe yield example](yield.py)
+All readings refer to chapters in the textbook.

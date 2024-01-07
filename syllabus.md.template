@@ -3,7 +3,7 @@ syllabus-russ.txt
 CS 4307: Database Systems
 =========================
 
-Spring 2023 Syllabus
+Spring 2024 Syllabus
 --------------------
 
 An introduction to database systems. Topics include the design and
@@ -26,11 +26,11 @@ CS 2420 and CS 2810, each with a C or better
 
 One section:
 
-1.   MW 12:00–1:15 PM in Smith 109
+1.   TR 1:30–2:45 PM in Smith 109
 
-     CRN: 20558
+     CRN: 20530
 
-     Final exam: Monday, May 1 at 11:00 AM
+     Final exam: TBD
 
 
 ### Instructor
@@ -60,9 +60,9 @@ Resources
 
 There is one required text for this course:
 
-*   [Database System Concepts, 7th Edition](https://google.com/search?q=9781260084504+pdf)<br>
-    by Abraham Silbershatz, Henry Korth, and S. Sudershan<br>
-    ISBN: 9781260084504
+*   [Database Systems: The Complete Book, 2nd Edition](https://google.com/search?q=0131873253+pdf)<br>
+    by Hector Garcia-Molina, Jeffrey Ullman, and Jennifer Widom 
+    ISBN: 0131873253
 
 
 ### Computers
@@ -71,8 +71,9 @@ There is one required text for this course:
 
 ### Course web site
 
-{website}
-
+This course will be managed through Canvas. Students are responsible for
+announcements, the schedule, and other resources posted there. In addition,
+students are responsible for changes and announcements made in class.
 
 Assignments and exams
 ---------------------
@@ -130,7 +131,10 @@ Course policies
 
 ### Late Policy
 
-{fillinmissing}
+Each project will have a deadline posted in Canvas. To recive full
+credit you must submit your work on time. In addition, you may
+submit up to two weeks late with a penalty of 1% per day. After two
+weeks no late work will be accepted.
 
 ### Collaboration
 
