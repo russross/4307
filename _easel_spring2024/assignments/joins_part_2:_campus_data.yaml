@@ -1,0 +1,21 @@
+!Assignment
+allowed_attempts: -1
+due_at: '2024-01-26T06:59:59Z'
+external_tool_tag_attributes:
+  url: https://codegrinder.cs.utahtech.edu/v2/lti/problem_sets/cli/joins-2
+  new_tab: false
+  resource_link_id: 3761e9ef5633236720bde008eb36f4e865b75477
+  external_data: ''
+  content_type: ContextExternalTool
+  content_id: 140859
+  custom_params: null
+grading_type: points
+lock_at: '2024-02-09T06:59:59Z'
+name: 'Joins part 2: campus data'
+points_possible: 10.0
+position: 7
+published: true
+submission_types:
+- external_tool
+description: ''
+assignment_group: SQL queries

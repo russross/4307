@@ -1,0 +1,26 @@
+!Assignment
+allowed_attempts: -1
+grading_type: points
+name: Final project presentation
+peer_reviews: true
+points_possible: 20.0
+position: 1
+published: true
+submission_types:
+- online_text_entry
+description: |-
+  <p>Please comment on everyone else's presentations.</p>
+  <p>Your comment should have three parts:</p>
+  <ol>
+  <li>Something you liked/the presenters did well</li>
+  <li>A suggestion for how to improve the presentation</li>
+  <li>Your summary of the project</li>
+  </ol>
+  <p>For this project, you should focus on the content of the presentations. Do not comment on sound quality, clarity of speaking, enthusiasm, etc., unless you think those are dominant parts of the presentation. Instead focus on the ideas being presented. One thing that can be helpful in keeping critical comments constructive is to comment in terms of your understanding/confusion, e.g., "I struggled to follow how the XYZ query worked. Starting with a simpler example might help me follow better" rather than "They did a really bad job explaining the XYZ part of the system"</p>
+  <p>A few examples of the kinds of comments I'd like to see:</p>
+  <ul>
+  <li>They did a good job explaining how the data was structured; I felt like I came away with a good understanding of the overall story of their project</li>
+  <li>They did a strong comparison with XYZ that we already studied, which helped me understand how their system worked</li>
+  <li>I got lost trying to follow the example; I couldn't keep up and lost track of the big picture</li>
+  </ul>
+assignment_group: Final project

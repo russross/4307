@@ -1,0 +1,21 @@
+!Assignment
+allowed_attempts: -1
+due_at: '2024-02-07T06:59:59Z'
+external_tool_tag_attributes:
+  url: https://codegrinder.cs.utahtech.edu/v2/lti/problem_sets/cli/imdb-bacon
+  new_tab: false
+  resource_link_id: e85f14abdb0fe4b6babed2d5c8826df070f6b5cd
+  external_data: ''
+  content_type: ContextExternalTool
+  content_id: 140859
+  custom_params: null
+grading_type: points
+lock_at: '2024-02-21T06:59:59Z'
+name: IMDB Bacon number
+points_possible: 20.0
+position: 10
+published: true
+submission_types:
+- external_tool
+description: ''
+assignment_group: SQL queries

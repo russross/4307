@@ -1,0 +1,17 @@
+!Assignment
+allowed_attempts: -1
+grading_type: not_graded
+name: Office hours
+position: 2
+published: true
+submission_types:
+- not_graded
+description: "<p>Office hours are: MTWR<span> 3:00\u20134:00 PM. My office hours start\
+  \ in the Smith (I finish class at 2:45 PM) and then I return to my office in the\
+  \ North Burns.</span></p>\n<p><span>My cell number: 435-773-5952</span></p>\n<p><span>Please\
+  \ text me for the following:</span></p>\n<ul>\n<li>You want to make an appointment\
+  \ to meet either in person or via Zoom</li>\n<li>You are planning to come to office\
+  \ hours (not required, but helpful)</li>\n<li>You have a <strong>short</strong>\
+  \ question that has probably has a short answer</li>\n</ul>\n<p>Please include your\
+  \ name and what class you are in the first few time you text me.</p>"
+assignment_group: Info

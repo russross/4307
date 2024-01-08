@@ -1,0 +1,13 @@
+!Assignment
+allowed_attempts: -1
+due_at: '2024-04-12T05:59:59Z'
+grading_type: points
+lock_at: '2024-04-26T05:59:59Z'
+name: IMDB Bacon number with the b-tree iterator
+points_possible: 10.0
+position: 6
+published: true
+submission_types:
+- none
+unlock_at: '2024-02-13T07:00:00Z'
+assignment_group: Query execution

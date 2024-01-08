@@ -1,0 +1,22 @@
+!Assignment
+allowed_attempts: -1
+due_at: '2024-04-05T05:59:59Z'
+external_tool_tag_attributes:
+  url: https://codegrinder.cs.utahtech.edu/v2/lti/problem_sets/cli/mud-join
+  new_tab: false
+  resource_link_id: 1e95eadddb188c7aa8f3837a24f1d71655bbe3cb
+  external_data: ''
+  content_type: ContextExternalTool
+  content_id: 140859
+  custom_params: null
+grading_type: points
+lock_at: '2024-04-19T05:59:59Z'
+name: MUD incoming links with the b-tree iterator
+points_possible: 10.0
+position: 5
+published: true
+submission_types:
+- external_tool
+unlock_at: '2024-02-13T07:00:00Z'
+description: ''
+assignment_group: Query execution

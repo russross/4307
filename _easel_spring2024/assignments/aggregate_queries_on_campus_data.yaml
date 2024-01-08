@@ -1,0 +1,21 @@
+!Assignment
+allowed_attempts: -1
+due_at: '2024-01-17T06:59:59Z'
+external_tool_tag_attributes:
+  url: https://codegrinder.cs.utahtech.edu/v2/lti/problem_sets/cli/aggregate-queries-1
+  new_tab: false
+  resource_link_id: f84d69084e61be2716f72054ca87caa83ec1311c
+  external_data: ''
+  content_type: ContextExternalTool
+  content_id: 140859
+  custom_params: null
+grading_type: points
+lock_at: '2024-01-31T06:59:59Z'
+name: Aggregate queries on campus data
+points_possible: 10.0
+position: 4
+published: true
+submission_types:
+- external_tool
+description: ''
+assignment_group: SQL queries

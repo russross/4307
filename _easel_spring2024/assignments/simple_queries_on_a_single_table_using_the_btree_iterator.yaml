@@ -1,0 +1,14 @@
+!Assignment
+allowed_attempts: -1
+due_at: '2024-03-08T06:59:59Z'
+grading_type: points
+lock_at: '2024-03-22T05:59:59Z'
+name: Simple queries on a single table using the btree iterator
+points_possible: 10.0
+position: 2
+published: true
+submission_types:
+- none
+unlock_at: '2024-02-13T07:00:00Z'
+description: ''
+assignment_group: Query execution

@@ -1,0 +1,11 @@
+!Assignment
+allowed_attempts: -1
+grading_type: not_graded
+name: Course website
+position: 1
+published: true
+submission_types:
+- not_graded
+description: <p><a class="inline_disabled" href="https://computing.utahtech.edu/cs/4307/"
+  target="_blank">https://computing.utahtech.edu/cs/4307/</a></p>
+assignment_group: Info
