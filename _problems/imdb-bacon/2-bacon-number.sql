@@ -26,26 +26,26 @@
 --   | person_id |               name                | n |
 --   +-----------+-----------------------------------+---+
 --   | 102       | Kevin Bacon                       | 0 |
---   | 826714    | Zack Stentz                       | 1 |
---   | 115310    | William Broyles Jr.               | 1 |
---   | 158       | Tom Hanks                         | 1 |
---   | 129       | Tom Cruise                        | 1 |
---   | 209       | Tim Robbins                       | 1 |
---   | 1417242   | Sheldon Turner                    | 1 |
---   | 576       | Sean Penn                         | 1 |
---   | 5377      | Sam Rockwell                      | 1 |
---   | 165       | Ron Howard                        | 1 |
---   ...
---   | 718031    | Al Reinert                        | 1 |
 --   | 815070    | Aaron Sorkin                      | 1 |
---   | 5939164   | Zazie Beetz                       | 2 |
---   | 672015    | Zak Penn                          | 2 |
---   | 340260    | Zach Grenier                      | 2 |
---   | 1433      | Yaphet Kotto                      | 2 |
---   | 437       | Woody Harrelson                   | 2 |
---   | 583       | Wolfgang Petersen                 | 2 |
---   | 525742    | Wolfgang Lukschy                  | 2 |
---   | 343165    | Winston Groom                     | 2 |
+--   | 718031    | Al Reinert                        | 1 |
+--   | 770650    | Andrew Scheinman                  | 1 |
+--   | 1005420   | Ashley Miller                     | 1 |
+--   | 1469      | Barry Levinson                    | 1 |
+--   | 200       | Bill Paxton                       | 1 |
+--   | 93        | Brad Pitt                         | 1 |
+--   | 1338      | Brian Helgeland                   | 1 |
+--   | 1741      | Bryan Singer                      | 1 |
+--   ...
+--   | 115310    | William Broyles Jr.               | 1 |
+--   | 826714    | Zack Stentz                       | 1 |
+--   | 704031    | A.J. Quinnell                     | 2 |
+--   | 1173      | Aaron Eckhart                     | 2 |
+--   | 830760    | Aaron Stockard                    | 2 |
+--   | 1093951   | Aaron Taylor-Johnson              | 2 |
+--   | 180411    | Abbie Cornish                     | 2 |
+--   | 570912    | Adam McKay                        | 2 |
+--   | 1490      | Adrian Lyne                       | 2 |
+--   | 93501     | Adriano Bolzoni                   | 2 |
 --   ...
 --
 -- write your query here:

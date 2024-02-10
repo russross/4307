@@ -4,7 +4,7 @@ header-includes:
 subtitle: SQL
 aspectratio: 169
 fontsize: 8pt
-date: Spring 2023
+date: Spring 2024
 ---
 
 \titlepage

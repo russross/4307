@@ -4,7 +4,7 @@ header-includes:
 subtitle: Introduction and the Relational Model
 aspectratio: 169
 fontsize: 8pt
-date: Spring 2023
+date: Spring 2024
 ---
 
 \titlepage
@@ -73,12 +73,12 @@ There is a textbook:
 
 > &nbsp;
 >
-> Database System Concepts, 7th edition (or earlier)
+> Database Systems: The Complete Book, 2nd edition
 >
-> by Silverschatz, Korth, and Sudarshan
+> by Hector Garcia-Molina, Jeffrey D. Ullman, and Jennifer Widom
 
 You can buy it, rent it, or find a PDF copy online. Paperback or
-rental is about $70.
+rental is about $60.
 
 Should you buy it?
 
@@ -94,7 +94,7 @@ You should have a Linux (including WSL) or Mac OS environment to
 work on
 
 *   We will use CodeGrinder for autograding most assignments
-*   I recommend Debian 11 (Bullseye), NOT Ubuntu 20.04 LTS for WSL
+*   I recommend Debian 12 (Bookworm) or Ubuntu 22.04 for WSL
     users
 *   First steps: install CodeGrinder, sqlite3, and Python
     * `sudo apt install sqlite3 python3`
@@ -292,7 +292,7 @@ Albums
 +---------------------------------+
 | OK Computer     374        1997 |
 | Kid A           374        2000 |
-| Hot Fuss        569        2004 |
+| Hot Fuss        725        2004 |
 +---------------------------------+
 ```
 

@@ -21,3 +21,5 @@ Apr 15–19                       | 18: concurrency control
 Apr 22–26 (*Thursday last day*) |
 
 All readings refer to chapters in the textbook.
+
+* [Recursive CTE example](https://gist.github.com/jbrown123/b65004fd4e8327748b650c77383bf553)

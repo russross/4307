@@ -3,7 +3,7 @@
 -- requested data.
 --
 -- The database schema is given in the file .a-schema.sql, or you can
--- ask the database to report the schema to you. To load an interactice SQL
+-- ask the database to report the schema to you. To load an interactive SQL
 -- shell, use:
 --
 --    make shell
