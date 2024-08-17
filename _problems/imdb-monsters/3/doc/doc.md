@@ -22,8 +22,13 @@ Your function should do the following:
     titles table, this time giving it the primary key (taken from
     the index entry) so it can jump directly to the row. Since the
     primary key is unique, there can only be one matching row so you
-    can terminate the iterator (break out of the for loop) after
-    reading a single entry.
+    can terminate the iterator after reading a single entry. I
+    suggest using the built-in `next` function:
+
+        (rowid, row) = next(iterator)
+
+    which returns a single value from the iterator and does not
+    require setting up a for loop.
 
 *   Print the row the same as you did in the version that performed
     a full table scan.

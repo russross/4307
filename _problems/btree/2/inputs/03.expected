@@ -1,5 +1,5 @@
-key:('The Godfather',) cell:('The Godfather', 68646)
-key:('The Godfather: Part II',) cell:('The Godfather: Part II', 71562)
-key:('The Godfather: Part III',) cell:('The Godfather: Part III', 99674)
+cell:('The Godfather', 68646)
+cell:('The Godfather: Part II', 71562)
+cell:('The Godfather: Part III', 99674)
 read 3 pages with 0 table scans and 1 index scan
 scanned 12 total rows and returned 4 rows to the client app

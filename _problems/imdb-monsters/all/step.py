@@ -55,10 +55,10 @@ def step_table(db: Database, root: int, key: int) -> Iterator[Tuple[int, Tuple[A
 #   * inc_index_scans() is called once each time step_index is called
 #   * inc_rows_scanned() called each time a page cell is examined/compared against the key
 #   * inc_rows_returned() called each time a row is yielded
-def step_index(db: Database, root: int, key: Tuple[Any, ...]) -> Iterator[Tuple[Tuple[Any, ...], Tuple[Any, ...]]]:
+def step_index(db: Database, root: int, key: Tuple[Any, ...]) -> Iterator[Tuple[Any, ...]]:
     inc_index_scans()
 
-    def search(root: int) -> Iterator[Tuple[Tuple[Any, ...], Tuple[Any, ...]]]:
+    def search(root: int) -> Iterator[Tuple[Any, ...]]:
         page = db.load_page(root)
         assert(page.page_type in (INDEX_LEAF, INDEX_INTERIOR))
 
@@ -68,11 +68,11 @@ def step_index(db: Database, root: int, key: Tuple[Any, ...]) -> Iterator[Tuple[
             if cell_key >= key:
                 if page.page_type == INDEX_LEAF:
                     inc_rows_returned()
-                    yield (cell_key, cell.fields)
+                    yield cell.fields
                 elif page.page_type == INDEX_INTERIOR:
                     yield from search(cell.left_child)
                     inc_rows_returned()
-                    yield (cell_key, cell.fields)
+                    yield cell.fields
         if page.page_type == INDEX_INTERIOR:
             yield from search(page.right_child)
 

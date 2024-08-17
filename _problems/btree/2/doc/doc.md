@@ -3,7 +3,7 @@ B-tree iterator
 
 In the file `step.py` write the following function:
 
-    def step_index(db: Database, root: int, key: Tuple[Any, ...]) -> Iterator[Tuple[Tuple[Any, ...], Tuple[Any, ...]]]:
+    def step_index(db: Database, root: int, key: Tuple[Any, ...]) -> Iterator[Tuple[Any, ...]]:
 
 This function is similar to `step_table`, but it navigates index
 B-trees instead of table B+-trees.

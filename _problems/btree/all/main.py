@@ -59,9 +59,10 @@ def main() -> None:
         if type(end_tuple) is not tuple and end_tuple is not None:
             print('end value must be a tuple for an index query')
             sys.exit(1)
-        for (row_key, row) in step_index(db, number, key_tuple):
+        for row in step_index(db, number, key_tuple):
+            row_key = row[:len(key_tuple)]
             if end_tuple is not None and row_key > end_tuple: break
-            print(f'key:{row_key} cell:{row}')
+            print(f'cell:{row}')
         report()
         return
 

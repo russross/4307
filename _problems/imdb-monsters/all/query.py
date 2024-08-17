@@ -11,14 +11,15 @@ def getCatalog(db: Database) -> Dict[str, int]:
 def scanForTitle(db: Database, catalog: Dict[str, int], title: str) -> None:
     root = catalog['titles']
     for (rowid, row) in step_table(db, root, 0):
-        if row[2] == title:
-            print(f'rowid: {rowid}, row: {row}')
+        if row[2] != title:
+            continue
+        print(f'rowid: {rowid}, row: {row}')
 
 def stabForTitle(db: Database, catalog: Dict[str, int], title: str) -> None:
     index = catalog['titles_by_primary_title']
     root = catalog['titles']
-    for (key, row) in step_index(db, index, (title,)):
-        if key[0] != title:
+    for row in step_index(db, index, (title,)):
+        if row[0] != title:
             break
         (rowid, row) = next(step_table(db, root, row[1]))
         print(f'rowid: {rowid}, row: {row}')
@@ -29,13 +30,15 @@ def findPeople1(db: Database, catalog: Dict[str, int], title: str) -> None:
     crewroot = catalog['crew']
     peopleroot = catalog['people']
     for (titleid, titlerow) in step_table(db, titlesroot, 0):
-        if titlerow[2] == title:
-            # scan the crew table
-            for (crewid, crewrow) in step_table(db, crewroot, 0):
-                if crewrow[0] == titleid:
-                    # stab the people table
-                    (peopleid, peoplerow) = next(step_table(db, peopleroot, crewrow[1]))
-                    print(f'rowid: {peopleid}, row: {peoplerow}')
+        if titlerow[2] != title:
+            continue
+        # scan the crew table
+        for (crewid, crewrow) in step_table(db, crewroot, 0):
+            if crewrow[0] != titleid:
+                continue
+            # stab the people table
+            (peopleid, peoplerow) = next(step_table(db, peopleroot, crewrow[1]))
+            print(f'rowid: {peopleid}, row: {peoplerow}')
 
 def findPeople2(db: Database, catalog: Dict[str, int], title: str) -> None:
     titlesroot = catalog['titles']
@@ -46,10 +49,11 @@ def findPeople2(db: Database, catalog: Dict[str, int], title: str) -> None:
     for (crewid, crewrow) in step_table(db, crewroot, 0):
         # stab the title table
         (titleid, titlerow) = next(step_table(db, titlesroot, crewrow[0]))
-        if titlerow[2] == title:
-            # stab the people table
-            (peopleid, peoplerow) = next(step_table(db, peopleroot, crewrow[1]))
-            print(f'rowid: {peopleid}, row: {peoplerow}')
+        if titlerow[2] != title:
+            continue
+        # stab the people table
+        (peopleid, peoplerow) = next(step_table(db, peopleroot, crewrow[1]))
+        print(f'rowid: {peopleid}, row: {peoplerow}')
 
 def findPeopleIndex(db: Database, catalog: Dict[str, int], title: str) -> None:
     titlesroot = catalog['titles']
@@ -59,13 +63,12 @@ def findPeopleIndex(db: Database, catalog: Dict[str, int], title: str) -> None:
     crewindexroot = catalog['crew_by_title_and_person']
 
     # do an index lookup to find the title
-    for (titleindexkey, (primary_title, title_id)) in step_index(db, titleindexroot, (title,)):
-        if titleindexkey[0] != title:
+    for (primary_title, title_id) in step_index(db, titleindexroot, (title,)):
+        if primary_title != title:
             break
-
         # do an index lookup to find crew entries
-        for (crewindexkey, (ctitle_id, cperson_id, crowid)) in step_index(db, crewindexroot, (title_id,)):
-            if crewindexkey != (title_id,):
+        for (ctitle_id, cperson_id, crowid) in step_index(db, crewindexroot, (title_id,)):
+            if ctitle_id != title_id:
                 break
 
             # stab the crew table
@@ -82,13 +85,12 @@ def findPeopleCoveringIndex(db: Database, catalog: Dict[str, int], title: str) -
     crewindexroot = catalog['crew_by_title_and_person']
 
     # do an index lookup to find the title
-    for (titleindexkey, (primary_title, title_id)) in step_index(db, titleindexroot, (title,)):
-        if titleindexkey[0] != title:
+    for (primary_title, title_id) in step_index(db, titleindexroot, (title,)):
+        if primary_title != title:
             break
-
         # do an index lookup to find crew entries
-        for (crewindexkey, (ctitle_id, cperson_id, crowid)) in step_index(db, crewindexroot, (title_id,)):
-            if crewindexkey != (title_id,):
+        for (ctitle_id, cperson_id, crowid) in step_index(db, crewindexroot, (title_id,)):
+            if ctitle_id != title_id:
                 break
 
             # stab the people table

@@ -17,7 +17,7 @@ like this:
   all incoming links for each zone.
 
   In the relational algebra we start by imagining the cartesian
-  prodect of the the four tables in question (including both
+  product of the the four tables in question (including both
   instances of rooms in the join), then filter it down to only
   records and are linked to each other according to the join
   conditions, and finally filter that down to only those where the
@@ -44,9 +44,9 @@ straightforward strategy:
 *   Only continue if the rooms have different zone IDs
 *   If they do, look up the target zone by the ID taken from the
     target room record (this is another stabbing query)
-*   Since the end only requires zone names and the count of incoming
-    links, gather results into a temporary table where each zone
-    name is combined with the counter of incoming links that is
+*   Since the end result only requires zone names and the count of
+    incoming links, gather results into a temporary table where each
+    zone name is combined with the counter of incoming links that is
     incremented each time a new link is found
 
 Implement this query plan in `query.py` in a function called
