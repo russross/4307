@@ -1,5 +1,5 @@
 from btree import *
-from typing import Tuple, Any, Iterator
+from typing import Any, Iterator
 
 # An iterator to step through the values in a table
 # starting at root page, and starting with given key.
@@ -8,36 +8,36 @@ from typing import Tuple, Any, Iterator
 #
 # Yields once for each row with rowid >= the key.
 #
-# Yields a tuple of the form:
+# Yields a list of the form:
 #
-#     (rowid, (cell, fields, in, order))
+#     [rowid, cell, fields, in, order]
 #
 # Calls counter functions to track work done:
 #
 #   * inc_table_scans() is called once each time step_table is called
 #   * inc_rows_scanned() called each time a page cell is examined/compared against the key
 #   * inc_rows_returned() called each time a row is yielded
-def step_table(db: Database, root: int, key: int) -> Iterator[Tuple[int, Tuple[Any, ...]]]:
+def step_table(db: Database, root: int, key: int) -> Iterator[list[Any]]:
     pass
 
 
 # An iterator to step through the values in an index
 # starting at root page, and starting with given key.
 #
-# The key is a tuple.
+# The key is a list.
 #
 # Yields once for each row with a key >= the given key
 # where the key is the cell data prefix with the same size as the key.
 #
-# Yields a tuple of the form:
+# Yields a list of the form:
 #
-#     (cell, fields, in, order)
+#     [cell, fields, in, order]
 #
 # Calls counter functions to track work done:
 #
 #   * inc_index_scans() is called once each time step_index is called
 #   * inc_rows_scanned() called each time a page cell is examined/compared against the key
 #   * inc_rows_returned() called each time a row is yielded
-def step_index(db: Database, root: int, key: Tuple[Any, ...]) -> Iterator[Tuple[Any, ...]]: # type: ignore
+def step_index(db: Database, root: int, key: list[Any]) -> Iterator[list[Any]]:
     # note: ignore this function in step 1. You will implement it in step 2.
     pass

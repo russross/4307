@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 import struct
-from typing import List, Tuple, Any
+from typing import Any, Optional
 
 # constants
 FILE_HEADER_SIZE = 100
@@ -99,10 +99,9 @@ class Header:
 # See: https://sqlite.org/fileformat2.html#b_tree_pages
 @dataclass
 class Cell:
-    page_type: int
-    left_child: int
-    rowid: int
-    fields: Tuple[Any, ...]
+    left_child: Optional[int]
+    rowid: Optional[int]
+    fields: list[Any]
 
 # Page represents a single page of any type unpacked from the
 # on-disk format Unused fields are undefined.
@@ -110,10 +109,9 @@ class Cell:
 # See: https://sqlite.org/fileformat2.html#b_tree_pages
 @dataclass
 class Page:
-    number: int
     page_type: int
-    right_child: int
-    cells: List[Cell]
+    right_child: Optional[int]
+    cells: list[Cell]
 
 # Database represents an open database file. It parses the header
 # and can report its contents, and it is also used to load database
@@ -128,7 +126,7 @@ class Database:
 
     def print_header(self) -> None:
         head = self.head
-        print('header string                       :', head.header_string);
+        print('header string                       :', head.header_string[:-1]);
 
         print('page size                           :', head.page_size);
         print('file format write version           :', head.file_format_write_version);
@@ -277,55 +275,48 @@ class Unpacker:
         partial = (partial << 8) | self.unpack_uint8()
         return partial
 
+# print_cell prints a summary of the contents of a page cell.
+def print_cell(cell: Cell) -> None:
+    combined = []
+
+    pre = []
+    if cell.left_child is not None:
+        pre.append(f'left link {cell.left_child}')
+    if cell.rowid is not None:
+        pre.append(f'rowid {cell.rowid}')
+    pre_s = ', '.join(pre)
+    if len(pre_s) > 0:
+        combined.append(pre_s)
+
+    fields = []
+    for field in cell.fields:
+        if field is None:
+            fields.append('NULL')
+        elif type(field) == bytes:
+            fields.append(f'{len(field)}-byte blob')
+        elif type(field) == str:
+            fields.append(repr(field))
+        else:
+            fields.append(str(field))
+    fields_s = ', '.join(fields)
+    if len(fields_s) > 0:
+        combined.append(f'[{fields_s}]')
+
+    print(': '.join(combined))
+
 # print_page prints a summary of the contents of a btree page.
-def print_page(page: Page) -> None:
+def print_page(page: Page, number: int) -> None:
     if page.page_type == INDEX_INTERIOR:
-        print(page.number, 'is an interior index page with', len(page.cells), 'cells and right child', page.right_child)
+        print(f'{number} is an interior index page with {len(page.cells)} cells and right link {page.right_child}')
     elif page.page_type == TABLE_INTERIOR:
-        print(page.number, 'is an interior table page with', len(page.cells), 'cells and right child', page.right_child)
+        print(f'{number} is an interior table page with {len(page.cells)} cells and right link {page.right_child}')
     elif page.page_type == INDEX_LEAF:
-        print(page.number, 'is a leaf index page with', len(page.cells), 'cells')
+        print(f'{number} is a leaf index page with {len(page.cells)} cells')
     elif page.page_type == TABLE_LEAF:
-        print(page.number, 'is a leaf table page with', len(page.cells), 'cells')
+        print(f'{number} is a leaf table page with {len(page.cells)} cells')
 
     for cell in page.cells:
         print_cell(cell)
-
-# print_cell prints a summary of the contents of a page cell.
-def print_cell(cell: Cell) -> None:
-    print_fields = True
-
-    if cell.page_type == TABLE_INTERIOR:
-        print('cell has left child', cell.left_child, 'and rowid', cell.rowid)
-        print_fields = False
-    elif cell.page_type == INDEX_INTERIOR and len(cell.fields) == 2 and type(cell.fields[0]) == int and type(cell.fields[1]) == int:
-        print('cell has left child', cell.left_child, 'and is an index mapping', cell.fields[0], '->', cell.fields[1])
-        print_fields = False
-    elif cell.page_type == INDEX_LEAF and len(cell.fields) == 2 and type(cell.fields[0]) == int and type(cell.fields[1]) == int:
-        print('cell is an index mapping', cell.fields[0], '->', cell.fields[1])
-        print_fields = False
-    elif cell.page_type == INDEX_INTERIOR:
-        print('cell has left child', cell.left_child, 'and', len(cell.fields), 'fields')
-    else:
-        # print('cell has', len(cell.fields), 'fields')
-        pass
-
-    if print_fields:
-        print(f'cell ({cell.rowid}: ', end='')
-        for (j, field) in enumerate(cell.fields):
-            if j > 0:
-                print(', ', end='')
-            if field is None:
-                print('NULL', end='')
-            elif type(field) == bytes:
-                print(f'{len(field)}-byte blob', end='')
-            elif type(field) == str and field.find('\n') >= 0:
-                print(f'"""\n{field}\n"""', end='')
-            elif type(field) == str:
-                print(f'"{field}"', end='')
-            else:
-                print(field, end='')
-        print(')')
 
 # Unpack the 100-byte file header into a Header object.
 # See: https://sqlite.org/fileformat2.html#the_database_header
@@ -382,7 +373,7 @@ def unpack_page(raw: bytes, number: int) -> Page:
     cell_count = ss.unpack_uint16()
     ss.unpack_uint16()          # cell offset
     ss.unpack_uint8()           # number of fragmented free bytes
-    right_child = 0
+    right_child: Optional[int] = None
     if page_type == INDEX_INTERIOR or page_type == TABLE_INTERIOR:
         right_child = ss.unpack_uint32()
 
@@ -393,11 +384,7 @@ def unpack_page(raw: bytes, number: int) -> Page:
         cell = unpack_cell(page_type, raw, cursor)
         cells.append(cell)
 
-    return Page(
-        number,
-        page_type,
-        right_child,
-        cells)
+    return Page(page_type, right_child, cells)
 
 # Unpack a single page cell into a Cell object.
 # See: https://sqlite.org/fileformat2.html#b_tree_pages
@@ -406,7 +393,7 @@ def unpack_cell(page_type: int, raw: bytes, cursor: int) -> Cell:
     ss = Unpacker(raw, len(raw), cursor)
 
     # left child link (interior nodes only)
-    left_child = 0
+    left_child: Optional[int] = None
     if page_type == TABLE_INTERIOR or page_type == INDEX_INTERIOR:
         left_child = ss.unpack_uint32()
 
@@ -416,12 +403,12 @@ def unpack_cell(page_type: int, raw: bytes, cursor: int) -> Cell:
         record_size = ss.unpack_varint()
 
     # rowid (table nodes only)
-    rowid = 0
+    rowid: Optional[int] = None
     if page_type == TABLE_INTERIOR or page_type == TABLE_LEAF:
         rowid = ss.unpack_varint()
 
     # payload (all but table interior nodes)
-    fields: List[Any] = []
+    fields: list[Any] = []
     if page_type != TABLE_INTERIOR:
         # make sure we do not read beyond the end of the payload
         if ss.size > ss.cursor + record_size:
@@ -469,8 +456,4 @@ def unpack_cell(page_type: int, raw: bytes, cursor: int) -> Cell:
 
     # overflow link if applicable (all but table interior nodes)
     # we ignore this possibility
-    return Cell(
-        page_type,
-        left_child,
-        rowid,
-        tuple(fields))
+    return Cell(left_child, rowid, list(fields))

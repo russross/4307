@@ -45,6 +45,6 @@ Here is an implementation strategy for this plan:
 Implement this query plan in `query.py` in a function called
 `incoming_rooms_index` with the following signature and type:
 
-    def incoming_rooms_index(db: Database, catalog: Dict[str, int]) -> None:
+    def incoming_rooms_index(db: Database, catalog: dict[str, int]) -> None:
 
 Aggregate and sort the records as before.

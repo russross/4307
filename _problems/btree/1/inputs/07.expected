@@ -1,8 +1,0 @@
-rowid:422552 cell:(None, 'Prakash Jha', 1952, None)
-rowid:422586 cell:(None, 'Ayesha Jhulka', 1972, None)
-rowid:422638 cell:(None, 'Wen Jiang', 1963, None)
-rowid:422640 cell:(None, 'Wu Jiang', 1967, None)
-rowid:422710 cell:(None, 'Penn Jillette', 1955, None)
-rowid:423381 cell:(None, 'Marlène Jobert', 1940, None)
-read 4 pages with 1 table scan and 0 index scans
-scanned 37 total rows and returned 7 rows to the client app

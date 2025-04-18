@@ -52,7 +52,7 @@ straightforward strategy:
 Implement this query plan in `query.py` in a function called
 `incoming_rooms_basic` with the following signature and type:
 
-    def incoming_rooms_basic(db: Database, catalog: Dict[str, int]) -> None:
+    def incoming_rooms_basic(db: Database, catalog: dict[str, int]) -> None:
 
 This query plan uses no indexes and only requires a single
 full-table scan of a table where every record must be examined

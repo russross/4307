@@ -1,0 +1,21 @@
+--
+-- write a query to list courses with prereqs. most of the information
+-- should come from the course, with just the prereq_id added for
+-- the course's prereq. sort by course_id.
+--
+-- this will require joining the tables course and prereq.
+-- use the JOIN syntax, not a comma-separated list of tables.
+--
+
+--
+-- write a query to list the departments that have courses
+-- with prereqs and how many such courses each department has.
+-- sort them from more prereqs to fewer.
+--
+
+--
+-- write a query with output similar to the previous one, but include the
+-- title of the prereq course as well. this will require joining
+-- on courses two times--once to get the info about the main course, and
+-- a second time to get the title of the prereq.
+--

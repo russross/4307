@@ -3,7 +3,7 @@ B+-tree iterator
 
 In the file `step.py` write the following function:
 
-    def step_table(db: Database, root: int, key: int) -> Iterator[Tuple[int, Tuple[Any, ...]]]:
+    def step_table(db: Database, root: int, key: int) -> Iterator[list[Any]]:
 
 It accepts an open database (defined in `btree.py`), the page number
 of the root of a table, and a key (rowid) where it should start
@@ -61,7 +61,7 @@ are a few helpful notes:
     running after a yield, whereas a return ends the function), use
     the `yield` keyword:
 
-        yield (cell.rowid, cell.fields)
+        yield [cell.rowid] + cell.fields
 
 *   When an iterator function is called, it returns an iterator
     object that the client can then use to control the progress of

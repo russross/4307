@@ -3,18 +3,18 @@ B-tree iterator
 
 In the file `step.py` write the following function:
 
-    def step_index(db: Database, root: int, key: Tuple[Any, ...]) -> Iterator[Tuple[Any, ...]]:
+    def step_index(db: Database, root: int, key: list[Any]) -> Iterator[list[Any]]:
 
 This function is similar to `step_table`, but it navigates index
 B-trees instead of table B+-trees.
 
 Here are a few important differences:
 
-*   The key is a tuple instead of an integer. The rowid field of a
+*   The key is a list instead of an integer. The rowid field of a
     Page is empty, and instead a row key is just a prefix of the row
-    tuple. You can use a slice to extract a portion of a tuple. For
-    example, to get a tuple containing just the first three fields
-    of another tuple, use:
+    list. You can use a slice to extract a portion of a list. For
+    example, to get a list containing just the first three fields
+    of another list, use:
 
         prefix = original[:3]
 
@@ -34,12 +34,12 @@ Here are a few important differences:
     node. You can find a matching key, but you cannot know if it is
     the *first* matching key without actually searching left.
 
-*   Python lets you compare two tuples using normal relational
+*   Python lets you compare two list using normal relational
     operators:
 
         >    <    ==    !=    <=    >=
 
-    It always compares the first element of each tuple first, and
+    It always compares the first element of each list first, and
     proceeds to later fields only if necessary.
 
 *   SQL NULL values are represented using the Python None value. We

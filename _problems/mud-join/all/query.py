@@ -1,23 +1,24 @@
 from btree import Database, print_page, report
 from step import step_table, step_index
-from typing import Any, Optional, Tuple, Dict
+from typing import Any, Optional
 
-def getCatalog(db: Database) -> Dict[str, int]:
+def getCatalog(db: Database) -> dict[str, int]:
     catalog = {}
-    for (rowid, row) in step_table(db, 1, 0):
-        catalog[row[1]] = row[3]
+    for row in step_table(db, 1, 0):
+        catalog[row[2]] = row[4]
     return catalog
 
-def incoming_rooms_basic(db: Database, catalog: Dict[str, int]) -> None:
+def incoming_rooms_basic(db: Database, catalog: dict[str, int]) -> None:
     group_by = {}
 
-    for (exit_rowid, exit_row) in step_table(db, catalog['exits'], 0):
-        (from_room_id, from_room_row) = next(step_table(db, catalog['rooms'], exit_row[0]))
-        (to_room_id, to_room_row) = next(step_table(db, catalog['rooms'], exit_row[1]))
-        if from_room_row[1] == to_room_row[1]:
+    for [exit_rowid, from_room_id, to_room_id, direction, description] in step_table(db, catalog['exits'], 0):
+        [f_id, _, f_zone_id, f_name, f_description] = next(step_table(db, catalog['rooms'], from_room_id))
+        assert(from_room_id == f_id)
+        [t_id, _, t_zone_id, t_name, t_description] = next(step_table(db, catalog['rooms'], to_room_id))
+        assert(to_room_id == t_id)
+        if f_zone_id == t_zone_id:
             continue
-        (zone_id, zone_row) = next(step_table(db, catalog['zones'], to_room_row[1]))
-        zone_name = zone_row[1]
+        [zone_id, _, zone_name] = next(step_table(db, catalog['zones'], t_zone_id))
         if zone_name not in group_by:
             group_by[zone_name] = 0
         group_by[zone_name] += 1
@@ -25,21 +26,20 @@ def incoming_rooms_basic(db: Database, catalog: Dict[str, int]) -> None:
     for pair in lst:
         print(pair)
 
-def incoming_rooms_index(db: Database, catalog: Dict[str, int]) -> None:
+def incoming_rooms_index(db: Database, catalog: dict[str, int]) -> None:
     group_by = {}
 
     rooms = step_table(db, catalog['rooms'], 0)
-    (from_room_id, from_room_row) = next(rooms)
+    [from_room_id, _, from_zone_id, from_name, from_description] = next(rooms)
 
     # walk them in lock step
-    for (index_key, index_row) in step_index(db, catalog['exits_by_from_room_to_room'], (0,)):
-        while from_room_id < index_row[0]:
-            (from_room_id, from_room_row) = next(rooms)
-        (to_room_id, to_room_row) = next(step_table(db, catalog['rooms'], index_row[1]))
-        if from_room_row[1] == to_room_row[1]:
+    for [idx_from_room_id, idx_to_room_id, idx_exit_rowid] in step_index(db, catalog['exits_by_from_room_to_room'], [0]):
+        while from_room_id < idx_from_room_id:
+            [from_room_id, _, from_zone_id, from_name, from_description] = next(rooms)
+        [to_room_id, _, to_zone_id, to_name, to_description] = next(step_table(db, catalog['rooms'], idx_to_room_id))
+        if from_zone_id == to_zone_id:
             continue
-        (zone_id, zone_row) = next(step_table(db, catalog['zones'], to_room_row[1]))
-        zone_name = zone_row[1]
+        [zone_id, _, zone_name] = next(step_table(db, catalog['zones'], to_zone_id))
         if zone_name not in group_by:
             group_by[zone_name] = 0
         group_by[zone_name] += 1

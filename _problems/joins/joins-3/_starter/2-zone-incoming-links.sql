@@ -1,0 +1,8 @@
+--
+-- write a SQL query to find how many ways there are to get into
+-- each zone, i.e., how many rooms in other zones have an exit that
+-- leads to a room in the zone.
+--
+-- list the zones with the most incoming links first, and use
+-- the name of the zone as a tie-breaker.
+--
