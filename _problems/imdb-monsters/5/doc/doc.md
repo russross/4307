@@ -3,7 +3,7 @@ Finding people associated with a movie with no indices, plan 2
 
 Implement a function in `query.py` with the following name and type:
 
-    def findPeople2(db: Database, catalog: Dict[str, int], title: str) -> None:
+    def findPeople2(db: Database, catalog: dict[str, int], title: str) -> None:
 
 This one performs the complete join query without using any indices:
 

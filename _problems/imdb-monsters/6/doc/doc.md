@@ -3,7 +3,7 @@ Performing the join using an index
 
 Write a new function in `query.py` with the following name and type:
 
-    def findPeopleIndex(db: Database, catalog: Dict[str, int], title: str) -> None:
+    def findPeopleIndex(db: Database, catalog: dict[str, int], title: str) -> None:
 
 This performs the same join as before, but this time makes use of
 the indices:

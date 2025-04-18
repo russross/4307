@@ -3,7 +3,7 @@ Performing the join using a covering index
 
 Write a new function in `query.py` with the following name and type:
 
-    def findPeopleCoveringIndex(db: Database, catalog: Dict[str, int], title: str) -> None:
+    def findPeopleCoveringIndex(db: Database, catalog: dict[str, int], title: str) -> None:
 
 Recall that you have two indices to help:
 

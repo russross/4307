@@ -4,7 +4,7 @@ header-includes:
 subtitle: Introduction and the Relational Model
 aspectratio: 169
 fontsize: 8pt
-date: Spring 2024
+date: Spring 2025
 ---
 
 \titlepage

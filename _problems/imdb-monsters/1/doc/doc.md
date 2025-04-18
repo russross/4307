@@ -31,15 +31,15 @@ A few details:
 *   To scan the entire table, call `step_table` with a rowid of 0
     and iterate over all entries that it returns.
 
-*   The title of each table or index is the cell at index 1 in the
+*   The title of each table or index is the cell at index 2 in the
     catalog entry.
 
-*   The root of the table or index is the cell at index 3 in the
+*   The root of the table or index is the cell at index 4 in the
     catalog entry.
 
 Your function should have the following name and type:
 
-    def getCatalog(db: Database) -> Dict[str, int]:
+    def getCatalog(db: Database) -> dict[str, int]:
 
 i.e., it should return an ordinary Python dictionary where the keys
 are strings (the table/index name) and the values are ints (the root

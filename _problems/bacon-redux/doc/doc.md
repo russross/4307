@@ -19,7 +19,7 @@ pairs to represent the `bacon` table that is built recursively:
 
     bacon = set()
 
-Next to a search using the covering index `people_by_name` to find
+Next do a search using the covering index `people_by_name` to find
 Kevin Bacon's `person_id` (his name is passed in as an argument) and
 store it along with his number:
 

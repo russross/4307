@@ -1,14 +1,13 @@
-from btree import Database, print_page, report
+from btree import Database
 from step import step_table, step_index
-from typing import Any, Optional, Tuple, Dict
 
-def getCatalog(db: Database) -> Dict[str, int]:
+def getCatalog(db: Database) -> dict[str, int]:
     catalog = {}
-    for (rowid, row) in step_table(db, 1, 0):
-        catalog[row[1]] = row[3]
+    for row in step_table(db, 1, 0):
+        catalog[row[2]] = row[4]
     return catalog
 
-def baconNumbers(db: Database, catalog: Dict[str, int], name: str) -> None:
+def baconNumbers(db: Database, catalog: dict[str, int], name: str) -> None:
     people_by_name = catalog['people_by_name']
     crew_by_title_and_person_root = catalog['crew_by_title_and_person']
     crew_by_person_and_title_root = catalog['crew_by_person_and_title']

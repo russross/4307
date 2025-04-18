@@ -3,7 +3,7 @@ Finding a title using an index
 
 Write a new function in `query.py` with the following name and type:
 
-    def stabForTitle(db: Database, catalog: Dict[str, int], title: str) -> None:
+    def stabForTitle(db: Database, catalog: dict[str, int], title: str) -> None:
 
 This finds and prints the same information as the previous step, but
 uses an index to find the title(s) without resorting to a full table
@@ -25,7 +25,7 @@ Your function should do the following:
     can terminate the iterator after reading a single entry. I
     suggest using the built-in `next` function:
 
-        (rowid, row) = next(iterator)
+        title_row = next(iterator)
 
     which returns a single value from the iterator and does not
     require setting up a for loop.
