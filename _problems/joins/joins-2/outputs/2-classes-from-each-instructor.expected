@@ -1,0 +1,20 @@
++--------------+-----------------+--------------+
+| student_name | instructor_name | course_count |
++--------------+-----------------+--------------+
+| Aoi          | Kim             | 1            |
+| Bourikas     | Srinivasan      | 2            |
+| Brandt       | El Said         | 1            |
+| Brown        | Brandt          | 1            |
+| Brown        | Srinivasan      | 1            |
+| Chavez       | Wu              | 1            |
+| Levy         | Katz            | 2            |
+| Levy         | Srinivasan      | 1            |
+| Peltier      | Einstein        | 1            |
+| Sanchez      | Mozart          | 1            |
+| Shankar      | Brandt          | 1            |
+| Shankar      | Srinivasan      | 3            |
+| Tanaka       | Crick           | 2            |
+| Williams     | Brandt          | 1            |
+| Williams     | Srinivasan      | 1            |
+| Zhang        | Srinivasan      | 2            |
++--------------+-----------------+--------------+

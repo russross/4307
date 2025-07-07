@@ -1,0 +1,5 @@
+--
+-- write a SQL query to count the number of times each student
+-- has taken a course from each instructor
+-- sort the results by student first, instructor second
+--

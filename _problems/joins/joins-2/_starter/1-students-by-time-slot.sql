@@ -1,0 +1,5 @@
+--
+-- write a SQL query to count the total number of students
+-- in class during each time slot
+-- sort the results by year, semester, and time slot ID
+--
