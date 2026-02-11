@@ -1,0 +1,3 @@
+--
+-- Find the number of states listed in the database.
+--

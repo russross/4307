@@ -1,0 +1,5 @@
+--
+-- write a query to list the departments that have courses
+-- with prereqs and how many such courses each department has.
+-- sort them from more prereqs to fewer.
+--

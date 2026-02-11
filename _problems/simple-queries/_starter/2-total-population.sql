@@ -1,0 +1,4 @@
+--
+-- Find the total population of the country, i.e., the sum of the population of
+-- each state.
+--

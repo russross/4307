@@ -1,0 +1,5 @@
+--
+-- Find the 10 states with the most expensive house prices compared to income,
+-- i.e., that minimize the ratio of
+-- median_household_income : owner_occupied_homes_median_value.
+--

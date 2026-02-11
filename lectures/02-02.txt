@@ -1,0 +1,1593 @@
+Okay.
+
+Alright, let's get started.
+
+Uh, do you have any questions last time?
+
+We went over to that library example, kind of going through the process of building out a database from scratch.
+
+All right, well, I want to go back and do some more.. Some more stuff from slides here.
+
+Um...
+
+Oh, we went through some of this, with...
+
+Those are all good.
+
+Yeah, so I think last time we were two times ago, maybe we talked about the set operations.
+
+I think that's kind of where we finished.
+
+With union, intersect, and accept EX C E P T, and then the all versions of those that retain duplicates.
+
+Um...
+
+No.
+
+So this is a special case in sequel.
+
+Um, any two bold, or sorry, any column can have a null value, um, unless you fit it in the, uh, definition.
+
+And we use that to, you shouldn't use that as the equivalent of zero, right?
+
+That's meant to be, to say this thing doesn't exist.
+
+So it's a special kind of distinct value, or it's unknown.
+
+Yes.
+
+Possibility.
+
+Um, and it has some funny rules.
+
+Like, the result of any arithmetic expression involves Noel as an old.
+
+So you can say, like, 5 plus noll, and you're gonna get Noll back.
+
+Um, To test for it, the correct way is to ask is no, not to say equals no.
+
+Um, So like here, select name, instructor, or salary is null, so if their salary is unknown, that would be the correct way of doing it.
+
+And there's also is not null will be the way of writing it to assert that something has a value there.
+
+It also, um, gives you, by the, if you do any comparison involving Noll, then the result is unknown.
+
+So it doesn't define it as true or false, exactly.
+
+So 5 less the null, or null, not equal to null, or null equal to null, those all come back as unknown.
+
+Right?
+
+And, um, And so then there's a set of rules.
+
+What you're, uh, by combining Boolean values, there's an extra set of rules for how you combine those unknown values.
+
+So true and unknown is unknown.
+
+False and unknown, though, is false.
+
+Unknown and unknown is unknown.
+
+So, moral of the story here is, right?
+
+Mainly, be aware that operations, both kind of math operations and comparison operations with Noll. Doesn't just give you back, like, a Boolean value or a number.
+
+It has this special kind of, you kind of branch off into this other system where you have these unknown values and special case rules.
+
+Or, you know, let's see, unknown or true, is true, unknown or false, is unknown, only one or unknown, some know.
+
+And ultimately, if the result ends up being, if this is part of a wear clause, unknown is treated as false.
+
+It is the final result.
+
+Which is almost worse, because then, you know, it might look like things are working.
+
+You know, I should forget about this.
+
+It might seem like it's working until you get more complex cases where you're combining values.
+
+So some things to be very careful of.
+
+And so, again, this is something I wouldn't, I don't think you necessarily need to just go and like memorize the rules.
+
+It's more whatever you encounter this, stop, and think about it, then look up the rules, you know, do some kind of validation, but it works the way you expect and want it to.
+
+Okay, let's talk about aggravate functions.
+
+So this is the piece we've alluded to these a little bit, talked about the briefing, it's still a little more detail.
+
+So these are op functions that operate on a multiset, as it says.
+
+So a set of rows.
+
+Well, it's a multiset, because duplicates are allowed in place.
+
+And then returns 1000, though.
+
+So it takes potential of many values and gives you that one value.
+
+So there's some standard aggregate functions, and then databases usually have a bunch of others, to the most common ones are average min max, sum, count.
+
+So those are gonna give you the average value, the smallest, the largest, some of all of them are just the number of elements.
+
+So, again, the goal of what they have in common is they're taking a list of values, get a multisat, and then give you back one result for it.
+
+So they're merging them together, they're giving you an aggregate result.
+
+So here's a couple basic examples.
+
+Find the average salaries of instructors in computer science, would say, select average of salaries, so average works kind of like a function here.
+
+From instructor or department name is compsi.
+
+And so get average, you got to tell which column, and that can be an expression.
+
+So that could be, you know, average of, you know, salary plus benefits or something like that.
+
+If you have multiple columns, you would combine.
+
+So there is a full expression language there.
+
+Find the total number of instructors who teach a course in the spring 2018 semester.
+
+So, uh, if we started down here, we're selecting some teaches, where a semester is spring and years 2018.
+
+If we just stopped there, if we just did select count of ID, we would count duplicates, right, for instructors that are teaching over the courses.
+
+So we use distinct ID inside.
+
+So what that's going to do, again, what counts in the function, you give an expression, and often that's just, it can be star one that I often do, a column, whatever it is.
+
+But it is actually, you know, some value providing in there, it needs to be a multi-sep.
+
+And so other operators that work on those, like distinct, you know, this will take the set of IDs and it will extract these, the multi-set of IDs and extract the proper set.
+
+It's duplicate, duplicate.
+
+And then that's what's going to count.
+
+Yeah.
+
+But by D, shouldn't have a duplicate, right?
+
+Because it's each one is assigned.
+
+Um, so coming from teaches, not from instructors.
+
+Oh, for right, okay.
+
+Right?
+
+So this is the join table between a section and instructor.
+
+So if you're teaching multiple sections, you're gonna have multiple entries in that result set.
+
+Yeah.
+
+And then, you know, the really common one, I will see, so I count of star, or count one, or whatever, of course.
+
+And again, I don't know if it's still true, but it used to be true that Starr actually does, like, materialize and kind of pull out, like, create the full list of values.
+
+I think some databases know how to optimize that way, but some would actually do this extra work, which was kind of a waste of all you were gonna do was count it.
+
+So, um, So the form that I normally use, let's see, let me get another window and look at a terminal up here.
+
+So, like, if we go to our university database, um...
+
+Now, what is it, from instructors?
+
+Instructor, or this one uses singular forms?
+
+So, if I were to do select, so I do select star from instructor, if I were to do select count as star, then, you know, technically, it is materialized in that whole table, but then just counting the number of results.
+
+But look what happens if I just do select one from instructor.
+
+Right?
+
+It's still doing the full look up and enjoy, you know, well, this case very simple, but still pulling all those results back, but then when you select where I say, what do I actually want to, like, return here?
+
+Instead of getting me column names, I just say, one, and so I get a table that has exactly as many ones as there were rows of reset.
+
+So that's why I normally do select count of that, count of one.
+
+Because really, that's what I'm actually about.
+
+I guess suppose here I could do some.
+
+And get the same result, but...
+
+So...
+
+So, like you said, that one just decides the one value to each throw, matching it out of growth that were in the table.
+
+Yeah, right?
+
+Because there's a process of figuring out the results that, and then we say, what would I actually like to have returned to me?
+
+And it doesn't have to be data from those rides, right?
+
+Each one takes the robe and then uses the select expression, you told it, and gives you those results.
+
+So it's a little bit, you know, like we can just say select one.
+
+How often do you, how often do you find yourself needing to know how many roles are in that table?
+
+Quite often.
+
+Um, I mean, it's usually not, usually something that simple as me sitting at the console, wanting to look around, right?
+
+But using counts is actually, there's already Hong Kong right now.
+
+The part because, you know, the relational model, if we have a menu in one relationship, um, students to sections are taken or rolled in, right?
+
+That number is not recorded.
+
+We get it by going and joining the student to the courses they're taking and then counting the results.
+
+So they're very often, you know, a lot of places where that's a thing you need to, you know, it's a bit, an important bit of data, but instead of it being something that is, you know, stored, materialized, stored, is something that, uh, we compute each time.
+
+Uh, okay.
+
+So...
+
+Those were examples just going on an entire cable, right?
+
+Or just doing the regular select, but these are also useful in conjunction with group by.
+
+And I wanted to pull at this table, especially, because I think this does a nice job of illustrating it.
+
+So if we look at this query and kind of ignore some arts, I guess, we start with, I kind of feel, Let's go back to our console and start with a simple version of it.
+
+So it just starts with, let's say, we select star from instructor.
+
+So that has, you know, 12 rows.
+
+That's the one we've just been counting a bunch of times.
+
+So we have 12 rolls of results.
+
+But here, maybe what we're, again, we're interested in the department name and the salary.
+
+So select department name, a salary from instructor.
+
+And I'm going to go ahead and order it by department name.
+
+Just to kind of show the intermediate result here, right?
+
+So if I'm interested in finding what was, like, the average salary or something like that per apartment, in our process of kind of building a query, right?
+
+We can start by getting, we just need one table in this case, but we start with our join process to kind of make sure all the day is there.
+
+Um, where to filter it, and again, we're describing everything.
+
+But then, what I'm really looking for is a summary result.
+
+I want one result for compsi, one for finance, one for history, one for physics, as well as biology, electrical engineering, the others that only have one another to begin with.
+
+So kind of the next phase in our, you know, generic query plan, the expansion, where you do, you join far enough to kind of get all the data you need in these in each row, and then you use wear to kind of filter that vertically so you're only returning from the data you're interested in.
+
+And then the next phase is this group vibe, which you don't always do, but it may be that, again, we really want to return one role, one result, for some Saturday purpose results.
+
+So for an average salary, it's a good example here.
+
+So I use group by just so I can kind of see that, but I don't need to do group by what I'm doing, or sorry, I did an order by.
+
+I don't need to do that when I'm going to do a group by.
+
+I can say group by, um, department name.
+
+Now, right now, I've got kind of a nonstandard incorrect result, temporarily, right?
+
+But I said, select department name and salary.
+
+So it is giving me, since I grouped by department name, I'm gonna get one row of results for each department name.
+
+And the part that I kind of did wrong here is I selected a salary, but I didn't group by salary.
+
+And so sequel I just returns.
+
+I think it's like the 1st one that finds.
+
+So this is just like an arbitrarily chosen salary from each of these apartments.
+
+So again, that's a non-standard thing.
+
+Sequel light is just lax about it.
+
+But the correct thing to do here would be to aggregate that, right?
+
+So what I want is the name and the average of the salary.
+
+But the ordering is, like, group by department name, that gives me those clusters that I saw up there.
+
+And then the thing I'm going to return is the department name, and I know that is unique.
+
+That's this one, because of this, what I group five.
+
+So I can return department day.
+
+Anything else, anything not included in group I, I need to perform an aggregation.
+
+I need to tell it how to resolve the multiple entries that are there.
+
+So here, doing average of salary, that's a perfectly fine aggregation function.
+
+And now I get that.
+
+Let's see.
+
+And they also then...
+
+Made it a little nicer, because, again, we see the column name for that is the function I performed.
+
+Please.
+
+But the average, sorry, I was just, I forgot that the average was a bunch of them we could use.
+
+So I was like, so we do the sum of everything and then divide that account.
+
+Yeah, you can, right?
+
+It's going to be a more complicated way.
+
+But yeah, I guess in this case, because you can you can get the sum and the counts, you can do the math yourself.
+
+But, yeah, average is there to simplify it.
+
+Um, And looks like ours is giving us floats.
+
+They got, uh, whole numbers, and, and the example, the slides, but I think those numbers are all the same.
+
+So let's just go take a peek at the sequel light docks.
+
+So, again, here we have the railroad diagram, so you can go and see the actual syntax, right?
+
+Aggregation function, open for end, that distinct, you can see that's an option.
+
+So you can follow any path, right?
+
+So distinct or not that is some combinant, comma separated list of expressions. Possibly ordered by.
+
+So you can actually do an order by inside an aggregation function.
+
+If that matters, there are cases where it does.
+
+Um, or you need to do a star or...
+
+Average of nothing?
+
+It looks like you can make it through there without putting in sand inside the parentheses.
+
+Oh, I just have to try that now.
+
+Oh, okay. Didn't like it.
+
+Because I guess that aggregation function required a specific one.
+
+So maybe there's somewhere it doesn't.
+
+Why haven't so we didn't count?
+
+Count.
+
+Is it just default to the first attribute? ?
+
+Oh, interesting.
+
+You don't have to, you don't have to put the armitrary value of one, there you can just put nothing, at least in sequel light.
+
+I don't know if that's standard.
+
+It's interesting.
+
+Okay.
+
+Um, but then down here, this is what I actually came for.
+
+Here are the list of built in aggregation functions.
+
+So, you have the average...
+
+Oh, so I guess that star just means any number of arguments.
+
+Average of something, count of something, count of maybe stars, a special case, and, to the end, group cat, max, median, min, percentile, or centile, continuous, percentile, discrete, string aggregate, some, and total.
+
+I'm not sure what some of those mean, but, um, Group and cat, I believe, lets you actually kind of form a list.
+
+You can gather the results into a list.
+
+Now, this is the standard ones.
+
+There are also, um, a pretty standard now extension, but technically an extension.
+
+Um, let's go and play with this a little bit.
+
+Okay, great functions.
+
+Using Jason?
+
+So these functions are all 26 scalar functions and operators.
+
+Here are the aggregates.
+
+And so, um, I think with this, let's just go and try this out.
+
+Jason Group array of salary.
+
+And what that does is form an adjacent list by gathering all of them and, you know, forming the syntax directly.
+
+Yeah.
+
+So is that mostly used because a lot of like online portals would use Jason as like a data standard?
+
+Yeah, it's just, I mean, it's a really widely used way of writing data down now, right?
+
+So you can, you know, it's fairly common practice.
+
+Again, remember, this breaks through relational normalization rules, but, you know, rules are made to be broken, I guess.
+
+It's very common practice to have a column and it's just JC data.
+
+Just dump it in there as a big string.
+
+Sequel it actually has a Jason B format that is just a binary, like a binary encoded version of it. A little more compact, a little faster to work with.
+
+I think maybe not that much faster, but anyway, so you can specify, you can sort data that way, but so they added these, this whole set of extensions so that, like, we can form Jason.
+
+We can also, like, extract from Jason.
+
+And then, um, can kind of work with things as, so we have the scalar functions up here.
+
+So those are going to, like, Jason, the Jason operator just verifies that something is, is Jason Format, like, gets rid of, you know, white space and things like that, gives you the compact form.
+
+Um, And then Jason B does that version.
+
+And you can construct a Jason array.
+
+Let's just play with some of these.
+
+So select Jason Array, one, two, three.
+
+Oops.
+
+And again, it forms it into correct array syntax.
+
+But that could be, again, values you're pulling out of, um, actual query data.
+
+But so these aggregate functions, again, these are the ones you're going to feed the multi-sets, and you can form them to a raise or a group object.
+
+Um, let's try doing one of those.
+
+Let's go back to here.
+
+So let's go to a Jason group object.
+
+And here we need a key and a value.
+
+So, uh, we could do, like, name comma salary.
+
+And that actually then forms adjacent object, where the key for each value is the name that we took and the values, the salary.
+
+So, um, you know, it's also something you could do in Python or JavaScript too, but in some cases it may actually give you, you know, sometimes pushing some of this work into the database can be advantageous in various ways.
+
+You can also go the opposite way.
+
+So let's say we have that.
+
+Something like this.
+
+So let's, in fact, let's just create a new table, create table, um, Depth, uh, info.
+
+That has a name, which is text, and, um, salaries in, um, which we'll do, can I say Jason?
+
+I think I can.
+
+I think it'll just be his text.
+
+And now I'm going to, I'm going to populate it with exactly what we just saw here.
+
+So I'm going to do an insert statement into this table, but instead of writing the values down, I'm gonna do a nested query that creates this data and uses that to insert it.
+
+Just to give us something to play with that has some Jason in it.
+
+So, I'm gonna say, let's see, insert into depth info, and then the values are going to come from, I think, let's see.
+
+I think you just do select.
+
+Department name.
+
+The names don't have to match.
+
+It's the ordering that matters.
+
+So this is going to come back as depth to name, but the field in the table I'm populating is name.
+
+In comma, Jason, group, object, main comma, salary, as average salary, let's see, it's not really average salaries anymore, is it?
+
+Um, faculties, salaries.
+
+From instructor, group by depth name.
+
+And now if I select everything from Depth Info, now that's actually just, you know, hardcoded data.
+
+This is no longer regenerated.
+
+This was sort of...
+
+Yeah, the term for that is materialized.
+
+So it actually, like, calculated the values, but then I wrote them down.
+
+So we have this kind of materialized version of that query as a new table.
+
+So, now, obviously I can just extract this and return the entire Jason object.
+
+But how would I go about processing it kind of more natively?
+
+I mean, this is how this becomes really useful.
+
+Well, over here, we have four table valued functions.
+
+So back to our list adjacent extensions, with each tree, and then we have Jason B versions of it.
+
+So it's really up here.
+
+Jason Each, Jason Each, with Jason in a path.
+
+So, really, you have 2 functions and some different variants of it.
+
+Now, the versions of paths are you might have adjacent object that has a bunch of stuff and you're telling a drill down of this part of it, and that's what I want to look at.
+
+And what each of these will do is give you, essentially, they will, like, create a relation out.
+
+So let's just start with, see how simple we can do it, and I've never actually done this before, so hopefully we'll get it somewhat right.
+
+Select Jason Each from Dept Info.
+
+Let's see, Jason Each, I should probably tell it what. Of salaries, from depth info...
+
+Nope.
+
+No such function, Jason Each.
+
+Um, let's see.
+
+Hmm, let's see if we can get an example.
+
+Okay.
+
+Select...
+
+Name?
+
+Let's see, a slide.
+
+Name, comma.
+
+Someone just gets something from it, from depth, info, comma.
+
+Jason E. Salaries.
+
+Okay, so that's iterating over them.
+
+Now let's see if we figure out how to get the keys out.
+
+Um.
+
+Jason, h user.phone.
+
+So I think that one's just going through a list.
+
+So we're kind of doing here is, like, a little join.
+
+Right?
+
+From department info, right?
+
+We got a cross product here going, from department info comma, adjacent each salaries.
+
+Um...
+
+Maybe just select Jason each celebrates as well.
+
+Well, I think the expansion is happening in the from part.
+
+Right?
+
+We've got the cross product going.
+
+Um, let's just start with, like, star.
+
+See if that will give us some hints.
+
+Okay, that is not what I was expecting.
+
+Okay, there we go.
+
+Yeah, so it's given this, yeah, key value type.
+
+So if it is Adam, IG, some other information there, right?
+
+But yeah, so I think it looks like key value.
+
+So I could go and say, let me select, name, comma, key, comma value from, and again, we're thinking of this almost like a join there.
+
+Or a cross product.
+
+And now I've re materialized or re extracted...
+
+So, anyway, now my dream play, exercise has the next year.
+
+Like, you mean to her, you think, ah, you know, there's some values that will be, someday it would be nice.
+
+It could probably easiest to kind of dump it in there as Jason.
+
+I've been making so many joints.
+
+I'm kind of, like, also resist that temptation when it's, it's just purely out of laziness, but, um...
+
+Well, what's kind of cool here is, right?
+
+We could have something that's just in there and Jason, but it would actually delve into it with our queries and extract information and form new tastes and everything like that.
+
+So it gives quite a bit, you know, even if the syntax, the function syntax and use is a little, it will take a little getting used to.
+
+It's actually quite a powerful set of primitive offers there.
+
+Another note, something we haven't really talked about yet, but when you're indexing, you can index on expressions, you can delve in there to index on something inside the Jason.
+
+So, um, Like, I think what I would like to try is actually keep my data normalized, but then do a query where the query actually assembles the Jason object that I intend to return, puts all the pieces together, including the nested objects and stuff like that.
+
+Gives me back one string, then I just plump back to the return rather than constructing that on the client.
+
+Fine.
+
+Uh, what?
+
+Oh, okay.
+
+Now, let's move forward while we were doing that.
+
+Um...
+
+Okay, so again, just to review the aggregate functions, right?
+
+So this is another kind of phase in our query formation, you go and you get down to where you kind of got a set of rows, but then we might want to merge some rows together.
+
+And so the rules are, and you've got a group by one or more columns or get computer values on them.
+
+Sometimes it's, did we do, was this an example?
+
+Like, I think some of the problems we get, you're supposed to like bucket values.
+
+And so what you can do is group by, like, that value, you know, with it, with part of a truncate, right?
+
+You take the salary or the population or whatever, and then like divide it by a 1000000 times by, you know, make that miniature or anyway, kind of cut off all the values and that will give you that you're grouping by something that's common to many elements.
+
+So that's, again, just want to emphasize, you're not going to put expressions inside, you know, pretty much anywhere you put a value or a call.
+
+So you can be a little creative about how you form these queries, but everyone merging together, we get something they're all going to have in common, whether it's actual data or computer values.
+
+And then we'd have to tell it, how to combine, how to form the road that we're going to get back. That is representative of this entire set of values.
+
+And the rule of seeing the sequel standard is, you can only select something out that was either in the group by, because then it's guaranteed to be shared by all the elements, or it's by way of an accurate function.
+
+So, again, we saw sequel light doesn't actually force that.
+
+And also kind of shows why this problem, right?
+
+When we told the dude, give us department name salary, when we just groupified apartment name, we just got an arbitrary salary.
+
+It's not, like, a correct result to put there.
+
+So, um, and I think when we had that example of, let's see, our find, everybody who's had a class with Shankar, I think was a, was not her suit name.
+
+Um, we had a group buy something that was redundant, right?
+
+We had a group by, like, student ID, and now it's gonna guarantee uniqueness, but we also had to say, group by name, because that's the guy who wanted to return.
+
+And so even though we could look at it and say, ah, I can figure out, actually, this value is going to be the same on all of them, kind of ahead and tell the database the same thing.
+
+So that it could confidently return that value for us.
+
+So, you say group bye.
+
+Again, comes after, from.
+
+And then you can also then do some filtering post-grouping, post-aggregation.
+
+This is what having does.
+
+So having is just like where, except that it happens after group five.
+
+So where happens before group 5, having happens after the aggregation has been done?
+
+So, here, we can say, I'm only interested in departments where, you know, the average salary is greater than 42,000, for that example.
+
+So, you know, where would be a nice name, but it's already used, so we have to do a different one.
+
+So.
+
+That's what we got.
+
+So, any questions on aggregation?
+
+So, I think when we were looking at those functions, SQLI has some, like, built in array kinds of aggregations, and it also has extensions that it kind of understands multi-value columns and has those functions.
+
+And then, you know, the world moved over, using Jason for everything, and so they added that, those Jason extensions, and, you know, that's probably what I would reach for if I was doing this, rather than that, the built-in, uh, was sort of what they are.
+
+It's nice to be able to also just look at it and understand the format. Understand exactly what the rules are for Jason. Things are often good with it.
+
+And all the major databases have similar extensions.
+
+They're all different.
+
+They're all a little different from each other 'cause they are extensions, but it's pretty universal at this point.
+
+Yeah.
+
+Is there a specific reason they chose to not, like, have the order of, like, instead of being able to do where, before, after group to decide, um, having different keywords?
+
+There, like, a specific reasoning behind that, or?
+
+Um, I mean, I would imagine just having them distinct makes it, that's probably a good idea.
+
+Right?
+
+Rather than just saying, it comes after group B, it is having.
+
+Yeah.
+
+Um, I think having it be, um, just being words, it's just a little bit clear. Just from looking at it.
+
+Yeah, but it's, you know, it's probably an arbitrary decision just to thought that would be better.
+
+But yeah.
+
+It does make searching for it easier.
+
+It's same terms.
+
+You can also do nested sub queries.
+
+Actually, before we do that, I want to go look at a couple more examples from.. Little projects, so let's see.
+
+I want to go look at marmot, tends to have several of these.
+
+So, this is, like I said, I kind of push a lot of work.
+
+I don't remember, did we talk about...
+
+So tomorrow it is my scheduler.
+
+My timetabling system.
+
+Um, and...
+
+Started out with a simple, fairly simple native format, and then a lot of, like, filtering and rules that would happen, it was written in most.
+
+So as I was suggesting the data, I guess let's go into it a little bit more.
+
+So I wanted to have the data that you put in be, again, nicely, nice relational, pure, simple, elemental data.
+
+So, we have terms in the holidays, and we don't actually use that.
+
+Buildings, rooms.
+
+We have tags so you can tag rooms like we call one of those Smith 107 through 109 are all tagged flex, flex rooms.
+
+We have the stadium rooms and the PC room, and, you know, so you can just say, I want a flex room, and that associates it with those.
+
+So, we have room tags, and then, of course, we have to have rooms, room tags to join them, because it can be a menu to many a relationship, right?
+
+We could have a stadium room with PCs, I suppose.
+
+Anyway, so some basic stuff there.
+
+Time slots.
+
+We looked at some of my questionable life choices there and the way that I modeled time slots.
+
+Same thing with tags, then departments, programs.
+
+So that would be like computer science and software engineering or separate programs within the computing department, faculty, rules about faculty availability, and preferences.
+
+Um, then we have, like, courses, course rotations, where we say if something's supposed to be offered in fall, spring, or summer, and I don't actually, I use that for some validation, um, but it's not part of the scheduling process.
+
+Prerequisites, co requisites, a section is a specific instance.
+
+Um, and then which rooms, you know, the tags that are section can be taught in and so on.
+
+So there's a bunch of stuff there. Trying to kind of put it in in a fairly straightforward way.
+
+But what happens since some of this data is crawled, I write crawlers, they go and, like, pull down and create a course for everything from the course catalog, catalog, Utah Tech, that need you.
+
+So I get the names of the courses and their rotations and they're just gonna complete list, right off the bat.
+
+Not all of them are taught.
+
+And so, when I'm actually doing the, like, scheduling stuff, I kind of want to filter down and, like, just the ones that are have a section.
+
+And then we have things like online sections.
+
+So I might have a section affiliated associated with the faculty, but it's not actually associated with any rooms or times.
+
+And so, I want to be aware of that when I'm, like, looking at how much workload does a faculty have.
+
+Or when I'm looking at how seriously to take conflicts, if we have one section of CS 1400, then conflicts with it are pretty serious, for other classes, people might need to take at the same time.
+
+But if we have one in person section and two online sections, then I want to discount conflicts with CS 1400 because we have multiple sections.
+
+It's not as big a deal for what it means.
+
+So I need to account for it sometimes and not other times.
+
+And you know, anyway, so there are various things like that.
+
+So I kind of need to do all this filtering and get down to a list of, okay, these are the courses that actually need to be part of the scheduling, like, you know, the hard meaty part of this technical problem.
+
+So once it need to be scheduled, after it computed this actual, like, we put in information and programs about conflict, severity.
+
+You have, you got to take CS4307, and you might be taking it at the same time as, um, spring.
+
+So, like, what's this?
+
+Compilers?
+
+And I think those are both in that same 2, 7, and 10 list for computer science.
+
+So we would say, yeah, we really don't want to put those at the same time because there's a pretty good chance you're going to take both of those classes.
+
+But maybe it's not quite as bad as 2 classes you're absolutely required to take because you at least have some flexibility.
+
+So we define those, and then, but then I go through and say, well, but if you're teaching, if there are multiple sections offered, then that's not as bad as the ones where there's only one, right?
+
+So there's all this post-processing that happens.
+
+That's fine.
+
+You know, I know how to write rules, write write code and rust or whatever.
+
+And then I decided, you know, I'd like to play around with some of this in Python, in a completely separate thing.
+
+All right?
+
+Just do some, so this is when I 1st started looking at sat solvers for solving this instead of an ordinary search.
+
+And.. That was facing the problem.
+
+How do I faithfully port all of this post processing from Rush to Python?
+
+I guarantee I'm actually working with the same, you know, post-process data here.
+
+I want to come up with an example schedule and be able to import that, have Russ look at it and agree about the, you know, what it came up with.
+
+And so I decided to like go and push and worry about saying all this because this is kind of a complex database.
+
+It's good for a lot of examples.
+
+So I have the kind of hairbrained idea to go and see how many of these constraints and post-processing it could actually implement in sequel lives.
+
+And it turned out it was pretty much all.
+
+Some of it was not obvious at first, creative thinking about it.
+
+But I ended up kind of pushing all of that over.
+
+So now I just do this fairly simple queries and say, you know, give me all the all the classes that are being taught and the conflict severity, after all that, all those rules are accounted for, all the exceptions.
+
+Right?
+
+There's other things like if, um, this class is a prerequisite of 28, 10, it doesn't matter if this is taught at the same time, except that it does, because I teach them both, but, but right, if you, it doesn't, classes that are where there's a prereq relationship can't be in conflict with each other, unless it's a co-requisite relationship, and then they can.
+
+And that's actually recursive, prerequisites, prerequisites are not in conflict.
+
+Prerequisites of co-requisites are also not in conflict.
+
+Think about that for a second.
+
+So all that stuff's embedded in SQL at this point.
+
+Um...
+
+So, let's go look at some of the ways, some of the things that where this might come up.
+
+So let's look at group buys.
+
+So we end up with gems like this.
+
+Time slots available to sections.
+
+Um, So.
+
+Here's the, uh, here's the problem.
+
+So I'll mention it, Crete view.
+
+So what I'm creating here is a view.
+
+It actually stores a query, but then treats it like it was a table.
+
+So I can select from it and join against it and everything like that.
+
+And it just like, this is a dynamic view.
+
+So it just makes one big gnarly query out of it for me.
+
+Some databases have materialized views where you construct this, and it takes a snapshot on disk, and then you're querying it out against an actual table, seat light, always computes it on the fly.
+
+So that's what the create view is.
+
+So time slots available to sections.
+
+So I want a table that has department section, time slot, and time slot priority.
+
+After considering all factors.
+
+And the factors here are faculty specify when they're available, and they can put penalties on certain time slots and say, uh, there's a priority that I want to avoid being scheduled at this time.
+
+And then sections can also specify time slots.
+
+And so we have to take the intersection, faculty has to be available, The section needs to be offered, then, and take whichever is the most severe package you'd like to.
+
+So this one's not too bad.
+
+So the way it will typically enter data is say, CS 4307, you go anywhere in a 3 credit bell schedule slot.
+
+But then I say that would include like 8 AM.
+
+That's technically one, but I am unavailable today.
+
+All of our faculty are in the special cases, right?
+
+And I don't teach at 430 subsection.
+
+None of us do, but that is actually a standard time slot.
+
+So that's why we intersect, right?
+
+So I can give those really generic, this is just any 3 credit time slot will do, and then we go and look at my specific constraints, you know, down.
+
+So again, the goal here is to be able to kind of describe the data in this relation goal of saying, you know, What matters is how these are all combined, but I want to be able to specify them in this neutral way that allows me to be really flexible with, you know, updating as an instructor preference or time availability changes, the sections don't have to change.
+
+They were already expressed in a nature way.
+
+So that's what I want to construct.
+
+And so I've got to join together a bunch of stuff and do some kind of processing.
+
+So we have width, which is something we've not introduced staff.
+
+These are called common table expressions.
+
+Or CTEs.
+
+Eagle. Expressions.
+
+And this is a way of constructing usually a more compliance query in stages.
+
+So with, I'm where it says with her faculty, I'm going to basically construct a little temporary meaning view of data based on this query, to the select down to this group by.
+
+And then, With that, I'm going to come down here and construct this mini view called Group Faculty, that can query from that, um, from per faculty.
+
+So I make per faculty, right here, and then I query from it to create group faculty, and then I create, do another one to create faculty count, and then this one, I create a whole bunch of stages along the way, and then there's one final query at the end that actually produces the view.
+
+So, this is a fairly complex query.
+
+And you can see, I've got group buys coming along the whole way here.
+
+So with per faculty, let's look at this.
+
+Let's just look at this part of it, the per faculty, time slots available sections.
+
+So there's more complexity, a section can have 2 instructors assigned.
+
+People are more or zero.
+
+Um, and so, you know, we need to be able to find, like, and take the intersections.
+
+So we do it perfectly 1st and then we group the faculty for it together and so on.
+
+So select department, section, faculty time slot, and then the smallest conflict that emerges by doing, I can actually do like an if that, not only is called case one.
+
+So when the time of slot priority is null, remember, we said, you've got to say it is no.
+
+I can't just say the minimum of values because Knowles behave weird when you do that.
+
+So I say, well, in the time slot priority, um, is null, this is coming from Got some nice natural joining going here.
+
+I was careful to name everything.
+
+I can't always do that, but in a lot of places they can't.
+
+So, the prime slot is a priority null, that the time slot doesn't have any penalties associated with it.
+
+They go over the faculty and see if they have any time penalties associated with it.
+
+So we just differ.
+
+But if there's no faculty time slot priority, then just grab the time slot part.
+
+So one of them defines it used that.
+
+If they both do, I take the smaller one.
+
+So I have a smaller case inside that says when one is less than other, because that means a higher priority.
+
+One is not, well, 0 is times, probably.
+
+So I do that and then I find the minimum of them because here I'm grouping by like all the different constraints that come together.
+
+All the department section faculty time slots that, um, ways is emerge, and they might emerge multiple ways because I'm joining through all these these tags.
+
+All right, so maybe I say, um, Yeah, anything from a Monday or any 3 credit time slot is fine.
+
+Except Monday, Wednesday, Friday, time slots, which have their own tag.
+
+I don't really like those because they're more or whatever it is.
+
+Or I don't like Tuesday, Thursday, 75 minute patterns, make this class artist, which.
+
+So it's got to find all those, group them together, and then select the minimum, you know, the worst penalty that applies to a particular time slot.
+
+And the result, I get, is department section, faculty, time slot, and the priority.
+
+It's really the priority to avoid that first slot.
+
+So there's a case where group by, again, feeds into an aggregate function.
+
+And then, yeah, I go through a bunch more, and I even have a union here.
+
+Say, this thing was ridiculous.
+
+Um...
+
+Here's a better.
+
+So I made a little simpler one.
+
+It also does some rooms available to sections.
+
+So, I just want to know, apartment, a section, CS 430701, for this room, Smith 108, and how bad is it on schedule here?
+
+Right?
+
+I would rather all my classes were in 109.
+
+I like that room.
+
+Thought I opened it up to all of the flex rooms and the scene rooms.
+
+Again, I kind of put more of a penalty.
+
+I don't really like stadium rooms.
+
+I'd rather be in a flex room.
+
+Not 107 with all that networking gear.
+
+And really, I'd like 109.
+
+I'm very particular about it.
+
+And so, again, the job of this to kind of consolidate all that data.
+
+So what do we have?
+
+Select, let's see, don't start with select, right, from from, from sections to be scheduled.
+
+So this is where we've gone through and filtered out online and asynchronous and stuff like that.
+
+Natural join, section room tags.
+
+So this is when I specified this section, I told it what rooms it could use, all the flexures, all the stadium rooms or whatever.
+
+Natural drawing, rooms, room cats.
+
+So we go through the join table.
+
+I don't actually have to go all the way to the room, and this is something we'll often see.
+
+The data I need is in the join team, right?
+
+Because I really just need the room name, and that is the primary key in the room table.
+
+So I don't actually have to go and like find it, because I've already got the name from the table that was linked.
+
+Um, Remember our find all the students who have a class with Shay Conquery?
+
+The same is true there.
+
+Right?
+
+Which, if you discussed it as a five-way join.
+
+We start with like students, takes, sections, other takes, other students.
+
+But I don't actually need to join that end one.
+
+Actually, I can cut off both ends.
+
+Because all I need to know about Shankar is that a Shankar, and that's actually intakes, where it says Shankar takes this section.
+
+So I don't actually even join that end table, because I don't need any of its information, but I didn't already get from the table next to it.
+
+And then the same thing for the student on the other side, all I need is, like, their ID, or name, or whatever that's in, I think, its name and ID, and that's all on the join table.
+
+So that we actually in our own same name here.
+
+So I naturally join my way over it.
+
+I don't actually quite make it to the room table because I don't actually, I don't need no light to make capacity.
+
+She's in there, or which building it's in.
+
+So I do my actual joining the night, group wide department section room.
+
+Why do I need to group buy in this case?
+
+Sorry, you have a name?
+
+So yeah, I'm doing some stuff up there.
+
+So how could I find the same room multiple ways?
+
+Well, it could be, again, just going through those tags, they're not disjointed from monitor.
+
+I can tag it as if we had a Smith building tag.
+
+I didn't want to be anywhere there.
+
+I want to be anything that's, you know, any of the flats rooms, any of the non-computer rooms.
+
+Um, but I might specify things in ways it's possible to have, like, you know, to resolve to the same room multiple times.
+
+Um, So that's why we got a group by again, department section and the actual room that it resolved to.
+
+Find all ways that may have gone there multiple ways, find them, combine them, and what I want to find is like the minimum priority, right?
+
+The worst, the one we most want to avoid of all the ways we've franked it.
+
+So if I say, yeah, I'm available all Monday, Wednesday, or all free credit classes, except mornings.
+
+I have an extra constraint that says, you know, I'm on a new class.
+
+They want a bunch available, something like that.
+
+So that might be a higher price.
+
+So we can we can specify things with them.
+
+So group Biden lets us do that, man.
+
+Rooms used by departments.
+
+Here's a fairly simple one, no group buy.
+
+Just natural joy in our way across the tables to find, to combine, let's see, sections to be scheduled with the rooms that they could use.
+
+So section room has room in cash.
+
+This time I do join your room because I want to know the capacity of food.
+
+And that is something that comes from the room cable.
+
+So since I was actually getting data from it, I need to actually slept.
+
+But, and we'll often find, if you think of joins as kind of this linear process of walking through a graph, quite often we start out with the conceptual part, and then we sometimes realize we can just, like, pull in the ends a little bit. You know, on a case by case basis.
+
+Yeah, I didn't mean to start with...
+
+I'd forgotten how complex time slots available to sections was.
+
+That was a lot.
+
+Um...
+
+It's not the most complex one, but.. On discount...
+
+Oh.
+
+Figuring out the conflicts, resolving the discounts from multiple sections and the prerequisites.
+
+That's something we haven't talked about yet, but we'll be for too long is how do you follow, like, recursive trees and prerequisites and things?
+
+And so, undiscounted conflict pairs.. At this.
+
+Just, just.. Cower at this for a bit.
+
+All right, select, we've got joints, left outer joint twice.
+
+Um, and that's just one input to this one that does some more joins and left outer joins and other input to this one.
+
+We work our way through, and ah, here we go.
+
+Here's the actual merge in them across programs.
+
+Because conflicts, there can be conflicts in CS that are different from software engineering.
+
+So we compute the programs independently, and then we bring them together and respect the worst conflict.
+
+Uh, so it's a...
+
+It was an adventure.
+
+It was really...
+
+I didn't think I would be able to do it all.
+
+Um, and, like, the prerequisite transitive closure, um, So, doing the recursive navigation of prerequisites and corequisites, and...
+
+And then, finally, those are all inputs to conflict pairs, that undiscounted contact, flick pairs, finally gives us the actual thing where we can say, this class has this level of conflict with it.
+
+And then you see that table is kind of slow to compute.
+
+All that stuff got a little gnarly.
+
+So when I'm setting it up, I then do one query and bring it into a materialized table that we actually query from.
+
+Just an optimization, but.
+
+All right.
+
+Nested sub queries.
+
+So, here's something...
+
+So, I was using those CTEs, where we're kind of doing, like, serial queries, right?
+
+Let me build up part of it, and then I can refer back to that.
+
+But we can also do nested queries.
+
+Now, I would caution, Don't use a nested query when you can do a join. Most the time.
+
+You might find it really tempting when you're kind of thinking as like a, you know, a python program or something like that where it's like, well, what would I do?
+
+I'd go and ride a pair of nested loops.
+
+I joins are kind of just nested loops at their heart, and so you may want to write it as, like, nested queries because that just fits very naturally with your mental model.
+
+But it's a good practice, especially if you're learning to deliberately avoid that breakaway.
+
+Only do these nested queries if there's actually, that's kind of how it needs to work.
+
+So let's see how it works.
+
+So, you know, the sub query, you have a full select from where that's nested inside, right?
+
+That provides a relation to a little mini table that can be part of a larger query.
+
+One example we just saw was when I was, I created that, when we were exploring the Jason stuff, and I created that, like, department info table.
+
+All right, I said, insert into department info, and then I did a select query.
+
+That was actually a self query.
+
+Right?
+
+What did it produce?
+
+A table of data.
+
+And so insert grabbed that and inserted it.
+
+I could have also done an insert where I manually listed out a table of inserts to anywhere you can provide a table, a query can generate that table.
+
+So, the from clause.
+
+That could be replaced with the sound query, right?
+
+From doesn't have to point to data on disk.
+
+It can be the result of any sequence of transformations that brought me in relation.
+
+So again, back to our relational algebra discussion, everything is transforming relations into relations.
+
+Tables, sequels speak, that ever, the result of every query is a table.
+
+And so, and that is the input that can be equally valid as the input for future queries, that's being a final result.
+
+It could be in the wear clause.
+
+So here's where you've got to be really careful.
+
+Watch out, make sure you're not doing a query or try to avoid having a query that has to run for every role.
+
+Where you get it from, it's kind of like, well, do this query and then use that as the input for this query.
+
+But you can have others like that. Wear claws where it actually has to have a query that runs independently for every single rose processing.
+
+You got to be careful about complexity explosion there.
+
+And then it can be in the select clause.
+
+We kind of saw that when we were looking at aggregate values.
+
+So, but you could do that, right?
+
+Um, you can nest things in there as well.
+
+So.
+
+Um, A little more about set operators.
+
+These are mostly not defined in sequel lights, so I'm not, I won't say too much about them.
+
+And you usually achieve this in other ways too.
+
+But let's look at you know, this query here.
+
+Let's find the courses that are offered in both fall 2017 and spring 2018, and this is a query we've already done, right?
+
+There's another way of doing it.
+
+But, say, distinct.
+
+Select the distinct course from section that's in fall 2017.
+
+And, of course, ideas in, and then do another select that just finds all the course IDs that we're in spring 2018.
+
+So you can think of that as the inquiry runs.
+
+So a lot of course ID from section or semester of spring and years 2018, and that produces a list of course IDs.
+
+And then it's just as though you would type in, list of those out in parentheses.
+
+I don't know if we mentioned that.
+
+That's another theme. We saw in at some point.
+
+So that one is implemented in C block.
+
+Again, you very often will use in where you manually list out a set of IDs.
+
+Or the set of values, I should say, list of values.
+
+And so it treats this becomes almost like a set, again, or a, you know, and you're doing set membership within, and not in.
+
+So if you want those offered in fall, but not spring, you invert the tests to be not in.
+
+Yeah, so here, again, you do it manually, a stride, so this is probably the more common way of what we'll like to see more often.
+
+It's like the same name for instructor, where name, instead of saying name is not equal to Mozart, and name is not even Einstein, you say name, not in this list.
+
+Usually a more convenient form to put a list of values.
+
+On the total number of steep students who have taken course sections taught by the instructor with IE 10101.
+
+Okay, so if we start from the inside, which is usually the easiest, Select the course ID section ID semesters in year, from teaches where the teacher teaching it was had that idea.
+
+So that gives us the list of sections.
+
+And then we find the different, we look at takes, find which students took courses that match that list.
+
+Right?
+
+There were among inside that list and then count the distinct student IDs that emerge from that.
+
+So, again, this is something we could have done with the joy, and probably would be better with the joy.
+
+Um, But you can see how this this really kind of presents like a how to run this query.
+
+Right?
+
+We're kind of telling you, go do this, and then, you know, we're building it in stages.
+
+I have to be a little careful.
+
+Different databases will be more or less sophisticated about sort of penetrating these boundaries.
+
+So with joins, you can specify, you know, a whole bunch of joins, and the database is very, all database systems are very sophisticated about figuring out where to actually start and kind of minimize the amount of work being done.
+
+This is something we'll talk a lot more about later in the semester.
+
+But there are some barriers that they can't overcome, like, those common table expressions, a lot of databases really do have to do it one at a time.
+
+They have to do it in the order you specify. Even if they could technically mean like merge together into one big, you know, mega join, and optimize it different ways, that often prevents a barrier for a lot of the actual, you know, practical query optimizers that are out there.
+
+And nested queries are another case where I think they do are a little better about kind of extracting that and rewriting it, but something you gotta be careful about.
+
+I mostly like to avoid this because I feel like this is me bringing imperative thinking rather than the clarity of thinking.
+
+Right?
+
+So it's sequel is at its best anyway, declarative language.
+
+Let me explain the data that I want.
+
+Now you go to figure out how to get it.
+
+And this is me more saying, here's the day I want, and here's how I should go with that.
+
+And surprisingly, the database is usually better at figuring that out than you are.
+
+It has more information if you do.
+
+Um, because they will, um, well, if you enable this in your database, you can, it can collect statistics about the tables and, like, know, you know, which ones are gonna be faster the process. Like have more data, more rows.
+
+It can, it knows about which indexes are available, and the optimizations that can apply there.
+
+So it has a lot of on the ground.
+
+I read it, right?
+
+The best query, the best execution plan to run may actually change as your data set grows.
+
+Or as other things change.
+
+Your queries don't have to change, but the query engine, the execution engine, and the optimizer that leads to it, can account for new information and give you a more refined implementation, you know.
+
+So that's the beauty of having that separation between the declarative form of what you're actually looking for and then the engine that goes and turns out into the imperative sequence of steps that need to run.
+
+So, I generally try to avoid anything that looks like me telling the database how to do this job. Is, um, whatever hint I'm trying to get at, probably, um, It's not always true.
+
+Sometimes it gets it wrong.
+
+But...
+
+But that's usually the best starting point at least.
+
+These are the ones, yeah, that I don't think sequel I really supports.
+
+Is that comparison?
+
+So, we could just do this using a joiner, it's just a cross product.
+
+Five instructors with salaries greater than that of at least one other instructor in the biology department.
+
+So, um, everybody who makes more, or at least as much as the Horus painting biologist. Makes sense.
+
+So I would say, well, instructors, T instructors ask, we're going to need these 2 for T salary is greater than SS salary, an S department name is biology.
+
+So think about how this top query is going to work.
+
+We're gonna take every instructor, paired with every other instructor, including themselves, I guess.
+
+Make sure one of them, the 2nd column, has to be in biology.
+
+And then we're going to select out the rose where tea, where the 1st one salary is greater, then I guess it's greater, not greater, or equal.
+
+And then distinct is going to filter out the implications.
+
+Right?
+
+Somebody might need more than many people in the biology department, multiple people.
+
+So the distinct is going to be the very, or the, the, the collapsing.
+
+You can also do this.
+
+You can express this with an arguably more directly here, at least it kind of breeds.
+
+Select name from instructor where the salary is greater than some.
+
+Salary, some salary for an instructor in mileage.
+
+So this inner query, selects salary from instructor, department names, biology, is gonna collect all the salaries from biology.
+
+And they were saying, fine, the names of all instructors have a salary greater than something here.
+
+So that's kind of nice.
+
+That's a shame.
+
+I'm pretty sure that one is not supported by sequel I. Um, yeah, there's details.
+
+All?
+
+I want to find it where we make more than all the instructors in the biology department.
+
+Um, I think, okay, this I could also, like, find the max salary in the, you know, in the biology department.
+
+Again, a lot of these things there to be lots of ways we could structure this, but this is a way that if that was your problem statement, this is a pretty direct way of writing the query that corresponds to the task we've been assigned, right?
+
+Find all the salaries in the piology department, find the names of all instructors, so the salary greater than all of those.
+
+Uh, and then, how do you test if something, if there were, if a relation is empty, there's exists. And not exists.
+
+So, another way of finding all courses in both fall and spring, um, Find all the ones that are in fall 2017, and there exists.
+
+And another query that says, go find all the courses that are in spring 28.
+
+Let's see, sorry.
+
+And, uh, This one, though, references the outer query.
+
+So this is the correlated subquery.
+
+This is the kind you really want to watch out for.
+
+So what we're doing here, again, let's be at the high level, we're saying that find, you know, let's look on the inside, find all the sections that are caught in spring 2018.
+
+But we can't just select this group once and then feed that as an input in the outer query.
+
+Because we have this additional clause down here that says, find out, okay, find all the ones that were taught in spring in 2018, and their course ID matches, of course, ID from the outer query.
+
+So what this is going to have to do is for every section it considers in the outer query, we're kind of forcing it to run the inner query.
+
+Right?
+
+We've got to specify what section S is, so that when we do this exists, so that when we do a select inside, it's going to match that course I do with the one it's finding.
+
+And then the result set comes back is either empty or not, and that's all we're really caring about.
+
+Did we find it?
+
+Did I find a class that was taught in spring 2018, that matched the idea of one that was taught in fall 2017.
+
+So find all of them and then see if that was 0 or not.
+
+Yeah, they call this a correlated sub query.
+
+And this is the, you know, the performance standpoint.
+
+This is the kind you gotta watch.
+
+It's not gonna say it's, you know, never do it.
+
+But.. We're kind of forcing a lot of work and complexity here, and large data sets, this might be perfect.
+
+All right, that sort of forecloses a lot of optimization on the issues.
+
+Especially for something that we've already seen lots of other ways, better ways for kind of written this.
+
+Um.
+
+Final students who have taken all courses offered in the biology department.
+
+So we're gonna go find all students, all the distinct set of IDs and names, from students.
+
+And then where there are no untaking biology classes, where not exist, we'll say, go find all the biology classes, except the ones this student has taken. And then see if there's nothing left.
+
+If that comes back as an empty set, we've got this student, the student's taking them off.
+
+So another correlated sub query, how else could you write this one?
+
+With just regular joints. Ideas.
+
+So, I would start, think about this as a, this one that we're probably gonna want, like, an outer drawing here.
+
+Right?
+
+If we outer join, like, students with biology classes, we, like, let, let's see, we left outer join, biology classes, the students are taking them. Then that's gonna, you know, pair everything up, but then we can look for the biology classes that, um, Let's see, then don't...
+
+Probably instructions a bit more, but anyway, right, remember, outer joints give us a way of finding joins the donor process.
+
+All right, so each one of those classes, like, that is added in.
+
+Yeah, the outer joint.
+
+Just do a regular inner joint of students' biology classes.
+
+The ones that classes they did pay, right?
+
+And we could do a group five.
+
+I guess we could aggregate and count how many there were and select the ones that had the wrong number or something.
+
+That's one way, I guess.
+
+So will the outer doors not technically have when you outer joint, not have the identifiers via students?
+
+Like, well, you're missing those parts of the roads?
+
+Yes, so they would all be novels.
+
+Yeah.
+
+Even if they're specified, it's not real, their student is no, you know.
+
+Yeah.
+
+But, you know, the 1st version is I was starting to say it, I realized, no, that's going to find biology classes that no students would take.
+
+So that'd be a little more, you know, it's a little more short than that.
+
+But I want to point out, right, remember, outer joints gives away kind of identifying the missing. Blanks, the ones that don't exist.
+
+So that's another kind of another happeningvenue place.
+
+All right, we'll stop there.
+
+I'll see you all on Wednesday. 

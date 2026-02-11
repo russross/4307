@@ -11,7 +11,7 @@ all: slides
 	pdflatex -shell-escape $<
 
 .md.pdf:
-	pandoc -t beamer $< -o $@
+	pandoc -t beamer $< -o $@ --pdf-engine=xelatex
 
 slides:	$(SLIDES:%=%.pdf)
 

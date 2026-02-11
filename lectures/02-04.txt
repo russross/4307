@@ -1,0 +1,1503 @@
+Yeah Hi, welcome, everyone.
+
+How do you saw it?
+
+That makes me...
+
+Okay.
+
+Oh, my God.
+
+I thought it was, like, round...
+
+That was...
+
+Yeah.
+
+So, uh, I wanna talk about views for a minute.
+
+We saw a little bit of this last time.
+
+Uh, we were looking at the, um, what is this, the varmint schema?
+
+Um, and, uh, in that one, um, well, there's a fairly compliance. But let's start with the kind of basics.
+
+Okay, so sometimes you don't want to show the entire logical model to a user, places in, like, multi-user databases where you have a security model giving restricted access to some users.
+
+So this is the kind of thing we might do with the banner database on campus.
+
+Right?
+
+There are some groups that want to be able to do, you know, get access to the database, but they need to be able to have restraint backs. Access.
+
+And they might need to be able to access, actually, a core tables of student information, but some information lesions see in others age.
+
+So it's not just a matter of kind of partitioning it by table.
+
+Sometimes it needs to be more refined than that.
+
+And one way to do that is to create a view that presents just the information that you want to have accessible and get permission to use that.
+
+Another, another one, the ones we were kind of seeing last time we were talking about this, was our goal was to be able to input data in a fairly simple fashion, and then kind of present a more digestive version of it, I guess, or a version that already combined some cables, interesting ways, and, you know, Yeah.
+
+So we were looking at, right, Marvin, the scheduling system was kind of a, maybe an extreme version of that.
+
+But a simpler one, I think, is, let me go show a, let's look at another example. Of where views proved to be useful.
+
+Which is coat grinder.
+
+And that's different from just, like, creating a virtual table that references.. Just to.. Unless you're willing to show somebody on the different table.
+
+Oh, a virtual table is a view.
+
+Okay, basically.
+
+Yeah.
+
+So it's something it doesn't actually store.
+
+At least if it's a, You can have a view that is, The only kind of sequel light supports, which is, again, it really just stores the query associated with it.
+
+And so it is a virtual view.
+
+Oh, okay.
+
+There are also materialized views in other database systems where you create the view, it runs the kind of generating query, and actually stores the data that it generated, so that the access, like, performance characteristics match something on the, you know, vehicle.
+
+It's literally looking at something on disk.
+
+So like, here's one. User problem sets.
+
+Um, and user problems.
+
+Well, they build on each other, so, um...
+
+Let's look at this first one.
+
+Okay, so, so the basic structure of like assignment data, uh, in code grinder, there's kind of 2 sides to it.
+
+There's the problem definitions.
+
+There we have problem types, we have action associated with them.
+
+We have problems, an individual problem has a sequence of steps. Each of which has a problem type, so it can actually source types between steps.
+
+And then a problem set is a collection problems.
+
+So there's kind of that side over there.
+
+And then when a user is, you know, coming through canvas or and actually assigned a problem to work on, there's an assignment object.
+
+The assignment references the user, the course, and the problem set.
+
+And then also all the commits, every time you submit something, once per step anyway, it sort of commits associated.
+
+So there's kind of this user side of the data, and then there's the, like, problem side of the data.
+
+So one thing you want to be able to do is take a user and like figure out which, you know, in the simple form, which is science.
+
+Should they be used?
+
+So kind of just want to, this one's really just a convenience.
+
+So this assignment to you goes and gets the course name, the unique ID, that's like the, um, That's what you see, is it like the directory name?
+
+And that's what goes in the URL slugs as well.
+
+The note, which is like the name cannabis version of that, and then the user in the assignment. Username, use your email.
+
+I'm sure we're gonna use this one.
+
+Remember, this one might mean for when I'm sitting at the console, like poking around.
+
+So I ended up doing this joint a whole bunch of times.
+
+But user problem sets does simplify logic elsewhere in the application.
+
+Well, I want to know which problem says you're allowed to download.
+
+And, um, again, for you, a user, what I need to do is go and basically find every assignment that you've been assigned, that you've clicked through.
+
+Um, So that part's not too bad.
+
+So we start with assignments, we join problem sets, the assignment has a problem set ID, that matches the problems set ID, and there was a special case that could be annulled for this quiz thing that I got rid of eventually.
+
+So that's pretty easy for the user.
+
+But then there's also the case where an instructor, like a TA, who's in the class, should also be able to access every problem set that's been assigned to any student in class.
+
+And so, that's what the second one.
+
+So we union together, um, you know, an ordinary user does the things they've been directly assigned, and then we find the users that are instructors, join them to assignments, because that's how you figure out what course they're in, or of course.
+
+Sorry, I should mention this goes across all your courses.
+
+So, like, this is gonna be used, you know, at least in part to populate, like, the list you see can be on the list.
+
+But then again, an instructor should be able to see everything that was assigned to any students, but only in the classes for which they are instructors.
+
+I imagine the possibility of having a TA, who is an undergrad, TA for a beginning class, but they're also taking another class that should suddenly get full access to.
+
+So for that one, let's see, start with users and column instructors.
+
+We join them on assignments to figure out that's what pins them to individual courses.
+
+So there are three-way join to get there from a user to the courses that they have had work assigned and this is how we discovered, where they are working.
+
+And then we go back to every assignment related to those courses, across all users.
+
+Um, And what we're really looking for again is these course I, I'm sorry, the problem set IDs.
+
+So, um, so let's see, if we look what we're selecting, the instructor ID, the assignment, the problem set ID you got from the assignment, because that's all the problem sets they can access.
+
+And then we filter it down to only the assignments where they are marked as instructors.
+
+That's a bullied fuel.
+
+So it just says where instructors underscore a sense, not instructor, and all other operator.
+
+And then we have to, again, make sure it's, it's fine.
+
+I was there for that waste thing, there's an existing one.
+
+I think I could at least leave it to some places.
+
+I the rest.
+
+So I just give you those together.
+
+And then this provides a fairly simple view where I can go in and say, what problem sets into this person have access to?
+
+And because, and then, the reason that simplified things so much, it's less to do with somebody just asking for a problem set and checking if they have access to it.
+
+For that, I can just do the joints.
+
+But what I end up doing is, as kind of part of the security model, whatever you request anything, rather than doing a separate step to look up and see, check your permission, kind of, you know, figure out, it's there, I just join my wave that's...
+
+And if it doesn't find it, then you weren't supposed to be able to do that.
+
+How do I figure out if you have access to a problem step?
+
+I just joined through the problems and by the problems that I did, sets even access to.
+
+So I have kind of one place where I have to get that right to make sure it restricts it to the ones you should access.
+
+And then another convenience here.
+
+I extend that then down to problem to problems, individual problems.
+
+And then there's another one for saying which user should be able to see which other users.
+
+And that's really just instructors see the students that are in their class or the user sees themselves.
+
+I have a command called Grind Student that lets me just pull down the latest submission for a student, and I have it, and then creates a temporary directory, launches a new shell where I can look at their code and play with it, and then when I hit control D and exit out of the shell, it cleans it all up and throws it away.
+
+And like if I run grind grade from within there, it runs everything, but it doesn't actually store the results.
+
+So it gives me the chance to go and, like, interact with student code.
+
+So this one, you know, some of these will give me, again, kind of let me figure out if I'm allowed to do that. Right?
+
+I should be as an instructor, I should be able to pull down code for submissions for any student in my classes, but I'm just a student that should really need access, even if I have to be an instructor somewhere else.
+
+So the instructor property is a property of, it's really a person and a course, not just a person, but, again, the way, because of the way campus communicates, it's really on a pro assignment basis, which is strange, but...
+
+So in this case, that gave me, you know, these are about these like five way joints that are kind of part of like almost every query, almost every access.
+
+When you go to download an assignment, type grind at 58.
+
+Instead of just saying, select star from, you know, assignments where ID goes 58.
+
+I do it from assignments, join user assignments. Where your ID, you know, so this joins by way of those things.
+
+Again, there's student and instructor facing.
+
+So for students, it just goes, looks at it, and, um, if your student ID matches, or sorry, your, uh, yeah, your student record number, your user record number matches, and for structures, it does the more complex thing, but it does it by by joining through the special structure.
+
+So, I use, uh, I like views, right?
+
+One thing, one way you can use them is to kind of take fairly complicated queries and basically move them out of your source code, out of your python or rust or whatever, and put them in the database, presenting, like, sort of, convenient views of the day, as you actually want to use it.
+
+So, early on, I really emphasize this idea that the way we store dated in a relational database is we focus on this natural representation, right?
+
+We want to go and just store it in a way that models the real relationships in the data, not in a way that kind of predicts how you're going to access it.
+
+If you're thinking about the queries you're going to perform on it, what you naturally want to do is kind of bundle together the fields that you're likely to need at the same time, and put those where it's convenient to get to them.
+
+And that tends to go a little bit against relational normalization, where we might want to have those spread out over several relations, to kind of flexibly model those relationships.
+
+And one way that I like to use views is to kind of, in some ways, it becomes a little bit of a denormalization.
+
+But it's something that doesn't affect the core data.
+
+It just gives me a femaleized view of the data.
+
+So I kind of get the best above worlds, right?
+
+With that convenient, predigested view of the data as I need it.
+
+But the data at rest is in its more, you know, normalized, better designed layout.
+
+So once I figured that out, you can see I kind of went a little nuts with it.
+
+Um, and then here was another one that I think was even, uh, this assignment search fields view.
+
+Um...
+
+So, this is when I'm in that grind student command, when I want to go and download somebody's assignment.
+
+I don't know the assignment number.
+
+I don't want to get a list of all assignment numbers and try to figure that out.
+
+I kind of want to just be able to, like, throw search turns at it.
+
+You know, maybe a name or an email or somebody send me their D number or something like that.
+
+The course, some work keywords in the assignment title.
+
+And so I made this view, it just goes and gets an assignment ID, and pairs it with this big string that concatenates together all the texts I might want to search.
+
+So I go and I get the assignments canvas title.
+
+Remember, the double vertical bars string contamination?
+
+So I put that comma, the course name.
+
+The user's name, the user's email, the problems that unique ID, the problems that like friendly name, and any tags associated with it.
+
+I'll think you see tax. But I put them in there.
+
+And so that makes this one big search tax field.
+
+And now suddenly it's really easy to do like a like query across all these different fields at once, you know, it becomes a fairly trivial thing to do.
+
+And then I've got another one for a problem set, so I'm trying to find those to throw everything together into a, um...
+
+To get the URL put into campus.
+
+Here, let's see.
+
+Oh, hell, it's gonna scroll down just a little bit more.
+
+The second one, when searching for problem sets, that's the query I do, the query is, is grind problem, and then I'll say, like, risk five, arrays or something like that.
+
+And I wanted to search the metadata for each problem associated with the problem set, as well as the problem set itself.
+
+And so here we have this group concapt, but I think we've looked at briefly yesterday.
+
+It's one of those aggregation functions.
+
+So here my search goes through problem sets, joined by way of a join table, to the problems that problems, to grab the problems themselves.
+
+And, uh, looks like I don't do it with stab wise.
+
+I just go as far as the problems.
+
+And but then again, I kind of want to make one of these big strings that I can just search.
+
+And so I group my problem set, like, D, ooh, I've got bad.
+
+I did it wrong here.
+
+I'm selecting things that I didn't group by.
+
+It's things that I know will be the same because there are all the problems set, but this is that problem solved.
+
+I really should fix that.
+
+So I go get the stuff and the problem set, and then I use Group Concat to go and take, so it's a group and buy problem set, let me go find all the problem unique IDs, all the problem notes, all the problem tags, and Group Concat takes them and concatenates them into one string with a comma between them in this case.
+
+It's like why that.
+
+So that takes care of doing it for all the problems related to a problem set, and I join those, and again, I just end up in one big, kind of ugly search field, but it has, like, all the text that I likely to search on, and now it's consolidated in one place.
+
+So it makes it easy, well, you know, search.
+
+So that's another way I use use views.
+
+So, you say, create view, you give it a name, and then as, and just some, some query expression that constructs, a member of the result of the queries, a relation.
+
+So, you give it a query, the construction relation you're looking for. For the table.
+
+Any legal secret expression is...
+
+And then once it's used, you get to refer to the view name, and it looks and behaves like an ordinary table, at least for querying, for searching.
+
+Um...
+
+And again, it's, this is done, the joining and all that stuff is done on the fly.
+
+It's not the same as just creating a relation.
+
+I think we did demo that as some, like, crated a table and used a search to populate it so that we could look at this kind of materialized version of it.
+
+So here's a view of instructors without their salary.
+
+So, create a UW faculty, we select specific fields out of it, very simple.
+
+I know, instructors in biology department, so there we just wanted to give, again, a restricted set of the data.
+
+Another place you might use this is if you have a, um, You have time serious data, you know, transactions, purchases over time.
+
+Maybe every year you will have, you don't have a view that's dedicated to just the current year. Right?
+
+So you're narrowing it down.
+
+I've seen some people go and create a new table every year and that's seems like a terrible way to do it.
+
+Your code really shouldn't be running create statements. In response to user data.
+
+That's generally a bad design. Right?
+
+You have a field that identifies it.
+
+You just do that through relational modeling and then there are other things you can do to optimize if the table gets big.
+
+But, you know, a view would give you a way to kind of present a limited slice of it over time, or maybe only the entries that have a common way to delete things is to never delete.
+
+Sometimes you can't delete for compliance reasons.
+
+And so, instead, you market this delete, you have a field in there that tells what a column that tells whether it's deleted or not.
+
+So you might have a view that gives you all the, like, non deleted, you know, things, that's what you normally use.
+
+But often the background, it's always recording everything for all time.
+
+It's interesting.
+
+That's one thing we do partly to comply with loss sometimes, and then they make laws that say, you must actually delete the data. Sometimes.
+
+So, these things are, you know, are driven by external constraints.
+
+So I'd say.
+
+Here's an interesting one.
+
+We might want to, we might be able to give people aggregate data, but not individual elements, right?
+
+So it's somewhat anonymized, I guess.
+
+Well, let's get the total, or I guess we can do average as well, but the salaries by a department, but not actually give you individual instructor salaries.
+
+Views can be defined using other views, as we've seen in some of these examples.
+
+And, oh, boy, if you can hand on itself, that sounds fun.
+
+Um, okay.
+
+So then, again, some debatabases also have the concept of materialized views, which is what actually creates a new physical copy of the query data at the time of view is defined.
+
+These are a little bit of a, you know, take a little work and extra consideration and use.
+
+Because they aren't necessarily updated when the underlying bill is updated.
+
+It's not always very straightforward to do that.
+
+Right?
+
+The query that creates of you might not just be selecting the subset of the data.
+
+It might be doing, like, the most aggregate queries or something, right?
+
+What if you have something that is the average of an entire table?
+
+And you have to like rematerialize it every time you update anything in your original table.
+
+So you also put like a bunch of cascade statements and everything, it depends on.
+
+So you can do triggers if you want to have it actually like automatically do it, but normally you just kind of you choose what you do it.
+
+So maybe the reason one reason to have a materialized view might be she would be able to give you, you know, I don't know, you're doing like a recommendation actually, right?
+
+And so you wanna snapshot of, you know, some digested version of people's history and like listening preferences for a music service.
+
+And maybe you only update that once a day.
+
+And so it doesn't capture the most recent data, but that's okay.
+
+Or you're using this to get like, again, some kind of like summary or statistical information, and that doesn't need to be like up to date every moment.
+
+It needs to be, it's more like snapshotting periodically.
+
+So, you have to maintain it.
+
+You have to kind of manage that strategy.
+
+And then, what if you try to update of you?
+
+So who created that faculty table, or if you, excuse me, that shows everything except salaries?
+
+What would it mean to say, insert into faculty, or faculties with you, not the underlying table?
+
+And supply the values relevant to that?
+
+Like it just hairrive.
+
+Yeah, it really kind of depends.
+
+So, like, this one might fail because the underlying instructor relation requires a salary and there's just not one available when you're inserting for the view.
+
+So it might have an actual constraint file issue.
+
+Just weird because that's not really visible for the person doing the insert.
+
+They just, you know, looked at the scheme to see what they have.
+
+So we could reject it.
+
+We could supply null.
+
+You know, just fill in the missing fields with no, if that's allowed.
+
+If the schema doesn't explicitly forbid it.
+
+But even that only works in some simpler cases.
+
+So, let's see, great view, instructor, info, we get the ID, name, and building, from the instructor, in an apartment, where the instructor's department names, the departments are my name.
+
+Um, And now we try to insert, by way of that view, we get an ID number, um, the name and building, which uh, department Should we assign this to?
+
+Is tailor a building on this campus or is that another campus?
+
+Because this camp...
+
+It's in this hyper.
+
+I'm still just trying to figure out why we would even want to.
+
+Yeah.
+
+Um, yeah, and that's because I think we're all probably coming from this bias where our app owns the database, right?
+
+So every queer we write, we kind of think of it as a little wildness data, right?
+
+My code is the ultimate arbiter of it.
+
+But again, if you look back at, like, more like the, the on campus, the big oracle database, the stores all of our data, which has 100s, 1000s of tables.
+
+Anybody use that?
+
+Anybody worked for the college and had people before their state.
+
+It's yeah, there's at least 100s of tables.
+
+Because every time we buy, you know, that new advising software that went into effect a couple years ago, they bring that in.
+
+There's this long integration process where they create a bunch of tables and kind of link some of them, probably why have a way of views and things and it just grows over time.
+
+And they wanna give, like, access to an application that needs it, but only, again, restricted things.
+
+Maybe we're not allowed to give us something that has your social security number or, you know, other private information.
+
+And so you'll have applications working on a database where they are just one tenant in a larger system, with restricted access to it, but they might need to be able to do inserts and updates too.
+
+And so, you know, it would be nice if you could design around that from the start, but the reality is that a lot of messy data situations where you're gonna come up against something like this.
+
+And the answer can't always be, well, let's just change the schema.
+
+Um, because that may be, you know, could be that you can't really do that.
+
+There's an active system running and you don't even know all the applications using it.
+
+Yeah.
+
+So like in the example you were saying of like a school, one thing that you might want to do is to have some unique ID for each student. That, you know, doesn't rely on the, it doesn't communicate anything about their social security and use private things, that would then just, it would need all of the fields to make updates and stuff because of that heating idea still connects it.
+
+Yeah.
+
+Yeah, so that's where our D numbers are, right?
+
+It's meant to be a unique ID that's not set.
+
+So that's an instance where we went and instituted a whole user visible update to the system to kind of handle that, at least in some situations.
+
+You can imagine there's going to be other places where similar problems are going to arrive, right?
+
+We have applications going, they have restricted access to the data, and because of the complex relationships between different parts of the data, which, again, are not actually cleanly designed by this point.
+
+Right?
+
+This is just accumulated and grown over the years, as we accumulate new projects, we have new people working on it, there's just a lot of craft that accrues over time.
+
+And so, you know, you'll have these situations arise where it's like, well, you know, you should be able to do, you know, ad data, except you don't actually have access to tables that you kind of need to be able to. At it.
+
+So maybe you have some app that mediates, the one that does have access to it and accepts it and does the other one thing, but now you're moving outside the database, right?
+
+Can you do it entirely inside the database?
+
+This is really going to be a design question and a question of Kate Phillips database.
+
+But the situation like this can, and any worse, arise pretty easily.
+
+Like, the data doesn't even have to be very complex and the views don't happy to be that complex, especially when you start getting, like, aggregate data.
+
+You know, if you have that table that would show in the average, or like the cumulative salary of each department.
+
+What happens when you're trying to insert a record into that?
+
+Right?
+
+I would look and say, well, maybe you can't just insert a department and accumulate salary.
+
+Maybe that doesn't make sense.
+
+How's the database supposed to melt that?
+
+Yeah, right?
+
+If you're gonna make a database and say, we want to be able to update my way of views, you just have to kind of make it work as, you know, push out as far as you can, eventually, you kind of have to come back and say, well, this one violates some constraint.
+
+There's no reasonable way to accommodate this.
+
+Was this entitled to make a view, not something an update through?
+
+So CWI doesn't allow any updating reviews.
+
+Oh, okay, cool.
+
+So that's one.
+
+Sounds like the way.
+
+Yeah.
+
+Um, and I, I've never used any of those, like, I don't work in big systems with, uh, multitenants and things.
+
+So I've not actually encountered that.
+
+But I know it is a real thing in a lot of places.
+
+It seems strange to have a thing called view, which is very reminiscent of Rome, and then also be able to write to it.
+
+Yeah.
+
+Yeah.
+
+So, yeah.
+
+What if you?
+
+Let's see, history instructors, we have this view, select star from instructor, department name is history.
+
+And what if we try to insert somebody into the biology department by way of the special view that's history instructors, right?
+
+So I'm trying to insert something into a view that would not select that result back.
+
+So, yeah, I look at it and I just, I have that same kind of ick reaction.
+
+Like, why are we allowing this at all?
+
+Um, but I'm also not, I'm not Oracle trying to sell 10s of 1000000s of dollars worth of consulting. To make the database fix these problems, and that is their business model, right?
+
+So, yeah, they're going to add the features and make it arcane and, uh, make it really bad too, how to do this.
+
+Yeah, I mean, literally, that has been their business model.
+
+And Larry Ellison.
+
+Uh, wasn't a couple months ago, he briefly was the 2nd richest person in the world, I think.
+
+Um, didn't last very long.
+
+Um, But he's still worth quite a bit, and his fortune came from Oracle. Hes the founder.
+
+So it worked for him.
+
+And now, as well, his son's trying to buy HBO, try to buy HBO.
+
+You said?
+
+HBO, is it more, bros?
+
+Yeah.
+
+I was like, how is he going to get that for more rose?
+
+Well, they're buying the whole company.
+
+We're a Brothers Discovery, I think.
+
+It probably is right there.
+
+There's currently Netflix and Paramount Plus, which is the one David Ellison currently owns.
+
+I think they're both trying to buy it.
+
+I feel like, and Merrimouth plus are both bombed by the same person.
+
+So there's the Paramount Plus, you know, subs by David Ellison.
+
+I thought that was owned by VA Thumbs.
+
+Because Paramount's owned by the vehicle?
+
+Okay, you know what?
+
+They've all switched hands, but sure.
+
+I don't remember.
+
+I might be getting it backwards.
+
+I know Netflix is trying to buy one and it's the same handful.
+
+David Ellison was trying to buy it, too, and yeah.
+
+Using his dad's money, mostly. True.
+
+Or at least that was one thing that it was a lot of dad and a whole bunch of dad and a whole bunch of other investors and like one of the reasons for accepting the Netflix bid was saying there's a lot of like unsecured things.
+
+And so Larry Ellison came and said, I guarantee that up to $400000000 worth of this, you know, you sound on personal funds.
+
+It's nice when your dad can do that.
+
+Anyway, so...
+
+So yeah, I don't I don't want to spend too much time on this because, again, I kind of just look at this and think, this just seems like a tar pit.
+
+But you would just be able to make rules for it when you aren't allowing it, right?
+
+Well, again, it's probably not you building the database.
+
+It's probably you.
+
+This mostly comes up when you were joining an existing database and have all these constraints. It's like then it's very database dependent.
+
+It's very schema independent.
+
+Be aware this exists and if you need to encounter this, start time to learn the details.
+
+But.
+
+Very often, the real restrictions are not even technical.
+
+They're organizational.
+
+It's.
+
+Who got something, something better?
+
+I think it's actually good.
+
+Nice transactions.
+
+So, we've kind of loosely used this term transaction, but let's dive into the details a bit more.
+
+So a transaction is a sequence of queries and updates that we want to think of as one unit of work.
+
+So I remember we talked about the acid symatics, the atomicity, consistency, isolation, and durability.
+
+Those are the properties of a transaction. Properties that it gives.
+
+When you just do an ordinary sequel statement, the standard says, and pretty much everybody implements this, you implicitly start a transaction, and it finishes on the same finishes.
+
+So if you're at the console typing statements, each one is gonna be a transaction.
+
+Or if you are sending queries to the database from your code, each one will be a transaction by default.
+
+Or you can deliberately start a transaction, run many queries, updates, deletes, and so forth.
+
+And then either commit the transaction or roll it back.
+
+So that's, it always has to end with either commit, when it's made permanent, or with rollback where it is undone, and it's as though nothing happened.
+
+So the entire sequence of events is undone.
+
+Um, and, yeah, there's more to it than that as well.
+
+So one of the basic qualities of a transaction is that it is atomic, right?
+
+So either every step happens successfully, or it's as though nothing happened.
+
+So it either rolls back the entirety of what happened or commits everything.
+
+And you get isolation from concurrent transactions.
+
+This is a really, both of these are, these are all valuable parts of it, but that's a really important one.
+
+So you can have multiple users running transactions concurrently.
+
+And the database will ensure that the results are as though one ran from beginning to end, and then the next one started, and ran from beginning to end, even though they might actually be running at the same time.
+
+So that means that sometimes one transaction may have to wait, be held up.
+
+It might need access to data that has been changed by an uncommitted transaction.
+
+So it has to wait for the other one to resolve, or it has to kill the other transaction, different systems handle it in different ways.
+
+But it needs to present, again, the quality we're looking for is in databases, it's called serializability.
+
+Serializable is the kind of gold standard here.
+
+That's where you get the full acid semantics, where, again, the results are consistent with a complete serialized sequence of transactions.
+
+This one ran from beginning to end, then this one ran from beginning to end.
+
+Everything, the transaction, C, reads, that was changed in our transactions, A or B, it sees the committed form, it never sees anything before.
+
+So it appears as though they were all running sequence, even though, again, in practice, they might be running the current.
+
+So that's, right, that can be kind of complicated.
+
+That means if I'm running a transaction and I redirect record, and then I go off and do other stuff and read more data, and you come along and start a transaction.
+
+You want to change that record.
+
+It either has to stop and not let you make progress and wait for me to finish. So that you will see the, let's see, so that it...
+
+Um, let's say you're changing it.
+
+It might have to make your transaction run after mine, because I've already read the old version of it, and I may have made decisions based on the old version that I read.
+
+Or it might, again, cause my transaction to fail.
+
+When you say commit, the valid responses commit fail.
+
+Because you read data, or and were reliant making decisions upon, based on data that, uh, it was unable to serialize the, the way they knew about the transactions.
+
+There are a number of different, there are many different implementation strategies for transactions. That make different trade-offs and to be different, uh, to run that negatives.
+
+So that is kind of an implementation dependent. Property.
+
+So like sequel light, um, in its basic form, um, starts out by saying every transaction, every, you know, transaction you start, starts out as a read only transaction.
+
+And as soon as you do a right statement, it upgrades it to a right and that locks out of everybody else.
+
+So, again, this is kind of the old version of a more refined version now, but, um, so if I'm in the middle, I may have been doing a bunch of selects, and then I go to try and do an update.
+
+And if there are other concurrent transactions that we're reading, um, it just makes me wait.
+
+Let's see, is that true?
+
+Is it just loud single?
+
+The very simplest would be to just say, walk the whole thing whenever the transaction starts.
+
+I think it was a little more refined than that.
+
+But I think if I were to start a right transaction, I'd probably have to roll back and start over, sort of initiate this sort of rightful.
+
+If there were already conflicting rates, but only if somebody else has read data that I'm trying to write, right?
+
+It's, you know, it's a lot of detail.
+
+What would it possibly be that if there are transactions that are like, they don't overlap in any way, they can happen concurrently?
+
+Yes, that's the entire goal.
+
+All right?
+
+What we want to get is maximum concurrency possible because in practice, a lot of things are happening concurrently that don't actually conflict.
+
+And so design goal, the database engine is to allow as many of those to occur concurrently as possible, which ensure that when they do conflict, you get those serialized scientics.
+
+And that would also be part of why it's so important to normalize things and have these kind of intermediary tables so that you're not ending up with that kind of going.
+
+Um, I mean, in theory, you could you could have column level locking. Which some systems do, but row levels or page levels more common probably because.
+
+But so that, again, would be kind of an implementation detail.
+
+Okay, and that...
+
+You know, all you have to guarantee is that you get the semantics you're after.
+
+And then lots of ways trying.
+
+Is there any way to walk it once one of pads loves from the west?
+
+Um, to lock it when one has the intention to raise something that I just forgot to say.
+
+Yeah, so again, in the case of sequel Y, if you start a right transaction, in the old version, the old version, it basically walks that anybody else was locked out of database until you finish.
+
+This is kind of a weakness you see a lot.
+
+It's not very good at concurrency. Not as good as like the others.
+
+Um, One of the most common implementations for, uh, like what postgrass does is called MDCC or multi-version concurrency control.
+
+Um, and that's a popular scheme with some other databases too.
+
+Whenever you write, it doesn't replace data, it makes a new version.
+
+And the old versions are available for a while.
+
+And so what you do is you say, part of it becomes kind of you choose, the database chooses the committal.
+
+So if you have a read only transaction, you say, you know, you're going along, two transactions are concurrent.
+
+One of them starts making rights.
+
+And so it just says, well, this first one commits before the other one.
+
+And we just make sure it reads all the data before, you know, the one that's writing, it's time stamps are treated as though they came in the future.
+
+And this one, you know, is reading from this time in this frozen time in the past. Like a snapshot.
+
+It doesn't have to create a snapshot, but it reads everything relevant to a certain timestamp when besides this transaction occurs.
+
+And since it has all, you know, it can kind of do, even though the rest of the day is evolving, it can see the version that exists at the moment of its official transaction.
+
+More true than that, but it's that's a...
+
+But there are other ways too.
+
+And this gets a more interesting when you start looking at like distributed databases.
+
+And this is one of those areas where, for some reason, we treat those as, like, completely different fields.
+
+Databases and distributed systems, like, drifted off in different directions, but some of the most important distributed systems are distributed databases.
+
+I mean, if the most important databases now are distributed, and it's, like, for some reason, we kind of treat them like they're not, which is arbitrary designation, or one of the work tends to be isolated, but, you know.
+
+But, you know, you start looking at the level of the hyperscalors, you know, the Googles of the world.
+
+And they want databases that span the whole world.
+
+Everyone called Spanner, and so name, because it stands the whole globe.
+
+And, you know, they have Gmail and, you know, these big applications, the search engine stored in these things, they're advertising.
+
+The system was actually the 1st client for it.
+
+But, um, Yeah, there's going to be lots of concurrent transactions going on and they, they need to optimize for, kind of, very different goals than are, you know, embedded database that you're running.
+
+A few 100 rows of data.
+
+But there are some very interesting concurrency control and transaction control systems.
+
+So again, what a relation would like the sequel standard asks for is this guarantee of the semantics.
+
+Gold standard is serializable.
+
+It also defines some weaker versions.
+
+Like maybe it's okay if you read something that hasn't been committed yet.
+
+So you kind of see a little bit of overlap.
+
+Um, you know, maybe in your application, that's that's okay.
+
+And so you can loosen the the, um, the transaction, um, quality levels, attics there, and and maybe get some better concurrency and better performance at the expense of not having quite such a strong guarantee.
+
+So anyway, we're not gonna go through all the details of those, but that's a big part of transactions are really one of the major values that you get from a database system.
+
+And here's where this plays out for a lot of small applications.
+
+Dealing with concurrency is hard.
+
+It's hard across all systems, pretty much.
+
+It's harder than a single application.
+
+It's really, like a single process, it's even harder to have.
+
+Um, you know, multiple um, multiple service cooperate.
+
+And most of this when we write the back end to a mobile app or a website, some kind of API server.
+
+We don't think too hard about concurrency, right?
+
+We think about processing one request, and the kind of magic pixie dust that makes that possible, is you run a transaction.
+
+So you have a single database that, you know, is where all the data is stored.
+
+You have your three tiered application, a client connected to a server, connected to a database.
+
+And you just let the database deal with it.
+
+So this is a good pattern for a lot of things.
+
+You know, this is a good starting point.
+
+You get a database, and here's where something like postgrass is really good.
+
+You always start a transaction, you always do all the processing for a single request in the context of that transaction.
+
+And if it's successful, you commit the transaction, and when database says it's committed successfully, you report success to the user and send the value back.
+
+If the database says it fails, even if it was due to transient, you know, ordering failures or something like that, you fail the request.
+
+If the request fails for other reasons, like, I try to buy something, and it turns out have enough money or the store didn't have it in inventory or whatever it is, it might fail for other reasons, so you roll back the transaction and nothing has changed.
+
+But you, this really, really, really common and really good pattern is, yeah, you just try a single request, you make it, you tie it to a database transaction, and you just let the database take care of all your problems.
+
+And then that requires the rest of your implementation to be basically statements, right?
+
+You don't talk to neighboring transactions.
+
+You don't store data on your server.
+
+You push it to the database, you pull it back from the database every time.
+
+And if you do that, you kind of get a lot of concurrency problems, just solve for you by the database.
+
+So that is why this is such a, you know, that's why it's almost always the right thing to start with is a database at the center of your project, and you can just like push a lot of hard problems onto it.
+
+You could re-implement all those things and people do occasionally, but most of the time, you know, benefiting from a few decades of engineering that's gone into a database system and letting them solve these hard problems for you is a pretty good way to do things.
+
+And then if you outgrow it, well, that's a good problem to have, right?
+
+If you suddenly turn into Google and you got 1000000000s of users, well, probably about the money and the talent to reevaluate the problem.
+
+Or if you're on some kind of upward trajectory like that then it's worth going back and fixing it.
+
+Um, I think another, um, Jeff Dean, who's kind of on a famous early Googler and current Googler, I guess, who, his name's attached to a lot.
+
+He and his kind of work partner, Sancho Gimawat, created a lot of core infrastructure stuff in Google.
+
+And Jeff has given a number of talks and things and talked about, like, kind of the lessons learned, building Google, you know, building a search engine, building the ads.
+
+He now in charge of their AI efforts.
+
+Like, that guy just doesn't quit.
+
+Um, He he talked about like some of the principles of system design.
+
+And one of them, which I thought was really kind of, uh, interesting and, you know, counter to a lot of existing listen was, don't try to design your system and be like infinitely scalable.
+
+It's kind of a fool's error.
+
+And don't even imagine it being, you know, really good.
+
+Think of it as like, you know, if you are making a growing system, you should definitely plan for something at least like 10 times as big as you are now.
+
+But you shouldn't really go beyond like a 100 times your current size.
+
+Because if you do, you're probably just gonna get it wrong anyway, right?
+
+You're going to solve the wrong problems.
+
+You don't know what the bottlenecks are to get there.
+
+And they change at scale.
+
+As you scale, the bottlenecks change.
+
+So if you're trying to design for when we're, you know, 100,000 times our current user base size, you're probably gonna be solving imaginary problems that won't really materialize, and you're gonna miss the ones that do.
+
+So, I think that's a, you know, that general principle, that this is another place where that kind of applies.
+
+You're starting an app, oh, but we're gonna be too big for postgrass, right?
+
+We're gonna be too, we're gonna have too many customers, you know, just pumping money at us all the time.
+
+And so we need to do something bigger and more scalable and, you know, whatever.
+
+Yeah, you're optimizing for a problem you don't actually have yet.
+
+And you probably won't have for a long time, right?
+
+So this, I think, is a, you know, part of this argument that, um, that again, it's, as software engineers or computer scientists or whatever, we, we kind of like to solve big, gnarly, hard problems.
+
+It's kind of an ego thing, the monster.
+
+It's like interesting challenges, right?
+
+Oh, I want to make this system, you know, this grand cathedral of design that will last for ages and empower this great system.
+
+When really, you know, I think we have that, we often have too much of that tendency and kind of have to resistance.
+
+You know, let me do the, let me do the simple thing here, that it will actually let me grow pretty far, and then let's focus on, like, you know, building a good product that will actually get those users.
+
+Like, let's put our attention on the thing that is gonna make the company grow instead of trying to pretend it's just gonna grow on its own and spending all our effort there.
+
+So, starting with a relational database, very practical, trying, true way that's usually the right thing, even if, you know, your goal is to grow beyond that.
+
+That's gonna be a long way off.
+
+That's really hard to achieve.
+
+It's hard to outgrow modern databases.
+
+And if you do, you've got a fantastic problem and hopefully you've got revenue coming in by then.
+
+And, you know, now you have engineering effort, you can develop the problem.
+
+So I think that's a good application of this, one of Jeff Dean's principles there.
+
+So other things, uh, we've talked about, um, right, isolation, I think was one of our acid properties and consistency.
+
+And these are other things that are guarded by transactions.
+
+So we have the integrity constraints, and you can define these, right?
+
+We saw a lot of those check statements I was doing and sort of the scenes I showed you.
+
+A checking account must have a balance greater than $10,000.
+
+Hey, you can put that in the database.
+
+And it will refuse to commit a transaction that violates that constraint.
+
+So if you try to spend money or transfer money out of that account or whatever, it will fail if you put that as a constraint.
+
+There is a design decision to be made where you divide the responsibility, go have the database enforce that, but the application enforce that.
+
+Sometimes both, sometimes, you know, again, that's a design decision.
+
+But the database is capable of doing quite a lot of different integrity constraints.
+
+But maybe, again, not just data structure related, like for a keys, but they might actually be sort of business rules related to, like, on those examples there.
+
+So, generally, you have not knoll, primary key, unique, so unique, you can create a unique constraint.
+
+A primary key has to be unique.
+
+Right?
+
+That is there to uniquely identify HRO data, but you can also put unique constraints on other columns that are not the primary key.
+
+Yeah Is this usually used for the construction of tables or for, like, um...
+
+So this is part of the data definition language or the schema of creation, yeah.
+
+You put those in.
+
+And then you have check where you can just put any predicate supported by the database.
+
+All right, so that's where I was doing my kind of weird, uh, make sure this time, this, uh, time slot name matches my format and all my rules.
+
+I did have a fun time doing that one.
+
+Not Noel is probably the most common constraint.
+
+Um, we'll do unique.
+
+Also pretty important, in many cases, and it can be a combination of keys as well.
+
+So, like down here at the bottom, you've got that check clause, check semester in, and right, you've just got sequel available to you.
+
+Kind of run that every time the, um, the road changes.
+
+So one of the most important ones is that referential integrity that we alluded to a moment ago, foreign key rules.
+
+If you declare for a key relationship and say, yeah, this, um, you know, this assignment is dependent on this user.
+
+I have an ID for the user in there, then it will enforce that constraint.
+
+You cannot create an assignment with the user ID for users that doesn't exist.
+
+If you have such an assignment already in there, you try to delete the user.
+
+Um, That will create a violation in existing data, and that will be forbidden as well, unless you've given it those on-op date rules or on delete rules, where you can go out to cascade and kind of, um, you know, you can make yourself usually a user, deletes all their assignments and all their commits and everything like that, if it's cascading rules.
+
+But if you don't have those, the foreign heat constraints will prevent simplest relations.
+
+Um, Yeah, I actually had this by me once.
+
+This is also related to, I guess, performance and things like that, but indexes.
+
+So indexes, which we'll talk about a little later, Um, We'll crank create like partial duplicate tables, but sorted by different keys. To make it fast to look things up.
+
+So this is one time with Coke Rider, actually.
+
+I was going at the end of the semester and said, okay, I just wanted to delete all the commits.
+
+And each commit actually has a self-reference to a parent coming out.
+
+So I can have, like, a chain of them.
+
+And initially, I would say every time you say it, say, okay, and then that was too much, and so I did it, so it always just keep one per step, as you move forward.
+
+But I do keep a series of records in there.
+
+Didn't think too much about it, got at the end, it was like, oh, it's time to just reset the database for the next semester.
+
+So I went into the console and typed, delete from commits.
+
+And enter and thought, That'll take a 2nd to run, maybe.
+
+And after waiting half an hour or so, I finally canceled.
+
+And went for a walk. And thought about what was going on.
+
+Any ideas what was happening?
+
+What was the command again, Louise, into, like, turning the database to?
+
+I was doing just delete from commits.
+
+Oh, I actually have an idea.
+
+Was it, perhaps, deleting one at a time and updating the index fees each time?
+
+No.
+
+Was it a foreign key of something else and that was cascading through all the other tables?
+
+The, um...
+
+It was it was related to the self reference.
+
+Yeah, it's, uh...
+
+Right?
+
+Having a parent commitment.
+
+Oh, was it just...?
+
+It would delete the parent Schmidt, and then look for something that's not on the table, so it's having to look through the whole table.
+
+Yeah, I think so.
+
+Yeah, so here was the scenario, right?
+
+I have, I don't know, a bunch of commits.
+
+I was saving too many.
+
+Um, But I had this horror key constraint.
+
+Um, I don't remember if I had an on-delete cascade.
+
+I think I did.
+
+But the issue was that, okay, so it goes to delete the 1st commit in the list.
+
+In order to enforce the foreign key constraint, right, I could look at the parent commitment link, and it might be no.
+
+So it doesn't actually have to go in, like, you know, but that one wouldn't have mattered anyway.
+
+What matters is, is there anybody else linking?
+
+I am deleting record number one.
+
+Is there anything else that links back to one?
+
+And what it would have to do, because I didn't have an index on it, is it had to scan the entire commence table looking to see, does anybody who allows to link to this record one that I'm about to delete?
+
+Before it can kind of clear it.
+
+It doesn't find it, so it deletes that record, goes on to commit number two.
+
+And then says, oh, before I delete this, is there any other 4 key reference to it that I need to look out for?
+
+And there is this for a here relationship, so it has to scan every gaining entry looking to see if any record is referring back to entry number two.
+
+No, so it deletes it.
+
+But what would have been, you know, a linear delete over, you know, 50,000 records or 10,000, I don't know what the numbers were, it came in square.
+
+It was having to do a full scan of the entire table for every record that it tried to delete.
+
+And, you know, again, I gave up after half an hour or something like that.
+
+I had no idea how popular it would take it.
+
+But once I figured that out, walks are fantastic for this, showers, also good.
+
+I went back and I said, create index.
+
+You know, commit self-reference.
+
+I'm commits, and this field. Took it, you know, a second, half a second, or something like that to create an index.
+
+And then I did delete from commits and it finished in like a second.
+
+Because the difference was, now it still has that constraint to enforce, but when it wants to see if anybody's referring to commit number one, now it has an index that it can look up, do a very fast query to find if there's anything referring to Y.
+
+Because that's what they feel like in that shot.
+
+And it could very quickly, like, no longer a full table scan, now it was a tree look up, basically.
+
+And you can say no, and then move on to the next one.
+
+So I got rid of the N squared part and turned it into, I guess, N log in, but it's really where log in is like three. Or something. You know, it's really shallow tree of the index.
+
+So, right, to enforce foreign keys, it has to check every time.
+
+And there are times when, you know, it's important that if, even if that's inefficient, it's still going to do it, because it's gonna enforce the constraints.
+
+We saw cascading actions, saw some of these other things.
+
+Um, Let's see.
+
+Look at this check condition.
+
+Check time slot ID in.
+
+Select time slot ID from time slot.
+
+That one seems a little weird, but it's, uh, and that's kind of just doing a foreign key reference, essentially, right?
+
+But you can do sub queries then.
+
+So they can be basically arbitrarily complex, if you so desire.
+
+So, but no, that condition then has to be checked, not only when, um, Not only when the row containing this check changes, updated, deleted, but also when time slot that's referring to changes, right?
+
+Because if that query now could come back with a different result than it did before.
+
+Um, So you gotta be be careful with those.
+
+I don't know what the sequel right does on that. Don't think I'd notice that.
+
+If you're gonna imagine that being like an aggregate career or something like that.
+
+When the average style is a check that this salary exceeds the average salary of a biology professor.
+
+I remember from that before.
+
+Yeah, that in a Czech constraint.
+
+And then every time you update the database, it has to go in, I guess, go and recheck everybody's salaries to make sure they're still making more the biology professors.
+
+I gotta be...
+
+Some of these things are very complicated or can be.
+
+Um, okay.
+
+Large object types, these are worth mentioning.
+
+Blobs, and clobs, or sealobs, is how I usually heard people say blob, but sealob.
+
+Binary large object, this just lets you store arbitrary binary data.
+
+Um, where the database makes no attempt to interpret it.
+
+Sea logs, or character log objects, is character data, and then it is happy to look at it and run queries against it.
+
+So this is what most of it, I haven't even seen anybody write SeaLog for a long time.
+
+Usually you say text.
+
+And that's just how, like, all string is or there's just no restriction on it.
+
+Um, but lobs are kind of special there because you may not.
+
+It doesn't try to enforce that it's usually FA or anything like that.
+
+Um, got to be a little careful.
+
+Here's another place where I think it's easy to do a, you know, maybe not so great job with designing your database, and storing, like, a bunch of images in the database.
+
+Where you end up having every row is now, you know, 10s, 100s of kilobytes, long megabytes long.
+
+And the performance characteristics of the database are not really designed for that.
+
+Um, kind of just the wrong storage medium for it.
+
+So sometimes you'll want to store blobs in there, but if you're, but often, probably you'll want to have some other object store.
+
+Amazon has 3, Google Cloud stores, something like that, one of those bucket storage systems.
+
+And actually sort of like a reference inside the database.
+
+You know, an object ID or something like that. For practical reasons.
+
+But they can store arbitrary binary data, again, it just tends not to be the strength the most, such systems, unless they're specifically designed for it.
+
+And we'll see why more when we start to talk about bee trees and the on disk storage formats the databases use.
+
+So, yeah, let's just start introducing indexes just in a high level here, and then we'll run out of time.
+
+Every table has to have some on disk storage format, right?
+
+And usually, um, the most common is the bee tree, a bee tree is a sordid tree.
+
+That's a balanced tree, maybe. Might be what stands for.
+
+Sometimes if I look it up, There's a disagreement about it or maybe I'm remembering that wrong.
+
+But it wasn't a tree where all the nodes are, all the weed nodes are on the same exact level.
+
+Yes.
+
+Every single node has, um, K +one children and KK.
+
+Yeah, so it's been an end game.
+
+It's a balanced tree.
+
+We'll talk about the characteristics of it specifically over time.
+
+I'm sorry.
+
+RB plus trees, what's used in database systems?
+
+That's what I understand.
+
+B plus trees are something that's, you know, that's where satellite data is.
+
+It's both.
+
+Okay.
+
+Yeah.
+
+Like SQLI uses both.
+
+Okay.
+
+And most day bases too.
+
+They have slightly different characteristics.
+
+But anyway, so we have a we have a...
+
+Yeah, I did it.
+
+It's not a pioneering tree.
+
+It's a balance tree.
+
+But trees, order trees, have some, you know, all the basic forms and have some qualities in common, right?
+
+They make it pretty efficient to look something up by, like, it's sorted cute.
+
+Because in each node, you know, which which child to go to, to look for that.
+
+So you do, I'll use this term throughout.
+
+You do what's called a stabbing query.
+
+You started the root of the tree, you always know whether to go left or right or, you know, which child to go to.
+
+And you just kind of, it's, I don't know, I then start visualizing this kind of, like, ceremonial dagger and zigzag and just, like, go down and just, this zigzags down to the exact leaf node with the element you're looking for.
+
+Or it's not there, but it doesn't waste time, right?
+
+It drills right down.
+
+And so there's that image I can term...
+
+I haven't heard much lately, but that was the term I love as a stabbing. And I learned it from a, you know, property database person.
+
+So anyway, they allow that, right?
+
+All trees loud and do that by whatever it's sorted by.
+
+They also let you navigate linearly in a pretty efficient way.
+
+So you can scan ranges, you can scan the entire thing in order, you can stab, you can find the beginning of the range and scan forward or scan backwards.
+
+Those things are efficient.
+
+But if you try to find something that it's not sorted by, you have to scan the whole table.
+
+And that is not efficient, right?
+
+That's always the failure condition of a database is when, you know, that's what you're always trying to avoid is just doing full table scabs.
+
+You can always find the data that way, but it's usually not the, it's not the efficient way.
+
+Yes.
+
+So, so, um, again, every table is going to have some naturally sorted order on disk.
+
+Some of them don't, some of them are completely unsorted, but we'll start, we'll assume be trees.
+
+So, that's normally going to be the primary key.
+
+Which makes sense, right?
+
+You're usually gonna be looking something up by its primary.
+
+It has to enforce uniqueness by the primary key.
+
+So it kind of needs to be able to do efficient lookups by primary key anyway.
+
+And that's kind of true.
+
+People say there's answers, there's a big asterisk next to that.
+
+But let's just assume that's the case.
+
+What if you ever want to look up something by something other than the primary key?
+
+So, you know, you have a database of movies.
+
+And the primary key is something really unimaginative, like just an integer.
+
+But you don't want to look up an integer, you want to look up the movie title.
+
+You wanna look up the release year?
+
+You want to look up the budget, something like that?
+
+What you don't want to have to do is scan the entire table every time you want to look something up, because it's not the primary key.
+
+But you also don't want to go and like reorder it based on the queries you anticipate doing.
+
+So this is one of these places we kind of want to bridge this.
+
+Let's store it on disk in like a nice, you know, I keep calling this neutral format without ever really defining what that mean.
+
+But let's sort it this way, but also give ourselves the flexibility to query in arbitrary ways that are efficient.
+
+So indexes help us kind of bridge that gap.
+
+So what an index is, it's basically another table, but it's not, like, user facing. You don't interact with the direct.
+
+You declare what it should have.
+
+And it is a partial duplicate of the table that you're indexing.
+
+But it just contains the fields that you nominate, and it sorts by them.
+
+Um, so this is an example where you can't use a B plus tree.
+
+Okay, sorry.
+
+If you trust trees or not, we'll send you to this.
+
+Well, I just thought, I just heard that beet trees are mostly useful operating systems nowadays in those databases systems.
+
+Nowadays, use B plus trees.
+
+So I was just, we'll get into the nuances later, but okay.
+
+So you say this, create index, you name the index, on the relation, and the attribute or set of attributes, your index.
+
+So I can create an index on my movie database or my movie table on the title.
+
+And now I have a version, again, it's not a complete copy of it.
+
+But it does have every title, and then, in addition, it has the primary key app at the end.
+
+So now I can efficiently look up a table with a stabbing query, and what I find is the primary key, which I can then go and look up.
+
+So, like, when I talked about this, delete all commits problem, the table, or the index that I created, let me look up, not the primary key of the commit, but what commit it refers to.
+
+So then if I wanted to decide if I could delete commit number 15, I can very efficiently go and see, does anybody refer it to 15?
+
+Instead of having to scan and, you know, scan the entire table.
+
+So this is an essential part, designing and creating, like, a good index structure, is kind of an essential part of database, design, and management.
+
+Nice thing is, it's something you can modify.
+
+You can drop indexes, you can add new ones.
+
+They don't have to be there where the database is created.
+
+So we're gonna spend a lot of time through this semester talking about how queries are implemented, how they're executed, I should say. And how they make use of indexes.
+
+And so part of the process of optimizing a database, it's turning slowly, is to figure out which queries are slow, and could it be faster if I made an appropriate index?
+
+You know, is it doing a linear scan somewhere?
+
+Or maybe it's not even doing something that bad.
+
+It's doing a really sub optimal path.
+
+And if I created a better index, maybe you could optimize it better.
+
+You can use hashing for key indexing.
+
+They're different kinds of indexes.
+
+We're gonna focus on, again, on this equal light, because that's our database of choice, and we're gonna look at its internals.
+
+It doesn't have hash database, hash indexes, but...
+
+But the trees are...
+
+The trees are the workforce.
+
+They're an excellent data structure we'll talk about themselves later, but...
+
+So designing indexes, that's the next kind of thing.

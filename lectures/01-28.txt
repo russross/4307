@@ -1,0 +1,2449 @@
+All right, welcome everyone.
+
+Um...
+
+She had a normal way to say.
+
+Thanks for, uh, helping out with our guest lecture last time.
+
+I hope that was interesting.
+
+Are we gonna go over that later in the class?
+
+Or is that?
+
+Probably not.
+
+Probably not.
+
+Unless I want to.
+
+That's, like, an advanced topic, basically, is what you're saying.
+
+Um, it's a little more data science, I guess.
+
+So we could go into more if you like.
+
+Certainly, if you have any questions, well, she mentioned that it was more on the lines of something you'd use instead of a traditional database management system.
+
+It did seem a little bit more data science, because it sounded like this is better for, because in database systems, we are concerned about storing data permanently.
+
+This sounded like more something that was for data that was flowing continuously.
+
+And you would use it on that, basically.
+
+Yeah, so that was that was some of the things, a lot of them are applicable in a bunch of places.
+
+Yeah.
+
+Like, uh, Bloom filters, actually, whatever slides mentioned, um, they're sometimes used actually by database systems as a way of implementing one way of implementing joins in certain cases.
+
+Yeah.
+
+But, so, yeah, I mean, these are generally applicable techniques, but she was kind of focusing on this stream processing idea.
+
+You have a tour of data coming from sensors or something like that.
+
+Yeah.
+
+And want to get some meaningful information from it.
+
+But you basically need to be able to do it off a fly. Without being able to go back and consult data afterward.
+
+So that's what those were kind of focused on.
+
+Those are all, you know, data systems, all these things related.
+
+Some of the splits and fields, you know, I don't make a lot of sense.
+
+I'm not sure why database systems and distributed systems are quite as separate as they are since storage systems are actually a big thing in the distributed systems.
+
+A lot of modern databases are distributed, a lot of crossover there.
+
+And data science, of course, is just a more applied version of a lot of those things, drawn from 12 models, subjects.
+
+So Anything you found interesting?
+
+Yeah.
+
+I saved with her for, like, the little talk afterwards, and, like, some of her, um, graduate research was really cool that she was talking about.
+
+Um, like, the tech gap and how it would keep on growing and like, it was very interesting to learn more about her.
+
+Yeah.
+
+Yeah, I think it's interesting to, yeah, got to talk to different people, is research can go in a lot of directions.
+
+Yeah.
+
+I think the crimes, this was, what do you call it, research for social good or something like that?
+
+Or socially.
+
+For social.
+
+I can't remember the phrase she used, but...
+
+Yeah.
+
+Yeah, and, you know, like I say, research goes in a lot of, kind of goes anywhere, really.
+
+Anywhere there's problems resolved.
+
+And I think, um...
+
+Data science is a really good, uh, kind of bridge between computer science and lots of other fields, 'cause there are lots of other fields where, I think it's true, actually, generally, computer science has applications in a lot of places, and a lot of, um.. People who have even a little programming skill, and, you know, the more the better, better primarily interested in something else, end up having the ability to conquer problems that most people can't.
+
+When an interesting example, so somebody I knew in grad school, he was, did engineering as an undergrad, and he was doing his PhD in paleography, which is, like, handwriting.
+
+So kind of a branch of art history, I guess, you know, and go and look at ancient handwritings.
+
+This is pad.
+
+So, you know, kind of as far from computer science and engineering, as you can get, it seems like.
+
+But he then started developing, you know, computer models and things for processing stuff.
+
+And he was like the only person in the world that, like, you know, had that combination of skill sets.
+
+Really?
+
+So he, um, you know, got kind of his, gave him a huge advantages, his career moving forward, because no, there were another paleographers using, you know, programming, cultural methods, their problems.
+
+But, um, you know, I always kind of like to do a mental tour of campus and think about different fields where it's like, uh, in finance, you know, finance people are kind of infamous for their use of spreadsheets.
+
+They live in Microsoft and Excel.
+
+And you can do a lot.
+
+There's good reason, right?
+
+That's it's an incredibly versatile program, but there's also stuff that if you can write your own code, it just opens the world up for a lot of analysis, you won't be able to do otherwise.
+
+Most of the sciences have kind of embraced that now.
+
+That's, uh, a practicing biologist probably spends more time programming a lot of the time than they tune the lab on us.
+
+At least some of them do.
+
+But, you know, in the arts and humanities, it's the same thing.
+
+You can go for a very traditional route, but there's also a lot of opportunities, if you can bring programming skills, the ability to work with data, and so on.
+
+A lot of stuff you can do there that just opens up lots of possibilities.
+
+So I think it's a nice bridge.
+
+Data is a really good bridge.
+
+Lots of people have data sets and don't know how to do with them.
+
+Computer scientists often have data skills and don't really know what to do with it.
+
+So it's a good marrying of those two.
+
+Yeah.
+
+Um, any other thoughts or comments or questions?
+
+So, the, uh, algorithm that she went over the, uh, flow jar in, Martin algorithm?
+
+Is that what it's like?
+
+Something like that. Yeah.
+
+Okay, so I was going over it.
+
+I'm a little bit confused about what it's measuring, because what I've researched and what I've seen is it's measuring the maximum amount of elements, unique elements, that can be fit into that bit set.
+
+However, the thing that was confusing about it is, she was mentioning that we were only counting the trailing bits, the trailing zeros, taking the maximum of that.
+
+And then taking that, basically, using the product roll, to times two by that.
+
+So 2 to the R, basically.
+
+And getting that as a final answer.
+
+And I wasn't really sure why that even.. Again, the goal here is to get an estimate.
+
+Right?
+
+Of the number of unique elements seen, right?
+
+That was what this problem was.
+
+But without, again, being what you, if you want a precise value, you would store, you would store the elements you see, or you'd store hash codes of them, or something like that.
+
+You know, some kind of compressed form.
+
+So you could get an accurate account.
+
+But again, if we consume, you can't actually store them.
+
+And you can't go back and consult old data.
+
+How do you keep track of something just as a running total that gives you some estimate of how many unique elements you've seen?
+
+That's the problem it's trying to solve.
+
+So it's not going to be precise, but the kind of core intuition there is, the hash value, if you're counting trailing zeros, the hash eyes are kind of a standing for, like, a random number.
+
+Right.
+
+Each bit is, like, randomly a 0 or one, except it's actually reproducible, generally. Input.
+
+So the number of trailing zeros, you know, having more trailing zeros is rare, right?
+
+The more trailing zero is, the more rare it is.
+
+Okay, so it's more...
+
+But the more random elements you see come in, the more likely a rare event is.
+
+And the rate at which you see the ministry, you know, is directly related, but it's all probabilistic.
+
+I see.
+
+So, if you want something with eight trailing zeros, uh, you know, you're probably gonna have to see a lot of elements before that happens just randomly, but it's, but it's gonna be predictable.
+
+Yeah.
+
+And there's gonna be outliers and stuff like that.
+
+And so that gives you a very rough estimate, just counting the maximum number of trailing zeros you saw in the hash house.
+
+And so then the other things were how to refine that, right?
+
+How do you get something?
+
+For one, that can only give you powers of two.
+
+Yeah.
+
+So you need to do so many things with hashes.
+
+You do multiple hash functions.
+
+Right?
+
+So you're kind of just running the same problem concurrently.
+
+It's like if you could rerun it, you know, 10 times, well, you just do 10 times in parallel.
+
+And you're gonna get different values there.
+
+And so now that's something you can kind of average together and get values that aren't just powers of two.
+
+And if you have an outlier, that outlier's not going to skew it as much as if that was your only sound bolt.
+
+And then taking that, what was it, the median of averages?
+
+Yeah, we're taking the median up means, and we're getting the, yeah, just the median of that.
+
+Yep.
+
+Yeah.
+
+And so that's going to give you, again, kind of squash out liers, give it even out a little better.
+
+There's gonna be, you know, you can go and do like the formal probability analysis on these things and it could actually work out details, but this is kind of the, you know, just the distilled, here's here's what, here's the way you actually do it.
+
+I heard that people typically do it in practice.
+
+And again, recognizing you're not going to get a precise answer, but, you know, for example, she's looking at like, you know, 4 numbers or something like that.
+
+But if you consider, if you're, if you were passing through, you know, a, let's say if you billion dollars, or if you trillion elements, then again, you want to know how many unique ones were there.
+
+Well, uh, you don't need to be that precise, right?
+
+But, uh, so, um, but, but with a large input data set like that, the, the outlies are kind of gonna be even out, and especially lots of functions.
+
+So, you know, it ends up being a good rough running approximation.
+
+And has that virtue of being just this constant amount of storage use along the way.
+
+There's some problems that, again, to do it precisely.
+
+Well, now something you've got to store everything and that just doesn't work.
+
+But you don't always willingly precise. Yeah Well, I mean, you want to make it efficient too.
+
+Yeah.
+
+Yeah, right?
+
+There's gonna be these trade-offs.
+
+Yep, you know, trade off with efficiency with preciseness.
+
+And so you want to do something in the middle of that.
+
+But there are lots of problems where approximately is as good as precise.
+
+You know, I think I'm exactly the same, but I was thinking about like math programs.
+
+You go on Google Maps, Apple Maps, Waze, whatever it is.
+
+How do they detect, you know, the red zones, the slow zones?
+
+Well, their input it in, but also...
+
+From where?
+
+Where are they doing?
+
+Well, they probably get it from the government, 1st of all.
+
+Well, yeah, they, obviously, the government.
+
+No, no, no. Ation.
+
+The government doesn't have that data.
+
+It's real time, right?
+
+This is based on real-time traffic, observe traffic.
+
+And so a lot of it, it's not like they can't set up sensors everywhere in the world or everywhere in the country to monitor precise.
+
+Okay, wait, I don't think I So they can get some.
+
+Yeah.
+
+Um, that's one way, right?
+
+If they have phones that are falling home.
+
+I'm reporting location and things like that.
+
+But a lot of it's actually from the cell phone companies.
+
+Because they have their antennas, they know when you move from cell to cell and various things about it.
+
+And so there are basically inferring your location as you're going along, and they don't necessarily need anything precise.
+
+If you get enough data, you can figure out, well, everything, everybody seems to go really slowly through this part.
+
+Maybe they refine it with Apple, gets their Apple Map user data, Google gets Google Map user data, to refine some of those.
+
+But again, it's something where you don't actually, like a precise result, doesn't really help anymore than, you know, if you need an approx, if you can get a decent approximation, that's actually all anybody wants, you know, it's gonna slow down, it's gonna take you about an extra 15 minutes to get through this traffic jam.
+
+You could get more precise data wouldn't necessarily give you a better estimate now.
+
+So I don't think I understood what you said before.
+
+You said red zone, so now I know that you're talking about places with higher traffic, right?
+
+Not just restricting.
+
+Yeah, so map programs. What I thought you meant.
+
+Yeah, I was like, what I use.
+
+It shows you yellow if there's kind of a slowdown red is like a really bad slogan.
+
+Okay, yeah.
+
+Now that makes more sense.
+
+You wouldn't get that from the government.
+
+The government have that information.
+
+I thought you were talking about, like, something like, a restricted access on, like, area video.
+
+I was like, what?
+
+Yeah, okay.
+
+No, that would be a static data set.
+
+Yeah, that would that would be definitely something you'd get from the government.
+
+But no, not something continuous like.
+
+Well, not continuous, but not something in real time.
+
+It's not as simple as a government orository.
+
+Yeah, because it's local communities, it's changing all the time.
+
+The estimate I heard, and this was maybe 10 years ago, was that keeping mapping data up to date costs about about a $1000000000 a year.
+
+That's for going and collecting, you know, every municipal road change.
+
+You gotta go and look at, you know, reprocess all that satellite imagery and collect it and pay for it.
+
+In just the US or like globally?
+
+I think that was globally.
+
+But so each major map provider, yeah, it was a rough estimate, but they...
+
+In cars, like having built in navigations, still like a $1000 option.
+
+And it's like, why don't I just use my phone, which gives me better maps anyway?
+
+And why is it free on your phone and a $1000 app built into your car?
+
+Well, somebody's got to pay for it, right?
+
+If you're using Google Maps, the ads on Google pays for it.
+
+Apple, I suppose it's the expensive hardware, which you access to, right?
+
+That's a service they do keep you on a platform.
+
+But that's, again, advertised across 1000000000s of users.
+
+If you're buying a car, the numbers are just much smaller, and it's a different map provider, right?
+
+Google, provide their data to cars, actually, they do a lot of time now, but for those built-in ones, you know, you used to have Garmin and Tom Tom and, like, there were about 3 major providers, and they were all doing this work in parallel independently.
+
+And it's like, well, if you're dividing it over maybe a few 10s of 1000s of or 100s of 1000s of cars per year, it's just going to cost.
+
+Well, let's see.
+
+There's a million cars, that would be $1,000, a million users would be $1,000 a year.
+
+If it was a billion dollars, I'll keep it.
+
+And so, it's just the economics for the phone companies, or the, you know, Apple and Google just, they spread over so many users and it barely costs them anything.
+
+You know, they need a little revenue per user.
+
+There's enough.
+
+But yeah, so again, getting that stuff is complex.
+
+You know, we used to have one of those garment in car navigation things, and they redid, like, the exit off I 15 onto Bluff Street.
+
+And it never updated.
+
+So every time you'd exit, and everybody would think you missed your exit, and then sort of, like, pulling up a stop and turning laugh, it would think you're back on the freeway and reset it, or you calculate it, and tell you to go up to St.
+
+George Boulevard or Madden, Mike.
+
+And some of the other maps sales, sometimes they'll take, it'll take a surprisingly long time for even Apple and Google to figure out, change the traffic patterns.
+
+But there's lots of, and where do you go and get that?
+
+Just wait for something easier to report it.
+
+Yeah, you get a combination of user reports.
+
+Again, you probably try and develop relationships with states and municipalities.
+
+You just look from satellite imagery and autoprocess that.
+
+It's like a combination of all these things.
+
+And I would guess it costs a lot more than a $1000000000 a year by now, especially for the ones that are outline buildings and, you know, getting a lot fancier with it.
+
+But anyway, um, anything else?
+
+Any other observations, questions, thoughts?
+
+That was the only question I had, actually.
+
+I thought bloom folders were kind of an interesting case, 'cause you said they were developers was, like, 1970 or something like that, I think, paper.
+
+They kind of had a rediscovery resurgence in the 90s when there was a whole bunch of, like, systems research, which was kind of, oh, here's something we used to do, but now we do it Bloomfield March, you know?
+
+That makes it better.
+
+A lot of stuff published that way.
+
+And then that kind of died down once that well had gone dry and now it's like now we got data scientists using it.
+
+It he's for these other places too.
+
+So, I think it's interesting.
+
+Computer scientists have short memories.
+
+There was so much stuff figured out in the '60s and '70s that we keep rediscovering and reinventing, but...
+
+It feels like we're using a lot of stuff in the '60s and '70s. Mathematical stuff.
+
+Yeah.
+
+And also, we've missed a lot of...
+
+I guess that's just researching now because if you have a lot of research going out, and you only have a finite app.
+
+Yeah, well, a lot of that stuff's not necessarily digitized, right?
+
+Things that were printed in journals.
+
+And, you know, if we can't get it in one Google search, it doesn't exist.
+
+Maybe not good at researching.
+
+All right, um, I want to look at an example, kind of work on something.
+
+Let's talk about a database problem.
+
+We kind of work through the modeling and schema development for it, just see how it goes.
+
+So looking at, so I was thinking of a, you know, look through some kind of ideas, and I think I want to do this, like, a library.
+
+Okay.
+
+Okay.
+
+Like a Python library, you mean?
+
+No, the kind where you go and get books.
+
+Oh, I see what you mean.
+
+So, books, we'll say books.
+
+It's really probably better a title, like, because they have magazines and things like that, too.
+
+What other information?
+
+Like, what information do we want now about a book?
+
+Well, you want to have a genre...
+
+Great, you got a turd.
+
+Okay, so genre?
+
+Author.
+
+It's not the first thing I would have said. But an author?
+
+Obviously, you want the title?
+
+Complication date, okay?
+
+Okay, what date?
+
+You want the ISPN?
+
+Is that ISPN?
+
+ISPN, yeah.
+
+Yeah that's right.
+
+Sure.
+
+I'm getting There's, like, an original publishing date and then, like, that edition publishing day?
+
+Yeah, and then a number of pages.
+
+We'll call that.
+
+The cover image.
+
+We'll call this good.
+
+For now, taste.
+
+Um, so we'll make a table, uh, 5 fields, ISVN numbers are primary key, good to go.
+
+How could we improve this?
+
+Well, um...
+
+You could some thread and walk around and have a drum have, like, a list of their other, like, books I have.
+
+Okay, so yeah, authors are.. Not just an attribute of a book.
+
+So authors, we need, what, like name?
+
+Um, I don't know, birth year.
+
+We'll say birthday.
+
+Yeah, we're all Birth date.
+
+Birth date.
+
+That's usually basic biographical information.
+
+Sure, how about it?
+
+It's not really a Spanish index for others.
+
+Sorry?
+
+Is there something like the H index per authors?
+
+Like how successfully they are?
+
+I'm sure we could flash that up. Let's keep this simple. Link to their Wikipedia page.
+
+That can be up to date.
+
+Yeah, we can have our static link.
+
+Yeah, yeah.
+
+It's saving so much processing power.
+
+Exactly.
+
+Yeah.
+
+Yeah.
+
+Okay, how do we relate books and authors?
+
+Opiate key for authors.
+
+We'll just make up an author ID in this the best surgery.
+
+I don't know.
+
+Um...
+
+Is there, like, a national?
+
+We kind of have to use name, I think.
+
+Yeah, because we want something that's...
+
+Names definitely not going to be unique, right?
+
+Yeah, that's true.
+
+So...
+
+There might be some kind of index.
+
+Yeah, you could take a hash of every book.
+
+Multiple hashes.
+
+Except then once, yeah, that would be the variable, isn't it?
+
+I mean, their name in the 1st book they published, I thought it feels like...
+
+What if someone really wanted to...
+
+I feel like we're just playing...
+
+Yeah, we probably need some kind of just food.
+
+I kind of hate to do it, but yeah.
+
+Whoa, an ID.
+
+Yeah.
+
+Just publish our social security?
+
+Yeah, social security number, bar code down there.
+
+Oh yeah.
+
+But doesn't it, like, when you die, doesn't it get reused or something?
+
+Is that is that something I'm making up?
+
+I don't know.
+
+I know there are 9 digits, and they never start with zero.
+
+Those cookies is like crossword clues all the time.
+
+Um, so...
+
+So let me get rid of offering, uh, ID, or offering, so we could say, I hear author ID or something like that. You that though.
+
+Let's have a genre table.
+
+Before we get there, does that work?
+
+Well, yeah.
+
+Only if we can assign a unique identifier to an author, though, which, um, yeah.
+
+Yeah, well, we said that, yeah.
+
+Yeah, that would have to be something standard so we can match his own natural line.
+
+Yeah.
+
+So I'm saying that this, though, not just convenience, this is not quite right. As a way model in it.
+
+Many to many you can have multiple others for...
+
+Yeah.
+
+A lot of books have multiple authors.
+
+This allows for a single offer and provoker.
+
+Just allow for many books for author.
+
+So how do we fix that?
+
+Adjoining people.
+
+Yeah, it's it called ad drinking?
+
+Whatever the intervenium.
+
+Yeah.
+
+So we definitely need to be able to have multiple offers, robos, multiple books per author.
+
+So we need some table sitting in between, right?
+
+Yeah, that's right.
+
+We established.. Classes to go.
+
+Right.
+
+I'll be sure to never repeat any information.
+
+Sorry, I was trying to be rude.
+
+I'm sorry. Didn't mean anything by that.
+
+I didn't mean anything. Sorry.
+
+I'm sorry.
+
+I was just like, I was just like acknowledging like, oh, okay, we went over this a few classes ago, you know?
+
+So, um...
+
+Ooh, that's nice.
+
+So now we don't put anything in the book table, right?
+
+Now, we have something else pointing to it, and that's what allows us to have many entries here.
+
+Cool.
+
+If we had any other attributes that were related to the relationship between authors and books, we could put it there, I suppose.
+
+I can't think of that would be off the top of my head.
+
+Maybe for academic, probably the 1st author.
+
+I sometimes being the 1st offor.
+
+That's good enough over here.
+
+Wait, so we take the author ID out of the book, and we're just putting it into the author for us.
+
+All right, because again, there's no single value that will go on the book table that's correct.
+
+Okay, so in that case, we want to do that.
+
+And if we want to research the author of the book, we just see it by its ISBN, and then in the other database, we search the author name, right?
+
+So yeah, we need to join our way across here.
+
+Yes, that's right.
+
+Right.
+
+Now, this is a library, so we also need, like, I kind of know our, I don't know, our inventory, right?
+
+The physical copies of the books. More of a model.
+
+So it's called copies, maybe?
+
+Like that would be another database, you're saying?
+
+Another tape.
+
+Yeah, another relation.
+
+Yeah, so we'd have, what, an ISPN?
+
+It is the book.
+
+They often have digital and physical copies of the book.
+
+Yeah, digital copies, though, that would be like an infinite number of copies, though.
+
+If you think about it, if you have a visit, they're usually.. Can purchase, is there any?
+
+Yeah, contractually, they actually have a fixed inventory individual ones.
+
+So if you go, what's that service called that the libraries use?
+
+Are you talking about?
+
+Letting you check out, like, ebooks or audiobooks.
+
+Libby, yes.
+
+Yeah, if you want to go, because you, right, you can check out digital copies and audiobooks from your local library.
+
+You have to go to the local library card.
+
+Campo song, maybe?
+
+I have no idea.
+
+I don't know.
+
+What was the question? ?
+
+No, it was canvas.
+
+Like, being a student, does our library participate in the beat?
+
+Oh.
+
+I haven't heard anything about it, and I do work at the library, so.
+
+Okay.
+
+So I know our public library was.
+
+I went and got a library card after many years, and I think it's probably inspired.
+
+But yeah, they have, if you want to get a popular book, you have to get on a waiting list because they're only allowed to, they treat it like a physical coffee.
+
+Yeah.
+
+Okay, coffee.
+
+So have an ISPN, whatever, I don't need any other information for it.
+
+Well, we're trying to get the quantity of the book, so we obviously need a field for the quantity.
+
+That's not important for relating anything, but that is important for the data that we want to measure.
+
+Right.
+
+So do we want to put it, just a number of copies here?
+
+Or do you want an entry per copy?
+
+I think we want an extra copy because we need to know who we lent out the books to.
+
+Yeah, true.
+
+Yeah, so we also need, yeah, like patrons.
+
+Which will have an ID.
+
+And, like, and then, like, a bar of lendings or something like that.
+
+Yeah.
+
+How about condition?
+
+So, accumulation?
+
+Um...
+
+We could probably put that in the coffee station.
+
+Yeah, there's lots where we could go very far.
+
+So, uh, this is probably enough tables.
+
+Yeah.
+
+For us to just kind of work in the model.
+
+So, let's see.
+
+Um, I mean, we could, we could factor out and have, like, humans, like, the authors and they can be patrons.
+
+What's the difference between an author and a patron?
+
+Sometimes they overlap, but no...
+
+Right, but author, maybe people should just be a table.
+
+Yeah, I guess...
+
+Although, like, 3 miles a library card here, probably.
+
+I don't know.
+
+So that's something we might think about.
+
+Well, patrons, we care about their address for tax purposes, right?
+
+Yeah.
+
+We're a local library.
+
+We're going to...
+
+Yeah, we could actually need their address.
+
+It's true.
+
+It's require that.
+
+Um, I don't know if any birthday or not, but...
+
+That's not just like a measure.
+
+Reins?
+
+I don't know if that's PG-13 and...
+
+This is like a little...
+
+Yeah, so there's lots of other information, though, because yeah, we'll have it, right?
+
+Was this a bestseller, unmedadated?
+
+Again, we want to keep it recently impacted here.
+
+So let's just kind of talk about which relations we have.
+
+So patrons, so like a lending, whatever we're gonna have here, is connecting the boxes on these.
+
+All right, that was definitely the author books is a joining of authors and books.
+
+The same suggests.
+
+I'm gonna go lending to copies and...
+
+It was all very len.
+
+Yeah, do we have any thing that would cross over here?
+
+Is this strictly a...
+
+I guess we could probably go straight from lending to book, but like...
+
+But isn't this something actively checked out right now?
+
+Yeah.
+
+It needs to be a specific copy of their claim.
+
+Now, and bear in mind, right, we still have full access to the book.
+
+It's not like having tables between them is restricting it somehow.
+
+Don't confuse, my query is longer from the data is, like, very or inaccessible.
+
+So, let's see, landings would probably have like a, beneath the ice.
+
+ISPN, ISPN.
+
+Probably have just like, I don't know, a number.
+
+Like library ID or something?
+
+Copy number or something?
+
+Um, Like, uh...
+
+I don't know, I...
+
+Well, it's like local ID number, and one how many copies they have or something?
+
+Probably.
+
+Yeah, something like that.
+
+And then maybe we number feels like a really generic, right?
+
+So lending is going to refer to the ISPN and its number.
+
+Yeah, I can say copy number or something, I guess. Number.
+
+Um, and so then relate to the patron, so we...
+
+Library card?
+
+Here, again, we probably want to have an ID or a card number, maybe.
+
+Yeah, what's your new names?
+
+Card gnome.
+
+So over here we need a card now.
+
+All right, so then you're related to the patron, something related to the copy.
+
+So this is essentially a join table, right?
+
+Landing.
+
+Is there any data associated with lending?
+
+With a specific parent or patriot to coffee?
+
+It's gonna be like a due date, right?
+
+Yeah, that's a good thing.
+
+And then we wouldn't start the source of...
+
+Patrons could probably have, like, a charge, like, their balance in case they've gone nice because they are open.
+
+Try to find...
+
+Yeah.
+
+Uh...
+
+Balance, maybe...
+
+It's fine now. Fine balance.
+
+Delicate balance.
+
+Okay.
+
+Um...
+
+Of course.
+
+Of course, that is right where the projector's gonna come on.
+
+Uh, let me just see.
+
+Are your employees' table?
+
+Uh...
+
+Not really relevant.
+
+Oh, dear.
+
+Oh, we did, really good.
+
+Oh.
+
+You really, really.
+
+They're just volunteers anyway.
+
+We don't need to try.
+
+We need more cables also for like CDs and like other things in London.
+
+Well, those are good storage in the book.
+
+They are books.
+
+The book is just this abstract idea.
+
+This is why...
+
+Books aren't real.
+
+They're just an extraction.
+
+Okay. Same life in the room.
+
+No one's ever seen an actual book.
+
+Right?
+
+This is just...
+
+Just an idea.
+
+2026.
+
+Have you even seen a book this old?
+
+Actually not real.
+
+Okay, so let's make a schema for this.
+
+You need like an EDF?
+
+Maybe.
+
+Um..
+
+Where do we start?
+
+I'm gonna leave that stuff there 'cause we don't have it written anywhere else.
+
+Wait, so you're writing all that down, basically, Pat.
+
+Steve, there.
+
+So it's probably easier to see.
+
+So I'm gonna write down, I'm gonna do a create statement.
+
+So I'm gonna create table.
+
+Let's start with books.
+
+Yeah, we start with...
+
+It's the most abstract.
+
+I like books as kind of the center of the library.
+
+I don't know.
+
+Is it better to have it plural or singular for a table name?
+
+I mean, they think they're different conventions.
+
+I usually do the plural kind of thing.
+
+So select something from books.
+
+I feel like it reads more naturally, usually.
+
+Um, Ruby on Rails, right?
+
+A web framework, um, that was really important a while ago. And uses the ideas from it in a lot of other more modern systems, but it had some unholy amount of code for, like, automatically pluralizing and equalizing.
+
+They have these kind of magic database methods where you'd say, oh, yeah, I won a book.
+
+And so say, okay, the table's got to be called books.
+
+And then it would, like, generate, you know, variables for your field. Called book. Or books, if it was an array of books.
+
+But they then put in all this stuff so it would be like correct language if it wasn't just a matter of adding mass.
+
+And it was kind of, I think it was Ruby on rails.
+
+It was their active record system.
+
+It was a little overkill, I think, as well.
+
+We should bring that back.
+
+Post grass at it.
+
+I was just to automate the process, right?
+
+Okay, so for book, we had, let's start with title.
+
+Actually, let's start with our primary key.
+
+ISPN.
+
+And it's what, a text field.
+
+It's like a giant number, right?
+
+Yeah, wasn't the text.
+
+I'm gonna say it's the primary key.
+
+Although we do know how many characters are in it, right?
+
+They're like a...
+
+I mean, they're two different.
+
+There is the ISPN 9 and ISPN.
+
+That was running out, so they made a new one.
+
+All the listings, they were supposed to transition over to a new system, but it seems like they keep handing out the old ones too, so most books have.
+
+At least in America, seem to have 2 ISPN numbers.
+
+So we need to have two SPNs.
+
+We're gonna keep it simple.
+
+Uh, title?
+
+Uh, I'm gonna say not Noll.
+
+I can say we're not gonna allow untitled books.
+
+And if you do, it's gonna, you're gonna have to put something for this.
+
+What we do, a publication date?
+
+Yeah, and that's gonna be strange, because that can also include characters.
+
+Um, and there are, so a lot of databases will have specific date types.
+
+Sequel light really only has, uh, integers, text, blobs, there's a binary large object, just arbitrary binary data, uh, sea lobs, or clobs are all, it's a character large object.
+
+And I think maybe there's like one other type.
+
+It doesn't have much.
+
+Oh, it has reels.
+
+When it actually stores thing on, things on disk, there's only like a couple of things.
+
+So everything else is like alias to those.
+
+It does have a one for date or date times, but, um, I think it just aliases to like an integer. An UNIX time stamp or you can do it as a.
+
+So we'll do text.
+
+The text, uh.. Not no.
+
+Are we requiring a publication date?
+
+Well, I feel like...
+
+Do we also have to put on multiple of...
+
+Yeah, might not be known, right?
+
+Yeah.
+
+If we're not known, we just say the beginning of the universe.
+
+Probably, no, it would be better to leave at Null, right?
+
+Actually, model it correctly rather than what we want to avoid is those magic not values that don't actually need anything, right?
+
+1970s.
+
+I don't want to say it was published in 6000 BC as the proxy for the beginning of time or 10000000 BC or whatever. Source you want to reach for.
+
+Yeah, we'd rather just leave it unknown and say, yeah, we don't know who wrote or when the Iliad was written.
+
+Maybe we do approximately.
+
+I don't know.
+
+Uh, when, uh, what's the.. Code of Hammurabi or something like that, you know?
+
+Rosetta Stone.
+
+Oh, really?
+
+Is that a book or not really?
+
+It's a British library.
+
+Sorry, in the British Museum.
+
+Yeah.
+
+I've been there before.
+
+Pup date, what else do we have?
+
+Genre.
+
+Oh, yeah, genre, we could probably stand to normalize as well.
+
+Is there always a single genre?
+
+No, there's not. Not.
+
+They all have multiple genres.
+
+Maybe a lot of kids.
+
+So should we Just leave it off for the time being.
+
+How about that?
+
+Okay, well, I can use the structures and sequel, right?
+
+Like data structures.
+
+Uh, not if you're normalizing.
+
+Yeah.
+
+We use relational, uh, modeling.
+
+Yeah, that's true.
+
+What's next?
+
+Let's go author books.
+
+So let's do author, and then we'll link them.
+
+Authors.
+
+So, we're gonna have, like, an author ID'd recide.
+
+Yeah.
+
+Human ID number.
+
+Oh, human ID.
+
+DNA hash.
+
+Well, just call it ID.
+
+An hash wouldn't work for twins, though. Identical.
+
+That's true.
+
+And it's your primary key.
+
+Then you would need, like, the birth minute or something to disambiguous.
+
+What if they were both, like, born really quick within the same minute?
+
+That poor mother.
+
+I know.
+
+I've got other issues.
+
+Um, okay, uh, name?
+
+Text, not Noll.
+
+What about something anonymous or unknown author?
+
+Well, do we just put no authors, I guess?
+
+No.
+
+No, I just don't include the book in the natal, but that's the case.
+
+If we don't know, the author is unknown.
+
+I think we just don't.
+
+No, but then we would have an ID for it, so we just wouldn't have an author listed.
+
+Yeah.
+
+So we just don't.
+
+So we just omit it rather than link it to something representing the unknown author.
+
+Yeah.
+
+So I think, yeah, we'll say a name is required.
+
+Again, we don't have to successfully model the whole universe necessarily.
+
+So let's make an atom stable.
+
+Her birth date...
+
+And we already did, decided to just text for, and that's not all I was gonna be known.
+
+Yeah.
+
+Yeah.
+
+That makes sense.
+
+So now let's link them.
+
+Book authors, or do I call it author books?
+
+Uh...
+
+I like book authors sounds.. Reads more naturally.
+
+Yeah.
+
+So what does it have?
+
+Well, it has the author ID in the eyes.
+
+Just the things to link them.
+
+So the ISPN, so that's text, not null.
+
+Yeah.
+
+Right?
+
+That's external P, right?
+
+Yeah, that's gonna be a foreign key, so we'll add that in a second.
+
+And then we're linking it to an author ID, which is integer, not null.
+
+Yep.
+
+And then for a constraint, let's see.
+
+We could say our primary key consists of the ISBN and the author ID.
+
+Yeah.
+
+That should uniquely, right?
+
+Somebody's not an author multiple times for a book.
+
+Yeah.
+
+That should let us uniquely identify a record.
+
+Foreign key.
+
+Yeah.
+
+Um...
+
+Looks like the ISPN.
+
+But remember the syntax?
+
+No, I wasn't here two classes ago.
+
+Did we go over that two classes ago?
+
+Syntax for...
+
+Maybe?
+
+Yeah, I think so.
+
+I think we looked at it.
+
+I wouldn't say went over exactly.
+
+So foreign key, um, our field ISBN references, And, uh, that's the books table.
+
+Bookstore, I have been, or...?
+
+Oh, sorry, this needs to be in parentheses.
+
+Because it could be multiple fields, right?
+
+Yeah.
+
+And so we can do it, we can be complete.
+
+Um, where it's the same name, we could leave it off if we wanted to.
+
+Or he author ID, references, authors, and the ID field.
+
+So we have different names. How we do that.
+
+Um, now for...
+
+Ah, well, never mind.
+
+And then what's next?
+
+Well, now we have two parades and table for the copies and landings and patrons.
+
+We have a lot more teams that we have to create.
+
+Great. Create a cable.
+
+Yeah, maybe we can create a genre able to...
+
+Oh, we just deleted genres and that made it easier.
+
+Well, you know, I actually...
+
+But a genre table actually wouldn't make sense. A genre.
+
+Because then we can just like get up to the...
+
+Yeah, I think it really should be a table, right?
+
+Um, if we're gonna do genres.
+
+Yeah.
+
+Yeah.
+
+Uh, create table copies.
+
+What do we have for copies?
+
+Just the.. You know, the ISPN.
+
+So tax, not null.
+
+And maybe we should have an index for the number of copies that offer them currently available to that could increase and decrease.
+
+I think that would make sense.
+
+Now, here, if we make this a primary key, that will also enforce uniqueness.
+
+Right?
+
+We need to make sure, we don't necessarily, the copy numbs won't necessarily be from one, and, you know, increasing with no gaps, 'cause copies will be pulled out of circulation, and we're not gonna renumber the old ones.
+
+Um, and we've got some foreign keys.
+
+ISPN, references, books.
+
+I'll be complete.
+
+Um...
+
+Four and key, copy numb.
+
+No it's not a foreign key, sorry.
+
+And then we had patrons.
+
+And here we had a.. Card...
+
+Number?
+
+And that's probably it is your primary key?
+
+Yep.
+
+So something, again, in sequel light, saying integer primary key automatically taps into the, it will generate keys for you behavior.
+
+So if you just insert something and omit that element, having declared it an integer primary key, it will actually does some other magic stuff too, but, um, talk about that more later.
+
+Um, name?
+
+Name?
+
+Text, not Noel.
+
+And I think we said, like, address is gonna be required.
+
+Do we want to break game up until, like, first name last name?
+
+Nah.
+
+Let's keep it something.
+
+We could make households and things too, but...
+
+But, yeah, I don't have to, just because we can do it, doesn't mean we have to.
+
+Um, we gotta, I guess, no other constraints on that one.
+
+Blood height.
+
+Yeah, we could, we could do that, though, be useless information, but yeah.
+
+Oh, no, we had balance.
+
+We need to know.
+
+Oh, yeah.
+
+I'm gonna call it fine balance.
+
+So it's...
+
+Double precision or whatever?
+
+Could do real.
+
+Yeah.
+
+Oh, no, they're all slightly honest.
+
+Yeah.
+
+We made a one that's too long.
+
+I always underestimate how far I need to tab things. My schema.
+
+See, is the plural of schema, would it be scamata?
+
+Or schemas?
+
+Schema.
+
+Let me, uh, let me look that up.
+
+Excuse me.
+
+We have to, yeah.
+
+Skammy.
+
+No.
+
+Invert the...
+
+So, for lending, we need a card number, represent the patron, and did you not know?
+
+Yeah, it is Gamada.
+
+It's good for tomorrow.
+
+We need a copy, so we need an ISPN.. Text, not null.
+
+And we need a copy numb.
+
+Integer, not null.
+
+And we need a due date.
+
+And I think we decided to store those as text fields.
+
+And then we had, like, let's see, a primary key here.
+
+Would be the card number plus the ISBN, plus the copy number.
+
+I think.
+
+Mm hmm.
+
+And we'd have a couple foreign keys, um, card number, references, patrons.
+
+Foreign key, uh...
+
+ISPN, and.. Copy numb.
+
+References, copies, the same two fields.
+
+All right, is that everything we had written?
+
+I think that is.
+
+Can I erase the board now?
+
+And, you know, we are gonna be...
+
+I really hate having today's first text, but when I can't order by, I actually, For our dates.
+
+Yeah.
+
+That's why you store them in UTC or sorry, UTFAs?
+
+No, what's this?
+
+ISO, uh, date format.
+
+What is it?
+
+ISO 8601.
+
+ISO 8601, huh?
+
+Which is...
+
+Oops, ah, why are we doing that?
+
+Um, so you always do the fully 4 digit year, followed by the 2 digit month, followed by the date, then tea and the timestamp with hours, 2 digit hour, 2 digit minute, 2 digit second.
+
+And then a time zone.
+
+So Z, yeah, so Z, if it's an UTC, but all of that, you still store that as a string, it looks like.
+
+Yes, but then it's collates naturally.
+
+Oh, there you go, that makes sorts.
+
+Yeah.
+
+And that's a big reason to use that.
+
+If you're only doing a date, you just, you know, stop early, but...
+
+Um...
+
+So, before class, I, well, I'll have to explain a few things here.
+
+Gemini won't hide.
+
+So I went to Gemini and asked him to make a diet.
+
+It was getting suggestions here and said, Oh, show me a diagram.
+
+Um...
+
+It's a good way to view this without revealing the other thing on the page here.
+
+Okay, so here's its first attempt.
+
+Interesting.
+
+Why does the house go to patron tables?
+
+Oh, yeah, that is...
+
+Yeah, it's like, the world revolves around a physical copy here, and like authors come from there, and they're not related directly to titles. Title author connects to the patron, 2 patron tables, right?
+
+So it was like, no, that's not very good.
+
+So I said, make me a schema, like just find that, and then, you know, it explains how good it, what a great job it did and why everything was so awesome.
+
+And then came up with this version, which is.. A little better.
+
+A little better.
+
+This is, um, titled.. Title.
+
+Is it?
+
+It's a...
+
+Is better?
+
+It doesn't really...
+
+It's so good.
+
+It's still really kind of doesn't make a lot of sense.
+
+Yeah, it doesn't make sense at all.
+
+Well, I mean, we have ice cream.
+
+Yeah.
+
+But we don't have any more.
+
+So what did they do?
+
+I love physical hobbies, they did a, I like the therapy ID.
+
+Idol ID that as well.
+
+What is what is that letter?
+
+They split it under the 1st name, last name.
+
+I was on.
+
+A-I-T-L-E. Patrons have a title ID.
+
+I'm using underscore somewhere times in the library.
+
+Yeah.
+
+So this was maybe not a great effort either.
+
+Authors would not have an ISPN.
+
+That's another 20.
+
+Yeah, so it's maybe not that great at it.
+
+Wait, what is that one?
+
+Loans?
+
+So that would be like lendings, yeah.
+
+Oh, what we call lendings.
+
+It's probably, I guess it is a wedding, but it doesn't really sound right because a loan is usually when.. Lowering out the book.
+
+No, that's that's the term. Like, pain for it or anything like that.
+
+You don't have libraries are free.
+
+Does loan suggest...
+
+Well, loan suggests that you're paying you're getting a loan for something and then you're paying...
+
+No, no, no.
+
+Loan is a very generic verb.
+
+I'll loan you this, you know, I'll loan you a book.
+
+Okay. Lend a book or you, I don't know, but, um...
+
+Okay.
+
+This almost push it off the page now, but, um...
+
+So I was playing around with this in this account, too.
+
+So here's my latest headshot.
+
+College takes headshots, offers them every year, so I use that in my profile.
+
+Oh, that's a change.
+
+Sorry?
+
+What did they even change compared to the original photo?
+
+Oh, this is the original.
+
+Yeah, yeah, but photo.
+
+It just output the same original photo back.
+
+No, I changed it.
+
+What did that do?
+
+Yeah, I'm not sure what that one was.
+
+I don't remember the problem.
+
+That's not what I was looking for.
+
+But I decided I would ask it, give me a detailed description of this that I could hand to a sketch artist.
+
+And then I took that description and fed it back, and it came up with this.
+
+That's not even you.
+
+Yeah, that's not even you anymore.
+
+Yeah.
+
+Oh, it's like some...
+
+It's like your twin.
+
+But again, it was just from a textual description of me it generated.
+
+Like, okay, um, I think I had it.
+
+Did I do it?
+
+Evil?
+
+And then I said, give it more of a sketch.
+
+And what were the other ones I came up with?
+
+So I had to just do a charcoal drawing of the original picture.
+
+That was a little better, at least, sort of looks like me.
+
+Yeah.
+
+Um..
+
+I don't even remember where some of these came from.
+
+But.. Yeah.
+
+Anyway, so that's why those are there.
+
+And I can't seem to, like, push them off.
+
+I can't.
+
+I think the targets at the bottom would, like...
+
+So I was looking for...
+
+It's all random stuff.
+
+Um, this is when I wanted to, um, I think it was, so it says risk five.
+
+I was telling you to draw me an architectural diagram of a risk 5 data path, and that is not what that is.
+
+But I did tell it to make it like as a hedge maze.
+
+And so we've got that part.
+
+See, but it said, draw a high level risk 5 data path, but it's an aerial view of a corn maze with people and animals walking and running around it.
+
+I thought that would be fun for some reason.
+
+So I got the corn maze part, but yeah, it's not a very impressive architectural diagram.
+
+So anyway, those don't, apparently there's no way to like get this off the screen.
+
+So, I thought I would.. Explain it instead.
+
+Um...
+
+Oh, and then if any of you were in operating systems?
+
+Yeah.
+
+I had to draw the baboons crossing the ravine.
+
+Um...
+
+Now, that's the photo realistic one.
+
+Yeah, that looks like a photo.
+
+I should have told it to be gritty, like, a movie prequel or something, I like.
+
+Like a modern movie about, like, a kids' game.
+
+They should have one of them fall.
+
+One of them being, like, eaten by the alligator crocodile. Blood everywhere.
+
+Wow.
+
+Be a bloody kinky.
+
+Okay, so, let's, um, let's get a new chat going.
+
+So I want to take, let's take this diagram, we'll see, let it, or sorry, the schema.
+
+Um, If I make it small enough so I can get it all on screen at once, then I can just grab it in a single.. Copy?
+
+You know, in other programs, you can do control A. Yeah, this is a terminal I'm here, so...
+
+So if I come over here, let's say, um.. Yeah Let's see.
+
+Uh, I'm working on a schema for a simple library system, as a class demo.
+
+How am I doing?
+
+This is a solid star.
+
+Oh, good.
+
+Good.
+
+Love those words of afternoon.
+
+How's the approval?
+
+Apparently identified in many better relationships between books and authors, and you can handle physical copy logic.
+
+Better than many beers do.
+
+Oh, it doesn't know that you have...
+
+I'm happy.
+
+Go off on it, start to start from board.
+
+Good stuff, good primary keys, right?
+
+Areas for improving the trailing comma.
+
+Oh, I love to print, trailing comma.
+
+That's what shows your beginning.
+
+Data types for dates, lending limitations.
+
+This means a patron can only ever borrow a specific copy once in their entire life.
+
+Oh, so that would be, yeah, I guess, if you're not deleting the entrance, if you're keeping a historical record, that would be true.
+
+So, let's see, keeping this schema as, is, draw me, uh, uh, what do they call them?
+
+Um...
+
+Italian?
+
+Yes.
+
+But a specific kind.
+
+Um, it's a...
+
+There's a.. Architectural...
+
+No, there's a specific name they use.
+
+There's actually a.. Some specific rules for how the arrow is going and things.
+
+Oh, okay.
+
+And I mostly just, what do they call, database, diagram, what are they called, um...
+
+Let's see.
+
+Just thought it would pop up on here really quick.
+
+Energy relational.
+
+Um...
+
+What is the name of the kind of diagram often?
+
+Used for database schemas.
+
+Now it's, um...
+
+There's a different kind.
+
+It is really fixed on that one choice, though.
+
+That's how we get relational.
+
+UML.
+
+Mm, mm.
+
+Wow. Right.
+
+Well, we'll do the ER diagram.
+
+That is faithful to my schema.
+
+Just, just to clarify.
+
+See how it does this time.
+
+Just tell introd lose me.
+
+Yeah.
+
+Well, a lot of problems actually do exactly that.
+
+Not sure how.
+
+Why is it going through rushes?
+
+That's still not.
+
+And now lending some patriots, these are like, they're disconnected.
+
+Yeah, this is okay.
+
+Who's gonna be better at this?
+
+Dippity vibe.
+
+You just have to ask for UML, obviously.
+
+Oh, Claude, I think I have to log in.
+
+Um, they don't give you a free one, right?
+
+Now, let's go wild card.
+
+Oh, oh, oh, you got lost now?
+
+No, Croc Croc's actually pretty decent for some things.
+
+No, I agree.
+
+Even though I got in trouble, do you prefer some, like, porn that it was very something?
+
+I'll be sure not to ask it, though.
+
+Could be bad.
+
+My mom must be, like, got suit for it.
+
+No, I'm just saying.
+
+Where'd it go?
+
+Okay.
+
+Gave me a.. An ASCIR diagram.
+
+Wow.
+
+Something.
+
+Okay, so let's look.
+
+Maybe it's not super good at ASCI art.
+
+These aren't mine.
+
+Most of them are pretty good, and then it kind of, like, loses track of where it was.
+
+Let me just say, visually, that is a mess.
+
+You better?
+
+Ah, okay, so now Mermaid is a source format.
+
+You can write it out and then use a tool to generate.
+
+There it is, so...
+
+So now let's see.
+
+Does it look like it's?
+
+Offers, book offers, written by.
+
+Oh, it's labeled the relationship here.
+
+That's nice.
+
+So a book has a copy, which is lent as a landing, borrows.
+
+Um...
+
+Okay, let's see.
+
+Right, um...
+
+Let's see.
+
+Generate some test data for me.
+
+Use real books, um, and authors.
+
+And give me...
+
+Real people.
+
+Makeup patrons and addresses.
+
+Et cetera.
+
+And give me, let's see, at least 20 books, 10 patrons.
+
+Now, let's see.
+
+Give me. 100 rows or so of data.
+
+So let's fix the problems here.
+
+What did it say?
+
+We were missing a, we had a trailing comma.
+
+Yes, here.
+
+That's how it was kind of tricky.
+
+So, yeah, it can't end with a comma.
+
+And so it's one of those that's like, yeah, you have to make, if you have constraints, then the last field needs the common, if you don't, it doesn't.
+
+To create that database, I can say sequelite, I'm just gonna call it like books.db.
+
+So that will create it if it didn't exist.
+
+And then I can just pipe the input from schema.sequel and it'll be as though I was typing that rapidly there.
+
+Oh, we've got another error, schema, near line two.
+
+Oh, it wants, that's right, because I'm giving it a series of statements in one go through the tool.
+
+Remember we said the tool checks for a trailing for a semicolon to know it's supposed to do something.
+
+So I could leave it off the last when I'm gonna put it there for symmetry.
+
+Just make sure I didn't have any straight data before, but...
+
+And now, from in here, I can say dot tables, schema, tracks, and it keeps the exact string that I initially typed in.
+
+Oh, wow, this is still going.
+
+It's fighting real SBNs.
+
+I should totally just make one.
+
+So it's, like, looking them up.
+
+Well, I don't know, Lisa's doing a detail analysis.
+
+This is my argument for use of AI.
+
+Somebody else is paying for it.
+
+Aren't we all paying for it?
+
+Yeah.
+
+Yeah, but like Oh, there it goes.
+
+Okay.
+
+Now, there's some books.
+
+Michael Mary Finn, Jane Eyre, Moby Dick.
+
+I kind of wondered if it would focus on out of copyright books.
+
+No, we've got the Hobbit.
+
+Is that the only book still in copyright?
+
+You got David Copperton?
+
+When is the scarlet letter?
+
+Oh, Lord is ancient.
+
+Yeah, that's what it is. 1850 now.
+
+So it's right around what, where, like, 1920s, 1930 or something like that.
+
+I think it's a cutoff now.
+
+But Willie just got...
+
+I did a couple a year or two ago.
+
+Yes, the first, the 1st Nancy Drew book, I think, went into public domain this year, and anyway, several others.
+
+So.
+
+And oh boy, who knows what's going on there?
+
+We got some people living in any town USA.
+
+Very popular.
+
+I guess that's where the city's located, this library.
+
+Oh, any town?
+
+Any town.
+
+Do we have any town in any city?
+
+No, it's all a new town, okay?
+
+I just remember that.
+
+So is that just, like, a?
+
+Is that, like, a placeholder it's putting?
+
+Yeah.
+
+Because I told her to make up the people.
+
+I don't want this.
+
+That'd be kind of creepy.
+
+Go look up some real people locally, and, um...
+
+That might be illegal too, you know.
+
+Validation value.
+
+Now we'll see how good it is.
+
+Uh, sequel light, books.
+
+Oh, whoops, I left the comment at the top.
+
+Classic era there.
+
+Um...
+
+That's like handing in your book report with, Okay, here's a summary of the book written from me with your voice, you know?
+
+Okay, we'll start from scratch here.
+
+Okay.
+
+Um...
+
+Select, count...
+
+Oops, count of.. One from books.
+
+We got 20 books.
+
+Authors, 15 authors, patrons, 20 of those.
+
+Okay.
+
+That's pretty good.
+
+So, let's query it.
+
+Yeah.
+
+Let's go back to our.. Table that was, I have, one that worked.
+
+So what should we look for?
+
+Let's find like patrons.
+
+Let's go, let's just do the fold. Go all the way to authors.
+
+What are the authors this patron is currently reading?
+
+Who are the authors?
+
+Yeah, this one, yeah.
+
+Um...
+
+I'm gonna put this in an editor.
+
+Select.
+
+See, and again, this is the kind of the wrong place to start with a query.
+
+It's like, I don't know what I want yet.
+
+From...
+
+So what are we going from?
+
+Well, we're going from the authors.
+
+So let's start with Patron.
+
+From patrons.
+
+Join authors, lending...
+
+Baker and lending...
+
+Okay, no, authors is not connected to patriots.
+
+We have to go to lending, to copy the book.
+
+We should have to go all the way through, right?
+
+So can we natural join all the way across?
+
+No, we can't.
+
+No, because we decided to.. Authors, just ID instead of offering.
+
+But I can natural join this 1st part.
+
+Natural, join, lending.
+
+And then for copies, I think I can natural join there.
+
+Yeah, we can actually run all the way up to book authors, you know, just not from...
+
+Kind of troll, join, copies.
+
+Natural join.
+
+Book.
+
+Sure, join.. Books.
+
+And then, sorry, where do we have to stop?
+
+Author, 'cause their IDs, yeah, author ID, yeah.
+
+So we have to do an area one for that one.
+
+It's a natural jewelry.
+
+Oh, yeah, we can do a natural joy, right?
+
+Join.
+
+Tell me so we couldn't do it.
+
+Not for...
+
+Oh, I see what you are.
+
+Join authors.
+
+Using on.. We can't use using On authors.id. Equals book.
+
+Actually, we can just can omit the name, really.
+
+Um, equals author ID.
+
+Right?
+
+Because it's natural joining, there's only one column there.
+
+Yeah.
+
+Let's start with that much.
+
+Select star.
+
+Yeah, uh, well, select.
+
+So, let's see, name.
+
+Ooh, we should do group I authors.
+
+Wait.
+
+Oh, we have a couple names.
+
+We have patron names.
+
+Who the author bunny?
+
+So let's start by selecting patron.name, patrons.name.
+
+I'm author. Name as author name. Author name.
+
+And we'll do this as, as patron name.
+
+Let's try doing this.
+
+Let's see.
+
+Can't remember if I got this set up right, but...
+
+Not good.
+
+Um, authors.
+
+Wait, where did it complain?
+
+Uh, right at the beginning, you have an author value.
+
+Oh, and the select part.
+
+Oops.
+
+Oh, I have to go.
+
+This way. Authors.name.
+
+Yeah, that looks good.
+
+So do we have any duplicates where we could do a group by, and you can see a difference?
+
+Yep.
+
+Charles Dickens?
+
+Okay, Olivia Parker is reading two Robert Lewis Stevenson books.
+
+So, we could take this, and we could say, group by, um, authors.name.
+
+Oh, we have to do patrons.name, too.
+
+Why?
+
+Why do we...
+
+Why do I have to group by both of them, even though I actually just want to...
+
+I really wanted a group by patron's name.
+
+I guess.
+
+Um...
+
+I guess I would want to naturally do both.
+
+Yeah.
+
+Anyway, grouping by those two things.
+
+When those two things are the same, combine all the records, give me one representative, one back.
+
+And those are the two fields we're selecting as well.
+
+So that works.
+
+So now, Olivia Park, her Robert Lewis Stevenson, and then we might, um, that also gives us a nice option to, um, on account of one, as, um, count.
+
+So we can see that, too.
+
+So you can count whatever you want.
+
+So count, you have to give it a parameter and write it's going to count all the instances of it.
+
+I usually just tell it, For each record inside that group, make a one and then count how many ones there were.
+
+People often do count star, but there's kind of no reason.
+
+There are actually some systems that are slower, they will select the entire row and count it.
+
+So I always learn to just do count one, but, um...
+
+That's our time, so I guess we'll stop there, but many questions from this.
+
+So, I kind of wanted to just, you know, take something all the way through and make sure we had some of these things a little more concrete.
+
+We don't talk too much about GUI yet, and we're going into that in a little more detail, and there's lots of details, too. That's kind of this really big one that we haven't talked about much at, you know, So we'll go into it a bit more detail this time.
+
+But till then, have a good time.
+
+Have a good weekend.
+
+Yeah, thank you. 

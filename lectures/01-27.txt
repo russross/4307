@@ -1,0 +1,1285 @@
+Welcome, everyone, on today's lecture, on, it's a tutorial on mining data frames and boom filter, and it is one of the very fascinating and modern area of computer science and data engineering, and probably many of you are already using this application without moving.
+
+So I will give some practical examples so you understand what is mining data stream, what is pool filter, Why do you need it, why it is not given like that?
+
+But before that, I will give a very, very high level overview about me, because all of a sudden you just saw one random person came as an intruder, came in your classroom, and started lecturing.
+
+So probably it's better to get to know them a little bit, right?
+
+So, um, I used to be just like one of you, a student a few months back and last month I graduated. With my PhD in information size.
+
+Thank you for this look.
+
+Thanks so much.
+
+It was hard.
+
+So I did my PhD in information science from University of Export, and right now, if you're aware of the Pittsburgh weather, it's pretty bad.
+
+I really, really, really like here right now.
+
+Oh, none of you would like to visit Pittsburgh. Pretty bad.
+
+Um, I did my BD information science, but before that, most of my background is similar to you.
+
+I did my undergrad in computer science and engineering.
+
+I did my master's, same information technology, worked very brief period of time in a software engineering job at Congress and technology.
+
+And also interned inside the security project and formula.
+
+And, um, everything that I did, uh, my my long-term goal was to become a teacher and that's the reason I'm here today.
+
+But, um, okay, that's that's all about me.
+
+So if you have any more questions about me or if you have any interest to know, how to get into research or any career advice, if you need, or anything that you would like to discuss, we can do that after the after 20 days visitation.
+
+And I will also share my email, so it just doesn't have to be restricted into this lecture.
+
+So you can always feel free to reach out to me, any kind of question, academic question, not get a related question that you do have, right?
+
+Okay.
+
+So before we dive in, um, Let me give a picture of, um, why this topic matters so much in today's world.
+
+Um, Think about the sheer volume of uh, data that gets generated um, every single 2nd.
+
+Google process over around, um, 10 p per, uh, 6 search query.
+
+That's me.
+
+Okay.
+
+Um...
+
+What about you, but...?
+
+Yeah, actually, there is an audio.
+
+Okay, sure, sure.
+
+No, no.
+
+That doesn't affect my mics, does it?
+
+No.
+
+No.
+
+That's just the overcoats.
+
+Okay, good.
+
+Cool.
+
+So, Google process over around 10, 24, 6, it's around one lax.
+
+Such query per 2nd.
+
+And Twitter sees hundreds and thousands of tweets.
+
+Again, flying through its server per minute.
+
+And financial market generate 1000000000s of transactions daily, for example, if you just Google right now and let's say if you just want to check, you know, stock prices of Coca-Cola.
+
+You will see there is a quiet fluctuations in that.
+
+And this is, for example, from financial market, but similarly, IOT sensor around the world are producing streams of data continuously.
+
+From temperature, reading in, hello, temperature reading in smart homes, to GPS coordinate for 1000000s of vacants.
+
+Now, the fundamental challenges, um, in traditional data systems, you know, um, how much data you would like to store.
+
+What data will remain there for which period of time and what data you would like to pull out from that?
+
+So the challenges in traditional database is quite predefined.
+
+So how many of you have uh, uh, are enrolled in database course or have you have already taken database courses?
+
+I'm just trying to get to know, okay, you want to know?
+
+This is a database.
+
+Oh, this is...
+
+Sorry.
+
+This is a database class and this is the start of the series.
+
+So my understanding is that It's pretty new to all of you still, right?
+
+But you have a very basically a idea of what it is, why you need, eat, water, eat, supplication, right?
+
+Um, Here, um, in traditional literalises, uh, you know everything, that what will be stored uh, over and you'd like to uh, retrieve that exact drunk.
+
+But what happens when the volume is so massive that storing everything inside that single database is not feasible.
+
+It's just terabytes and terabytes of data are coming per second, right?
+
+So, this is where stream processing comes in.
+
+Stream processing represents a parodic shift in how we think about data.
+
+Instead of store fast query later approach, Here, the main approach is process now or lose flavor.
+
+So, data here, instrument processing, flows like a reform.
+
+And we need to extract value from it as it flows by.
+
+Often, with a single glance at each of the elements.
+
+And over this next few minutes, we will explore simple algorithms, but in a high level, that computer scientists have developed to handle this specific challenge that I just mentioned.
+
+Um, In today's lecture, into this detrial, I will cover sampling technique that work on specifically for strays.
+
+I will discuss bloom winter for membership tasting.
+
+I will discuss flagellant Martin algorithm for counting distinct element, and DGI and algorithm for counting in sliding window.
+
+And what really makes this algorithm romantic is that, they actually this seemingly impossible, and they give us useful answers while using only a tiny fraction of the memory that will be needed.
+
+So, they do this by accepting a small amount of implacation that trading exactness for practicality.
+
+And in future, we will see these trade-off, which is just not acceptable, but often exactly world, what these real world applications need.
+
+Yeah.
+
+Are you remembering to?
+
+Yeah, yeah, yeah.
+
+No, no, I...
+
+Okay, just.
+
+Just making sure that...
+
+Yeah.
+
+Yeah.
+
+So, I put around 3 minutes per slide.
+
+Okay, yeah, I have only...
+
+You're totally fine.
+
+Yeah.
+
+Shit.
+
+So, let me explain the fundamental difference between traditional database processing and stream processing.
+
+Because understanding this distinction is crucial about everything that will follow this flight.
+
+In traditional database management system, we have what they call comfortable model, right?
+
+Of data processing, data arise, we stored it all the days, get later, perhaps hour days, or even months later, we query it, depending on what specific query we have or what specific questions we'd like to serve.
+
+Um, We can scan the data multiple times, access any record randomly, and we are guaranteed to get exact answer to our query in case of relational data basis.
+
+And this is a model that most of you will learn in your data courses, but in more depth.
+
+And it really works well when data fits and fits in the memory and when we have time.
+
+Stream processing turns this model completely differently.
+
+So, suppose, suppose, um, play, like I suppose even you are standing by your reefer, right, and streams of leaves are flowing.
+
+So you kind of go upstring to find the leaves that already you have missed, right?
+
+So you have to catch them at that moment.
+
+Similar concept happens in stream processing.
+
+The data that you are planning to capture, you cannot, you know, the data that has already flown it cannot get access to that, right?
+
+Um, So, Let me make this concrete with some example.
+
+For example, network router in a data center might see 1000000s of packets per second.
+
+So we are, we are using our internet where tactics are coming and that's why you are, you are getting access to these pages, right?
+
+But packets that have, I mean, if you want to analyze that package from that network, then you have to capture that package and restore that and therefore you can analyze it.
+
+You cannot get the packet, which is already you have lost.
+
+Right.
+
+So even if we could write that fast to disk, which we can't, we'd fill up a terabyte of drive inmates.
+
+For example, a satellite might transmit terabytes of image data per day.
+
+Social media platform receive 100s of 1000000 post-part day.
+
+And this constraint that we cannot store everything forces us into a different mindset altogether.
+
+We must process data incrementally, updating our state as and when each element arrives, and we typically get only a single pass through the data, as I mentioned, just a few minutes back.
+
+And most importantly, we must accept that our answer will often be approximate, rather than the 8 set film.
+
+That's that's very important point.
+
+The value will be mostly, most cases, approximate.
+
+So, here the key inside that I wanted to take away is that approximate answers are not a compromise or a failure.
+
+They are often exactly what we need.
+
+For example, suppose one example, when we paralytic systems, report that approximately 2300000 unique visitors are there in that website, plus or minus next 2%.
+
+That's perfectly actionable for business decision.
+
+Nobody needs to know the account, who has visited, what are their behaviors like that.
+
+That's a different problem altogether.
+
+So, Example of the slide, for example, network traffic monitoring, Twitter, training topics, artisans, data, are high frequency training.
+
+They all involve data rates that make traditional processing impossible.
+
+And uh, these are the specific domains where stream algorithm is um, uh, really suitable.
+
+Now I will be discussing sampling from stream because already I mentioned that when the data has already passed, you cannot get access to that.
+
+But how you can gain a snap of the snapshot of the data, right?
+
+Um, so here, the something technique is very, very useful.
+
+And this is software, our 1st lines of defense are when dealing with data calling that exceed our processing capacity.
+
+We can't analyze everything.
+
+We just need a representative sample for analysis purposes.
+
+Sampling seems straightforward at 1st glance, you gain around, let's say, 10% of the sample, you just flip a coin, hate, um, with a protein versus problem of hate, and kill daily mate, if you get head, um, like that, I mean, you can have your own sampling technique, uh, and depending on that, you can get the data right.
+
+But it tells us that stream sampling is more subtle than it 1st appeared.
+
+The challenge isn't just, how do I randomly select aimment?
+
+It's how do I randomly select elements in a way that preserve the property that I actually cared about?
+
+So that that's a very important point.
+
+How do I randomly select animates in a way that preserve the property that I care about?
+
+And there are two fundamentally different approaches to sampling from streams, and choosing the wrong one can give you completely, completely misleading results.
+
+That's why something is very important here.
+
+The difference is so important that, I mean, real systems could even produce incorrect analytics and many sophisticated engineers cannot often determine why that error happened.
+
+But often there are maybe not because of the code, but because the way they have they have chosen the sampling technique.
+
+So, the first type of sampling is called elementary sampling, or knave random sampling.
+
+For each element that arrives in the stream, we independently decide whether to include it in the sample or not.
+
+So this is a slide, so I'll change it soon.
+
+And um, the 2nd approach is uh, key based or hash-based uh, sampling.
+
+Instead of making an independent decision for each of the element, We make a decision based on some of the key attribute of that element.
+
+For example, if you are sampling such query, we might sample based on user ID.
+
+And all queries from a sample user go into our sample.
+
+No queries from the non-sampled user really considered when we will be, you know, doing our analysis.
+
+Um, Differences may not be clear right now, but there are consequences are quite different depending upon which sampling method you are choosing.
+
+So I have a quick question, so as I mentioned, there are still something, technique, one is rather sampling, another one is, uh, uh, sorry, one is element where something, another one is uh, hash risk sampling.
+
+So I'm just curious, are all of your familiar with hashing technique?
+
+Right, right.
+
+Then maybe he is there for you to understand this concept.
+
+So, um, let me make the sampling problem concrete with a career scenario here that illustrates exactly what aspect can go wrong here.
+
+So, imagine you are working at a searching chain, and you want to analyze use and behavior from the uh, streams of queries that comes in right.
+
+And, um, each recording your screen has a 3 specific fit.
+
+User ID, aquaritext, and a timestamp.
+
+Your goal is to understand how users interact with the such, how many queries the issue, whether they repeat searches, how their behavior changes over time, etc.
+
+So it's basically a wave and it is to know better your users.
+
+You decide you want to have 10 person sample of that data, because that's all your analysis infrastructure can handle, right?
+
+They name the approach will be to sample queries uniformly, at random, for each query that arrives.
+
+Flea Papa is gone, and keep it with 10%, quality, or something like that.
+
+Now, consider a specific user who makes 10 queries.
+
+With partware sampling, you would expect to keep about one of the query.
+
+But here's the crucial problem.
+
+You can no longer compute par user statistic accurately if you adopt that 1st thinking of something.
+
+Suppose we want to know what's the average number of where is spa user?
+
+If you needly count queries in a sample, like dividing number of users you see, it would give roughly around one query per user.
+
+But the true answer will be 10 query per user here.
+
+So it is not just incorrect, but it is wrong by a factor of taint.
+
+And imagine when there will be ins of data, how much impact it could have.
+
+So it will just get worse with the large standard size.
+
+Now, suppose you want to know what fraction of users repeat at least one query.
+
+In the full data, maybe 30% of the user issue the same query twice at some point.
+
+But in your in your nave sample, the probability of capturing both occurrences of a repeated query is only about one percent.
+
+And that's around 10% times 10%.
+
+So it considered that almost nobody remains square, right?
+
+When you really, nearly, I mean, a 3rd of these are actually did repeat that query.
+
+So, The useful solution here will be, um, probably all of you have already um, inferred that it will be hash with something here.
+
+So instead of randomly sampling queries, we will randomly sample user.
+
+We will hash each user ID to a number between 0 to 9.
+
+If the hash is 0, we will keep all that in the square, if it's between one to 9, we will keep none of their queries.
+
+So just a quick question.
+
+So, here, why, um, We have should be between fallow, 0 to 9.
+
+When you mod it, it's the remainder, so it'll always be constrained to be between 0 and 10 and then.
+
+So, I'm basically, they're obtaining so, that's why you don't know, right?
+
+Yes.
+
+So, the key inside here is that hash the something, preserves, part key relationship.
+
+The same user ID always produces the same hash well.
+
+So their data stays together.
+
+And when your analysis debends on relationship between elements that share a key, During that time, this hash risk, something will be very, very useful.
+
+No.
+
+It has come to this another most, um, elegant and wide used data structure that can be designed, which is called bloom filter.
+
+It has been named after Barton Howard Bloom, who has invented it in 1970.
+
+And Bloompainter has become very, very fundamental Constantine modern systems engineering.
+
+Don't it is salts, a decentively simple problem.
+
+Given a set of S elements, we want to answer membership query.
+
+Is element X is available itself is?
+
+That's it.
+
+Does A saw no answer, they provide?
+
+So with traditional data structure, we store the elements in a hash table or balance tree to gain the answer, right?
+
+If the element is there, we just indicate that is, that element is present.
+
+And if it's not there, we say no.
+
+Simple, exact and accurate, right?
+
+But what if we have 1000000000s of elements?
+
+A billion, email address to check against a spam white list.
+
+A billion even is that webcrawler has already visited.
+
+So storing this billion stream takes around many gigabytes of memory.
+
+And, um, That's are often not available in RAM and also, um, in real stream processing, uh, terabytes of data car.
+
+So it, it, it's really very, very uh, inefficient storage wise.
+
+Room filter offers a beta trade-off.
+
+So you're using dramatically less space than storing the actual elements, it can actually answer membership query with a very small probability of error.
+
+And that's the crucial property, um, which makes blue filter very special.
+
+What's that?
+
+We call it one sided error.
+
+When a blue painter say that an element is not in the same, not available in the state, it means, I mean, it is absolutely certain.
+
+There is no possibility that that specific element will be available.
+
+But there are no false negatives.
+
+If the blue filters say no, you can trust that answer completely.
+
+But when the bloom filters say, as an element is in the sense, it is insane, it might be wrong.
+
+So this is called false positive.
+
+And the field I might say is probably the same, maybe element actually isn't there.
+
+So we get definitely not, or probably is.
+
+Never are definitely AS or probably not.
+
+So for many applications, these as yeah, this asymmetry is exactly what we actually need.
+
+For example, if we are taking whether an email center is on a white list, a false positive means occasionally letting through an email that we will check more carefully.
+
+And that's often acceptable.
+
+It's a beat of the extra work, but a false negative would mean rejecting legitimate image.
+
+And that often unaccertainly.
+
+So this pattern where false negatives are catastrophic, but false positives are mainly inconvenient.
+
+It, it, uh, it appears many times in reenverse specific, uh, systems.
+
+And that's exactly where gloom filter is very, very useful.
+
+Do you have any questions?
+
+Good check.
+
+This doesn't use a lot in, like, medical world, right?
+
+When they're, like, diagnosing people, they'd rather have more people, like, be false positives than, like, things.
+
+He is.
+
+It's basically, I mean, what percentage of area you can?
+
+I, you know, I mean, uh, you can accent or not.
+
+Yeah, it's like that.
+
+Yes.
+
+So, now provide you with another example where these blue filter is really valuable.
+
+So you can see exactly why these data structure is in school in practice.
+
+For example, you are again, suppose you're dealing as fan filter for a really large email provider.
+
+You have a list of 1000000000 known code email address.
+
+Addresses that have been verified as legitimate incentives.
+
+Um, This might include addresses from cardboard partner and versus that user, some explicitly widely state, addresses that have passed various, you know, verification change over many years like that.
+
+So it's a really validated good list that you have.
+
+So when an email arrives, your system needs to make a quick decision.
+
+Is the sender on our good list or not?
+
+If yes, the, I mean, immediately it will deliver the email to your normal email box, right?
+
+But it will, if no, it will run a costly spam analysis, content standing, machine learning classified, reputation take, and so on.
+
+Why costly?
+
+Because we are really not only talking about 10 or 20 emails, but real world scenario where Sarah has lots and lots of 1000000000s of penals.
+
+So the challenge is that spam analysis is actually competitionally very, very expensive.
+
+You might receive millions of events per hour, and running this full spare analysis on every single email would require enormous computing resources.
+
+But if you can quickly determine that a center is already trusted, um, it can probably skip that expensive analysis for a large fraction of electronic, right?
+
+So, here's the storage problem. 1000000000 email address, with an average length of around, let's say, 20 bytes, each require at least 20 gigabytes. Just for raw ad restraint.
+
+And again, if one of them just include their overhead of hashtable, pointer, load faster, and many, many, as makes, you knowing how they have already already.
+
+Allowed that.
+
+So, you're actually looking at 30 to 40 GD of memory.
+
+And that's more ram than many males that are actually, um, many males of abaline, right?
+
+So you go, you go, uh, store this data on disk and look up its center.
+
+But these taxes will be very slow for large amounts of data.
+
+A 1000000s of people per hour, you spend all your time waiting for the discio instead of actually processing an email, right?
+
+So, Here, you're gonna use a roomprint temple.
+
+With a properly configured group, we'll die, we'll replace those 1000000 addresses is about one gigabyte of memory.
+
+Roughly 8 bits per address, with only, you know, one% of 1st positive rate.
+
+And one gigabyte fits comfortably in RAM in almost any summer.
+
+And we do not have to actually worry about the specific number one person, the 2 person.
+
+It is mostly for, you know, represented, for example, I'm just trying to give it to so that you understand its concept.
+
+So, um, What does this one person false positive rate mean in practice?
+
+It means that about one% of unknown senders will incorrectly be treated as if they are only good list.
+
+The email bypass the spam filter and go directly to user's inbox.
+
+That's not ideal, but that's something marriaging.
+
+Most of the one person probably isn't span anyway.
+
+Right.
+
+The benefit is enormous.
+
+We have reduced memory storage by a factor of, you know, 30 or more.
+
+An eliminated disk I owe entirely.
+
+And now can process 1000000s of looks up per 2nd.
+
+And that's this power of accepting a small fraction of imbrac- imbracision in exchange for massive efficiency gain that is possible with this blue filter.
+
+How many minutes are left?
+
+About about 20, 25 Okay.
+
+Um, So...
+
+So, now let's look at how a bloom filter actually works internally.
+
+So the structure is very simple and um, Here are many 3 components are there.
+
+For example, 1st one is a beat array of N-base.
+
+This is just a sequence of 0s and ones, nothing fancy.
+
+And initially here, all baits will be set as zero.
+
+And this area is the only storage the boom picker actually uses.
+
+This is why it's so space efficient.
+
+We do not need any additional storage for storing anything.
+
+We are actually not storing the actual element.
+
+Um, just this beach area that will be story.
+
+And second, we will have a collection of K independent hash function.
+
+So when you learned about hashing, hashtable, you know, has function, right?
+
+So here also people be using K independent hash function.
+
+Each hash function takes an element and maps it in position in this bitter.
+
+A number that ranges from 0 to A minus one and here Aim is, For us, it is states.
+
+That's why it is ranging from 0 to 9, right?
+
+Here, this has function should be independent and uniformly distributed.
+
+Meaning, each function is equally likely to map in any element to any position.
+
+There is no favoritism in terms of, okay, this specific hash, hash function should be placed in, you know, it is a spy, or it is 9, not like that.
+
+They all have equal probability of getting testing either of them.
+
+And the 3rd properties, the same is of aim elements we want to represent.
+
+We never actually stored this elements.
+
+We just use them to configure this B tab.
+
+To add an element to the bloom filter, we compute all K hash function for that element.
+
+Giving us K beat position.
+
+We just said, all these, all K of the spades took one.
+
+That's it.
+
+The element gets arid.
+
+Is it getting confusing on it?
+
+It's a new, right?
+
+I mean, Are you on board, all of them?
+
+Okay.
+
+So, um, to check, um, If an element isn't the same, the compute the same K hash function, getting K beat position.
+
+We didn't check if all K of these bits are one.
+
+If even one of them is zero, we know for certain that the element was never added.
+
+So, you know, in the last slide dimension that in Bloomfield, there will move information that the element is never there, it means it is 100% sure that the element is not there.
+
+But if it mentioned that there is a chance that the element is there, there is a probability that that answer may be incorrect.
+
+In any case, why?
+
+Because you're familiar with Hashu, right?
+
+In any case, why?
+
+When we are when we are indicating that there is certainty that that element won't be there.
+
+During that time, that element will not be there.
+
+We are 100% guaranteed with that.
+
+And during that time, the value will be zero.
+
+But my question is, um, in blue winter, white happens that, When the value is one, why we cannot certainly say that actually that value is there.
+
+Yeah, is good.
+
+So is the spot we're checking could have been filled with previous value, right?
+
+Previous, any any different has hash function could have made that part of that.
+
+That's correct.
+
+You're also going to sell that one?
+
+Okay, that is good.
+
+Good.
+
+So...
+
+The probability of this happening, um, falls positive that depends on how full the beat area is.
+
+And the more elements that we, um, add, the more bits gets set to one.
+
+And more likely, a random element will happen to hash to positions that are all worn.
+
+This is why we need to size the BTA appropriately for the number of elements that we expect to store.
+
+Now I will be showing one example of this question.
+
+So, um, here let me explain one, um, more carefully about why uh, false, positive occur, and uh, why they are unavertable in uh, blue filter.
+
+Um, Understanding this specific um, specific concept will help you reason about when Blue filter are appropriate for your specific applications, a specific need, right?
+
+So, when we insert an element into a broom filter, We said, K bates to one.
+
+One for each hash function.
+
+The element itself is not stored anywhere.
+
+We can't enumerate what's in the filter or retrieve elements from it.
+
+All we have done is flipping some of the wins, right?
+
+So now, suppose, we query and element that was neighborhood inside it.
+
+We compute K has position and check if they are all one or not.
+
+And for each of the position, there are 2 possibilities, right?
+
+Either that bit will be 0, meaning they can definitely say that the element is not in the same, or that it will be one, meaning some previously inserted element happen to hash that position as as he mentioned in the class.
+
+So if we get unlucky and all gay positions happen to be won, even though they were saved by different elements.
+
+Not by your query element, we will incorrectly conclude that our query element is in the set, and that's a false positive.
+
+That's something we don't want, right?
+
+So, The insight here is that Bloom filter don't belong to any particular element.
+
+When we say beach number 42, we are not recording, element X is here.
+
+We are just sitting, beat 42.
+
+Later, we'll be very limited why and fine, that we 42 is said, we don't know if it was saved by why or by some other element.
+
+This ambiguity is the source of this false positive.
+
+Um...
+
+So...
+
+If we, if we put an element that was inserted, the cave, it said during the insertion, are all set.
+
+It's in the broom filter that are never cleared.
+
+So all key positions will definitely be won, and we will correctly conclude, the element is recent.
+
+So, this asymmetry that falls positive is possible, falls negatives impossible.
+
+It works, it is, the specific characteristics is world, makes move it just suitable for applications.
+
+Where missing a true member is unacceptable, but occasionally accepting a non-member is okay.
+
+Are we all on board?
+
+Um...
+
+Yeah, you, uh, this concept is important, but showing so many, you know, words and zeros and everything, it's, it's pretty boring.
+
+I mean, when I was reading, it was boring too, so please bear me with, we will get to the fun part, the end, the key takeaways, uh, actually, what it will, you know, remember because in class it happened, um, when many concepts, Professor tart, I used to forget most of the things, but the key takeaways, I I at least tried to do.
+
+So I also suggest to you all of you to go through that and probably many of you are learning this for the 1st time, it will get easier when you.
+
+So revise this concert from the chapter, right?
+
+Um, So, Here, another example of inserting multiple elements into a boom built-in.
+
+Um, This will help you visualize how the data rate fills up and why coalition leads to false positive.
+
+Suppose we have a small room filter, we just take beds, number 0 to 9, and we are using 3 hash function.
+
+Initially, all beats were zero.
+
+We forced inside the element kept, right?
+
+Our three hash function, compute position as 158 for kept.
+
+These sets which 158 to one.
+
+The now this area looks like 0100010010, right?
+
+Now we will be inserting another one.
+
+It is called Doc.
+
+And the hash function compete would position 056 for dog.
+
+We send beats to 05 and 6 to 1.
+
+Notice that big 5 was already one for the inserting gap, right?
+
+So we are setting into one again, we changes nothing.
+
+We now, the area looks like that, 11, 0, 0, 11, 0, like that.
+
+So, this overlap at position 5 is called collision.
+
+You have most of you have already learned that concept of condition before.
+
+So it's nothing new.
+
+So, um, this is another interesting aspect.
+
+I would like to mention that it even computer science and data science lends a beauty, that many times the concept that it will be learning probably in a different name, in a different context, for different applications.
+
+Most of the fundamental concept, probably you have already learned in other courses.
+
+And you can use that concept and that's one of the aspects you can also use in your own research, the concept that you're learning now, probably in any problem that you will be solving, you just have to think through that, how you can apply this concept.
+
+Solve a new problem while you exploring a new data as a, right?
+
+Anyway, now come to this example.
+
+So, this overlap at position 5 is because of the collision.
+
+Um, it's not a problem for correctness, both cat and dog still will be found correctly.
+
+But it illustrates how different elements can um, share the same big position.
+
+Now, let us suppose a query and element.
+
+If we query CAT, We compute position 15 and 8.
+
+All three bates are here, sent to one.
+
+So, we correctly conclude that cat is innocent.
+
+And if we query dog, we compute position 05 and 6.
+
+All 3 are one.
+
+So we correctly find duck.
+
+But what about rat?
+
+Which we never inserted?
+
+Suppose, right here, hashes to position one, five, and six.
+
+And looking at our array, P1, it was saved by cat.
+
+Beat 5 is one, it was saved by care and dog.
+
+And we'd seeks this against it by one.
+
+It was said by a 6 is one, and it was saved by dog.
+
+So all these positions are now won.
+
+We incorrectly conclude that RAD is inicent, but this is false positive.
+
+Um, this 1st positive workout because that happened to hash the position that were coincidentally safe by other elements.
+
+And as we will move on and add more animates, more dates will get changed to one.
+
+And the probability of such coincidental matches will increase.
+
+This is why false positive rate debates on the field ratio of the area.
+
+If too many bits are won, almost any query will find all its position set.
+
+We need to size the array large enough that most weeks remain zero.
+
+Keeping collisions rare, right?
+
+How many minutes are in the time?
+
+Um, five, but it's doesn't have to be exactly...
+
+Okay, okay.
+
+So I can move over them.
+
+Okay, sure, sure, sure.
+
+Uh huh.
+
+Um...
+
+No, let me, uh, walk through the query processing detail, emphasizing the, uh, logic that guaranteed no false negatives, while aligning false positive.
+
+So, when we query a bloom fit, then the chick, it eliminates X isn't set, we perform the following step.
+
+So what are the steps?
+
+Step one is, compute all K, hash values for X. If we have 3 hash function, we get 3B position.
+
+If we have 10 hash function, we will get tape position.
+
+And these are the same hash function used during insertion.
+
+So if it was inserted, we will compute the same position here.
+
+What is this estate, too?
+
+Check if all those positions contain one or no?
+
+And this is one of the very important steps here.
+
+We need every single position to be won, not just some of them.
+
+And step 3 is, if any position contains zero, we will return, definitely not innocent.
+
+And this is our current date, uh, answer, as I mentioned before.
+
+But if position eye contains 0, then no inserted element, A for hashtag position I, use in the hash function.
+
+That gave us I for X. Since X would have set position I, if it had been inserted and position I is 0, X was definitely was not in such a thing.
+
+And the state 4 is, if all positions contain one, then return, probably use it.
+
+This is where uncertainty comes.
+
+All K positions are one. Which is consistent with eggs having been inserted.
+
+But those weights might have been saved by other elements, as I mentioned before, in the collision, right?
+
+So we can't really tell the difference here.
+
+Now let me emphasize why false negatives are impossible.
+
+Suppose X was genuinely inserted into the field, and during insertion, we computed, K positions and set all of them to one.
+
+Those beats remain one forever.
+
+Standard blue filter generally never clears any bit.
+
+When we query eggs, we will find all key position, which will be still set to one.
+
+And we will correctly conclude that X is actually available to be sent.
+
+The guarantee is absolute.
+
+In the filter says, not in the set.
+
+The element is definitely not in the center.
+
+This makes room filter perfect as a 1st pass filter.
+
+We can use room filter to quickly reject non-members, and only 2 extensive exact lookups for the elements that actually pass the glow filter.
+
+For example, um, in a database, um, we might use a Bloom filter to check if the record might, um, exist before doing a disk lookup.
+
+If the bloom filter says no, we have saved costly disk eye operation.
+
+But if it says um, probably ES, then we will be doing the lookout.
+
+And the occasional false positive just means an unnecessary disk book up happened. Which is inconvenient but not encouraged.
+
+So, now analyze another, uh, false positive rate, mathematically.
+
+Understanding this will help you properly size from winter for your application.
+
+So we have free parameter here.
+
+A is the size of the B direct.
+
+A is the number of elements that we likely insert and case the number of hash function.
+
+Our goal will be to understand the probability of a false positive as a function of this parameter.
+
+We will use a model called Darts and Target, and think of each hash commodition as throwing it out, um, at a board with end position.
+
+When we insert elements using K hash function, each with 4K times aimed down total.
+
+So, the probability that a specific weight remains 0 after all the insertion can be calculated as follows.
+
+For example, each dog has one by in probability of eating any specific target.
+
+The probability of missing a specific target with wonders will be one minus P, right?
+
+So here P means one by N.
+
+And we put the key in dirts, the probability of all of them missing the target will be one minus, one by 8 to the power KM.
+
+I know it's a bit difficult to understand from this, but um, It would be easier with time.
+
+And using mathematical approximation that one minus one by 8 to the power A approaches one by E for large A, this probability simplifies to into the power minus K a by A. So that this whole fraction of which remains 0 and the rest, one minus, I mean, the rest of the base will become one.
+
+Generally, um, Generally for probably assignment purposes, you need to know all this for formula, but I mean, just to understand the concept is this specific formula and everything, at least I do not enjoy it.
+
+So you took that escape too.
+
+Yeah, there are lots of owners.
+
+I think we can skip it.
+
+So, now I will be discussing founding distinct element.
+
+So for counting distinct element, um, um, the algorithm is called the flagellate burden algorithm.
+
+The old idea is based on this observation.
+
+For example, if we hash elements uniformly to random binary stream, the more distinct element we see, the more diverse our hash values up.
+
+And more likely, we will be able to see some unusual pattern.
+
+The specific unusual pattern that we track is, uh, for example, framing zero.
+
+How many zeros appear at the end of the hash trial?
+
+And think about it.
+
+If we hash the random 64 bit number, about half all that values end in zero, right?
+
+And about quarter in in 00, about 8 will end in, you know, triple 0.
+
+And so on.
+
+So each additional training 0 is half as likely as the previous.
+
+So, here's the algorithm.
+
+For each element in the stream, compute its hash value and count the trailing zero.
+
+Keep track of hour, the maximum number of frailing zeros that we have seen across all the elements.
+
+And an estimate for the number of distinct element will be 2 to the power R.
+
+Um, Why does this make sense, right?
+
+If you've already seen aim distinct element, we have computed actually aim, hash value.
+
+Are you following?
+
+Why it happened?
+
+Because of um, aim different hash values that they are used, right?
+
+Is it clear?
+
+Okay.
+
+Um, if art is the maximum training zeros we have seen, that means at least one element had our training skills.
+
+This suggests that aim is somewhere around 2 to the car, R, hands are estimate.
+
+The intusion is that R acts like a logarithmic rule for M. When aim doubles, we expect to see one more trailing 0 that becomes achievable.
+
+When aim is around 16, we would expect to see 4 trading zeros, right?
+
+When aim is around one and two, four, we expect to stay around 10, treading 0, why?
+
+Because, for example, you're familiar with bullion logic, right?
+
+All of you?
+
+Okay, tell it a good game.
+
+Um, That's how we actually store one integer, R.
+
+No matter how many distinct elements we see, we are storing the same amount of data.
+
+A single byte could track are up to 255.
+
+Which would represent up to 2 to about 255 distinct element, which is far more than the actually encounter in real practice.
+
+Ultimately, discuss this one.
+
+For example, this is one of the examples of this algorithm, flatolet martin algorithm.
+
+Suppose our strength contains the elimate allies, Bob, Carol, Dave.
+
+And let's say our hash function produces the following reasons.
+
+For example, let's say Hash of analysis 10110100 in binary, right?
+
+And looking at the right end, we see 100, which ends with 2 0.
+
+So Alice has still length of two.
+
+Hashabob is 1101, and after that, we have 40 binaries.
+
+So right in this, one followed by 40.
+
+Which ends with 4 zeros.
+
+So Bob has a tail length of four.
+
+Similarly, hash of canal is 010-110110 in binary, as in right, L is, that ends with one 0.
+
+Um, so tail length here is one.
+
+Why one?
+
+Because we have only one 0FD, right?
+
+And hash or Davies, um, almost all the ones, followed by 30 in binary.
+
+So the right end portion is one followed by 3 zero.
+
+So it physically tail length is three.
+
+So our maximum tail length are is the maximum of 2413, which is for August 4.
+
+Therefore, our estimate of distinct counties, it will be 2 to the power four.
+
+Remember, we mentioned ingredients light to the bar.
+
+So that's where it will be 16 for hours.
+
+So we only have 4 distinct elements, but our estimate is 16.
+
+That's off by a factor of four.
+
+So what went wrong here?
+
+Nothing went wrong.
+
+This is the inherent variants of this algorithm.
+
+Both happen to hatch to a value with an unusually long tail of 4 zeros.
+
+Which has actually inflated our estimate.
+
+So, if warm had hashed to something, we said, let's say, 2 trailing zeros.
+
+So what maximum value of art have been three?
+
+Are you all following?
+
+Okay.
+
+Good.
+
+And during the time, our estimate would be 2 to the about three, which is eight.
+
+Still off, but actually still closer to four, right?
+
+So, this variance is fundamental limitation of using a single ash function.
+
+Sometimes we get lucky and see longer tales than expected, but sometimes we get unlucky and we miss them.
+
+The estimates can only be power of two.
+
+So we can never get exactly food, even if that's that's the true bound.
+
+Um, So what will be the possible solution here?
+
+Any guess?
+
+Anygas?
+
+No, it is.
+
+So, one of the possible solutions will be to use many hash function, right?
+
+Instead of just only one hash function and using that for all the gates, but we can, we can use.
+
+If it has function. And combine their estimates.
+
+So, the basic of this flagolant Martin algorithm has high barriers.
+
+Meaning, its estimate can be quite far from the true count.
+
+So let us understand why and how we can fix it.
+
+So 1st notice that estimates can only be power of two, right?
+
+One, two, 40, 16, 32, also, and so forth.
+
+If the true count is 400, We will never estimate actually 400.
+
+We will get something around either 2 V 6 or 5 or 2 or something closer to the power of two.
+
+This disparatization error is unavoidable in a single hash function.
+
+So secondly, the estimate is very sensitive to outlier.
+
+If one animate happens to hash to a value with an unusually long tail, our jumps up and our estimate doubles squad rubles and like that.
+
+And this sensitivity makes single hash function estimates unreliable.
+
+That's why we need multiple hash function.
+
+Um, There is a 3rd reason too, and perhaps surprise into the expected value of due to the power R, which is actually invited.
+
+Very large status of art which is rare, but it's possible, right?
+
+So, the way R will be very hard, R will be very large.
+
+The values of tooth, they will army really large, and It will actually contribute to the expectation divergence.
+
+And this means that simple averaging of multiple estimates own converge to the true value.
+
+Outlier will always dominate here.
+
+So, the solution combined, averaging and medians, in a sophisticated way.
+
+So we will be following a few states.
+
+For example, we will use mini hash function.
+
+Instead of one hash function, maybe use 64 or even 100 or mini mini hash function.
+
+We each tracking needs own maximum art, we divide the hash function into groups.
+
+We might have 64 hash function divided into 8 groups of 8 each.
+
+Third stiff would be within each group, we can compute the average of the 2 to per argadoos, and these average can be any near level, not just the power of 2.
+
+Which helps with the despotization of this problem.
+
+And the state 4 will be, take the medium of the group average.
+
+The medium is often robust to outlier.
+
+So, even if some groups have inflated averages due to unlikely health pollution, they may be an often remains still.
+
+So, in a specific example, in this life, for example, we have 12 hash function, in 3 groups of four.
+
+Group one gives estimates of eight, 16, 32, and four, averaging to 15.
+
+Group 2 games, 16, 16, 8, and 8, averaging to 12.
+
+And here group 3 caves, four, eight, 16, and 16, and averaging to 11.
+
+The median of 15, 12, and 11 is actually 12 here.
+
+So, that's our final estimate.
+
+It's a real number, not restricted to power of two.
+
+And it's robust to the outly value of 32 in group one, right?
+
+So modern algorithm like hyperlobula refines this approach farther and achieves about one to 2% of error.
+
+With just kilobytes of memory, regardless of whether there are 1000s or 1000000000s of distinct elements or otherwise.
+
+Um, I will be skimming fuel slide because many of them are just, I mean, you know, mostly formulas.
+
+And we're kind of out of time now too.
+
+We're out of time now.
+
+Oh, did Daddy?
+
+Yeah, yeah.
+
+Yeah, very close.
+
+Yeah, so I actually be just going through the key tagos, particularly.
+
+And yeah.
+
+So, um, This is important part.
+
+So, um, it is 5 concert absolutely present.
+
+The code of what we should remember about string boxing.
+
+The 1st is that the stream data model.
+
+Data adds too fast into great volume to store entirely, and we must process the element as they flow by using one mus algorithm that updates state incrementally.
+
+And this construct that we can't go back, fundamentally shapes how we design stream algorithm.
+
+Second one is a hash base something that we discussed thoroughly.
+
+When we need a representative sample of stream, we should sample based on key, not individual element.
+
+By hashing keys to determine illusion, we ensure that all elements are sharing, a key are either all included or all excluded, right?
+
+And this preserves the party relationship that would be destroyed by any nave, you know, element to element, random something, which we made sure earlier when we started this presentation.
+
+Hard we discussed blue filter.
+
+Um, This is one very elegant data structure that actually helps us with saving space, and it actually enables space efficient, same membership testing.
+
+A bloom filter can actually tail us definitely when an element is not in a state and probabilistically, when it might be in the state.
+
+So by accepting a very small, false, positive rate, we achieve traumatic space setting, often tained to, you know, 20% compared to story the actual limits.
+
+And 4th one is, uh, the flatolate martin algorithm.
+
+We can count distinct element using constant memory by tracking rare events specifically.
+
+Specifically, we will recommend hash values with many trading zoos.
+
+The more distinct element we see, the more likely we are to observe the longer train, and by using multiple hash function with groups and mediums, we will gain some reliable estimate with minimum space.
+
+So these are I haven't discussed DGIL, so you don't have to worry about that.
+
+So these are 4 aspect about blue page I we have discussed.
+
+And, um, I think there is a pretty good book that Rain has suggested me of women.
+
+I recommend that book to all of you to go further and study that.
+
+Um, just try to remember the application.
+
+That's what matter.
+
+I generally keep on forgetting all formulas.
+
+So, uh, feel free to ask me any questions and uh, I will be easily accessible at my email, kudeli.shy, at the repeat.telu.
+
+Just feel free to reach out in time if you have any questions.
+
+Just make sure that, okay, we meet here, then I will meet you.
+
+Yeah.
+
+Thank you. 

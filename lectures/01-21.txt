@@ -1,0 +1,1867 @@
+This is a real...
+
+I never really...
+
+All right, welcome, everyone.
+
+I'm so sure.
+
+Does anybody have any questions?
+
+Like surrounding the homework, for example, the simple queries on the demographic data.
+
+Any questions you want to bring up?
+
+I don't have any questions Yeah, well, I like to hear that.
+
+Um...
+
+I think I had some questions about some conceptual things from last class.
+
+Uh, sure.
+
+Um, okay, so, from last class, um, I wanted to, uh, ask a question about what we mentioned about the difference between flat files and relational databases, and their, um, overall benefits and, um, down bowls.
+
+Yeah.
+
+Because we mentioned most of these points in flat files are pretty straightforward, it makes sense.
+
+But the points that I was confused about is when we're talking about data integrity.
+
+Yeah.
+
+I've got pictures of your slides from last time.
+
+Um, and a lot of these points seem to be problems that the relational database can have itself.
+
+Like, for example, as the artist's name, it's spelled consistently.
+
+Wouldn't a relational database have a problem, or couldn't it have that problem, too?
+
+That doesn't seem to be, uh, a problem with the, um, file versus the relational database.
+
+That just seems to be a problem with how the inputs are being, basically, the data is being inputted.
+
+Sure.
+
+So I was a little bit confused as to why that, because you mentioned that in the next slide, that database relational databases do implement rules, but some of these...
+
+So let's address that one.
+
+So the key difference there is, in the flat file example, right, the single CSV file, which is kind of what people start with or.
+
+So, if we look at, like, the, you know, music albums, and you have, like, a bunch of albums, you know, prolific artists, you know, somebody, like, you two that has, like, you know, 100 albums or whatever.
+
+Each record would have the band name.
+
+Now, it's hard to misspell you, too.
+
+But somebody could do it, I'm sure, right?
+
+And you could have it applied and consistently, that's the hazard.
+
+Now, the reason that's not an issue in a relational database, and this assumes the relational database is actually normalized.
+
+Yeah.
+
+Which we'll talk more about.
+
+But it's not susceptible to that problem, because there's only one record for the band, and then every album links to that single record.
+
+So you're guaranteed to be consistent, 'cause it's just one place, and then a relationship rule between them.
+
+And so it's part of the, it's not just that the, um, you know, if you just take what you did in a flat file and store it in a relational database, you're not gonna get that benefit.
+
+But if you actually normalize the data and make it a relational database, then that is one of the things.
+
+That problem goes away because you avoid one of the kind of main rules of normalization is to get rid of redundancy in the data.
+
+And so, then, you could still have it misspelled, but it's misspelled consistently and across all records.
+
+It's only one.
+
+So we define a normalization.
+
+Are we defining it in the, uh, terms of statistics, like, with Z score and Min Maxine to change scale, but not change scale shape?
+
+No, uh, normalization in uh, has a specific, uh, communing for relational database.
+
+They're actually normal forms.
+
+We're not actually talking about, like, Z scores or min max scaling or anything.
+
+No, no, normalization is a more broad term.
+
+So there's some specific terms in mathematical domains, but this is not that.
+
+Okay, so...
+
+Yeah, all right.
+
+That was confusing to me when I heard the term normalization, I'm thinking.
+
+Yeah. With what I've learned in math.
+
+Yeah, and so and again, that would be a specific form of normalization in a specific context.
+
+But, yeah, one that has to do with scaling, not with...
+
+Yeah, so like linear algebra, right?
+
+You normalize things a lot.
+
+Yeah.
+
+Orthonormal basis factors, that's about all I remember from linear algebra.
+
+Um...
+
+The term in a vague sense of what it means.
+
+I think I could maybe even define it if I thought about it for a while, but...
+
+I was 19, that was the mid '90s, I think, last time I took a math class.
+
+Last time you took a math class?
+
+Mm hmm.
+
+You were 19?
+
+No, in the '90s.
+
+Oh, in the '90s, '90s.
+
+And, yes, well, I turned 19 while I was taking that class.
+
+So it's been a little while.
+
+What is that?
+
+Is that pretty hard, right?
+
+I was at Harvard. My freshman year now.
+
+What math class was it?
+
+So I took two, um, my 1st, so it was, well, it was 21 A, and B, math 21 A, and B. Remember that as well?
+
+It's multivariable calculus and then linear algebra.
+
+And they require that as a prereference.
+
+They do offer, offer it, yeah.
+
+It's math one.
+
+Calc, one A, and one B is, uh, Calc, 2, basically.
+
+It's like a foundation.
+
+Yeah, it's a little demeaning, right?
+
+If you need pre-calculus, which are the joke, because that's for the football players, Actually, my friend was a GA for that, and it was mostly true, most of her students were football players, but if you need pre-calculus, you don't even get a number.
+
+That was math X. They got math XA and XB was like pre-calculus and that was...
+
+As far about, how did she go?
+
+Um, actually, let's start with, not with that.
+
+I'm gonna take some slides here from a textbook.
+
+Um...
+
+From a textbook?
+
+Yeah, from database systems concept.
+
+Um, it's one of the standard good textbooks.
+
+It's huge, though, and goes into way too much detail and doesn't emphasize the things I want to.
+
+So, I don't actually recommend buying it, but, um, we're gonna take some material from it.
+
+Database systems concept, so...
+
+Yeah, seventh edition or something like that.
+
+It's been around forever.
+
+Um...
+
+So, we're gonna go, so here's the outline, right?
+
+We won't go through all this today, but I want to go through at least some of it, which is, again, some of this kind of foundational structure of databases, and then we'll get into a few more details of the schema and defined keys and stuff like that.
+
+And hopefully, you know, maybe even get to relational algebra.
+
+I know if we'll get there today.
+
+So, we're gonna use, so this uses an example of kind of a university database, and we'll stick to that example.
+
+It's convenient, I guess, and easy to understand.
+
+So here's like an instructor relationship.
+
+Remember, a relation is just another name for a table, right?
+
+Relation is kind of the abstract term from the relation algebra.
+
+Table is more common term movies in database systems and sequel systems.
+
+And, you know, attributes in columns, tuples of rows, we saw those differences in terminology before.
+
+So here we have ID numbers, names, department names, and salaries for our professors.
+
+And again, to kind of flesh out some of the terminology here, each column is also called an attribute, and the set of allowed values would say that's the domain of the action.
+
+So we can have, like, integers or strings, or, you know, different domains.
+
+We're just taking, again, kind of a more abstract term there.
+
+And in the relational model, attribute values are required to be atomic or scalar, meaning it's just one value.
+
+So in a properly normalized database, you can't store a list as a single column.
+
+But you mentioned in last class that, um...
+
+Every database lets you.
+
+Yeah.
+
+Yeah, modern day databases are relaxing that, basically.
+
+Yeah, well, they all everybody wants people.
+
+But it's still, it's not normalized for meeting a dad.
+
+And it comes with disadvantages, but it's also really practical sometimes.
+
+It's like really practical for the performance of the database, basically, to allow that.
+
+Yeah, and just, again, the simplicity of it.
+
+And so, practical databases have pretty much always let you do that.
+
+So the modern form of that is to just store some Jason data, you know, a string, adjacent string, that has other stuff in it.
+
+But they also, a lot of them have native list types and things like that.
+
+But that is in kind of an extension for the relational model.
+
+So when we're talking about normalization rules, in fact, first normal form is to just get rid of all of those, basically.
+
+So that's, like, the most fundamental step of normalization is eliminate, um, lists and things like that.
+
+And then there's a special value knoll that's a member of every domain.
+
+So what that means is every column can be null unless you seek well, you can declare that that is not allowed.
+
+But Noel is kind of a special value.
+
+It's not an engineer, it's not equivalent to zero, and it has special rules for how you compare it. To other values.
+
+As it says there, the no value causes complications in the definitions of many operations.
+
+Relations are fundamentally unordered.
+
+Obviously, they sit on disk in a certain order, and sometimes we will exploit that, or, you know, our knowledge of that order, it becomes important.
+
+But conceptually, the order of the Miseerrelevant, right?
+
+The database is free to store them in different formats.
+
+And different databases will store than before.
+
+So here, you know, again, our instructor relation with the unordered tubles there.
+
+Um, database schema, this is what we call the logical structure of the database.
+
+Usually, we'll think of it either as, like, a diagram, or sometimes it's the statements that actually create the database, to create the table definitions, you actually run sequel statements.
+
+They create statements.
+
+So it uses the language of the database to create the videos.
+
+And again, what's showing here is more of a an abstract schema.
+
+Keys, um...
+
+We'll we'll define these a little bit more here.
+
+So, um, we talked about primary keys, and we talked about foreign keys.
+
+So a key more broadly is some subset of the attributes of a tool.
+
+So some list of columns is a key.
+
+It can be anything, really.
+
+And then, but then we say that a K, so some key is a super key.
+
+If it is sufficient to uniquely identify every two people.
+
+So if the key that you have chosen guarantees there will be, at most, one row per key, then we call that a super. A little bit confused.
+
+And then we say that a super key is a candidate key.
+
+If it is minimal.
+
+So if you couldn't take out any columns, taking out any columns, you make it, so no longer uniquely identified.
+
+Everywhere.
+
+We're not gonna go too heavy into this kind of stuff, but, yeah, let's go through and see the terms of this one.
+
+If you gave exams, you wouldn't test us on this basically.
+
+Right. Yeah.
+
+Do you give exams at this plus?
+
+I don't know, some request?
+
+Um, no.
+
+No, not a project on this.
+
+I get great.
+
+If I give exam, they have to grade the exam.
+
+I actually make the exams.
+
+You underestimate the place right now.
+
+Yeah.
+
+So, um, and then one of the Canada keys, we select and call out the primary key.
+
+And sometimes there are multiple choices there.
+
+Very often, there's kind of an obvious, you know, if you've got well structured data, most of the time, there's either kind of a natural primary key, or there isn't any primary key, and you really have to add, um, the synthetic primary key field, uh, usually in a future.
+
+And then we talk about the foreign key relations or foreign key constraints, right?
+
+That's where, and this is where we really get into relational data, right?
+
+Where you have the different tables or different relations relating to one another.
+
+And foreign keys are the way that we do those references.
+
+So we'll have a key in one table is referencing the primary key of another table.
+
+And this is where having to simple integers is very convenient, or you know, a natural key, because then it's nice and compact and simple, but it's not always the right choice.
+
+So, department name in that instructor table is a foreign key from the instructor table referencing the department table.
+
+So here's the full schema diagram for this university database that we're looking at as an example.
+
+So let's see, we have students up there, and we have the column names listed.
+
+So there's ID, there's name, there's department name, there's Coke Cred.
+
+For your total credits, I presume.
+
+The underlying field, or fields, is the primary.
+
+So for student, it's just ID.
+
+But if you look over there, like, section, session has a course ID, a section ID, a semester a year, building room number, and time slot ID, and she uniquely identify one hand to have the course ID, the section ID, the semester, and the year.
+
+So those are all primary keys of what you're saying.
+
+No, all four of them together make the prime.
+
+Okay, okay, I see what you mean.
+
+All right, yeah.
+
+So it's like what you mentioned in the slide.
+
+Last time too, primary keys are usually made up of natural keys and schema keys, basically.
+
+Is that what you said last time?
+
+Synthetic key, I think I called it.
+
+I always forget what the term people use is, but one that's just made up for that purpose.
+
+Yeah, so basically that's like going into that.
+
+Basically, you need all those keys combined together to uniquely identify a section.
+
+Okay.
+
+So that's a, let's assume the course idea is like CS 1400.
+
+The section ID would be like, 01 or 02.
+
+Right?
+
+Yeah.
+
+So it distinguishes between 2 sections within a semester, but we recycle those numbers semester this semester.
+
+So then you also need a semester in year in that case.
+
+So it's not like the CRN number, I guess, that we have, although those are recycled as well.
+
+So maybe it could be that, but that uniquely identifies a section within a semester here.
+
+And I think with our numbering scheme, it even identifies the semester.
+
+But anyway.
+
+So yeah, some of these, again, a simple, some of them have like, like the student, we have an ID.
+
+And if you look, there's kind of nothing else in the student data that is guaranteed to be unique.
+
+We have students with the same name, so the name's not unique.
+
+We have students of the same name in the same department, or could, right?
+
+Again, it's not necessarily if your data has that.
+
+Is this a potential?
+
+And so we wanted to make sure that we're modeling our data in a way that's actually gonna handle things in our life, you know, robust fashion, although they might not have the same name because if they have the same person, last name, do they have the same middle name?
+
+They could.
+
+ID?
+
+No, but student ID is made to be unique.
+
+Yes, right?
+
+So that's that's why you're given a.. Why we have those awful D numbers.
+
+And also, because your name can change.
+
+Right?
+
+So, um, I'm still cranky about the whole D number thing, because I feel like looking up your name, like my email address, you know, the alias for it is Rust.Ross, Utah Tech Betty to you.
+
+And I feel like that process of looking up Rustot Ross and seeing that that matches the D number 00051975 is exactly the reason we have computers.
+
+Right?
+
+I don't see why we need outsource that responsibility to everybody, you know, to all the people.
+
+Um, so, so I feel like I should be able to log in with Russ.
+
+Ross and it should do the hard work of, you know, looking that up.
+
+And it just said.
+
+There's so many things we do to make it easier for the software.
+
+We used to have a general edge requirement that was an exploration requirement or something like that, or global, something like that.
+
+Or was it global studies or something?
+
+Anyway, there's some kind of thing, you know, best practices, this is a good academic thing to do.
+
+And I was in the meeting where that, where they voted to remove that requirement, because it was hard to enter into, like, the advising database or something like that.
+
+That's the 's the reason?
+
+It was something, I think it might have been a little stronger.
+
+It was like the system that tests if you've made your graduation requirements, they couldn't figure out how to encode it.
+
+So we changed the curriculum.
+
+To make it easier for the computer.
+
+Yeah, that's.. Program to match the break.
+
+That doesn't make sense.
+
+What?
+
+My sister works in, like, the offices and stuff.
+
+Yeah.
+
+And she's saying that, like, they're so dumb.
+
+Yeah, that's the other thing.
+
+I bet the software could actually do it.
+
+I just know that wouldn't be hard to.
+
+I can't imagine this at all, would be able to.
+
+Yeah.
+
+But so again, whenever I see this D number, I was just I scowled a little bit because it doesn't have to be this way.
+
+And it's so awful.
+
+Um, Um, but, but, but a student table is an example where, again, there's not, there's probably not gonna be a natural primary key, no combination of fields is like inherently unique. Right?
+
+Even, I mean, even if you put, like, their birthday, I guess social security numbers would give an important external one, and we use those a lot for some reason.
+
+But if you were just looking at the, you know, you could conceivably have two people with the same name born on the same date in the same city.
+
+You know?
+
+It's probably unlikely, but...
+
+Very unlikely.
+
+But it's probably not a good idea to model it.
+
+Do you want to run the apple and it does happen?
+
+Yeah, right?
+
+That works great right up until the day it doesn't work.
+
+So, um...
+
+You know, if you go to a place like a big city, a major city like New York or something like that, that probably happens a decent amount, right?
+
+Names are trendy.
+
+Yeah.
+
+They're all named.
+
+What are the names now?
+
+Anybody have any like nieces and nephews?
+
+Nathan's still a name.
+
+I have a cousin...
+
+I found...
+
+So when I'm the youngest of six kids, some things were all having kids, they would all, you know, say, oh, we're gonna name them this.
+
+And they thought, oh, that's so unique.
+
+And then I would go look up those charts of the popular name.
+
+And it was all a flatline until the year that baby was born and then it shoots up to me, like, you know, the 3rd most popular name.
+
+We all think we have these unique ideas and we're all just like subject to the social noise around us, but okay, so back to this.
+
+Um, so the underlying is the primary key, the lines and the K4 in key relationships.
+
+And it is actually between field to field.
+
+So the takes ID is not an ID for the takes table.
+
+It is the student ID.
+
+And it's a foreign tier issue.
+
+And so going from takes to section, you can see there's all four parts of the primary key have to be linked.
+
+So that's the info we're getting from this diaphragm structure.
+
+Oh, yeah, is underlying St. Primary key?
+
+Yeah.
+
+So it can be both the primary key and a form key.
+
+Yes, it can be part of it.
+
+So like, yeah, takes is a good example.
+
+The primary key of takes is the primary conception, so of course ID, section ID, semester year, and the primary key of the student that it relates to.
+
+Because it is relating those two things, right?
+
+It's a join table, essentially.
+
+That would be called a composite key, right?
+
+Yes, yes, one that brings together multiple.
+
+Yeah, that, you know, it's composky.
+
+Yeah, so the takes table, again, is an example of a, it's a table that allows, that is really mostly exists there to give you the ability to do many to many relationships.
+
+There can be many people in a section, a student can take many sections.
+
+So you can't do that with just a single, with a simple link.
+
+Right?
+
+A simple link always gives you a one to many relationship, a one and one, possibly.
+
+So you have to have a table in between the 2 tables.
+
+Yeah.
+
+Yeah.
+
+So, like, if we say an instructor, it can only belong to one department, but there are many instructors in a department.
+
+We model that by having the instructor have a foreign key relationship to the department.
+
+And then many instructors can do that, but there's only the possibility of one department per instructor.
+
+So they get many, many, there's gotta be, again, the standard way to do that is to have a table in between that allows you to have as many instances as you watch.
+
+And then it's also a good place to store data that is relevant to that pair.
+
+So takes has this grade column that is the grade of this particular student in this particular section.
+
+It doesn't really belong to the justice student, because they have many grades. Doesn't really belong to the section, because there are many students there.
+
+It is the joining of section and student fit, a great is relevant, too.
+
+And then the student has total credit, sort of, derives some that, but...
+
+Uh, anything else?
+
+Let's see.
+
+Oh, yeah, and then we have, like, uh...
+
+What is that double arrowhead?
+
+I was, like, you know...
+
+The whole son ID, is it?
+
+It's an honest area. Foreign key, but it's only pointing to one part.
+
+Right?
+
+It's at a time slot ID, but, um, could that just be there?
+
+Oh, no, it's blue red.
+
+And so that you don't have a bunch of extra data in each section column.
+
+Yeah, so I kind of think why time slot needs, because you might have multiple classes, but happen at the same time slot, and you don't want to have to, like, put the same day over and over and over again.
+
+But I'm saying, like, why is?
+
+Oh, right, okay, so the time slot, this could be Monday, starting at one, 3 o'clock to 430, right?
+
+And also Wednesday, but it's the same, it's the Monday, Wednesday time slot.
+
+Yeah, so the section's only is not linking to a complete primary key.
+
+That makes sense.
+
+By not complete primary, are you saying that it's that one primary thing?
+
+The primary speed of time slot is all three of those.
+
+Yes.
+
+Yeah.
+
+But it's kind of, it's a, uh, it's a set of records here that we want, um, identify the section.
+
+And then that composite key of all three of those, would that be another, like, hidden key within the table that it might just have in the background or?
+
+No, I mean, it would be in time slot.
+
+So we would need to...
+
+But, like, would it hide it from, like, like, would it be a separate column within that table that it just, like, wouldn't show you if you, like, asked or?
+
+No, no, the primary key is time slot ID plus D plus start time and they're regular columns.
+
+Yeah.
+
+It doesn't need to why you concatenate them into some 3rd car.
+
+Okay, okay.
+
+You can just just look.
+
+Why do we not just have types of IDs?
+
+Um, Because we actually need multiple records for a single time slot.
+
+Right?
+
+So again, a time slot would be, like, for this class, it's the way I notate it, is Monday, Wednesday, 15 o'clock, plus 75.
+
+Yeah, that makes sense.
+
+So that starts at 3 o'clock and it's 75 minutes, and it meets on Monday, Wednesday.
+
+So that's what I put is like, in this case, you do my time slot.
+
+Is that a standardized form?
+
+That looks like MX plus B. Is that a standardized mathematical formula you wrote down, or is that just a, now I make?
+
+No, you just...
+
+So when I use my scheduling system, right?
+
+And so that would actually, in this would have 2 records, you'd have a Monday, the day, start time is 15 o'clock, and time is 1615.
+
+And then you would, so that would be one, and then you'd also have Wednesday, 15 o'clock, 16, 15.
+
+And then the end, I guess the end time is not part of the keyboard.
+
+So what do I do?
+
+Oh, so each of these, yeah, we did that.
+
+MW 1500 plus 75, which so we have one called one row, would have all 4 of those, one row would have all of those.
+
+And so what I think of as a time slot, I think of the time slot as the...
+
+The whole 150 minutes across the week.
+
+But the way they're being modeled here is it's one span of time on a single day.
+
+And so this, so this is kind of unusual, right?
+
+Most of these 4 key relationships are pointing to a primary key.
+
+But, like, this one's not.
+
+It's pointing to just part of it.
+
+And here, it's actually pointing to a primary key plus another.
+
+No, I think that is missing another life.
+
+Yeah, it was really?
+
+Yeah, yeah.
+
+Because the building's not enough to that you need to identify a class.
+
+That makes sense.
+
+Okay, so they made a mistake there.
+
+I think that's just asetting there.
+
+So the, this case, I saw ID is a more, it's basically referring to what section it is, so that way we can have multiple timeslots, we'll see.
+
+So the time slot ID would be just this one, which is all we need to reference for a section, right?
+
+We don't need a copy of the section twice because it means 2 days a week.
+
+We need one to reference the time set.
+
+Like, this is something you could, like, you could conceivably put another table between them.
+
+Might be another way to approach this.
+
+Right?
+
+Where, one is just the time slot, and then if you want to break it into, like, spins of times, that can be a separate table of references.
+
+But it works this way, too.
+
+In this case, you do this.
+
+They're often many ways you can model something, but...
+
+So, let's do a little primer of the relational algebra.
+
+This is probably about the only time we'll talk about this.
+
+We're gonna take a fairly systems approach.
+
+I don't believe we're talking about this in the screen to be honest.
+
+So...
+
+There's six basic operators in the relation altra.
+
+So relational algebra is, what is an algebra?
+
+Well, an algebra is just finding a missing variable to an equation, or it's solving basically...
+
+No, it's bigger than that.
+
+It's fraud of that.
+
+Well, it's just like a mini language.
+
+Let's see, know, calculus is a mini language, and algebra, I think also has some specific properties associated with it.
+
+Wait, I've never really heard it be defined that way.
+
+A many language.
+
+I guess in comp theory terms, that doesn't make sense. You can see.
+
+My point is, right?
+
+So like calculus, right?
+
+We know there's the calculus, just because it's so important, we call it the calculus.
+
+But there are many calculi.
+
+Anybody can make up a calculus, and you can make up an algebra.
+
+And I always forget one of them has more specific.
+
+One of them is purely just, you made up a mini language for in a kind of a mathematical sense.
+
+And the other one has some set theory constraints, I think, to make it valid.
+
+So the relational algebra is this abstract way of looking at data.
+
+It works, it's working with light set theory.
+
+So we're thinking of things that could be infinitely size, right?
+
+Infinite sets are fine.
+
+We don't care about, like, practical concerns here.
+
+We're talking about how do we model things logically, and then the database systems job is to kind of bring that down to a practical level.
+
+So from there, a procedure, so we have this language, we have a set of operations.
+
+They take relations as inputs, and have relations as outputs.
+
+So every step of a query is going to be working with some relation and expanding it or contracting it or altering it in some way.
+
+And so we'll see, we'll kind of go through a sequence of transformations, and the transformations follow from these six basic operators.
+
+Select, project, union, set difference Cartesian product in Renee.
+
+And we've got Greek letters to go with them.
+
+Did anybody crack the code for why they chose each Greek letter here?
+
+Well, it's kind of like in physics, they choose a bunch of pretty letters for a bunch of different things.
+
+Some of them don't make sense.
+
+But why are these specific balance?
+
+Sigmas, legs.
+
+Yeah, it's just the sound.
+
+Sigma, select, pies, project.
+
+Rename is row.
+
+I was about to say it was arbitrary because they usually...
+
+It is arbitrary for sure.
+
+Sure, but that's they they picked them too, and then it's...
+
+It's like, it's one of those where it's like, they definitely wanted to use Greek letters, right?
+
+Yeah, yeah.
+
+But I also thought it would kind of make it easy to remember.
+
+So that's where it comes from.
+
+It's a simple set.
+
+And then we have some that are just pure set operations, like unions set difference, Cretation product, and there's no need to...
+
+We already have established symbols for those.
+
+Yeah, we do.
+
+So let's talk about what each of those means, and we'll talk about and we'll relate them back to sequel queries.
+
+So the select operation is not the select keywords.
+
+Sorry.
+
+Select operation is basically the wear clause.
+
+So if we have a relation, we want to select some of the rows from that relation, some of the two rules.
+
+So, um...
+
+So, like, tuples to satisfy, I give them credit, and a predicate, right?
+
+That's just a function that gets true or false, that kind of a gateway.
+
+So they would say peas, the selection predicate.
+
+So, for example, select those tuples of the instructor relation, where the instructor is in the physics department.
+
+So, we would write that in a relation, algebra notation here as sigma, department name equals physics, that's our predicate, right?
+
+Department name equals physics is the predicate.
+
+Apply that to the instructor relation, and what you get back, you get back a new relation that is some subset of what we started with.
+
+And this is something that's true in sequel.
+
+Every time we do something, we always just transform the results that in some way.
+
+Yes.
+
+Sorry, just to make sure we're clear.
+
+The physics part, that's the predicate, where it says that, right?
+
+Department name equals physics, is the predicate.
+
+So that whole equation...
+
+That's a whole subscript of the station.
+
+Yeah.
+
+Okay, that's okay.
+
+Right, because it's following this abstract formal fear.
+
+Sigma sub P of R.
+
+Yeah.
+
+Sigma, the sub P is department name equals physics, and R is the instructor.
+
+Well, basically, all things within the subset, matched this or something.
+
+Yeah, so...
+
+So in this case, we have two.
+
+We get Einstein and Gold as the two professors.
+
+We have Einstein teaching this?
+
+And gold.
+
+Dr. Gold?
+
+Wow.
+
+That would be cool.
+
+And they're only being paid $95,000.
+
+I know.
+
+I think everything underpaid.
+
+Just coming in with those names, that ought to be worth an extra 10 grand or something, right?
+
+I saw every teacher at the university.
+
+Did they ever team?
+
+Yeah, he was...
+
+I don't think he came every 2 months.
+
+Great.
+
+We have comparisons in the selection predicate, and since this is mathematical, we just use mathematical relations, right?
+
+The proper operators, we could combine them using and or not, right?
+
+These are the standard terms.
+
+We have the wedge and the B and the little whatever you call that.
+
+But these are, like, conjunction disjunction and negation.
+
+So, finding structures in physics, so the salary greater than 90,000, it would be apartment navy, equals physics, and a salary greater than 90,000, and a game without a typesetting error that she's substructed with it.
+
+Um, and it can conclude comparison between two attributes, so where the department name equals the building name.
+
+Find all departments whose name is the same as their building name.
+
+What do we have?
+
+Do we have any on campus?
+
+I mean, the Udverhazi College, School of Business, isn't that, isn't that, like, the name of the Hossey Building?
+
+Or is it just the Udverhazi building?
+
+I just don't know.
+
+I think it's school business.
+
+That's cool.
+
+Yeah, I think the name, the full name of it has business in it, which is not exactly the name of the department.
+
+Do we have any buildings that are just named?
+
+We don't, do we?
+
+I don't think.
+
+Better just named, like, what?
+
+The same as a department.
+
+Well, we have the...
+
+We have the science and...
+
+Yeah, it's pretty clever. Technology.
+
+That's...
+
+Okay, sorry.
+
+I decide.
+
+Why, you know the set building?
+
+Yeah, right?
+
+Science engineering technology.
+
+What are the actual departments?
+
+Well, there's the engineering.
+
+A bunch of science, a couple engineering, computing, and there's another kind of big one.
+
+One of the big apartment in there's chemistry.
+
+Well, that's exercise.
+
+Map is in the Smith.
+
+There's math. Right?
+
+So, and what's the acronym, what do you want now?
+
+Scasm, right?
+
+Science technology, education, math.
+
+So we have a college that has all of those groups, and we name the buildings, science engineering, and technology.
+
+Anybody want to guess why?
+
+Because we already have a map building.
+
+No?
+
+Oh, because software.
+
+Because every time they proposed a name, it included math, the president rejected it.
+
+What?
+
+Because he has a white mask.
+
+I mean, joking, what did he change the name to Utah Tech?
+
+That was when they were naming the thing.
+
+Yeah, that's a true story.
+
+Right, use it.
+
+Is that what an athlete, I guess. Didn't like math. Oppressed him or something?
+
+I don't know.
+
+Fits a stereotype on it, but that's it.
+
+He never explained that.
+
+Can't add the extra letter.
+
+But they tried, yeah, they tried various names from the college, over the...
+
+And actually, at the end of the college, is the college of Science Engineering and Technology.
+
+Really?
+
+So, yeah.
+
+So I always think that that always makes me giggle a little, but...
+
+Um, projection.
+
+So, this, we're borrowing a term here familiar algebra.
+
+This is basically like select part of the select query.
+
+So this is a part where we had all these columns where just narrowing, you know, taking some subset of columns.
+
+So we're leaving out some attributes.
+
+We only want to return the data we're actually planning to use.
+
+And duplicate rows are removed, so in the relational algebra, right?
+
+You might have 10 rows, but once you remove one of the columns, some of them become duplicates.
+
+And so, in a relation I remember, those would be, like, merge, 'cause it's working in pure cells.
+
+And in sequel, that doesn't happen. Unless you ask it to, if you do distinct.
+
+But in relational algebra, it is.
+
+So, let's say we wanted to get rid of the department name attribute of instructors, you know, here's how we'd write it, and the result would just be the table with that removed.
+
+Um, you can compose these, so you would do one and then another.
+
+So it's like embedding, another way to kind of think of it.
+
+So, this query example here, filters instructors down to just those in the physics department, and then only select out the name of the instructors.
+
+So if you just want the names of and physics instructors, that's how you want it.
+
+How do we write this as a sequel period?
+
+We would write, um, select name from instructors.
+
+From instructors.
+
+Where the department name equals physics?
+
+Is that name?
+
+Equals.
+
+Right?
+
+So this is something we're gonna kind of come to see.
+
+Sequel is in the wrong word.
+
+Yeah.
+
+Sequel queries are kind of build up in a certain way, but they're written down in the wrong order.
+
+It reads nicely.
+
+Select name from instructor for that's true.
+
+But when you're building them, you usually start, kind of, from, and do your joints, then your wear, and then, um, you know, and select as you live out the last thing. You consider.
+
+But there's kind of an order to building them, and it's not actually the order they're in town.
+
+The Cartesian product operation.
+
+Okay.
+
+So, here's where, right, the Cartesian product just did you every pair of normal, right?
+
+You get two sets, the Cartesian product of those two sets, is elements where you have one element from the first set, and so pairs, an element from the first side, and then element, and the second set, and every combination.
+
+They're flattened here, so it's, you get a new relation that has all the columns from one and all the columns from the other, at every possible parent of them.
+
+And it's not often, it is occasionally useful, but most of the time not.
+
+And let's see, do I have a...
+
+Sorry, you said that the Cartesian product is sometimes useful, but mostly not?
+
+Yeah, it's not very often useful.
+
+Yeah.
+
+Well, okay. Because it gives you way too much.
+
+Yeah, that you know, a bunch of pairings that don't really make sense.
+
+That makes sense.
+
+Yeah.
+
+I just noticed, like, in some of the things in Super Bowl, it seemed like, or was it any assignment?
+
+It seemed like the Cartesian products, um, did say a lot of, like, when I calculated it, seemed like it said, wait, am I thinking this class or, oh, come on, I can't remember stuff.
+
+I'm sorry.
+
+No, no, no.
+
+I the wrong one to ask.
+
+Um...
+
+Let's see.
+
+So, sorry, I'm just looking for the schema for this.
+
+So, the.. Um, which one?
+
+I just want to find the sample database so we can play with it.
+
+Okay, um...
+
+I've got one here.
+
+So, let's see.
+
+I'm gonna go make a...
+
+A...
+
+It joins one.
+
+Uh...
+
+So cool.
+
+So I'm gonna make a university database.
+
+I'm going to read, um.. The schema.
+
+Let's see.
+
+So there's the list of tables, right, taken from, same as the diagram.
+
+And then I'll also go ahead and read in the statements to build it.
+
+So, you know, froze.
+
+So now I should be able to say, select star from instructor.
+
+Oops.
+
+There's Einstein and Gold, and so forth.
+
+So let's try some of these as we go.
+
+I'll just push those out of the way for the moment.
+
+But let's look at, okay, let's look at instruct cross teaches.
+
+So I can write that here.
+
+The Cartesian product is just select star from instructor, teaches.
+
+All right, that was what it asked for.
+
+And...
+
+Okay, now I remember what I was gonna ask you about the Cartesian product.
+
+One of the single bolts was useful because when you did the joins without the comparing the IDs, it gave you the whole Cartesian product like that, basically.
+
+That's what I was gonna compare to.
+
+I remember.
+
+Yeah, so the Cartesian product, again, is just giving us that raw pairing.
+
+So here I have every instructor paired with every course that is taught.
+
+So, instructor ID, I, um...
+
+IV 10101, I don't know how to pronounce that.
+
+It was a computer science instructor, apparently, is here, you know, this pairs them teaching finance, and music, and physics, and history, and, you know, maybe this is just a real Renaissance fan, right?
+
+I bought lots of interest, I don't know.
+
+But pairing up every instructor with every teaches is rarely that useful.
+
+Again, sometimes it is, and it is a supported operation.
+
+But you just put comma to separate...
+
+I want to select everything from those parents.
+
+And, um, again, normally you would, so most joins, we can actually build just using cross products and wear and, you know, narrow it down.
+
+Joints and taxes, just a variation on that, really.
+
+So, again, it's what would say that this constructs a tuple out of the result of each possible pair, one for instructor, one from Teaches, and, um, we have, we saw there were two columns named ID.
+
+And they both refer to the instructor ID, but if I were to just say, like, select ID...
+
+Oops.
+
+Instructor, uh...
+
+Instructor, comma, uh, teaches.
+
+I'm gonna get an error here, right?
+
+It's ambiguous, 'cause now there are actually two columns named ID.
+
+So, I could choose instructor...id, or teaches.id, But I have to disambiguate that.
+
+That's why I love the...
+
+Like, I would be instructor as I, or I don't have to do I, not...
+
+Yeah, so we could shorten it, right, but we'd still have to disambiguate.
+
+Yeah.
+
+And again, that gives us, you know, a bunch of rows and they're not necessarily all that useful.
+
+So, but this is kind of the gateway to the to join us.
+
+So when we take that, right, that gives you every possible pair.
+
+We are mostly interested in the pairings where some of these fields are equal to each other.
+
+And so this is when we start to talk about it as a join, is when we're only pairing them where there's a foreign key relationship, typically for key.
+
+It doesn't have to be bad.
+
+That's by far the most common.
+
+So, when we give the two pulls, we're instructor, cross teaches, but only the instructors and the courses that they taught.
+
+So, again, here, there is no, I mean, it doesn't, the relational algebra doesn't actually need, like, a separate operator for it, right?
+
+Because it is just take the Cartesian product and then do a relational algebra selection to only find whether things pair.
+
+But again, we're passing through a series of stages here, right?
+
+We do the Cartesian product, and then we fill through it.
+
+We generate this really tall gable, and then we shorten it.
+
+It's only the entries we're interested in.
+
+And that's what, again, makes this as an algebra, an abstract thing, it's okay to think of it as just, yeah, we made something enormous, and then we shrunk it down, and it's like, that's not the point.
+
+Right?
+
+So efficiency isn't something we really think about at this level.
+
+So, let's go and refine our query with the wear clause to say where instructor.id equals teaches.id.
+
+Oh, sorry, and I want to select all fields.
+
+Go back to Star.
+
+So now I have much more reasonable list.
+
+I still have the duplicate columns.
+
+I still have both ID fields, 'cause it's still taken, this is just filtering the Cartesian product.
+
+And we've seen the syntax, right?
+
+How would I write this as a join?
+
+Just to join on ID.
+
+So I'll write his inner join, but yeah, it could just be join, teaches, and then he would say, on.
+
+Well, I think you just need to put ID instead of, you know, currently.
+
+With on, we do need to specify fully.
+
+Yeah.
+
+Who's the one that gets rid of the dude?
+
+So, yeah, there's there's using...
+
+Oh, that's where you list the fields, in this case, just one.
+
+So that would do it.
+
+And notice that now we don't have a duplicate.
+
+It's on is just kind of a predicate.
+
+Using is actually naming the columns that must be the same.
+
+And, in this case, we can just do a natural join.
+
+So a natural join is the most convenient.
+
+It joins on any fields that have the same name, and it calls that have the same name.
+
+Which is.. Not.. A good design, I think.
+
+Well, how, why is it not a good design?
+
+Um, Because he's so rarely actually get to use it.
+
+I think that is what's kind of just a bad proxy for what you really want is, what I think natural joint should mean.
+
+This is not what it means, but what I think it should mean is, using the foreign key relationship, it's declared.
+
+Okay, well, wouldn't, if there is one, and if it's not, you can't use natural fun.
+
+So natural joint, again, just joins on all fields they have in common.
+
+And so if you are careful to make sure your naming works that way, great.
+
+But you kind of falls apart as soon as you have, like, a calm name ID.
+
+Because usually the foreign key, you'll have, yeah, the common design right now is a user table.
+
+You'll have an ID.
+
+And then, for an account, you'll have a field called user ID, the refers ID.
+
+Natural joints are now out of the picture.
+
+Now, if you want to use them, you can make sure your user table has its ID column, it's called user ID, and matches, and if you're careful with that. You can get that convenience of a natural joy.
+
+But it's also very subject to false matches.
+
+You'll very often have, it happens a lot where you happen to have two columns, columns, and different tables that have the same name and have no relationship with each other.
+
+So natural joint is great when it works, but it kind of rarely works, and it's a little treacherous.
+
+And it has that problem also where, even if it works, later changes might, you know, you later change to the schema, and unless you go through and consider every inner joint, you might actually break it by introducing a coincidentally matching column.
+
+Let's see if we have anything here.
+
+Um, so, like, so, like name for student and instructor.
+
+If we did some join, where I want to say, hey, I want to find, you know, every professor for a student.
+
+So I might be tempted to say, take student, natural join, cakes, natural join, section, natural join, teaches natural joy instructor.
+
+Just work my way around the table.
+
+And I would probably get no results from that, because that would require the name of the instructor and the name of the student would actually, it would be, those would be natural joined together.
+
+Those are mutually exclusive.
+
+They are not this. Don't refer to the same thing.
+
+They have the same name, but.. So.. That's kind of a treachery of it.
+
+Um, and so my kind of evolution, I guess, I, like, never used those.
+
+And then I put it in, I started kind of naming things to make that work, and it was kind of glorious.
+
+Actually, because when you're writing queries, like so much of the query is just name the joins and the specific fields to join on, and it's so tedious.
+
+And when you can just write, or like natural join, There's something glorious about that.
+
+It feels so relaxing somehow.
+
+So, I don't know.
+
+But I, I, I was just lament, I think, that it's, you know, it's just, it does the wrong thing.
+
+It's a shame.
+
+So close.
+
+So, yeah, we saw there, so we've seen three, three forms of naming join conditions.
+
+So you can say table A, join table B, on, and then you just get a predicate.
+
+So that's the most flexible.
+
+If you have multiple keys, so you have to just and, you know, specify them all.
+
+You can do using where you put inside parentheses the list of columns that should be joined that are the same name in both places.
+
+So that's kind of like a slightly more explicit version of a natural join that is a little more future proof, I guess.
+
+You know, if you add new columns, they don't automatically participate and enjoy.
+
+And then natural joy just lines up all the matching columns.
+
+Natural join and using both also collapse the duplicates.
+
+So the results had only has one instance of the joint fields.
+
+Which makes sense.
+
+They are guaranteed to be the same.
+
+But on does not do that.
+
+Because on is just arbitrary conditions.
+
+It is not actually naming columns.
+
+So, let's see, right, we had that with...
+
+So, here I could do this.
+
+Did we do an on version?
+
+Yeah, inner join on, right.
+
+So when we did that, we see both ID columns, then when we switched to using the second ID went away, and natural joint was the same.
+
+Okay.
+
+Um...
+
+Joins are great.
+
+I want to look at, uh, just take a...
+
+I wanna kind of zoom out here. And do, like, the.. The master query.
+
+Oh, no, it's not fitting.
+
+My font name changed.
+
+Okay.
+
+So here, this is not universal, but here we're going to take kind of a stand, or, like, the common form of most queries.
+
+Just to see what that structure tends to look like.
+
+So, and talk about, kind of, a strategy for building, again, typical queries.
+
+Now, this does novels apply, but this is the most common structure we'll see.
+
+So, this query is going to find any student who's ever been in a class with Shang Kong.
+
+So a student named Shankar, we want to find every other student that has had a class with Shankar.
+
+So, that's the query.
+
+But over here on the right.. Will...
+
+We generally kind of, there's a strategy that usually applies.
+
+And we start by expanding our result set to capture all the information that we need.
+
+So we're looking at data structurally at this point.
+
+So this is really our from plus join.
+
+So for this one, and I think I've got the diagram here on the next page.
+
+We need to start with student, which will be Chang Car.
+
+We need to find what classes Shankar took. Using takes, and that will take us to section, and then we need to find other students that took that section, so other students.
+
+So, at the outset, this is a five way join.
+
+We'll join student to take, to section, back to takes, and back to student.
+
+Well, to be very careful about our join conditions, to make sure that the first student.. Refers to that, you know, Shane Carr's Cakes records, and the sections associated.
+
+And then when we come back, we'll need to rename, we're gonna have two takes tables and two student tables, so we can rename them so they're distinguished.
+
+Make sure that the second one, you know, is not the first one, that they aren't equal.
+
+They have unequal ideas.
+
+But we're kind of, at this point, we're thinking about, like, which tables do I need to answer my question?
+
+Right?
+
+This is the expansion phase.
+
+I need to make sure that, and we're talking about rows that are getting wider and wider too.
+
+We're going to have two of everything in student, two of everything it takes, everything in section.
+
+Or we have a bunch of data, but we've got to kind of widen it out to make sure that when we look at one row, all the data we're interested in is in that single row.
+
+So again, that's kind of expansionary.
+
+This is where joining and expanding the data set.
+
+And just look at the structure of the data at this point.
+
+Again, it's helpful to look at a diet, you know, what are all the bits of information I need?
+
+Let me link them together.
+
+Then, we filter it down to just the two most of it.
+
+So, this isn't struck, change the structure at all.
+
+So this is be where we say, and I only want one of the students to be a specific student named Shankar.
+
+Right?
+
+Initially, if we're just talking about from and joined, we would get, like, every student who has ever taken a class with another student, and every student with themselves.
+
+So, now I want to narrow it down to where one of the students is Shane Carr, and the other is not Shankar.
+
+So, again, that's taking this big data we came up with, and now we're just collapsing it vertically, filtering out rows that don't meet the criteria you want.
+
+Again, here's where, like, the relational algebra concept of, oh, yeah, everything can just be, like, infinitely, you know, unboundedly big.
+
+And these operations are all cheap.
+
+That's a nice way to think about it, right?
+
+It's kind of pure and abstract, and we're just going through these transformations.
+
+Get everything we need, we narrow down the ones we care about.
+
+And then, if we need to bring in aggregation.
+
+So, in this case, it's possible that a student had multiple classes with Shankar, right?
+
+Look around the room, how many of you have had a class with somebody else in this room before, or now, or, like, all of your classes every semester?
+
+Great, small school, to be honest.
+
+So we don't want to have, like, duplicate rows there, right?
+
+We want to merge those down.
+
+Maybe we want to count how many times it happened.
+
+But we probably want to do some aggregation.
+
+And so that's where group five comes in, right?
+
+So we've got our select select frown with all these joins.
+
+We have where to narrow down the Shankar and somebody other than Shankar.
+
+And then we want to take, so then the next step is the aggregation.
+
+So now if we have groups of tuples that we want to combine to one result.
+
+So I want to find every record that had, you know, one student who was in a class of Shankar, and I want to make one row out of them.
+
+That's aggregation.
+
+You might take the average or something, the count, the largest, the smallest, right?
+
+You can do different aggregation functions.
+
+In our case, we really just want to.. We don't need aggravation, but...
+
+Can you briefly explain why that's better than better than or the cases in which that's better than just unique?
+
+So in this case, yeah, distinct in the would be sufficient.
+
+Okay.
+
+This is, again, as kind of a prototype for other queries.
+
+This gives us that play, right.
+
+I understand that it's more powerful.
+
+Yeah, no, in this one, it's just peachy, you know?
+
+So, but yeah, so aggregation.
+
+So again, this, if we look at kind of the face, it's like the expansion, the contraction, and then we have the aggregation where we say, you know, if applicable, it's not always there, but we have multiple rows, we want to have one result for, then, you know, we tell it how to identify the ones that should go together.
+
+So, group by all four of these things, A dot ID, B, ID, A, name, and B, name are the same, then we combine those into one racket.
+
+And then up in the select, we can decide like how to what to come up with based on a group, right?
+
+Because a group might have, you know, we might also be interested, and again, like, what's the average GPA of those sequels, or something like that?
+
+Sorry, and that wouldn't apply here.
+
+From those students, just how many classes do they have in common, right?
+
+What's the count of that?
+
+Now, there's a rule here.
+
+Notice that this group I, at ID and name, even though ID uniquely identifies the student.
+
+This is actually necessary, though.
+
+Anybody, the idea is why?
+
+Well, because it's the only thing common among A and B, and, well, it's the group.
+
+So group I is telling it, which attributes, if they're matching, should I collapse all the records with matching fields here into a single?
+
+Yeah, okay.
+
+So, yeah, the 2 IDs would be enough.
+
+If that's all I care about.
+
+But the rule is, what we select out, either has to be named in group I, or it has to be an aggregation function.
+
+So, if I want, like, the count, I can cook count if something wasn't identified by Green Island.
+
+But if I want to select out the name, if I didn't put it here, in this case, we can look at it externally and say, Oh, yeah, they're gonna have the same name, because I know that ID is the primary key.
+
+But in general, that's not the case.
+
+So if we have a select query where we're selecting out a name, one instance out of a group.
+
+What's it supposed to pick?
+
+All right, what if I put up there, select class?
+
+Oh, yeah, these, you know, all the all the students that have a good class with Shankar, and I want to see a class they have with them.
+
+So, I grouped them by, so, collapsed all the students together and then picked a class, which class is the right answer?
+
+There isn't one.
+
+So it's not actually, like, a meaningful, robust query.
+
+And so the sequel standard forbids that.
+
+If you want to select something with aggregation, it either has to be one of the columns or based on one of the columns that was in the group by clause, because then they're guaranteed to be unique, for true, right?
+
+Because it collapsed and based on that uniqueness of that commonality.
+
+Or it has to be an aggregation function.
+
+Count average, min, max, something like that.
+
+Because then that's something designed to take many results and combine them with a single result.
+
+So in this case, I used AID and BID to make sure I had unique people.
+
+And I included the names, which wouldn't have no material effect on the selection side.
+
+But that gives me permission to select them out as a result.
+
+Now, sequel light, let's just do it anyway.
+
+And it just picks one of the results.
+
+So here you would get away just fine without putting that there, but it's, again, it's a bad idea.
+
+Right?
+
+There's a reason it's in the standard, and it's just one more case where.. No two databases are really alike.
+
+And here, sequel light is very relaxed on that particular rule.
+
+Okay, so expand, make sure we got all the information as to why.
+
+Filter down, that's crunching vertically.
+
+Aggravate where we're taking, again, groups of rows where we only want one, you know, we selected information about restaurants and cities, but we want per city data.
+
+So I want to find all the restaurants from one city, and I want to get some composite result for them, or aggregate result for them.
+
+Or maybe I want to get information about all the cities that have the restaurant.
+
+But I can do the aggregation, we're saying there are many rows that I want to combine and have a single result, row four of them.
+
+Usually based on some common element.
+
+So that's aggregation, group I. That's kind of the next thing you think about.
+
+So, again, get all the data, narrow down the roads you're interested in, combine the aggregates.
+
+You don't always do that, but if you do, and then you go, and you pick out the college, you want to return, and then look at, like, sorting and truncating the results, and so on.
+
+But this is kind of the general format for most straight, you know, the bread and butter queries that we write every day.
+
+It's always gonna be some kind of form like that.
+
+And I think it's helpful to just sort of think of that mental model of a query construction.
+
+So there's some details here, right?
+
+So more concretely, you start with from and do joins.
+
+That expands and links. Right I like to, again, this is really, um, from the relational algebra side, and technically the sequel side, we're saying, okay, take the student reaction, form a new relation by joining with takes.
+
+Take that new relation and join a dissection.
+
+Right?
+
+So it's a, I made this, I grew into this, I merged that with this one and got this.
+
+I merged that at the next table.
+
+But there's always one relation, one table at each stage.
+
+Which implies that the order doesn't really completely matter.
+
+I could put this whole thing backwards.
+
+I can start in the middle and work outward.
+
+And all, it's, we're just absorbing new tables into making these macro relations.
+
+And so, um, But it's also often helpful to think of it as walking the grass.
+
+Yeah, Dan, if I want to find all the students, all the instructors the student has had, all right?
+
+I go student, take, section, teach, instructor.
+
+I didn't want to make sure they were teaching the specific section I'm in.
+
+So if you did that, you know, you would get four every semester, right?
+
+And then you group I on Professor, it would collapse down to, like, three rows.
+
+Right?
+
+You know, I'll take a bunch of classes from the same set of professors, right?
+
+But that's another good example there.
+
+Right?
+
+There's that expansion.
+
+I need to get the instructor and the student of the instructor in the same row, but I need to relate it through the relationship with the student of the class, the instructor.
+
+So I've got to do this big march around the structure of the database, then narrow it down, I only care about, you know, me, so one, this one particular student, or this, all the students who have had this one particular instructor, all the ones that had classes in the fall of 2025 or whatever conditions, right?
+
+We narrow it down, and then that aggregation phase would be saying, well, do I actually want one entry for every class that I've taken from, you know, Wren, or do I want to have just one entry representing all of those, and maybe some aggregating?
+
+What's my average GPA across those classes?
+
+Maybe that would be an interesting query, right?
+
+What's my average grade per professor that I've taken?
+
+But so that follows that same form, again, right?
+
+Let's get all the information we need on one row, narrow it down into rows I'm interested in, merge if I want some aggregate data there. And then filter.
+
+You know, then filter, select just the columns I actually want out of that, order by limit, you know, all the kinds of presentation issues.
+
+And not everything will fall into that, but this is the bread and butter query master query format that, uh, would do for a lot of queries.
+
+Yeah.
+
+Um...
+
+So, I think she stopped there.
+
+For today?
+
+Yeah.
+
+Well, are we gonna go over...
+
+I think we will continue the semester in the future days.
+
+Yeah.
+
+Definitely, we're gonna continue the smell.
+
+So we'll just We end there for today, yeah.
+
+A reminder that next week, we'll have this class on Monday and Tuesday and Wednesday. High school again.
+
+Yeah.
+
+It's all right?
+
+That the weird week.
+
+Tuesdays and Monday scheduleing.
+
+So be prepared for that.
+
+Buckle down.
+
+So, uh, get a lot done, I'm sure. 

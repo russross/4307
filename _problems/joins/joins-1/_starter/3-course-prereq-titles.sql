@@ -1,0 +1,6 @@
+--
+-- write a query with output similar to the previous one, but include the
+-- title of the prereq course as well. this will require joining
+-- on courses two times--once to get the info about the main course, and
+-- a second time to get the title of the prereq.
+--

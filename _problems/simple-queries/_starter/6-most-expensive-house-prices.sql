@@ -1,0 +1,3 @@
+--
+-- Find the 10 states with the most expensive median house price.
+--

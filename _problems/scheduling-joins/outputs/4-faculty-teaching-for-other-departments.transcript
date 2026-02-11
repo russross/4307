@@ -1,0 +1,7 @@
+> +--------------------+----------------------+-------------------+--------------+
+> | faculty_department |       faculty        | course_department |   section    |
+> +--------------------+----------------------+-------------------+--------------+
+> | Earth              | Marius Van der Merwe | Biology           | BIOL 3040-01 |
+> | Earth              | Marius Van der Merwe | Biology           | BIOL 3045-01 |
+> | Earth              | Marius Van der Merwe | Biology           | BIOL 4040-01 |
+> +--------------------+----------------------+-------------------+--------------+

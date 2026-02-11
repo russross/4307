@@ -1,0 +1,1799 @@
+All right, welcome everyone.
+
+Uh, didn't they have any questions?
+
+From last time?
+
+It was... The last Wednesday, right?
+
+We just met once last week.
+
+Yeah.
+
+And you remember today, or this week, we meet today, tomorrow and Wednesday?
+
+So...
+
+Well, I want to pick up, basically, where we left off last time, going through the relational algebra, and, again, just continuing our tour of sequel and some of the basics here.
+
+So last time we introduced, we talked about joins, and we kind of worked through that example of building up a query, and, um, like, we outline kind of a general strategy for building most, you know, standard bread and butter, sequel queries.
+
+Um, so, with joints, right?
+
+The joints were one of the things we emphasized.
+
+So, it all kind of starts from this Cartesian product operation, and we looked at that, so right, it's...
+
+This is kind of a blend instrument.
+
+It just pairs everything, every instance from one table with every set of columns from the second table is how you get this bold, lookative explosion in size.
+
+Which is fine when you're talking about the relational algebra, 'cause then as long as you filter it down, right, who cares how theoretically big it got along the way, we're in the universe of mathematics there.
+
+But most of the time, and this is kind of the basis of, at least basic inner joins.
+
+Inner joins end up just being a subset of those pairings.
+
+But usually we want that more specific version.
+
+So here's the cross product of our instructor and teacher's tables.
+
+And again, our issue with this was the instructor, and the instructor's information is paired with courses, the instruction doesn't teach.
+
+And then we find some instances where it's paired for, which they do.
+
+Here's Einstein's teaching physics.
+
+But Einstein is also paired up with CS11.
+
+I don't know, it might be an interesting class, but, uh...
+
+Uh, it seems like an unlikely place.
+
+So, the joint operation is sort of a specialized version of this.
+
+And is really centered around the way we usually want, what we usually want, which is, to be able to think of this as kind of this navigation of the data set.
+
+So let me find a, here's our schema diagram.
+
+So, one way to think of it, really, again, is just kind of this expansion of pairings of everything, but another way to kind of think about what joint operations do is, is this is also kind of just the process of navigating the graph here on the schema diagram.
+
+So I think we use the example of, we want to see every instructor, a student has taken a class from, or maybe the other way around, every student, an instructor has ever taught.
+
+And in this diagram, in this schema...
+
+We've got connect, write students, to take, to section, to teachers, to instruct her.
+
+So there's five tables that we need to navigate in order to establish those relationships.
+
+We don't actually need a lot of this data along the way.
+
+We don't really need to know what building some particular section was taught in.
+
+But we need to make sure things are connected by all those links in order to narrow it down to the set of teachers and students or the combinations of them that we're interested in.
+
+So, again, thinking of this as kind of just walking the table here, walking the chart is another way to kind of imagine joins.
+
+And so when we're doing that, we're usually interested in foreign keys.
+
+When I'm combining takes and students, I'm only interested in pairing the students with the takes record for that.
+
+So that would be our join condition, right?
+
+I mean, conceptually, we're just getting this enormous cross product, and then we're filtering it down and merging cables.
+
+But we usually express it a little more directly as a joint operation.
+
+So we saw three different variants of inner joins.
+
+What was the, let's walk me through the differences.
+
+Like, what's a natural joy?
+
+Please.
+
+Where you join all the columns that have the same name?
+
+Yeah, so it automatically selects the columns that have the same name.
+
+Which is awfully nice when it works. And it's designed for that.
+
+And also, kind of treacherous, and, you know, even when you set up a query that works, you have to be really careful modifying, or modifying the schema.
+
+Maybe you didn't change the query, but you added a column to a table, and now you're natural joins don't work.
+
+So natural joints are frustrating, because it seems like a lot of the time you don't really dare use them.
+
+By looking here, we have the student and the instructor, both have a name field.
+
+We don't want to only merge records where those two names are equal.
+
+Right?
+
+And if we just not try to natural join our way around the table, that's what would happen.
+
+So, what is using, using is kind of the next... Related one.
+
+Yeah.
+
+Um...
+
+Using looks, like you tell what she calls to look for.
+
+So the syntax is, you know, table A, joint, table A, using, and then you give it a list, inside parentheses, just comma separated list of the columns that it should merge on.
+
+So it's kind of like, so a natural joint is really just using, but it finds all the ones they have in common.
+
+And because the system or the, you know, it's sort of baked in that those are equal, because they were being joined on, it only gives you one instance of each of those people.
+
+That's true, natural joins, and just, like, joy through something.
+
+It merges the duplicate columns.
+
+So then, so but again, that only works when the columns have the exact same name in both relations.
+
+So on is kind of the escape valve.
+
+That one, you just have a joint condition that's pretty arbitrary.
+
+Usually, it takes the form of, it's where, you know, join student, student, join, takes on ID, student.ID, equals take side, or something like that.
+
+But you nominate the fields, the columns explicitly, and they don't have to have the same name because you're putting a direct equality test.
+
+It doesn't have to be a quality.
+
+Again, it's the full expression languages they are somewhere.
+
+You can do more creative things with it sometimes, but that's the most common form.
+
+And that's kind of the most explicit.
+
+It lays out exactly what it is.
+
+It doesn't automatically capture anything.
+
+So that's what I tend to see the most often, even though it's the most verbose kind of ugly form.
+
+Um, Most of the time, those conditions, again, it's gonna be 4 key relationships, because that's usually the logical structure of a queer we're looking for, but not always doesn't have to be that way, but that's the most common.
+
+And then we saw outer joints.
+
+What's an outer joint?
+
+Or what's the, what needs does it fill?
+
+First of all.
+
+For getting, um, when both of them don't have it, I believe, or...
+
+Yeah, so what if you want entries that are, they're in one one table, but they don't actually join with anything in the other table.
+
+So if you do the left outer join, so let's say we have...
+
+Let's see, department, left out or join, instructor on department names are equaled.
+
+That would give us all the pairings of a department and an instructor, and then it would give us some additional entry for any departments that don't pair with the instructor, right?
+
+And those fields and just the instructor fields will be null.
+
+So the left column, if you specify them left to right, it guarantees that every entry in that table will be represented.
+
+And if it's handled by the normal joint part, great, but those that don't get handled by the joint, they just pads out that extra one.
+
+This one place, this is really useful.
+
+It comes up a lot, is, like, when you want to kind of clean things up, you delete...
+
+What if I want to get rid of all the departments that are empty, that are unstaffed?
+
+Right?
+
+How do you identify the ones that don't have a constructor?
+
+Most of our syntax is kind of, it's easy to identify the ones that do.
+
+And so, one way you would do that is, you could do a left down or join, and then filter out the, you know, in your wearcloths filter out the ones that have instructure entries.
+
+So you'd just be left with the ones that are not there.
+
+So I'll often use this, but it seems like it comes up a lot when I'm trying to delete things, get rid of ambientry or whatever.
+
+You know, semester begins, we want to delete all the sections from the catalog that have 0 goal.
+
+Um, so we do a... Get some join going where we left out our join sections, to takes, and then use where to filter out the ones that have a takes entry.
+
+So nobody's taking it, we find all just the sections that were left. After we remove that.
+
+That's one way of doing that.
+
+Then Ryder, Ryder, join, just does it with the other table and folds it for both.
+
+So every entry from both of them will be here represented, but you kind of think of it as there's kind of the inner join rows, and then there's these others that are kind of tacked on to fill in the holes.
+
+How I think about it.
+
+Another point I just kind of want to make here.
+
+If you think about that query we're talking about, every instructor, a student, has taken a class from.
+
+Um...
+
+Is there any difference between starting from student, joining to take, joining to section, joining to teachers, joining to instructor, versus starting with instructor, joining teachers, section, takes student in that order?
+
+Or, for that matter, starting the section, joining with takes, joining with teachers, joining with student, joining with instructor, or section it takes to student, to teaches, to instructors.
+
+You want to love growing right here, and you're gonna have to switch. One to the other.
+
+If you're doing outer joins, yeah, that will matter.
+
+But what about this, where you're just kind of trying to get those, you know, inner joins everywhere, pretty standard joining conditions?
+
+Is there any difference?
+
+Do you like select star, the order of the tables, maybe different or the orders?
+
+So the order of the columns, yeah, that's gonna be...
+
+And that's part of why you never actually do select star.
+
+Right?
+
+It's great for testing and things like that, but normally you actually want to, you normally want to specify the exact columns and the exact order.
+
+Oh really?
+
+It also just makes it more durable, again, against schema changes and other things like that.
+
+Why doesn't it matter?
+
+Because it's just the cross product.
+
+It's just making the combat.
+
+Yeah, so one thing I guess that I just want to... An idea to revisit here.
+
+Is the kind of conceptual model a sequel and the relational algebra?
+
+And you're always working with a relation.
+
+And when you do, like, a join, you sort of hand in the one you've got, and you get a new one back. That's expanded.
+
+So, even though we write the condition, I want to select from instructor, join, teaches on ID, you know, teacher, structure ID equals teachers ID, join, section on, things like that.
+
+And kind of, it looks a lot like it teaches joining section, and then it's section joining takes, and then it's takes joining student.
+
+And so, one thing that's kind of tempting is to go and say, Oh, you know, I'm just gonna do a natural joint here between cakes and stew.
+
+Right?
+
+Because in that pairing, there's only IV and common.
+
+Where it's already gotten an instructure, and he's just taken care of.
+
+But remember, a joint is not between the two tables.
+
+The joining word is sandwiched between.
+
+It is a join between everything so far and one new team.
+
+Because every time when you do a join, you now have a big table, right?
+
+You constructed, that's sitting there temporarily.
+
+And then you join with something else, you hand that in and get a new big one. Right?
+
+But you're always expanding, you're not kind of constructing individual links.
+
+You have this blob that is subsuming more and more and growing.
+
+I guess it's I kind of think of it there.
+
+They're trying to visualize it.
+
+Um...
+
+So, yeah, you're always taking everything so far joining it with what comes up.
+
+That's, there are a few places where that kind of clarifies, I think.
+
+The way you need to construct a query.
+
+Which one?
+
+Okay.
+
+Oh, and in the relational algebra, there is a special symbol for join.
+
+And it's this little, I don't even know what you call that.
+
+It's like a sideways hourglass.
+
+X with sleeves.
+
+I don't know.
+
+Is that like a bow tie, maybe?
+
+Um...
+
+It's a... Stick figure with walking sticks and the head cut off.
+
+It's too much...
+
+Two fish tails?
+
+Okay.
+
+I don't know what it's called.
+
+Somebody know that's called.
+
+Join.
+
+Join us.
+
+It's called Joy.
+
+I guess.
+
+I know what the symbol is, you know, if you're trying to tell latex to produce that.
+
+I know what you said.
+
+In tech, Google responded both times.
+
+Bow tie is called...
+
+Okay.
+
+Yeah.
+
+Slot forward.
+
+Um...
+
+So, here, yeah, I did, you put the few things, you have the data function, which is the join, function, um...
+
+Anyway, I say, I don't want to get too hung up on the relation algebra syntax.
+
+Union.
+
+So here's something that I think a lot of people forget.
+
+But again, because sequel is based on the relational algebra, it's not exactly the same.
+
+One difference that we've seen is, because the relation of algebra is working with actual sets, duplicates are automatically merged, where a sequel will give you the duplicates unless you ask it to purchase them.
+
+But the distinct operator.
+
+There's a union operation.
+
+So union merges 2 sets, combining duplicates. Right?
+
+Because it creates a set where there are, uh, no duplicate.
+
+And if you use Union in sequel, it actually does collapse duplicates, including if the input already had duplicates, it guarantees the finished product is a set and merges everything down.
+
+There is Union Hall that preserves the duplicates.
+
+So two different versions of it.
+
+So, the relational algebra, again, we just use the mathematical symbol for union.
+
+So let's go and see if we can write this query.
+
+Right.
+
+I think I've already got a table, the table loaded up here.
+
+Let's see.
+
+And the database loaded up.
+
+So, here's the relation algebra for it.
+
+We want to get, can somebody tell me what that query, that relational algebra expression is doing?
+
+Select, of course, ID...
+
+I don't know, select.
+
+Yeah.
+
+So yeah, that pies projection, right, that's the one that is the sort of claw, essentially.
+
+So, yeah, we're...
+
+Where's where?
+
+Where semester postfall?
+
+Yeah, so we said, hey, so we got the section table, and we're selecting rows.
+
+So this is, like, the wear claws.
+
+We're semesters fall, and years 2016.
+
+I mean, 17...
+
+Or 2017?
+
+Did I say something else?
+
+Okay, 16, man.
+
+Yeah.
+
+We do the same for section, but this time is spring 2018.
+
+And then we take just the course IDs, and then we union those two result sets.
+
+So how would I ride this?
+
+I got selected.
+
+And I guess it's just...
+
+Yeah, course ID, of course.
+
+Of course.
+
+ID.
+
+Is it called course ID?
+
+Um...
+
+Um...
+
+Just do dusky mode?
+
+Yeah.
+
+I know, that's right.
+
+I mean, the middle of it.
+
+It's hard to do.
+
+Let me look at, I'll pull it up in the other window so I can just answer my own question.
+
+Section?
+
+Um...
+
+Yeah, of course I know that is right.
+
+Okay.
+
+So select course ID from, I'm gonna keep it all in one line so I can keep editing it.
+
+From what?
+
+So we have section, whoops, section.
+
+Where, where semester equals fall, and... Year equals 2017.
+
+Let's just see if that much works.
+
+Okay.
+
+We got good so far.
+
+Could we just do an or to also get the semester with spring and your...
+
+Yes.
+
+We could.
+
+So there's often many ways to write something.
+
+And this one would easily work that way too.
+
+Oh, or, um, I'm gonna say union, though.
+
+Um...
+
+Do you also have to do this a lot?
+
+And we start from select, yeah.
+
+Select, course ID, from section where semester equals spring, and ear equals 2018.
+
+And, I don't know, does that look right?
+
+Sure.
+
+Yeah.
+
+Oh, yeah, there we go.
+
+They have the same set on here, so we can confirm our results match.
+
+They have to have the same, um, column or attribute to the room. Doesn't need to be the same name.
+
+It needs to be the same.
+
+And if there are duplications?
+
+Um, so this will merge, though.
+
+Of course, ID...
+
+So, like, if I rename the column, I guess it's taking its cue from the first one.
+
+Like, let's say that we were doing this from two different tables.
+
+Yeah.
+
+They would have to have the same.
+
+You need to have the same, like, number of columns and they need to be compatible. In the same order.
+
+But they don't have to have the same names.
+
+So, like here, I can, again, I can say, call this one CID, select course ID, and then giving it a name.
+
+Um, rename the column.
+
+And then I can go on the other one and not do that.
+
+So they have mismatching names now in their unioning just fine.
+
+Um...
+
+Union all gives me some duplicates, yeah, CS 319 appears twice.
+
+And CS 101, yeah.
+
+so... You see the difference there.
+
+Set intersection.
+
+We also have set intersection.
+
+So that's going to give us just entries that appear in both.
+
+So let's go back to our query, and here I'm gonna get rid of the CID thing.
+
+And change union to intersect.
+
+And the only course offered in both of those sections was CS 101.
+
+Set difference you write is a minus, let's see, sorry, in the relational algebra, you write is a minus sign.
+
+So set difference gives you everything that was in the 1st one, but not in the 2nd one.
+
+All right, so in a Venn diagram, a overlap B, it's everything that was in A, but not in the intersection of them.
+
+Um..
+
+And that is...
+
+Ah, what is the operator for called?
+
+Um...
+
+Is the difference?
+
+Oops.
+
+Not different.
+
+Uh...
+
+Now, what's it called?
+
+Um...
+
+This is minus or something.
+
+I just tried...
+
+I can't remember now.
+
+Um, it wasn't minus.
+
+Um.
+
+D.I.F. And then TAV, so it tells you... Short difference?
+
+Except.
+
+Oh, that makes sense. Right.
+
+Here we go.
+
+See, see, how is that?
+
+Give you a hint how often I use that.
+
+And then there's a rename operator, and we've seen that, um, we can use that in a few places.
+
+So you can just, in sequel, so here it's written as raw.
+
+But in sequel, like, when you're doing select, you can say select, like, we did a course ID, and then just CID, that renames that column.
+
+You can also do it in your from clause.
+
+You can rename the...
+
+And I think you can put as in there as optional, too.
+
+You can say course ID as CID or something like that.
+
+Or you can rename tables, again, from the front claws.
+
+Yeah.
+
+Now, yeah, so there are lots of queries that are going to be identical, or could be expressed in many ways and give you the identical results.
+
+So, like, here, we've written on one way using a wear clause that has two elements.
+
+So select all elements from instructor, where the department name is physics and salary is greater than 90,000.
+
+Or here it's on the nested query, or composed query.
+
+You can say, select everything from an instructor where the salary is greater than 90,000, and then using that as the input, select all roads for department names, physics.
+
+And those will end up, again, producing the same result.
+
+Um, I generally try to, uh, Um...
+
+To lean toward the non-nested query version.
+
+Just in part because I feel like that's me trying to bring my, like, regular programming language approach, and I'm trying to tell it how to do it.
+
+They'll do this and use that.
+
+I mean, that's more like I'm doing more of a sequencing operation.
+
+So I think you're, I would say, generally, especially when learning, try to kind of think, is this something that I can write in a kind of a flatter format rather than a nested format?
+
+Oh, and here's a join, where you can do it in either direction, basically.
+
+It's a little bit of a history here. On sequel language.
+
+So, there's this language called sequel, S E Q U L. Um, part of the systemara project.
+
+So it was a, and then it was renamed the structured query language, which is abbreviated SQL, and usually pronounced sequel, or some places, I remember using my SQL, and it explicitly says the pronunciation of this product is my SUL. Sequel, which...
+
+There are few people comply with, but...
+
+Sorry?
+
+I could hear that high roll.
+
+Yeah.
+
+Oh, I think it's fine.
+
+I bet...
+
+I not very, very happy.
+
+People just don't.
+
+Is that concerned about, correct pronunciation, seems like, you don't know, I've heard.
+
+I'll say my escrow.
+
+I don't remind anybody else who does.
+
+Does anyone say mice wheel?
+
+Cool.
+
+I've heard squeal for SQL, really. So bad.
+
+I think I have before and I've just blocked out the map.
+
+I like sequels.
+
+This is just 2 soables.
+
+It was the SQL really fast.
+
+That's pretty much too cute.
+
+So, yeah, but that's...
+
+So these are standardized, right?
+
+There've been a series of standards.
+
+I dont know if there's one more recent in 2003.
+
+Um, But a series of these threw both AnC and ISO, so AnC is the American National Standards Institute and ISO, the International Standards Organization.
+
+So these are just standard bodies that people generally respect, I guess.
+
+Most of these standards are usually sort of post facto standards.
+
+Like, once something is out there, they go and kind of consolidate it and usually tie you some things up.
+
+But, um...
+
+Um, yeah, so let's see here.
+
+Commercial systems offer most, if not all, sequel 92 features, plus varying features that from later standards and special proprietary features.
+
+So, yeah, I think we said early on, there are a lot of differences between different sequel variants.
+
+And this is a kind of a strategic thing you have to think about, I guess, when you're building something, do you really embrace the specific system you're going with?
+
+You know, if you're building the postgrass, do you really dive in and use all the postgrass specific features, which gives you a lot of power, a lot of great stuff, and kind of ties you to that database and very difficult to migrate out.
+
+Or do you try to stick to very generic, pretty portable stuff and give yourself greater flexibility about changing later, but also probably making everything harder along the way.
+
+This is, I'm just listening to a similar discussion about, like, cloud providers.
+
+You know, do you go and use AWS, which is the giant in the field, and use all of their little services, which makes it so easy to build a product if you really embrace it.
+
+And then you are bound to Amazon forever, right?
+
+You can never move away.
+
+Or do you just go get some virtual machines and some storage buckets and build everything yourself and preserve the option of migrating away?
+
+And I think what happens in practice, most of the time, is projects go in saying, yeah, sure, we're using Amazon, but we're just gonna use it in this neutral way.
+
+We'll preserve our options.
+
+And then out of expediency, but we're going to use their load balancer.
+
+You know, 'cause that's so easy to set up, and we really need it, and we need it right now, and don't have time to set this up in another way.
+
+And, you know, boy, this S3 or this, you know, what's their Amazon's dynamo, DB, sure is, sure does do exactly what we need right here.
+
+Let's just use that one, you know, and then everything else is generic.
+
+And they said, this creep, and over time, again, just because it solves an immediate problem and is so handy. The, um, the, in practice, they get, uh, pretty bound.
+
+They're very, companies migrated between cloud providers now.
+
+It tends to be really difficult. Multi-year project.
+
+Actually, Amazon spent many years trying to move away from Oracle.
+
+So, for Amazon.com, the actual, like, purchase transactions and inventory management stuff, that was an Oracle database until it was, like, a couple years ago.
+
+I think they finally got rid of the last of that and put it onto their own, because they had been offering their own database services by this time for many years.
+
+But it took a long time to migrate away.
+
+It's just really hard.
+
+Um, How do you pick a database to use?
+
+Well, in the open source world, there are not that many that you normally think about.
+
+So, how many of you have used some of these differences?
+
+So we're focusing on sequel light in this class because it's convenient and it's actually surprising.
+
+Despite being, you know, the little embedded lightweight, you know, starter thing, it's shockingly powerful, actually, and it's surprising just how well it works in places.
+
+But we're mainly using it because it's embedded.
+
+I can send things out in coat grinder.
+
+You don't have to have a server running, you know, that's incredibly useful for a class.
+
+What are the other envy used, um, postgrass, for example, postgrass skill?
+
+That was originally postgrass in the '80s, so there was Michael Stonebreaker's group.
+
+They created one of the early relational databases.
+
+There was the ingress project, and then the post grass that came after it.
+
+It actually was not sequel.
+
+It had its own language, which was called Quell, I think.
+
+If I remember, I don't remember if that. Not very confident in that, but it had a different query language, which, by most accounts, was actually a lot nicer than single.
+
+The sequel is not great.
+
+A lot of there, a lot of place, a lot of wards it has.
+
+Um, and it was not the kind of, you know, universal standard about pointer.
+
+So?
+
+Yeah, so it was another implementation of relational algebra, essentially, but I think I've never actually used it.
+
+But that was a research project, you know, and then eventually, and I don't remember if they had a commercial variant, but it was sometime in like the late 90s or 2000s.
+
+I think it was, like, late 90s.
+
+The post-grass QL project came along, bolts sequel on the front end.
+
+And so that's why you'll see people call it postgrass is kind of a shorthand form for it in postgrass, QLs, the full name, and the old version is long gone.
+
+Um, Just kind of the shorthand here, I guess, postcress is, I think I pretty much all, you know, almost universal agreement now, the best open source.
+
+Anyways.
+
+I don't think you'll find many people trying to argue that at this point.
+
+So most featureful, um, has the best kind of project that's reliable and moving forward.
+
+And it's the most standards compliant.
+
+It does a really good job of actually tracking the NC standard, the official standard.
+
+Um, grows really well.
+
+So there used to be this reputation, the post grass was more complicated to set up, slower, but more featureful.
+
+And then my SQL, its main competitor, was kind of easier to set up and get running and faster, but less robust, which I always say.
+
+Um, postgress really came from kind of database people and who maybe weren't that sensitive to the needs of applications.
+
+So, okay, it was kind of a pain to do some things.
+
+And my SQL kind of came from, again, slightly exaggerating or a little caricature here, was from, like, application people who didn't really know that much about databases.
+
+So MyasQL, especially early on, had a lot of really, they didn't understand foreign keys, didn't enforce them. Didn't enforce a lot of constraints.
+
+And gradually added those things.
+
+Post grass gradually got faster, and, you know, easier to run out of the box.
+
+So they're pretty similar in a lot of ways at this point.
+
+Like, again, it seems like whenever you look, talk to people, comparing them, it's like people already invested in an ecosystem will continue whatever they're doing.
+
+And that's probably the right thing to do.
+
+If you're starting from scratch postgrass, it's almost always the right choice.
+
+If you need to be able to grow, you can grow pretty far with it.
+
+This is kind of amplified by, boy, quite a while ago now, Maya's QL was... Acquired by son. Who was then acquired by Oracle.
+
+I think it was indirectly.
+
+Once Oracle just bought the project, but I think it was in India.
+
+I think they acquired that when they bought Sun many years ago.
+
+Not presented an awkward situation, where one of the major commercial database vendors also became the owner of one of the most popular open source database projects.
+
+An Oracle is not known for being nice and like good to work with, right?
+
+When son got bought by Oracle, everybody just abandoned ship.
+
+All of a sudden people left.
+
+It was the end of sun, essentially.
+
+Um, you know, and then so that that came with Java, was on my son.
+
+And Oracle then turned around and started suing their customers for using Java in ways they didn't like.
+
+They had this long lawsuit with Google, because Google did their own implementation of a lot of parts of Sun for Android.
+
+And Oracle wanted a chunk of Android, I guess.
+
+They didn't get it in the end, but it was a very long protracted lawsuit.
+
+How many companies do you know that sue their customers?
+
+Like, just seems like not a great strategy.
+
+Um, let's see, company.
+
+There is this famous old web comic.
+
+Showing the organization charts of various big companies, and Amazon here, you know, very hierarchical, Google, not as deep and a little chaotic, right?
+
+Not fairly flat with the three founders up there.
+
+Well, sorry, Eric Schmidt and the two founders. That's doing.
+
+Facebook, which kind of interesting.
+
+Microsoft, this is one of the old jokes there.
+
+It's like the different organizations are all just like at war with one.
+
+It's like windows and office and, um...
+
+The currency CEO, Safina Adel, when he came along, he, one of the greatest things he did, he came in right away, like, sort of broke the, the hold that the windows group had on the whole company.
+
+And that's why they're thriving now, basically.
+
+I think it was a really good move.
+
+Something Balmer never managed to do.
+
+Oracles, like Steve Jobs and everything.
+
+And then oracle... Engineering group, but mostly they're there to, like, sue people and make contracts, and, uh, I used Oracle and Company before I went to grad school.
+
+And even then, like, figured out pretty quickly that they don't make their money from their licenses, they make their money from their consulting.
+
+And so, creates these bad incentives, and this is very evident in Oracle.
+
+They give you stuff with very poor documentation and bad settings.
+
+And then what you're supposed to do is hire an oracle consultant to come, and they will set it up and they'll turn all the right switches on for you.
+
+But if you try and do it on your own, there's no good documentation, and everything's wrong out of the box, essentially.
+
+So, um, it's kind of an ugly situation.
+
+Oracle does not have a good reputation.
+
+They have some good technology, and everybody hates working metaphorical.
+
+And that's been true now for, like, decades.
+
+I haven't heard of any changes, really.
+
+Um, actually, they're cloud hostings, supposed to be one of the better choices for a lot of AI vendors, but, um, anyway, so some old Silicon Valley lore there, I guess.
+
+Um, so, so yeah, so my SQL belongs to Oracle, and nobody quite trusted them, and the original my SQL team forked it and created a new project called Maria DB.
+
+So you'll see those are compatible with each other, but really, Maria DB is sort of the going forward version of the original open source project.
+
+And there's still, like, library compatible with things, I believe, at this point.
+
+But if you were going to go for that, I would pick, so it's again, postgress or Maria DB are really the 2 kind of server choices for open source.
+
+But both of them, again, are not well configured out of the box.
+
+Sequel Light, this is true, too. There's a great respect for backward compatibility in these communities.
+
+So, postgrass kind of comes, set up, usually, in most distributions, as though you were, it's, like, 2003, and, you know, you have a couple 100 megabytes of RAM, and...
+
+So, the settings, the cache is way too small.
+
+There are various other things where, you know, one of the first things you have to do with all of these is go into the settings, like, go look up a guide on, like, how to modernize it and get it running faster.
+
+And a few simple settings will make a huge difference in the performance.
+
+Sequel light, or sorry, MySQL or Maria DB.
+
+I think it's still true with those. Tend to come with a lot of features turned off that should be turned on.
+
+So, like, honoring foreign key constraints and such. And honoring type constraints.
+
+If you say not null on a column and wanted to actually reject null, you, that's a switch, you have to turn on first.
+
+Because originally it didn't have that, until it became a feature you had to opt into.
+
+And then just kept that.
+
+Sequel lights kind of the same way.
+
+You'll see the setup that I give you, where is it?
+
+Here's the dot sequel IRC file that I sort of embedded in the assignments.
+
+Um, sets the encoding UGF 8.
+
+I think that's default now.
+
+Busy time out of 10,000 says that if you're, it's default mode, if you do, there's a lock on the entire database, it's default setup.
+
+So if you start a query, it started some re-own.
+
+You can do concurrent read only careers.
+
+But as soon as one of them tries to write, it upgrades to a rideable query and just locks the whole database and nobody else gets to use the total transaction ends.
+
+And the default mode is that the library, if you try to access it, will just return an error, this isn't as busy as it's difficult.
+
+And so doing this busy timeout says, it should retry for up to, in this case, 10 seconds, 10,000 in a second, before it reports.
+
+Which gives you a little less surprise at me.
+
+For he's on, yes.
+
+Let's observe for him, he's.
+
+And then there are a couple different kinds of like journaling mode and so we'll talk about that later in this semester.
+
+I went with all these, um, And some of these are defaults.
+
+I just can be explicit here.
+
+One that a few that, if you just go and open sequelize somewhere else, you'll find your output is different than it is here.
+
+And part that's the dot headers on tells it when you're seeing a result, you know, you have the column names up there.
+
+Mode tables, what tells us to draw the lines and line everything up.
+
+The default mode is kind of ugly.
+
+It just puts, like, a vertical barbage from columns and it doesn't line them up, and it's really hard to leave.
+
+So that cable mode is actually relatively new, but it's wonderful.
+
+And then I, like, really like this, got no value.
+
+When you see a null, instead of it just being nothing, which is indistinguishable from like a space or something, or an empty string, it puts this, you know, I found this little Unicode character that is some kind of nulls and new thing.
+
+And so that tells it to show that in that place, right?
+
+You know, a few changes like that, maybe a lot nicer issues.
+
+Where does the fragment term come from?
+
+Um, it's not like an old C thing, like Primal once.
+
+Yeah, but like, what does it even, what does primary mean?
+
+I think it's just pragmatic.
+
+I'm not actually sure, but it's normally it's a nonstandard extension.
+
+Okay.
+
+So in C, there are pragmas, and again, they're usually like compilers specific, although some of them become fairly standard, quasi-standards.
+
+And so, yeah, these are all instructions.
+
+These are, so sequel light uses this to say, here are like sequel light specific settings.
+
+And it has a list of the available ones on their website.
+
+So yeah, that's, again, I don't know.
+
+I assume it's just some derivative of pragmatism.
+
+You know, it's, we just need this practical way of getting this thing done.
+
+Something I should mention, the sequelite documentation.
+
+Now, I know you are all in the habit of, like, never reading documentation.
+
+Our website is so good, though.
+
+And sequel light has fantastic documentation.
+
+So there's some places that, places that do their documentation well, it takes me a while to figure that out.
+
+So I do the, I'm always searching, I'm going to, like, stack overflow and all this kind of stuff.
+
+And then I find, you know, with some of them, like, with this, they just, they just kind of keep linking back and it's like, oh, actually, I should just, this is one I should just start on the official documentation.
+
+It's like all the go language stuff, that's what I do.
+
+A lot of rust stuff now.
+
+Sequelite.
+
+There are a lot of others that are terrible, and that is absolutely the wrong thing to do, but this is one where you really want to do that.
+
+So, um, I usually search my way into it, I guess.
+
+Um, so sequelite pragmas.
+
+And then, but I'll find the one that is going directly to the sequelite website.
+
+So, let's just look, here's the documentation for Pragma, or they have these kind of these, they're called railroad diagrams.
+
+This is a way of writing syntax.
+
+If you've done anything with context for grammars, like if you take programming languages or compilers, these are equivalent to more comp theory.
+
+I'm sorry. Equivalent in power context, your graphs.
+
+And so, you just start at the beginning and follow it, and anywhere there's a path, you know, you can go there, so you can say pragma, and sometimes it, um, you can mount multiple databases, multiply the scheme is active, or you can just go straight to the pragma, hear the syntax is not really challenging, but, um, he actually published a library, too, that lets you draw these diagrams.
+
+It's kind of cool.
+
+Um, so they're just rented on the fly here.
+
+But if you scroll down here, here's the list of pragmas available in sequel item.
+
+And most of these...
+
+Sorry?
+
+The Costco ones are most, like, not used anymore.
+
+Yeah, I believe so.
+
+Don't repeat a movie. Whose names are stripped through or democrated, do not use them.
+
+Yeah.
+
+It's this for historical compatibility.
+
+Yeah.
+
+So like case sensitive life, right?
+
+Life is supposed to be case insensitive, and they usually have it used to have a selectable, and I don't I think that might be a reasonably recent one that they crossed out.
+
+Um, Yeah.
+
+Well, sometimes it's helpful to go in there.
+
+Like, if you want to change the size of the cash, again, it comes with a pretty small one by default.
+
+So some of those become more relevant as you're working with, bigger data sets and things.
+
+So, yeah, so again, softens, like post-grass is usually just, you don't want to think about it too hard.
+
+That's probably the best choice for building something.
+
+Unless it's sequel like.
+
+And actually sequel light, again, is kind of shockingly good, and it's faster than any of the others.
+
+The embedded structure is much faster than round trips to a server, and it is just really well written and very quick.
+
+It's suffers, it's not as good a concurrency.
+
+Although it's newer right ahead, logging mode makes that quite a bit better than it used to be.
+
+But postcrest still handles kind of heavy load, generally better than secret life does.
+
+And so, that's kind of where the difference tends to count in.
+
+I used to run code grinder, I made it on postgrass originally, and then one day went and just switched over, and I thought, oh, I'm probably gonna have to rewrite a bunch of this for features, sequel lights missing, you know, but I thought it'd be easy to run.
+
+And I think I had one place where I put parentheses that weren't, that postgrass accepted and weren't actually allowed.
+
+And when I remove those, everything else like that, just where it can see you.
+
+It was way faster, just a lot easier to manage, so...
+
+Don't overlook it.
+
+There are different parts.
+
+So, there's, uh, we we'll focus really on querying data and things like that, but there's also like the data definition language for setting up the tables and things to find in the schema, and some other parts as well, that are all defined separately.
+
+So, like, the data definition language, this is like your create statements, and we'll look at them a little bit, but we'll get too into it, I guess.
+
+Name the types of values and various integrity constraints.
+
+So this is one where the types of columns, there are standards, and then there's extensions that most people end up using.
+
+So here, like, the kind of core standard types in sequel.
+
+We have char, suban.
+
+I don't remember the last time I saw this.
+
+It was too.
+
+So this is a thick swift column of characters.
+
+See, you tell it there are gonna be exactly 10 characters.
+
+This would be good for storing, like, social security numbers maybe.
+
+If you didn't want to store those numbers for some reason.
+
+Or like for state abbreviations, it's gonna be two letters, then you could use this.
+
+But it's always exactly that with, and if you, it just, it pads with spaces if you don't use the appropriate word.
+
+I don't have the right, but bar car gives you variable length, one up to end characters.
+
+So, again, that's a standard.
+
+You'll see that a lot.
+
+But most of them now also just allow you to not use this universally and sequel light text, which just allows you to do any length of string.
+
+So if you wanted to enforce a length, you know, here's an option to put in there.
+
+But mostly this is kind of coming from old implementations.
+
+Early databases would use fixed size rows.
+
+So every record was the same size.
+
+So if you had a table stored and you wanted to go and find record 10,000, you would type 10,000 times the length of one row, and that would tell you how many bytes into the file to go get it.
+
+So every string, you would tell the maximum length, and it would set aside that much space, even if you weren't using it.
+
+And we don't, you know, nobody rarely structure things that way now.
+
+So there's just no reason to give that maximum length. You know, it doesn't have that same, like, implementation, you know, recently.
+
+And then we have in, small in, again, the size of those are kind of machine dependent.
+
+Um, And it's integers, it's often written out as integer, um, A lot of like sequel light and most others will take aliases for a bunch of different type names.
+
+This is absolutely something, you know, once you pick a database, you kind of have to just go look up whatever the types you should be using there.
+
+You're married?
+
+Okay, so this one's interesting.
+
+So this is a fixed point number.
+
+So you tell it exactly how many decimal places to store and it stores it in decimal format, not in binary format.
+
+So this is a very standard way to use, like, money and things like that, where you don't want floating point weird rounding rules.
+
+You want base 10 values.
+
+Most databases, actually, I don't.
+
+I don't think people like, does this?
+
+How about type automatically?
+
+I think, I mean, you can store a string.
+
+I not sure it actually has the American type, not the implication of it.
+
+And real and double precision as floats, so that's the binary flow.
+
+It's real being a 32 bit double precision being 64.
+
+And then, yeah.
+
+So, again, I look at these and the ones I actually use out of this list would be real.
+
+And now that I think about it, I should probably use double precision instead.
+
+So that's a place where there's a lot of divergence.
+
+Generally speaking to create a table, you have a create command or a create statement, you have the name of the table, you list the fields, each with its type, and also with constraints that go with them.
+
+Again, we won't go too much into that here, but we'll get a few basics.
+
+So, integrity constraints usually comes part of the create statement.
+
+So here's our creatable instructor.
+
+If ID, name, department, name, salary, char, bar, char, bar, char.
+
+For people say, bar, car.
+
+I think I know how do you say bar char, I guess, in America.
+
+We have a not knoll designation there, by default, every field is nullable.
+
+So it can be the type you specify or null.
+
+So you have to tell it if you want to be not null.
+
+And then here was designated the primary key to being the ID field.
+
+When it's a single column like this, you can usually just put it up here and say, time like he is like a kind of suffix, the calm as well.
+
+But if you have multiple fields, it has to be separate. Decorations.
+
+So we're gonna need to those, what you call.
+
+And then foreign key, that's an important one.
+
+And the way to read this, foreign key inside parentheses is the set of keys that reference, from this table, references, and then the other table, if the names are the same, you can leave it at that, but otherwise you put parentheses and tell the names.
+
+Would you have to make the department table before making this instructor table, or could you add those references before you actually create it?
+
+In sequel light, you can do whatever order you want.
+
+It only enforces it at insert time.
+
+I'm not sure if that's true with others, but I think generally that is the case.
+
+Because you can have circular references.
+
+You often also suspend enforcement temporarily.
+
+Sometimes that's useful for building secular dependencies and cool.
+
+Uh, let's see, what else we got here?
+
+Nothing new and student, I don't think.
+
+Takes has a primary key, that's a, um, has four columns in it.
+
+Um, that references both to student and to section.
+
+Again, here, the names are the same, so the foreign key just tells which table it references, but you would also put in parentheses again, community. Explicitly name the columns.
+
+Um...
+
+Now, almost all databases have some shortcut for numeric primary keys.
+
+So, um, in sequel light, if you just have a field and it's integer primary key, then you can omit it when you insert a row, and it will automatically give it the next unused integer.
+
+With some others, like, I think with postgress, you need to tell it, it's like an auto, auto increment.
+
+Thank you, there's a special word for it to tell it to use to do that. Behavior.
+
+But they all have some kind of automatically give you an incrementing primary fee, but it's something that's not standard.
+
+So it's very across all of them.
+
+But that's when you'll probably use very often.
+
+The other major kind of query types, insert, delete, and update.
+
+I'm not sure why I've played this in here.
+
+So inserts how you insert data, the basic form inserted to instructor, you say values, and list the columns in order, or before values, so inserted into instructor, you could put parentheses and list out the column names you're going to specify in the order you're going to specify, and then say values in the values to go with it.
+
+So you don't have to depend on, you know, the order being implicit.
+
+That also allows you to omit fields, like for those auto-generated primary keys.
+
+In fact, all columns in modern systems can have default values.
+
+And if you just submit something, it gets filled in for you.
+
+But you have to then tell, insert that you're omitting those columns, deliberately.
+
+Delete, let's you delete, delete from cable, and you have a wearcloth, telling which one Super League.
+
+And update is missing.
+
+It's probably the next page or something.
+
+Let's see.
+
+I don't remember.
+
+Um, update, you would say, you know, update, instructor, and then you say set, column equals new value, comma, column equals new value, and then a wear clause.
+
+Um, A common extension, again, is what's called an upsert, where something you want to insert something, if that primary key does not exist, and if it does alter the existing realm.
+
+And so most of them will have some way of doing that, sometimes gracefully, sometimes it's a little ugly, to be able to do it rather than you have to do multi steps.
+
+But that's, again, another non-standard but pretty universal extension.
+
+And then drop cable and altar for actually changing the schema itself.
+
+So, this is something, again, kind of, a little different than a lot of systems we use, because, again, the server is meant to be, they're running, online, 24 7.
+
+And so you can actually alter the shape of the data, like, on the fly.
+
+Those are inline operations.
+
+You don't have to stop it, go and make changes to it and bring it back online.
+
+I usually do it that way anyway, but if the database is small enough, because it's fairly limited in what you can do, but you can add new columns, and often delete new old columns, and you can drop tables as well.
+
+Okay, we've seen basic structure of select, but there's some, um, probably some details we should look at.
+
+Let's see.
+
+Yeah, I've seen distinct.
+
+All, all is the default.
+
+So it's the opposite of distinct.
+
+So you can specify that if you want to be explicit, I guess, but... Star.
+
+Yeah.
+
+Um, So what?
+
+Vote 437, right?
+
+You can actually just use it as a simple calculator if you want.
+
+Select 4 plus three, return a value seven.
+
+Not done very commonly.
+
+But it is a, you know, a full, a full language there, so there's a lot more you can do.
+
+Here's renaming things, columns, like we've seen some of that.
+
+Um, Here?
+
+Okay, here's maybe something a little more useful.
+
+Select ID how many income, a salary divided by 12.
+
+So again, the values that we select don't just have to be column names, they can be arbitrary expressions involving columns.
+
+So, like, if we have their annual salary, we want to get, like, their monthly salary instead, this query will do that. Basically.
+
+Something I think some of you saw, hopefully all of you figured out last assignment.
+
+Um, like, with sequel light, right?
+
+Does it is your math?
+
+But if you throw in a floating point value somewhere, it will convert to floating points.
+
+So if you just multiply something by one. 0 or add 0.0, you end up in flooding .5.
+
+I just multiplied by 3000 and then divide it by a few thousand.
+
+I can work too.
+
+But if I just say select ID, come a name, come a salary divided by 12 from instructors, that 1st one says, the column name will be salary slash 12.
+
+So this is common another place you probably want to use as to give that call a friendly name.
+
+Uh, I've never seen where.
+
+Um...
+
+And or not connectors.
+
+We have those expressions for, especially for numbers, various comparisons, and they can apply most of them to strings as well.
+
+Um...
+
+Yeah, so, like, here's an example of, we don't use the join, but we're kind of doing a join.
+
+So like name, common course ID, from instructor comic teaches.
+
+That's just giving us the Cartesian product.
+
+But then in the wear field, we're saying the structure ID needs to be teached.
+
+So we're effectively doing a join, but not doing it, writing it as a join. Additional filters.
+
+And for the most part, it doesn't matter which one you do.
+
+Other than I think it's a good idea to write your query in a way that sort of expresses your intent, clearly, right?
+
+And a join is probably a more descriptive way of explaining what you mean and why you're doing something than, uh, um, than a beefed up wear claws would be.
+
+Um...
+
+You can have joins can relate back to themselves.
+
+So you can have, at a table, you can have a foreign key that is a self reference, like a supervisor relationship.
+
+And we'll see how to do recursive queries a little later, where you can actually follow those relationships all the way to the end.
+
+And I think we already saw some of these operations with strings, like using the like operator, which remembers case insensitive, and also allows you to use percent and underscores these kind of wild cards.
+
+Percent and underscore, I'm trying to think of anywhere else.
+
+Those are used as wild card characters in the same way, and can't think of anything off the top of my head.
+
+But it's probably fairly standard back in the one sequel was 1st being developed.
+
+Also, I see a few things like that that come out, you know?
+
+In a language where a percent size, the common, the common marker. . And so on.
+
+But, um, That's what it is here.
+
+And you can specify what an escape character should be.
+
+Me, too.
+
+You can also do things like, uh, concatenation.
+
+This is a really useful one.
+
+So you can select, like, multiple columns and combine them just by pushing them together, using a double vertical bar.
+
+I'm gonna go show you, um, got some kind of fun, uh, stuff in, in the co grinder.
+
+No, no, sorry.
+
+Marmot.
+
+The scheduling system.
+
+So, like, here...
+
+I was trying to think how to best to do this.
+
+Modeling kind of core stuff.
+
+There, like, courses.
+
+So, of course, it would be, like, CS 4307.
+
+And, um, But I also want to be able to look at just the prefix and just the course number.
+
+What I didn't want to do was have like that specified redundantly.
+
+So, here I'm actually using some virtual columns.
+
+And the syntax for these is sequelite specific, I believe. Pretty sure.
+
+But again, it's something you'll find everywhere, just a different way of writing.
+
+So the way I decided to structure is you have the course, this VCS, space 4307.
+
+Department is a foreign key, course name is just tax, like that would be database systems.
+
+And then the prefix is generated, generated always as...
+
+So we take course, do a substring from one to, let's see, search in the stream to find a space that's in stir, course space, subtract one from it, because it substirred as an inclusive test over here.
+
+Then go from one to that point, so that will get CS.
+
+That will pick out CS from CS 4307.
+
+Virtual, not null.
+
+So the virtual means don't store this, just compute it every time you load the wrong.
+
+And then course number does the same thing, but grabs the, um, finds the space and goes one past it.
+
+And then I checked to ensure that the length of the prefix is greater equal to one, the length of the course numbers at least four.
+
+So kind of local specific stuff.
+
+Yeah.
+
+So if we didn't have that virtual keyboard there, this would be stored as like a variable that we could use later in the query or...
+
+I'm trying to remember.
+
+Well, you can use it anywhere like an ordinary column, but the question is, does it actually store it on disk?
+
+To compute it once when the record has changed and stored or does it recompute it every time?
+
+And I want it to just recompute it every time.
+
+It was some expensive calculation, maybe makes sense to actually store it.
+
+Okay.
+
+But otherwise, this would be, like, wind weird when we were getting, like, a selective that's being displayed, then they calculate this.
+
+Yeah.
+
+And you can use it in wear clauses.
+
+It's usable just like anything.
+
+But if you made an index on that, that would be stored anyway.
+
+Yeah, the index view story.
+
+Okay.
+
+Yeah.
+
+Um, and I feel so useful.
+
+But it, but it's still, but the record itself, you know, it's not, this is avoiding the redundancy there.
+
+Yeah.
+
+Um, Oh, here I have concatenation is the one I want to show.
+
+So sections, I do the same thing.
+
+So this will be CS 4307 dash L1.
+
+So again, I kind of pick out the course part, everything up to the dash.
+
+The section number is everything after the dash.
+
+I check to make sure the course is at least 6.
+
+It means you at least a one letter prefix, a space, and four digit.
+
+It's kind of a sanity check.
+
+Section numbers are all these two digits.
+
+And then I check, what happens if I reassemble it?
+
+If I take the course, hyphen section number, so these double vertical bars are strength concatenation.
+
+I want that to match the original section.
+
+And if any of these checks fail, the insert of the update fails.
+
+So that's part of the integrity checks that it does.
+
+And the and look at this, the foreign key reference is on that virtual column.
+
+So the reference to the original course, I wasn't sure if I could do this if I tried it.
+
+Um, reference this course in here, the folds. Specified lists in both places.
+
+So, they know, you'll also see throughout here is this ondolite.
+
+Remember, foreign key integrity is one of the things the database guarantees.
+
+If you reference a course, CS 43, 7, there has to be a record in the courses table that matches.
+
+And if not, when you try to insert a section that doesn't match, you get an integrity failure.
+
+And if you try to believe a course that had references to it, that will fail.
+
+Unless you tell them what to do.
+
+On delete cascade.
+
+So what this means is if I go to the courses table and delete CS4307, it will, the cascading delete will delete this section as well.
+
+And if there's anything in the foreign key reference to sections that has that same happens, an on update can cascade.
+
+If I go and I, ooh, that can't actually work.
+
+But I can just plenty, uh, ritualizing this, I guess, but, um, for a normal call, if I want to change the name of the course, it would automatically update the for the reference to it here.
+
+So if we had like a, you know, an instructor's name we were using as a key and changed the spelling or something like that, this would update all records to reference it.
+
+So that's pretty nice.
+
+I then went on to do a lot of views and things, some kind of gnarly, after the triggers.
+
+Oh, yeah, let me go.
+
+Something I don't know if I should be proud of this or ashamed.
+
+Well, Jane is always just fun, so...
+
+Kind of little, thank you.
+
+That's very wide there, but, you know, kind of a little bigger.
+
+So the time slots.
+
+Well, my time slot format is, like, like, this would be Monday, Wednesday, 13 o'clock plus 75.
+
+That's how your destinate this time slot.
+
+And I want those to be days of the week in order, upper case, I want the time to be multiple five minutes, and something that is a valid time, so it can't be, like, 1375.
+
+Um, and so, yeah.
+
+So the time slot you just inserted is a string.
+
+And then I want to extract it, I use days, I extract that using substrings, kind of like we did before, and I do it by finding, let's see, the duration part, I think I could search for.
+
+Because I could search...
+
+Oh, I found the plus sign.
+
+So Monday, Wednesday, Friday, 1300, or Monday, Wednesday, plus sign.
+
+That allowed me to kind of find a separation from the 75 minute nation, everything that came before.
+
+So duration I take that, start time, I think I take where the duration plus sign is and go back four characters from it.
+
+And then the days or anything before that, that was how I figured out I could carve it up.
+
+I don't think there was, like, an inst digit or search for digit function.
+
+And then, I think maybe shaking cup theory.
+
+They're taking now, or just watching now?
+
+Last semester.
+
+Oh, yeah, all right, right.
+
+Remember General Grammars?
+
+Did you have an assignment where you kind of go and make these things that sort of sweep through and chomp and everything like that?
+
+That's bring balance to control?
+
+No, for general graphs, not context free grammars.
+
+So for your experience, then, like multiplication.
+
+Maybe not.
+
+They may cut that out.
+
+But anyway, so this one, yeah, me too, this is...
+
+Um, let's see.
+
+The...
+
+Checking.
+
+I wanna make sure that it's, like, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday, in that order.
+
+No, do we close?
+
+So I take the full piece, so I say there have to be some days, length is greater than zero.
+
+And then, um, it doesn't contain dollar signs, and I'm going to use that as a special medic character.
+
+And what I'm gonna do is take, let's see, the dollar signed and concatenated on to the beginning of the days.
+
+And then we're going to go and replace dollar sign, NM with dollar sign.
+
+So I'm gonna chomp the M off if there isn't M in the beginning.
+
+Take that result and replace dollar T with dollar signs.
+
+So then Chomp T, then Chomp W, so it's only doing them if they're there.
+
+If they're not there, nothing happens.
+
+But it will only do them in order and only once, all the way through Sunday, and I should be left with nothing but a dollar sign.
+
+So I had to start with something. Do.
+
+It didn't have a dollar sign.
+
+If I put a dollar sign and chomped these things off in order, I should end up with just a dollar sign, so it was a dollar format.
+
+So, like, yeah.
+
+Um, and then for the time, I take, I pick out, um, the start time.
+
+Let's see.
+
+I look for...
+
+I think I kicked out start time somewhere else, yeah.
+
+So I cast it as a number, I take that and take a modulo 60 to find the minutes, this text, and then, um...
+
+One second.
+
+If I'd already extracted, I want to take the owl apart and the minute apart separately.
+
+Put in leading zeros if necessary, on the menopart.
+
+So take the start time, divided by 60 negative eight hour.
+
+And then put on any meeting zeros immediately.
+
+You can catnate that on and take the last two letters of it.
+
+Do a similar thing for time with modulo.
+
+Um...
+
+So, if it's above 60, this is gonna fail this check.
+
+And then, again, kind of reconstruct it, put it back together, and see if we end up with the time to start.
+
+That was kind of a good way to validate this very fidgety format, is extract the pieces, and then go back and rebuild it and see if we ended exactly where we started.
+
+So somebody can't go and say, like, 1375 is the same as 1215.
+
+Oh, sorry, 215, 1415.
+
+I don't want those to be the same. Different.
+
+So, you know, it was kind of surprising.
+
+Some of these are not pretty, um, but, you know, you can do a surprising amount in there.
+
+And there's actually a lot more I ended up...
+
+I actually moved a lot of data pre processing into the database, a year or two ago.
+
+So that, um, I could write kind of different, I was doing some experiments in Python, I had the main coat and rust, and I didn't want to catch replicate that logic and keep in lock, lock sink.
+
+I made the database do all the work, and it was surprisingly capable for a lot of these things once I spent some time thinking about it.
+
+We'll look at more examples of their time.
+
+So I posted that as an assignment.
+
+It's some aggregation queries.
+
+Um, which we then didn't talk about today.
+
+But I guess we got tomorrow, so...
+
+We'll make sure we hit group by.
+
+Any documentation?
+
+Yeah, you can also go...
+
+And this is something the sequel bolt has a bunch of examples, but we alluded to it yesterday, right?
+
+When you have a bunch of rows and you want to make one result out of it.
+
+That's what all of these are focused on.
+
+But, yeah, we'll cover that more tomorrow.
+
+So I'll see you tomorrow. 

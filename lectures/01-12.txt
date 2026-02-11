@@ -1,0 +1,1949 @@
+Welcome, everyone.
+
+Uh, this is CS 4307.
+
+Database systems.
+
+Um.. Last class of the day.
+
+I hope.
+
+Do they have an evening class?
+
+Are you early?
+
+Yeah, strongly.
+
+Oh.
+
+Well, that kind of has.
+
+That makes sense.
+
+Yeah, I guess it's inevitable, but it feels pretty late in the day to be already, actually, here, but...
+
+Um..
+
+So, um, for this class, I kind of want to just dive right in, really.
+
+We'll talk about some administrative things, but we'll come back to that.
+
+Um, I want to start with a crash course on sequel.
+
+So, we're gonna be talking about database systems, and.. We're really going to...
+
+They're kind of two parts of the class.
+
+The first part is learning to use standard relational databases, using SQL as the access language.
+
+And we'll define all those terms as we go.
+
+And then in the kind of second half of the semester, our focus will turn to how databases are implemented.
+
+So we'll look at them from kind of the perspective of users, initially, and then we'll go and see how these things are put together and how they work.
+
+Relational databases are one of the most successful kinds of classes of software, I think, that we've ever built.
+
+They are incredibly useful, incredibly powerful, and have just been built and developed and iterated on for decades now.
+
+So they're really in a high quality state.
+
+Um...
+
+So, let's look at some examples, because I think getting some doing, just playing with some examples first, will give us more of a launching point to actually talk about things and start defining terms.
+
+So we're going to use this sequel bolt website.
+
+It has a nice little tutorial with some examples to work through.
+
+So, sequel to structure query language or stand query language, and it's structure query language.
+
+I think that's correct.
+
+Is the language we'll use for interacting with a relational database?
+
+We're gonna rely very heavily on sequel light in this class, which is kind of the smallest and simplest use of the main database engines, which will make it really ideal for setting up assignments and things like that.
+
+And it's one that is kind of shockingly powerful despite its name.
+
+It's also one of the fastest ones out there.
+
+Um, what kind of sets it apart is it is a library.
+
+So when you compile an application with sequel light, the entire database is actually there as code linked into your application.
+
+And then the database is typically tracked as just a single file on the disk.
+
+So that's part of it's kind of simple structure.
+
+Whereas the other major databases, post grass, is probably the best, well, almost, I think, there's not much argument at this point.
+
+It's the best of the open source databases.
+
+My SQL and Maria DB, there's a fork of that.
+
+The commercial ones, like Oracle and Microsoft sequel server, and so on.
+
+They are all client services, where you have a database server running, and you contact it through a client and run the commands and give the data back.
+
+And so it's a very different architecture.
+
+And it's that embedded structure of sequel light that will make it really easiest for us to use, like, within code Grinder, for example.
+
+But.. It actually has most of the same structure as those other systems.
+
+So a slightly similar fight scale.
+
+So, it's a very good representative example, even if it is at the kind of the low end.
+
+So, um, what do we mean by relational database?
+
+Well, the fair number of terms here, and there's kind of the formal terms in there, the terms people most people use.
+
+So what you were talking about, a sequel database, you'll hear talk of columns and rows, and tables.
+
+So that's kind of one set of terminology.
+
+So each table, sorry, please.
+
+Is that what we, uh, are defining your relational database as, as a database with pros and columns?
+
+Is that what you mean?
+
+Um, That's part of it.
+
+Okay, that's true.
+
+So, so we'll have tables, each table is going to hold one kind of information.
+
+And a typical application will have many tables.
+
+So, like, here's an example of one table for to hold information about vehicles.
+
+And you can usually draw it in this kind of spreadsheet cable format, which makes it convenient to represent.
+
+But the internal representation in the database is something else.
+
+But the structure of the data and relational databases are highly structured.
+
+We have these columns.
+
+So, again, this is just taken from the way we draw a table on a page.
+
+We have ID, the make, the model, the number of wheels, the number of doors, and tight.
+
+Each of those categories is what we call a column.
+
+And then a single entry in the table.
+
+So for the Ford focus or the Tesla Roadster, each of those would be a row, and a row in the database has one entry for each of the columns on the table.
+
+So, again, the structure is very kind of rigid and uniform, and that's part of where the power comes from.
+
+So this would be just considered one table.
+
+By itself, we haven't entered anything relation.
+
+But we'll come to that.
+
+So let's start with just single tables, which are the easy example, and actually really useful on their own.
+
+And let's see some basic things we can do.
+
+So here's kind of structure of a very simple select query.
+
+So the queries for these databases, the sequel is a text based language.
+
+I would say to call it a programming language.
+
+It's really a specialized, domain specific language, but it is ordinary text.
+
+And it has a very specific structure, so here would say select, column one, column two, or whatever, from my table.
+
+Those are kind of the two, like, mandatory parts of the query.
+
+This is, like, the simplest query you can do.
+
+And you can use a star to represent all of the columns.
+
+So select star from my cable, that's pretty much the simplest useful query you can do.
+
+So, if the from part is telling it which table, or when we start to do actual, um, more complex queries, which which tables, we actually wanted to get the data from, and then the select part is telling us which call too much return.
+
+So, here's a database of some Pixar movies.
+
+And if you exercises, again, we're just gonna kind of dive in and do examples, and then explain what's going on as supposed to go.
+
+So, don't hesitate to stop and ask me questions.
+
+Um, you know, the goal is to kind of just get a feel for things and give the basis for actually talking about it.
+
+So our first task is to find the title of each film.
+
+So we have here a query that's prepopulated for us.
+
+Select star from movies.
+
+That returns everything from the database table.
+
+So we want to just narrow it down to we're just getting the title.
+
+So how would I modify this query?
+
+I want to take out the semicolon, too.
+
+Changing ash bricks, to 10?
+
+Ask, well, get rid of the star.
+
+We don't want to return all the columns.
+
+We just want the column called title.
+
+And on this, I don't even hit enter.
+
+The sequel bolts really aggressive here.
+
+So select title from a movie says, give me all the titles from this cable called movies. Right?
+
+Pretty simple.
+
+Find the director of each film.
+
+Okay, well, we change that instead of saying it's like title, I want to select director instead.
+
+And there we go.
+
+Note there's some duplicates.
+
+All right, because John Lasseter has directed a bunch of them, Brad Berg, so if you understand, I have a lot of recounts.
+
+Is this all Pixar movies?
+
+No, these are all the kind of older ones, I think.
+
+Okay.
+
+I don't remember what, I don't know, what the cutoff is.
+
+I think we'll end up playing with dates a little more.
+
+And this is somewhere actually where sequel differs from the pure relational model.
+
+The relational model actually works on sets.
+
+So duplication is not part of it.
+
+Sequel works does have duplication.
+
+Find the title and director of each film.
+
+Oh, we just comma separate the list of columns that we want.
+
+So, title, comma director, and now I've got those two columns.
+
+Title of year.
+
+Hopefully, no big surprise here.
+
+To read the left, the directoring a year instead, and then find all the information about each film, and again, we can just go back to Select the Star.
+
+All right, so pretty straightforward. Simple cases.
+
+Any questions on the sofa?
+
+Based on what we've been doing, is it case sensitive?
+
+Um.
+
+I don't think we can tell you.
+
+Well, it's showing the column names up there happen wise.
+
+So we assume that's actually how they are, and it's not a presentation detail.
+
+By people is not case sensitive.
+
+We need to put the column names in quotation marks, and then it would be case sensitive.
+
+Or at least we see black.
+
+Another nice thing, sequel lies, you can...
+
+You can cross compile it in the browser, so it's actually running a full copy of everything here.
+
+Your media's quotation is to specifically target, you know, speed casing, but in that case, if you had, you know, two of them columns that were in the title, entitled, one, capitalized, one, not?
+
+Yeah, which would be a terrible idea, right?
+
+No, the main place you'll do is when you have columns that are, like, have spaces in them or other things like that.
+
+And so quoting it actually kind of makes it specific.
+
+And the reason you would do that is typically where those column names are coming from some other data. Structure somewhere.
+
+So yeah, I think when you're developing a table, just don't do any of those things.
+
+And everything lower pace.
+
+Make them simple to type.
+
+But you don't always control the schema, right?
+
+It often comes from other places.
+
+So.
+
+All right.
+
+With constraints.
+
+So, we had select and where.
+
+And again, all that was really doing was narrowing the number of columns that were coming back, but we're still getting every row every time.
+
+So where is going to let us select just a subset of the row?
+
+So we're now going to kind of narrow the results vertically.
+
+So we use the word where, and this order is important, select from where, it always has to go in that order.
+
+Yeah.
+
+Is it usually best practice to use all caps for the main commands?
+
+Yeah, so it's not necessary, so it's casing sensitive in the keywords as well, but the standard convention is to capitalize keywords and not capitalize. Data works like column names.
+
+Thanks.
+
+But again, it doesn't actually change.
+
+You can also do it all on online, as we've been doing in our typed examples.
+
+But I recommended against doing that in an actual code.
+
+You know, you typically, you usually kind of go a new line for each new key or like each kind of part of a query. Just to keep them a little more manageable.
+
+But those are all style considerations.
+
+So, the wear clause, we have conditions, and you can have ans and ores with multiple conditions.
+
+So here are some of the standard things we can do, the conditions that are allowed to apply.
+
+We have some standard numerical operators. Equal, not equal, less than less than equal.
+
+Those are all pretty straightforward.
+
+Um, and, you know, again, you would say something like, Here, this example says, Call of name is not equal to four.
+
+So that would be looking at, you know, you're naming the column, but it's looking at the value of each instance and comparing it with the number four.
+
+And there's some others that are, you know, really scared between, you can say, between 5 and 10, it's inclusive on both ends, not between, was the word not, or more like python there, I guess.
+
+In. So you can say, in, inside parentheses, you just list off a bunch of elements, comma separated, and it will match if any of the ones in that list matches the column.
+
+So again, it's helpful if you're familiar with set theory to think of these as kind of set operations, because that's what this is all based on.
+
+So, um.. Kind of give an example, specific examples where you have the side wheels, I'm not in, so the number's not in a list.
+
+Um, those are the most common ones.
+
+Let's see.
+
+Any questions on your toes?
+
+Here's the question about caps.
+
+So, here we've got some new tasks.
+
+And I want to delete this on my colon.
+
+So semicolons are not actually part of the state.
+
+Um, this is kind of a technical distinction here, but when you were sitting in a console interacting with sequel, like, you can do that and just type commands. It will use the semicolon to signal, you're done typing, and it's time to run the command.
+
+The semicolon is not actually part of the command.
+
+And so, a lot of people, you see, it's very common, actually.
+
+We have, like, a sequel query embedded in code.
+
+They'll put the semicolon and it's not actually necessary.
+
+It doesn't hurt anything, but it's, I don't know, it's kind of ugly.
+
+Yeah.
+
+Okay, I'm a little confused by what you said because, um, it's like you're saying that it's not actually part of the code that you're writing.
+
+But it does something.
+
+Like, what are we saying, like, semicolons are a print statement for sequel, or I'm just a little confused, kind of like how they are in Matlab, like Matlab, they're more like, I've never used Matlab, but, um, no, so it's not actually part of the sequel statement.
+
+So if I was in code, I could send this query, I could put that as a quote in straight.
+
+So I'd start from movies, send that off to the database, it would send me back results.
+
+Okay.
+
+But then, you know, I have a way of kind of telling it when I send it that command, it knows the beginning and end, right?
+
+And so it knows to process it.
+
+But we also often interact with it through an interactive console.
+
+Which is actually just a little application.
+
+Yeah.
+
+And when I'm typing something in there, the way that the console knows that I wanted to go and execute the commands that watches for a semicolon.
+
+So that's actually just kind of the application that is sending the things across.
+
+It uses that to mark the end.
+
+But it's not true.
+
+As a console, you could just put select enter, star, enter, from enter, movies, enter.
+
+Enter.
+
+Right.
+
+Nothing happens till you enter the semicolon.
+
+Yeah.
+
+So it's not part of the select query.
+
+It is a kind of meta statement. To the that particular interface.
+
+Okay.
+
+So, like, here it's kind of silly to have it, where I don't even say enter or run it.
+
+It just runs it when I stop typing.
+
+So the semicolon is completely superfluous.
+
+And again, to me, it just wrinkles on me a little bit, 'cause it kind of signals, like, bad thinking about how it's actually working.
+
+Oh, slightly sloppy thing.
+
+I try to demonstrate good things.
+
+So find the movie with a row ID of six.
+
+Okay, I'm gonna go to another here, well, let's do multiple lines.
+
+To where?
+
+Where?
+
+I.D. Equals six.
+
+Okay, all right.
+
+Um, I could have done where it's in the list containing six.
+
+That would do the same thing.
+
+We could do that for the years.
+
+So, yeah, let's find the movies released in the years between 2010.
+
+So here, I could say, where year is greater or equal to 2000 and years less than are equal to 2010.
+
+How else could I do this one?
+
+I've got them between...
+
+We got that between, right?
+
+Where, year, between 2000 and...
+
+Can you just come separate them?
+
+2010, is that...
+
+Lets try it.
+
+No, it doesn't like that.
+
+Is it by default?
+
+It is inclusive, yeah.
+
+We use the inn, we have a list of all 10 years.
+
+Yeah.
+
+Because since they're integers, we could do that. Doesn't work as well for real numbers, but...
+
+Find the movie's not released in the years between 2000 and 2010.
+
+Oh, that's easy.
+
+We just added it on.
+
+Yeah, since we have not, between...
+
+Oops, not.
+
+When the first five Pixar movies on the release year, now, using just what we've seen so far...
+
+Sporting by ID, or...
+
+I think we have to buy, I think it's by year.
+
+Okay.
+
+Well, let's see.
+
+This is kind of a weird question.
+
+I'm not even sure what they're rooting for, because we don't have all the tools yet, but...
+
+So let's just, let's grab all of them, and just count, say, Oh, these are coming out in order, so everything, what was it, the first five?
+
+I think they're going by ID.
+
+So the first...
+
+Okay.
+
+Okay, I think you're probably right.
+
+So select Star?
+
+Oh, from movies in their release years.
+
+Does that mean tidal comma year?
+
+Where ID is less than or equal to five?
+
+Let's see what they said.
+
+Oh, they did year less than ankle tea.
+
+That's not a good question.
+
+I think.
+
+Right?
+
+They wanted to just read the list, find the right number, and then go and say, oh yeah, the 1st 5 were ended in 2003.
+
+Which is not a very just fun way to do it.
+
+We'll see a better way to do it.
+
+We have familiar data, order and limit.
+
+The 1st is being used, yeah.
+
+Yeah.
+
+Any other questions on these?
+
+Other examples we've seen so far?
+
+Pretty good?
+
+Yeah.
+
+Some more...
+
+Um.
+
+Conditions?
+
+So, equals...
+
+So, we're working with strings that we're kind of looking at numbers now.
+
+With strings, you use a single equal sign to denote the quality, exact string match.
+
+We don't need double equals because there's no assignment here. Makes sense.
+
+You ever thought why it's a single equals for assignment and a double equals for comparison and everything?
+
+Well, if somebody did that 1st and traditionally?
+
+Yeah, it's probably, you know, C does that.
+
+Arbitrary.
+
+Sometimes it's probably more common.
+
+Yeah.
+
+We actually do a lot more assignment than comparison.
+
+So see optimize for the common case.
+
+For not equal for string comparison, not in exclamation point equal, is that even standard?
+
+I don't know.
+
+The normal one is less than a greater that.
+
+So that's how you write not equal for strings.
+
+Typically.
+
+I think the other one is fine as well, but...
+
+Looks weird.
+
+In the normal way, it's a molested president.
+
+Uh, this one really kind of, uh, is mostly used for numbers and this for strings, but...
+
+Oh, another just...
+
+Something to watch out for.
+
+There is standard sequel, and there's no implementation that actually matches the standard.
+
+Pretty much.
+
+Pretty much every database has its own variations and they follow it more or less.
+
+Postgrass is actually pretty good, probably one of the better ones, but, um, so we'll see a lot of variations.
+
+So it's, I don't know if there's any, I can't think of off the top of my head, any standard that is, like, so non standard, I guess.
+
+And yet, everybody tries to adhere to it, but they, they're all kind of doing things first, and, uh, stick with their, like, you're saying, like, databases, the way they're implemented with single, they don't have a standard, the way they're...
+
+No, there is a standard, a sequel standard.
+
+But nobody actually originally follows the standard.
+
+Okay, so that's effectively.
+
+All right, that makes more sense then.
+
+So, phrase it that way.
+
+It's the standard is honored and huge.
+
+Um, like gives you the case insensitive.
+
+Um, stream comparison.
+
+Um, not like, and then also you can put wild cards in a like pattern.
+
+So you can say light, and it uses percent to mean anything.
+
+So percent, 80% will find anything AT inside.
+
+Now, this says, case sensitive, right?
+
+Um, oh, sorry, case incensive, by mistake.
+
+Yeah.
+
+That's like, even, I think, in Sequel light, that is the default, and you can change that, if you want it to be case sensitive.
+
+But they at least do the sanity.
+
+You can also do an underscore character to match a single character with a lightning happen.
+
+And then you can do in and not in for lists of strings as well.
+
+Something I don't like about this example.
+
+When you're doing a string concept, the correct thing is actually single close.
+
+Use double quotes around, like, column names, but when you're talking about actual data, And again, a lot of things will, sequel light is pretty generous and accepting it, but don't do that.
+
+It's not correct.
+
+Um, let's see, here's the definition of query.
+
+Oh, yeah, okay.
+
+So we got some more.
+
+Find all the toy story movies. On the toy.
+
+Okay, sorry, it's like all the, I was thinking, my brain was substituting all the Pixar movies and, oh, that seems like just all of them.
+
+Um, so where what?
+
+Title, like...
+
+Yeah, we want a title that starts with, right?
+
+So we would use like.
+
+Is it necessary to use light, though, because they're gonna be capitalized, like the beginning, the names are gonna be capitalized.
+
+So is it necessary?
+
+So if I just said equals Toy Story, I will get the 1st movie.
+
+Because that's an exact match.
+
+Oh.
+
+Or can you use both?
+
+Okay.
+
+No.
+
+So like is required if you're going to do a pattern, a wild card.
+
+Okay, it almost sounded like Mike was just comparing cases.
+
+Yeah.
+
+So then I can put a percent at the end.
+
+And this is assuming they have this naming scheme, you know, it's not Fast and the Furious. Something or, I don't know, I'm not sure what an expression would be that finds all of those.
+
+But in this case, you know, we could, I suppose we could also try to say, uh, you know, if Toy Story's in there somewhere, but I think it gives us the same set.
+
+Isn't that our fourth one now?
+
+Or fifth, or...
+
+Here goes one Hill with the fifth one this year.
+
+I don't know.
+
+How many of them are they gonna come out?
+
+And that was their first one, right?
+
+Toy Story was the first...
+
+It was the first...
+
+First feature length, Pixar movie, yeah.
+
+What was the first ever, like, computer animated movie, like, ever?
+
+Right, full full length.
+
+Yep.
+
+Find all the movies directed by John Lasseter.
+
+Okay.
+
+Director equals...
+
+Lasseter, I think that's all it needs, right?
+
+Directory.
+
+Okay, yeah, I should probably.. Column name right.
+
+Um, find all the movies and director, not directed by John Lasseter.
+
+Okay, I think I know what you're saying.
+
+So I think we're really, it really wants us to just do, like, title director here, maybe.
+
+Director?
+
+Where a director, and I'm gonna use the not equal the string form a bit here.
+
+Show that.
+
+Find all the wall movies.
+
+Wall G?
+
+I don't think I've ever actually...
+
+I saw the first few minutes of Wally once, but...
+
+More title, like...
+
+All right, any questions?
+
+On any of those?
+
+Can we, uh, can we just elaborate on the not equal part, you know, the greater their lesson ones, because I'm just, uh, still a little bit confused.
+
+Yeah, so, and then, this one, I'm not a, I can't remember.
+
+I think I can look this up, but I can't remember.
+
+If, so less than greater than is the long-standing standard way of comparing to strings and asking if they're not equal.
+
+And I'm not sure if exclamation point equal is actually a standard or just a widely implemented extension.
+
+But I would say it's the nonstandard standard, if it is.
+
+Like, culturally in sequel, uh, the expectations you're doing, not equals a blessing later than, okay?
+
+So, basically, you just use the explanation equals or the, to say it's...
+
+Yeah, let me just look it up.
+
+Let's just look this up.
+
+Um, is not equal standard sequel for string and quality.
+
+No, it's not standard sequel.
+
+Yeah.
+
+So it's widely implemented as that, but it is not actually standard.
+
+Okay.
+
+That makes me feel better.
+
+So my angst toward it theirs, at least, justified in some way.
+
+Not just nostalgic 'cause that's what I learned.
+
+Um...
+
+Yeah, I mean, any other questions on these before we move on?
+
+So, I just wanna actually pause and say, like, this is already quite a useful set of tools.
+
+And I can kind of back that up.
+
+My wife does research in, like, social sciences, and has worked with, like, surveys.
+
+They did surveys, and they had this one survey set where they had, like, 30,000 results or something like that.
+
+And, boy, the standard tools in, like, the social sciences were terrible.
+
+There's some tool they all use that, you know, they had to get through a university of subscription, because it's super expensive.
+
+And it was, takes, took forever to, like, just filter it down.
+
+And so, I, at some point, learned what, and it's like, you know, this seems really terrible.
+
+What if we, you know, if we learned to learn people a sequel database?
+
+And so I loaded all her data into sequel light, taught her how to use it actually, and she just came into this tutorial.
+
+And they started going through and doing, like, analyses that were taking them hours before were a single query that would take them a few minutes to write.
+
+Which, I think, is more an indictment of the tools that I can normally expect sociologists to use than anything else.
+
+And so, like, even when she's had research assistance, she'll, like, send them the first thing and make them go.
+
+Go through the 1st part of the tutorial and learn some basic sequel, because for things like, that's, you know, these kinds of queries were actually really incredibly useful.
+
+Find all the ones where the comment mentions this word.
+
+Just filtering for something like that, or where their birth year was after this, or something like that.
+
+And then, you know, some other aggregation of things we'll do, too.
+
+But, um, There's quite a lot.
+
+So let's look at some more variations here.
+
+So we saw when we were returning the directors that were getting duplicates.
+
+Right?
+
+So, I wasn't actually working with sets, but we have the word distinct, collapses the difference, that the duplicate.
+
+So again, it treats the result as an actual set, but comes back.
+
+So it purges the human difference.
+
+Select distinct.
+
+This is not saying distinct, this has nothing to do with the column right after it.
+
+It is saying the entire results that I want to have just distinct from.
+
+Yeah.
+
+So, in this case, TV hasn't set, is basically saying, what are all differentiable entries as opposed to what are all liberal entries?
+
+Right.
+
+But we don't want any dents in the results.
+
+Um.
+
+We can also order the results.
+
+So, again, we had kind of a sketchy query before where we were relying on, I guess, the ID number or whatever.
+
+Um, But we can, we can ask it to sort the results for us.
+
+And that's often useful.
+
+So order buy is the word for that.
+
+The syntax.
+
+So this goes after where?
+
+So order by and the column.
+
+By default it's ascending, you can also do descending order or you can specify ascending explicitly.
+
+If you want to search or sort by one column and then for ties, have it use a different one for tiebreaker, you just put a comma in the next column.
+
+You can do as many as you want.
+
+Now, it's worth mentioning, you know, we're not gonna talk too much about performance implications yet.
+
+But that will force it to do more work to sort the results.
+
+So when you're working with really large data sets, you know, you have to be a little judicious to use the border by.
+
+Or at least, I think it through a little more.
+
+And then, we have, so, niches usually combined with, um, order buy.
+
+We have limit.
+
+Or we can tell it, limit an offset, or we can tell it to return only a certain number of rows of results.
+
+And then, with offset, we can tell it to skip over the first NOM offset, you know, we can tell it to skip past the first 50, the next 50.
+
+So, again, we normally do this in combination, order by, so that we get, um, deterministic results for people.
+
+So you could say I can grab the 1st 50 using limit 50, and then I could say limit 50 offset 50 to get the next 50, and so on.
+
+So you can kind of work through in chunks.
+
+This is a standard thing.
+
+You'll see a lot of web interfaces. Will give you the first, you know, 20 results, and you got to click next, go to the next page.
+
+That's usually just forming one of these queries in the background.
+
+This is also a pet peeve of mine.
+
+We see this all over, like, universe, like, banner.
+
+It's full of places like this that show you...
+
+And they also put the limit too low.
+
+So, you know, our average class size on campus, I think, is like 23, something like that.
+
+So of course, they always show your results sets that only show you the 1st 20.
+
+So every time you're down there clicking, it's like, give me a hundred, you know, as a basic thing.
+
+You can scroll on the browser, like...
+
+Yeah, right.
+
+But it's like these old habits, and then everybody took a tutorial in HTML, and, you know, learned, Oh, you're supposed to do these paging things.
+
+So, but they used to come some kind of weird limits, but anyway, yeah, I'm always cursing in our faces, where you load it up, and you just don't get enough results at a time, Matt.
+
+Um...
+
+Because I'm not sure the Dune Scroll interface that we have now is better.
+
+The infinite scrolling is that its own problems, I guess, but at least it's not as frustrating to use.
+
+So, let's see.
+
+Spice things up.
+
+Okay, gonna scramble the movies table.
+
+Oh, so things aren't in order anymore.
+
+So this is our spicy version of the table, apparently.
+
+Um, list all directors of Pixar movies alphabetically, without duplicates.
+
+So, uh, select?
+
+What else?
+
+Entitled...
+
+Distinct?
+
+Yeah, we're just looking for directors, right?
+
+So that distinct director?
+
+From movies?
+
+And they are not...
+
+I think alphabetically applies to the director, not to the movie year.
+
+What's the word?
+
+Order by sword?
+
+Order by.
+
+Um, And then we can put ASC right?
+
+So.
+
+What's going on here?
+
+We're ordering by the title names, whoever it be, now.
+
+So here, I'm ordering my title, but I'm not returning the title.
+
+Yes, which is actually valid.
+
+It's a little weird combined with distinct.
+
+Because, you know, they appear in different places, order by titles.
+
+Just apply to the director, then?
+
+It replies to the result set that's actually returned.
+
+Why did you use the top most instance?
+
+Probably?
+
+I don't know if it's well defined.
+
+I'm not sure actually.
+
+Probably...
+
+Yeah.
+
+Here might be a more reasonable thing, but.. Here, I think it is specifically watered by director.
+
+What's the last four Pixar movies released, ordered from most recent to least.
+
+Most recent...
+
+So, here we'll find one thing.
+
+Well, we'll see this more later, I guess.
+
+The order of the clauses is kind of not great.
+
+And select always comes first, and very often, I find that's the last thing I actually want to think about, is figuring out what data I actually need back.
+
+But we're just looking for the tiles, I think, right?
+
+The last 4 released.
+
+So what I want to do is order by...
+
+How do I get the last four?
+
+Well, because we still want it ascending, it's kind of confusing.
+
+Dates really...
+
+Ah, we actually wanted descending.
+
+Most roles, yeah.
+
+Oh, never mind.
+
+That'll be easy.
+
+So order by year. Yep.
+
+And then we put descendants early.
+
+Right?
+
+We want the last four.
+
+Yeah.
+
+So I want to border by year descending, so that's gonna give put it in reverse order, right?
+
+Most recent movie first, and then I'll say...
+
+Is that right?
+
+Oh, I missed from movies.
+
+And then I have to limit four.
+
+Yeah.
+
+Just cut off after the first floor.
+
+Okay, this is a little outdated, because Pixar has had a lot.
+
+I think the thing asks for five.
+
+The previous one, we were doing number two.
+
+Oh my god.
+
+Yeah, in auto-backs.
+
+Yeah.
+
+And let's see, list the 1st 5 Pixar movies sorted alphabetically.
+
+Again, I think that means when you sort the alphabetically, take the first five.
+
+With all the grammar is a little ambiguous.
+
+Yeah.
+
+Maybe it's an exercise in recognizing, right?
+
+Yeah.
+
+Real data is fuzzy.
+
+So, it was the first five, so we're gonna be doing a limit by five, and we're just ordering now by title?
+
+Sure.
+
+That's right.
+
+And, again, we could do ascending if we wanted, but that's the default, so normally leave it off.
+
+List the next five Pixar movies sorted out, medical.
+
+We do offset vibe after the...
+
+Yeah, so we tell it, skip the 1st 5 and do the next five.
+
+Yeah.
+
+Any questions?
+
+On any of these?
+
+Okay, review of simple select queries.
+
+So here's kind of our form of a basic query on a single table.
+
+Thus, so select, again, they're always in this order, select, tell them which columns you want.
+
+You can do...
+
+It doesn't have to be just as simple as a list of columns either.
+
+You can also apply operations to them.
+
+You know, like, for a year, you could say, you know, if you wanted to manipulate the year mathematically, you can put the dyslexia.
+
+There are other things you should do.
+
+But now we're just selecting as columns as they are from the table where condition, an order buys, optional limit, an offset.
+
+So, we've seen a bunch of examples there.
+
+So now we've got a new data set.
+
+Information about the few of the most populous cities in North America.
+
+Um, at least as of, I don't know, 10 years ago, probably, was it?
+
+So we figure this where that when the Pixar data was?
+
+So here's the full table.
+
+So let's start from North American Cities.
+
+We got.. However many that is, 24, 6, 8, 10, 12, looks like.
+
+List all the Canadian cities and their populations.
+
+So do where country...
+
+And so, let's do the city, population.
+
+Select Star gets them all, but normally you want to be as narrow as possible when you're working with larger data.
+
+To get rid of the semicolon?
+
+Um, and then let's see.
+
+Where country equals Canada?
+
+Yeah, we only have 2 of them, but on this list, Monto and Montreal.
+
+I think I've spent about.. Five minutes in Canada.
+
+No, no, a day.
+
+I forgot about a different trip.
+
+When did that one, like, Klondike Trail Train thing, and you go up, and then you, like, cross into Canada, and then turn around and come back?
+
+And that was my 1st time going to Canada.
+
+Then we spend a day in the city somewhere else, so...
+
+Order all the cities in the United States by their latitude from north to south.
+
+Okay, let's grab everything just while we explore initially.
+
+North American cities, and we want country equal to United States.
+
+Make sure we got the text right there.
+
+And now we want to order by latitude, and here we have to figure out, do we want it ascending or descending?
+
+I would say descending because North, you get higher numbers as you go north, right?
+
+What's our latitude here?
+
+Now off the top of your head?
+
+I think we're about 30.
+
+I want to say 34, like Los Angeles there.
+
+I feel like we're probably a bit higher than 35.
+
+37.
+
+37.
+
+Oh, really?
+
+Okay.
+
+For the North, than I thought.
+
+You know, when I lived in England, we were about 52 degrees latitude.
+
+Which is.. Sea farther than north than any of these American cities.
+
+Northern city we got here.
+
+Montreal is only 52.
+
+England is surprisingly far north.
+
+Latitude descending, right?
+
+So that will give us the northernmost city, Chicago, then New York, Philly, down to Houston.
+
+Yeah.
+
+Looks good.
+
+Um, list all the cities west of Chicago.
+
+We need, uh, probably need a longitude for this one, and we need to understand Chicago as long as you, and then we need to say, so this didn't say anything about country.
+
+Just said launch...
+
+Yeah, I think we probably need to look at.. Find Chicago's longitude.
+
+Yep.
+
+Is that number?
+
+Oops, it's the minus sign.
+
+Anything that is.. Less would imply anything that is the less.. Less going...
+
+I don't know.
+
+So we're longitude, we want everything to the west of that is gonna be less, right?
+
+It's more negative.
+
+Okay.
+
+Um, ordered from west to east.
+
+So that's order by longitude.
+
+Because the most negative ones will be first, the smallest numbers will come first.
+
+Okay.
+
+List the two largest cities in Mexico by population.
+
+So, we're gonna just do city.
+
+Mexico.
+
+So we first want to get just those that are in Mexico, right?
+
+So...
+
+Nice.
+
+Somebody where.. Country equals...
+
+Yes, because...
+
+And the motivation does not apply...
+
+And we want the two largest cities, so I want to order by.. Population, population, population.
+
+And I want the two biggest ones, so I'm gonna order descending.
+
+Yeah, we're gonna just...
+
+Price of larger cities come first. And then limit it to...
+
+And then one more.
+
+Here, list the third and fourth largest cities by population in the United States and their population.
+
+This order for an offset and aluminum two places.
+
+United States...
+
+So...
+
+Order by population.
+
+We want the biggest one, so we want descending.
+
+So, let's see, right?
+
+New York, LA, Chicago, Houston, Philadelphia.
+
+L.A. Area is bigger, right?
+
+That's the biggest metro area, I believe, but I think Los Angeles itself.
+
+The smaller.
+
+Um, and then we want, like, geographically, their areas bigger, is what you mean.
+
+By population.
+
+No, he means like LA County is bigger.
+
+Yeah, the LA Metro area.
+
+I thought New York was the biggest one.
+
+Like, New York has, like, what, 22000000 people?
+
+I think Los Angeles is like what, 15?
+
+I think that's updated.
+
+It's gotta be higher than that.
+
+I thought I liked, I'm wrong, but I thought LA was the largest city in the country at this point.
+
+It might also depend on how you define metro area, because you're not one County.
+
+I mean, I thought I was trying to imagine Los Angeles is a growing population either.
+
+That would be both, but...
+
+Uh, it's a third and fourth.
+
+So we only want 2 of them, and we want to skip the first two.
+
+Sound right?
+
+So, like, it's Chicago news channel. .
+
+Houston's, uh...
+
+Something had, like, 12 cities to start with, so...
+
+I don't know.
+
+All right.
+
+Philadelphia would be 40%.
+
+All right, let's pause for a minute, and then we'll go on and talk about joins.
+
+Where we start to get with multiple tables.
+
+That's where things get more interesting.
+
+Yeah.
+
+Let's see, administrative stuff.
+
+We'll be using Coke Grinder for assignments.
+
+So, um, it's all that if you don't have it already.
+
+I actually, I guess I kind of need to wait till I post an assignment.
+
+So, I'll do that for Wednesday, and we'll walk through the steps, but it's, I think, pretty straightforward, and I think all of you have done it before, so, um, should just be review.
+
+We will be going for, um, starting on Wednesday, my, uh, much beloved no distractions policy.
+
+The laptop band, like I say, today's fine, but starting Wednesday, we'll do that.
+
+Um, I'm not planning to do the compulsive note-taking, uh, that I did in 2010, and some other classes.
+
+That's something you may have been familiar with last semester.
+
+But I do encourage you to bring paper and pencil, a pen, and take notes.
+
+Um, and just a reminder about kind of the rationale there, uh, for both having the laptop band is because of the distraction.
+
+Whenever they test this, people do, even people who are, like, paying attention and using their laptop to take notes, do worse in the class, on average, than people who take notes on paper.
+
+Yeah.
+
+I'm gonna disagree with that, because I've noticed when I just take notes, I do worse in classes.
+
+But if I take notes, I have my iPad, I have whatever sources up, and I'm able to research whatever questions I need, whatever stuff I need.
+
+I do better in classes. Don't know.
+
+I mean, I'm sure there's room for individual variation, but on the whole, most people do better.
+
+And the other part of it is that it makes everybody else do worse.
+
+That's kind of the most damning part, I think. Is that the distraction affects other people.
+
+Um...
+
+No taking is a skill, and it's a skill that, I think, we are not very practiced in anymore.
+
+I think ever since Chromebooks landed in elementary schools, it kind of ruined people's notation abilities.
+
+Not that elementary kids are out regular, too, you know, especially.
+
+But I think part of the, and this is something else that, again, has been pretty well studied, like actively taking notes does improve your learning.
+
+Even if you never look at the notes again.
+
+And I think a big part of that is, this is just me speculating here, but, um, is that you have to, you have to kind of be more engaged to be able to kind of listen, pay attention, and digest it, summarize it, you know, write down the important parts of that, just trying to, like, write down everything, you know, if it's that kind of digestion process, I think is where a lot of the value comes from.
+
+So, again, it's not even about going back and consulting, you know, so that can be good too.
+
+It is a good idea.
+
+But it's the act of taking notes and figuring out what to write down, that's where that's the skill, and that's the part that I think actually aids you in your learning the most.
+
+Um, Yeah, so, um, but I also would encourage you, especially if you, you know, those of you who had a class with me last semester.
+
+Um, I think a lot of people, the one, it was kind of, you know, if you took it seriously, it was helpful and if you didn't, it wasn't.
+
+But I, those of you don't know what I'm talking about, I required everybody to go and, like, take pictures of your notes and submit them to your LLM of choice, and have it kind of ask you to fill in gaps, and the output of it was to have an outline of the lecture, basically.
+
+So it could try and figure out what the class is about based on what you wrote down, which was sometimes, I think, a challenging feat.
+
+And then interacting with it.
+
+But using that is, like, one thing that I am really thinking a lot about and struggling with is trying to figure out, how do we make AI a tool that helps us learn?
+
+Instead of something that prevents us learning?
+
+And it's kind of those...
+
+I mean, there are a lot of ways to where it's not that, you know, it actually does prevent you from learning to use it in certain ways.
+
+And so, um, but I think just telling people never to use AI is pretty, pretty dumb at this point.
+
+Um, there are AI denialists.
+
+People who are still just hoping the whole thing's gonna go away.
+
+Um, and, uh...
+
+Spoiler alert, it's not going away.
+
+I mean, it's getting prohibitively expensive, so...
+
+I don't think we go away.
+
+I don't know, I think I'll get, I think, for normal use, I'll get cheaper, but...
+
+But anyway, so, in exploring, like, how do we make this?
+
+How do we take advantage of AA to help us?
+
+One thing that I think is actually really useful is a way of reviewing.
+
+And I think just the process of actually reviewing once a week and thinking back about what happened in class, that, by itself, is incredibly helpful.
+
+So I would encourage you, though I'm not going to require you, to go at the end of each week, and have some kind of a review process based on your notes.
+
+And again, I think the most straightforward thing is you just take pictures of your notes, upload them to, you know, everybody gets a Gemini Pro account, um, through the university.
+
+If you have a paid account on one of the others, those usually give you much better models than the freebies.
+
+Um, but, you know, have it, uh, just ask it to quiz you and say, I'm a student, don't just, like, dump information on me, right?
+
+You kind of need to work on your prompts to get it to hold back and actually useful things instead of just vomiting information on you. Which is kind of their default.
+
+Have any of you tried out, like, the tutorial mode, I think ChatGPT has that.
+
+I think some of the others have.
+
+Oreo.
+
+I didn't know this.
+
+Yeah, you can take, I can't remember which one.
+
+I have not actually used it, but I keep telling people to try it.
+
+I'd rather just make the prompts to make it a tutorial.
+
+Yeah, but they have somewhere it's, you know, it's sort of trained in.
+
+Yeah, more reliable, but just let's just see if ChatGPT will do it out in its default.
+
+Um, study.
+
+So, yeah, it's not that hard, right?
+
+Um, and so, again, it kind of uses some different, um, I don't know if it's just prompts or training, what they do, but, um, So, let's see.
+
+Let's just try this.
+
+Help me understand who I understand the relational model in the databases.
+
+Oh, yeah.
+
+Live demo experience.
+
+Oh, dear.
+
+Starts with an emoji.
+
+That's.. A bad, bad start.
+
+Are you in high school, undergrad, or self studying?
+
+Um, PhD and...
+
+Undergrad.
+
+No, have a do PhD, 'cause it's gonna dump things down to our head.
+
+I mess you out, kind of agree that you're concerned.
+
+Also a lot of You do doctorate level, because doctorate is like, you can get a doctorate in something that you didn't even study as your undergrad, so a lot of times they're pretty basic too.
+
+Oh, I can just ignore the question.
+
+Chat GPD is not the boss of me.
+
+Actually, that is a good, like, uh, one phrase somebody said, he was making, you need to...
+
+Another thing I think is really easy to get wrong is whenever you're using LLMs to make sure you were treating it as your assistant and not as your boss.
+
+And it's really easy the other day.
+
+They're just so eager to...
+
+Yeah, or appear, right?
+
+You'd really have to just tell what to do.
+
+Don't ask it, tell it.
+
+I kind of thing, but.
+
+Um, so it's like, okay, let's see what it came up with.
+
+Relational model is a way to organize data, so it's structured, easy to query and consistent.
+
+So, I'm just going to step over. Talk about this because this is our next thing.
+
+So right, the next queries we're gonna do in sequel bolt are involved in multiple tapes.
+
+This is where the relational part of the relation thing is concept.
+
+So in the more kind of technical terms, a table is called a relation.
+
+Okay.
+
+So, the big idea here is what we want to have is a table.
+
+Each table should have one kind of information that is just kind of stored in, what I'd consider, like, a neutral form.
+
+Meaning we're just putting the natural data that belongs there, and we're not thinking about how we're going to access it.
+
+And then we can have relationships between those levels, where we'll reference a column in one table from a column in another table.
+
+So, um, think of a, let's see, like a simple example.
+
+Let's say, one, you can all relate to.
+
+We'll have a, we'll keep track of all the homes that you want.
+
+So we can have one table where we have people.
+
+It'll have another table where there's just going to be a list of homes, and each one will have a column that references back to a person as the owner.
+
+Right?
+
+So, obviously, the homes table is going to be longer than...
+
+In this case.
+
+Or y'all be sure or, you know, whatever, you substituted whatever expense of asset you want.
+
+Cars.
+
+But so again, the idea here is that the whole table is going to have information about, you know, the size of the lot that it's on, the number of bedrooms, the number of square feet, the value, the zip code, whatever it is, right?
+
+Stuff that just kind of belongs to homes.
+
+And then, but then we'll have this link that takes it back to the person that owns it.
+
+And that person table will have just information about people.
+
+We don't kind of mingle them together.
+
+We keep them separate.
+
+Or, um, example of these, in other places, uh, there's something in this class, I guess, is say you wanted to build a database of like your music collection.
+
+This is kind of out of date now because people don't really collect. Music isn't anymore, right?
+
+But when you buy CDs, rock collection.
+
+Yeah.
+
+But so you might have a table of, like, artists.
+
+And another table of albums, maybe another table of individual tracks.
+
+Now, if we were doing this in a non relational context, working just with, like, flat files, or adjacent objects, something like that, then we would probably have, I don't know, kind of a hierarchy, right?
+
+We might have artists, that each artist has a list of albums, each album has a list of tracks.
+
+So you could imagine a data structure that computes this, right?
+
+You start at the artist level, and then you kind of drill down to five days.
+
+But in the case of like a relational database, there is no hierarchy.
+
+That's what this is different.
+
+So there's not, like, an entry point table.
+
+All these tables are sort of equal, and they can have links as required between them.
+
+And then the query itself lets you kind of navigate the links between different tables to find exactly the data that you need for whatever task you're trying to perform.
+
+Um, I know that like an album can have multiple artists.
+
+Right?
+
+So that hierarchical one already breaks down once you look at it a little too closely.
+
+Like, when you mean, like, when there's collaborations?
+
+Collaborations, mixes.
+
+You know, best of, you know, the best of 2025.
+
+That kind of thing.
+
+So, a relational model is actually quite flexible.
+
+There is kind of an ardor, I guess it's more of a science really, but there's a, um, some kind of technical, um, ways of structuring the data that, uh, gives you some, We talk about this later. Something called normalization.
+
+Where you want to make sure that the data being stored in a table is not creating redundancies.
+
+It is stored in tables, tables can be related to each other.
+
+Okay, we got students, some majors, relationships, yeah, okay.
+
+Sorry, I kind of lost interest in that.
+
+Yeah, closet, but using those modes, right, the purpose of those kind of modes and some of the LLMs is to, again, not try to give you information, but try to help you, you know, access a tutor or whatever.
+
+So if you have a problem you're working on, rather than it just, like, dumping an answer on you, it'll try to kind of ask you questions and bring you toward the answer.
+
+So, again, I think if you're, you're going and looking to learn something and have the, an LM help you with that, I think that's a good tool, you know, that kind of thing is something worth exploring.
+
+Right?
+
+And also, you know, you can prompt it that way as well, right?
+
+And you can, um, but, But it takes extra work.
+
+You kind of have to, unfortunately, having it be helpful as a learning aid sort of requires work beyond. The kind of little bit harms you.
+
+Um...
+
+Okay, so let's go here.
+
+So again, there's this process of normalization.
+
+Um, so, a big idea here, right, or one of the big ideas, is we want to avoid redundancy information.
+
+So if we look at that, like, artists in owl.
+
+We could have one table.
+
+And it just has an artist column, and maybe we have, like, the year the band got together, you know, on the year, they broke up, and then the year they reunited, and the leader went solo.
+
+Right, you can have some columns there.
+
+And you could just say, well, we just duplicate that on each row for each album they had.
+
+What's the problem with that?
+
+Then you're storing the same thing over and over and over again.
+
+Yeah, so there is just the duplication issue, right?
+
+It seems inefficient.
+
+There's also an issue.
+
+What happens when you find a mistake?
+
+You know, you put that, um...
+
+I don't actually know, the year of any bands, incorporation, and dissolution, but, uh, but you you had some information, and maybe you misspelled the bad name.
+
+Right?
+
+You go and correct it, you have to make sure that you correct it in every instance.
+
+If you have this duplication.
+
+If you have a normalized structure where there's one row for a band, you have one place to correct it, and then that's the only place that was written down.
+
+So you kind of guarantee that everything is always up to date in sync.
+
+Um...
+
+And that also, even if there's not a change, right?
+
+It also makes sure that you don't just incorrectly enter the information in one place.
+
+You can make sure that they're at least consistent.
+
+There might be a typo, but the typos are everywhere.
+
+And not just sometimes.
+
+So that's one of the reasons to avoid the redundancy.
+
+And then there are also places where, again, if we want to move away from just like the, you know, the thing, like finance people just work in Excel, right?
+
+That's that's what that industry is.
+
+Apparently.
+
+They have a big spreadsheet, lots of stuff in there.
+
+Lots of people use spreadsheets.
+
+Spreadsheets are awesome tools.
+
+Like, there's a reason we use them, right?
+
+They're just so powerful. Such a good way of just structuring all kinds of data.
+
+But what you end up with is like way too many columns. Of data.
+
+I deal with a schedule every semester, and they send us a spreadsheet, which I think was probably generated from a database, but they give me one that has like, it's usually about 30 columns.
+
+And that's just ridiculous.
+
+There's just way too many columns to deal with.
+
+And there's a lot of redundant information there.
+
+Um, you know, every time you enter a building and room name, you have the opportunity to misspell and, you know, create something wrong, and they always want to know, like, the capacity of the room, and you gotta make sure that's consistently applied every time.
+
+If they were working or if we were allowed to work with a normalized structure, we could say that Smith 108 has a capacity of 32 students.
+
+One time, and that would just be a reference, rather than something, selling every single time.
+
+So, again, the kind of the stepping back, the big picture of data normalization in a relational database, And this is something, the other kind of side of this is the query structure.
+
+So, the idea is, you represent the data in a way that is kind of natural, and, again, I think it was, like, neutral for the data.
+
+You're not trying to set it up for how you're gonna use it.
+
+You're setting it up to just store things where each table contains one kind of information, and you draw these relationships between them.
+
+And then the queries are where you get really specific and say, okay, I'm going to go and find, you know, we'll see an example query, willing to find everybody who has ever taken a class with, you know, a particular student.
+
+You pick a student and say, I want to go find anybody who's a particular class with them.
+
+And to do that, you kind of gotta go and find, okay, here's the person, here's the classes that they've taken.
+
+That's usually 2 tables to get there.
+
+And then let me find everybody else.
+
+Every other student was in a class, and you actually end up, like, walking over five cables. From that hour.
+
+But you can then turn around and do an entirely different query on the data, and you don't have to restructure the data to do it.
+
+So it separates the, like, how do I, what data do I want to access?
+
+And, you know, bring together in different ways from the way the data is represented.
+
+Now this is kind of the opposite.
+
+If any of you have you ever used, like, Mongo DB or any of the kind of key value stores?
+
+I have.
+
+So those tend to work where, so there's this other class of non-relational databases. Where you have a single key, and then you get a value.
+
+And you can usually do operations on the value.
+
+So typically store adjacent document there.
+
+Um, these have a nice advantage that, uh, they're kind of the opposite of a relational database, and it's kind of instructive.
+
+I actually did a project where I did it both ways.
+
+So Twitter, as it existed 15 years ago, 10 or 15 years ago, I don't know who knows what they're doing there now.
+
+But now that it's X. But they're kind of an interesting example.
+
+Where relational database was a great way to design it and a terrible way to do it at scale.
+
+It just outgrew it.
+
+Because in a relational database, you would say, Here's a user, right?
+
+Here's an account for a user.
+
+Here's a post, the post points to the user.
+
+There are many posts for each user.
+
+And then you have another table that says, this person is following this person.
+
+And you just structure it like that beautifully and simply, and then you could just navigate it and find the most, the main operation you could do in Twitter, or Twitter like Services, show me the 20 most recent pulse that people I follow.
+
+This is the pre algorithmic terror material.
+
+When they actually show you content for people you're interested in.
+
+Facebook the same.
+
+And what's great about it, when it, you know, when it fit inside a relation database, was that you could then do all kinds of new queries.
+
+And again, the big idea is you don't have to go and touch the data again.
+
+All right, the data is already stored in this neutral format.
+
+You can figure out new ways of, like, querying the data and mining it and finding what you're looking for.
+
+And that's kind of the beauty, but that's where it shines.
+
+When Twitter outgrew that, they had to go and deliberately denormalize.
+
+So they went the opposite direction.
+
+And so, the structure, and the steady state of being, again, 10 or 15 years ago, was they had an entry, and it was an Aretis cache, for each active user.
+
+And it had a list of like, well, the ID numbers of the first, you know, the most recent 1000 posts by your followers in order.
+
+And here's what their process was.
+
+When somebody goes to tweet, they would say, okay, you have a thousand followers.
+
+So I'm going to go find a thousand different accounts and put a little ID saying, Somebody you follow just tweeted.
+
+And so every time you tweet, it would go and update all of your followers and give them a specific list.
+
+Now, their observation, they knew from the way that their users work, because nobody tweets very often.
+
+People look at tweets far more often than they post streets.
+
+In fact, the social graph, the follow, that that had, I think it was like 10 times the traffic, the 10 times as many changes as people actually.
+
+You go on Twitter or X, there's a lot of tweets, but there are a lot more people lurking and a lot more reading going on.
+
+So they said, Okay, every time somebody tweets, we're gonna do a whole bunch of work.
+
+But now, when you go and you refresh your page, that's now a single opport- it goes to that single instance where your database, you know, your information is gathers the list without having to consult anything else, and it just knows the top thousand, you know, posts that should be in your feed, and then it hydrates, as it calls. And looks up the text, and the pictures, and everything like that.
+
+So they were optimizing.
+
+They put something in the database, and here's the key.
+
+This is kind of the denorganization approach.
+
+They structured their data based on the queries that were going to be performed, and their relative frequency.
+
+By far, the most common operation, show me the top of my timeline.
+
+So they made sure that that was one step.
+
+You go, you find it, here's the list of things in your timeline.
+
+The data was designed, and stored on disk, or in memory or whatever, to optimize for that operation.
+
+But then it made something like posting a tweet, much more complicated.
+
+It was especially complicated when Lady Gaga tweaked, and at the time, she was one of their top users and had, like, 20 million followers.
+
+And now I think it's, Elon is the top follower top.
+
+Yeah, that personality's got like 80 or 130 million or something like that.
+
+I remember.
+
+Um, I just read a book about that called Character Women, about the ones takeover of Twitter.
+
+It's.. Um, pretty interesting.
+
+But, um, in that case, going and posting 80000000 copies of this thing that said, you know, Lady Gaga just tweeted, or whatever, that proved to be kind of a now, now that's a bad idea, because that is so much work generated by each tweet.
+
+The good news was there's, like, a tiny, tiny, tiny number of people who have that many followers.
+
+So they actually then went and restructured it, so it's like, yeah, for all the normal people, when you tweet, it puts a copy, you know, it tells everybody about it.
+
+And then it has a separate list of, oh, and also, you follow Lady Gaga and Taylor Swift, and, you know, Elon Musk and Barack Obama or whatever, whoever the top people were.
+
+And so, when you go look it up, and you look up, you're prefilled list, except you also got it, now go and check, and see if Lady Gaga has tweeted.
+
+So they do kind of the relational one on some and denormalize on others.
+
+But that process would be normalized, right?
+
+Making it so that the way we store it is designed around how you're going to look it up.
+
+That's the part the relational database is saying, no, no, no, no, that's not the default way to structure.
+
+And keep in mind that Twitter is a pretty pathological case.
+
+There are not that many services in the world, like Twitter, Facebook, Instagram, whatever, where you need to denormalize and think about that.
+
+This is the specialty of companies like Google and Meta that have this problem.
+
+For almost every other application, and the way most of those started, the idea is stored in a neutral way, give yourself a query language that can go and, you know, gather together what we need right now, but it's infinitely flexible in the way that you can do it in the future.
+
+And then we focus the efforts on how we make those queries actually efficient, despite them being kind of, you know, supporting ad hoc queries, right?
+
+Where we don't know how you're going to query it in advance.
+
+And this is the beauty of the relational database engine and indexing and stuff.
+
+This is what we're gonna focus on.
+
+It is possible, it's kind of shockingly efficient, and they're shockingly good at performing these operations.
+
+So relational databases, again, the relational model, put these things, just put, you know, draw, make this nice, abstract, idealized representation of the data, and then spend a few decades engineering a database query engine that gets really good at walking across that graph of relations and composing the information that you need.
+
+And they're shockingly good at that, and it's an engineering marvel, I think.
+
+And also, not that complicated in some ways, too.
+
+It's a we'll be delving into that.
+
+So, I think we'll stop there next time, we will go into joins and multiple tables, and, um, and, uh, talk about how to install coke grinder and get kind of a hello world assignment and walk through that, all that kind of stuff.
+
+So, we'll see you then.
+
+Thank you. 

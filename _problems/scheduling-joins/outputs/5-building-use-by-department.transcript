@@ -1,0 +1,17 @@
+> +----------+-------------+-------+
+> | building | department  | count |
+> +----------+-------------+-------+
+> | Brown    | Biology     | 5     |
+> | COE      | Biology     | 1     |
+> | HCC      | Biology     | 1     |
+> | SET      | Biology     | 155   |
+> | SET      | Chemistry   | 59    |
+> | SET      | Earth       | 50    |
+> | SET      | Engineering | 72    |
+> | Smith    | Computing   | 48    |
+> | Snow     | Biology     | 15    |
+> | Snow     | Chemistry   | 21    |
+> | Snow     | Earth       | 18    |
+> | Snow     | Engineering | 12    |
+> | Snow     | Math        | 70    |
+> +----------+-------------+-------+

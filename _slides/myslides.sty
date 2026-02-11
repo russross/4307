@@ -1,0 +1,46 @@
+\NeedsTeXFormat{LaTeX2e}
+
+\mode<presentation>
+{
+  \usetheme{CambridgeUS}
+  \definecolor{darkgreen}{rgb}{0,0.3,0}
+  \setbeamercolor{structure}{fg=darkgreen}
+  \setbeamercolor{title}{fg=darkgreen}
+  \setbeamercolor{frametitle}{fg=darkgreen}
+  \setbeamercolor{headline}{bg=darkgreen, fg=white}
+  \setbeamercolor{footline}{bg=darkgreen, fg=white}
+  \setbeamercolor{section in head/foot}{bg=darkgreen}
+  \setbeamercolor{subsection in head/foot}{fg=darkgreen}
+  \setbeamercolor{author in head/foot}{bg=darkgreen}
+  \setbeamercolor{title in head/foot}{fg=darkgreen}
+  \setbeamercolor{date in head/foot}{fg=darkgreen}
+  \setbeamertemplate{navigation symbols}{}
+}
+
+\usepackage{fontspec}
+\usepackage{newunicodechar}
+\newfontface{\whatever}{cmuntt.ttf}
+\newunicodechar{ω}{{\whatever{ω}}}
+\usepackage{hyperref}
+\hypersetup{pdfstartview=FitH}
+
+% use computer modern for math
+\usefonttheme[onlymath]{serif}
+
+% skip between paragraphs
+\addtolength{\parskip}{0.5\baselineskip}
+
+% add a bit more spacing around lists
+\newcommand{\itemspacing}{\setlength{\itemsep}{0.25\baselineskip}\setlength{\parskip}{0.25\baselineskip}}
+
+% put a blank line above block quotes
+\renewenvironment{quote}
+  {\par\vspace{0em}\begingroup\usebeamerfont{quote}\list{}{\rightmargin=1em\leftmargin=1em}\item\relax}
+  {\endlist\endgroup}
+
+% number enumerated lists
+\setbeamertemplate{enumerate items}[default]
+
+\AtBeginSection{}
+\AtBeginSubsection{}
+\AtBeginSubsubsection{}

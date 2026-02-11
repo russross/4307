@@ -1,0 +1,1971 @@
+Hi, welcome, everyone.
+
+Uh...
+
+Okay.
+
+So you have a good week?
+
+Anybody have any questions from last time?
+
+So I want to go back to.. Work through, you know, talk more about kind of basics, so sequel in the relational model.
+
+And we'll work for an example, We kind of talk...
+
+Hinted at this last time.
+
+Databases often are kind of modeling some kind of real world.
+
+Data.
+
+Um, so let's look at an example here of music player data and what we kind of talked about, artists and albums.
+
+So here we really have two different kinds of data, right?
+
+Artists and albums.
+
+So attempting a very kind of common way to approach this would be to just store it in what we call flat files, that is to say, just an ordinary file in the file system that you read from and write to.
+
+Maybe encoded as Jason, or CSV, or something like that.
+
+And so, in that model, you typically have one file, three kind of data, and then one line for each entry, using commas or tabs, or something like that, to separate the data.
+
+Again, that's the standard for CSV.
+
+So, if you were doing this, to use the data, you'd open the file, say you're working in Python, Parsi file, or line of time, and Python has a standard library, function to do this for you, CSV.
+
+If you make changes to it, you typically just rewrite the whole file.
+
+All right?
+
+That's the most common approach, you just write the new version over top of the old one.
+
+So, here's an example.
+
+A few bands here, so artists, they have Radiohead, Franz Ferdinand, and the killers.
+
+Albums, we have a local computer today, hot fuss.
+
+And so let's say we wanted to find all the artists from England and count all albums from the year 2000 and our tiny little data set.
+
+That code would look something like this in Python.
+
+Right?
+
+For line and the artist file, which we've got an iterator loaded and established, we'd say, go parse that line in a set of fields.
+
+So now, you know, just, like, an array, and then it fields up one, because here we have fields of zero would be the name of the artist.
+
+It feels someone would be the country.
+
+If that's England, then we print out all the fields.
+
+And then for the second task, we start with the count of zero, loop through the album's file, parse each line.
+
+If we find a year 2000, we increment our count, and then print a result at the end.
+
+Right, pretty straightforward for simple data.
+
+So what goes wrong?
+
+Why, why not use this approach?
+
+Um, so, this is kind of interesting, sequel light on their, uh, page.
+
+They can ask.
+
+It's going to frequently ask questions or anyone anything.
+
+One of the things they say is they're not really trying to compete with postgrass or ISQL.
+
+They're trying to compete with FO, which is the C library function to open a text file.
+
+So they actually make the argument, if you're storing even fairly simple data, sequelite's goal is to make it so simple to do that you will gain all the benefits of a database, and, you know, with minimal effort.
+
+So let's talk about some of those dead benefits are.
+
+So these are the problems that we often encounter when working with flat files.
+
+It's like, come on.
+
+There are all kinds of problems associated with data integrity.
+
+Like, you know, is the artist's name spelled consistently across all of your records?
+
+Or all the years, solid years.
+
+You know, whether you have a year field where it's something that's not actually a number.
+
+Or maybe you threw one in in like Roman noodles or something like that, right?
+
+So he's being cute.
+
+Are there any albums, any, sorry, artists listed in the album table that are not actually there in the artist table?
+
+So you have kind of references that don't exist.
+
+And what do you do if a band changes its name, right?
+
+You'd have to go and, like, manually change it everywhere.
+
+So these are the kinds of things that, you know, if you're careful, you can keep all this data, everything going, and working correctly, and you can do this with flat files, for sure.
+
+But these are hazards you've got to deal with.
+
+And then there's, you know, complexity problems. 11 that album has multiple artists.
+
+Right?
+
+A purely hierarchical setup, no longer works.
+
+And that representation we had also doesn't work, because we just had one field for the artist.
+
+And then there are kind of implementation level details, like, what if you have millions of artists and 1000000s of albums in your library?
+
+Now, you're starting to get a big file, maybe it actually takes, you know, it starts to get slow, loading it and rewriting constantly.
+
+What if you want to use, have some other application, make use of your database, because now has all these millions of great entries.
+
+And, you know, what if another application wants to use it at the same time?
+
+So, you know, if you're not using it at the same time, and they're just sort of taking turns, you're probably gonna end up with a lot of redundant code.
+
+Both of them are gonna have all these things to check, these data integrity issues, or they have the same optimization, tricks, and things like that.
+
+And if you want to run them at the same time, you really stand the chance of having some data corruption.
+
+You know, they both read it in, they both make changes, they both save their changes.
+
+And now it's probably, I don't know, last rider wins, maybe.
+
+Whoever wrote their changes last, their date is there, and the other one's gone, right?
+
+These are all problems that occur.
+
+Um, and then there's stirability concerns.
+
+What if you are in the middle of updating your record and the system crashes?
+
+Um, what if you have too much, you know, too much need for?
+
+You're using it too much.
+
+And, you know, you actually want to make copies of it to make sure it's more available. And now you gotta keep them in sync with each other.
+
+So these are all issues that come up, right?
+
+These are standard data management issues.
+
+And anytime you put, you know, any data in a flat file, you're sort of assuming responsibility for all of these issues.
+
+And very often it starts out, you're like, you know, innocently enough.
+
+This is just small data.
+
+I'm never gonna do anything big here.
+
+And if that's true, great.
+
+But what often happens is it kind of outgrows its original environment.
+
+So, these are some of the things that a relational database gives you.
+
+So, if we're talking a little about the data model, you just, you know, scratching the surface still, but talking about that in some of the queries commands.
+
+So, now, let's talk about relational database management systems.
+
+I already have, RVPNS is not just this model, but the actual system that you get when you use a property database.
+
+And, um, these are things that are kind of built in, that you get out of the box with a modern confident database.
+
+So, one is data integrity.
+
+This system is going to guarantee some rules for you.
+
+So, um, you can set rules about individual fields, like, say the year has to be a field, has to be greater than, I don't know, 1930. You know, instead of a 1900, whatever.
+
+When did they start?
+
+One of the oldest recordings?
+
+There's probably something from like 1850, right?
+
+Somebody probably captured something.
+
+But you could set a date there, you'd say, it definitely can't be greater than, like, 2026.
+
+We don't have any future music available yet.
+
+But you could have the database check that for you.
+
+And making sure things like, if you reference an artist from an album, that artist actually exists in the artist's table.
+
+That kind of data integrity is something that can be enforced for you and cared for by the database.
+
+Managing complexities is where they're really good, right?
+
+You can grow, and if you embrace the relational model, represent your complex data in a nicely normalized format, then it tends to scale and kind of grow with you very nicely.
+
+And you can always point to the extreme cases, Google can't just store their data in a relational database.
+
+Meta can't do that.
+
+But I'd also add, you know, the little app you're working on is not Google, and it is not meta.
+
+A likelihood, right?
+
+That is a luxurious problem to have, where you have, you know, oh, no, my problem is I have two billion daily active users.
+
+And so I have a hard engineering challenge.
+
+It's like, yes, and you've also got some really good, you know, you also have a volcano of cash pouring in to help you with those problems.
+
+So, um, yeah, there are problems that don't fit, but they're very...
+
+And then from the implementation side, you get a query language, and the database figures out how to execute the queries efficient.
+
+And this is something that's hard to overstate, how valuable and important this is.
+
+This is the internal part, the query part.
+
+Yeah, so when you issued your selective implementation is what I meant to say.
+
+Oh, yeah, not the query part, obviously.
+
+Yeah, it just replaces as the is the high level part.
+
+The implementation part is...
+
+So this is what we were saying before.
+
+These are things you would have to deal with.
+
+Yeah, the flat files.
+
+And now you get, you know, again, these, as we said, like decades of engineering after they've gone into solventist problems for you.
+
+And a big one there really is, yeah, that ability to figure out an efficient way of doing, of executing your arbitrary query.
+
+This is when I, this is, yeah, it seems extra valuable to me because I've used other kinds of database systems.
+
+I used the key value stores.
+
+And every time I wanted to just go and look up like some kind of data that wasn't programmed in, it was a nightmare.
+
+You basically have to write a new program to go and like find the one bit of data you're looking for, deploy that program. Run it, and then probably delete it, because it's an environment, you don't actually want it to be there the rest of the time.
+
+And with a relational database, you can just go and type your ad hoc query, and it brings all the optimization efforts to it and gives you an answer very quickly.
+
+Kinda amazing.
+
+And durability, this is a really important one.
+
+So relational databases, the gold standard here is acid transaction.
+
+They protect you against the problems of concurrence, queries, crashes, and consistency violations.
+
+Acid stands for, let's write it down.
+
+It stands for atomicity, what's this?
+
+So we have anemicity.
+
+Consistency.
+
+Isolation.
+
+And durability.
+
+A goal of tea.
+
+Acid.
+
+Um...
+
+Not something you should remember.
+
+You should know what acid means.
+
+I'm sure work with dabase.
+
+Let's all just chant it together like a cult.
+
+So here, I will start atomicity, consistency, isolation, durability.
+
+Atomicity, consistency, isolation.
+
+I feel like we should probably be standing on our desks or something.
+
+Okay, we'll come back to that.
+
+So what do these mean?
+
+Well, atomicity, Let me go into it later.
+
+Not yet.
+
+Adamicity means, um, you can have a series of, like, changes, reads and writes, and they are made atomic by the system.
+
+Atomic, meaning indivisible.
+
+They either all happen or they don't.
+
+So if you were in the middle of a bunch of changes and the system crashes, when you come back, when it comes back, it is though nothing had happened.
+
+The changes are not there.
+
+They either all make it successful or they don't.
+
+So, basically, atomic just means do or die, basically.
+
+Like, there...
+
+Again, it means indivisible.
+
+Yeah, well, yeah, yeah.
+
+It means it cannot be broken down any further, just like an adamable base.
+
+Right.
+
+Well, that's not accurate.
+
+Atoms can be.
+
+That is where the term came from, right?
+
+That's what atomic means, Greek, or whatever it is. Is indivisible.
+
+And it is true, though, if you break an atom down further, you no longer have the same alibi.
+
+It's true.
+
+That is true.
+
+So if you have a chunk of iron, and you carve it down, and you get to an iron atom, that's as far as you can go, once you start breaking that up, you've got something other.
+
+So, um, consistency.
+
+The system will guarantee things like, when you reference a value at another table, that value has to exist.
+
+And it will forbid you from doing operations that create inconsistencies.
+
+If you say the calm has to be an integer with four digits, the system will reject attempts to change things that would break the consistency rules.
+
+So the system is going to kind of safeguard those things for you and watch them.
+
+Isolation has to do with the concurrency problem.
+
+If you have multiple users or multiple applications, accessing the database at the same time, the database will ensure that they don't create inconsistencies in the data or the kinds of things we said.
+
+You're right.
+
+If the last rider wins, it takes care of that problem for you.
+
+This is something that's, again, kind of.. Underappreciated, I think.
+
+Whenever you build, like, a mobile app or a web app, you tend to have a server connected to a database, or an API server, I guess, is kind of how you think of that now, that a mobile app would connect to.
+
+You mostly don't think about concurrency issues.
+
+It's actually a really important part of it.
+
+But what you do is you open a database transaction and you let the database take care of it for you.
+
+And so, we've kind of deferred a lot of hard concurrency problems in a lot of applications out there to just say, Let the database take care of that, and I will ignore it.
+
+And it works greatly because the databases are really good at that.
+
+And then durability, they make sure that your data is not lost in the event of the crash.
+
+Or that, you know, crash doesn't lead to data corruption. Very carefully monit thing.
+
+So, um, you know, and we do have flat files in other places.
+
+It's a good text editors like them, when you go to save a file, it does not override the existing file.
+
+It writes an entirely new file, and then once it is safely written to disk, and it'll wait to make sure it's actually been written to disk, and not just sent to the operating system, and it's in process of beating, then it will rename it atomically over top of the old one.
+
+Just send to your next trick.
+
+But that's something, you know, right?
+
+The vim implementers adapt very deliberately, so that if it crashes while riding, or the power just happens to go out while it's saving, you'll still have the old version of it.
+
+And that'll do other things to make sure you probably have the changes, too. Because they store things in a temporary file, but that kind of thing you can do, but, boy, it's an incredibly tedious to have to do it over and over again.
+
+So having it built in, this is one of the benefits of doing this issue.
+
+And then there's this really key idea that I think we talked about a little bit last time, and, again, I think it's hard to overemphasize, kind of what an important idea this is, separating the data modeling and the indexing from the query.
+
+Right?
+
+You put your data in the database in a well modeled, nice format, and then you can query it in pretty arbitrary ways, and the database is the database is problem to make sure that the queries actually execute.
+
+I mean, really, it's your problem, but the database gives you the tools to do that.
+
+It does most of the work for you.
+
+And then with indexing, you can, if you manage indexes right, you know, you can usually get pre-group performance, even for very complex and large data.
+
+So, um, and we mentioned last time that, like, the Lady Gaga tweeting example. Right?
+
+The idea of, wait, was that this class?
+
+Yeah, that was his last, last time.
+
+That's also higher, all a bunch of distributed assistants.
+
+So sometimes makes this up.
+
+Um, Right. And again, Twitter has this problem.
+
+They're huge.
+
+Uh, well.
+
+They've got 100s of 1000000s of users.
+
+That's pretty big, right?
+
+But it's also a real time system.
+
+They want things to happen.
+
+One of the problems they were seeing was that the kind of worst case for them was when two big time celebrities would start tweeting back and forth, and so they're, you know, they're going rapid fire.
+
+Everybody's enjoying the spectacle.
+
+But then when it was having to go, like, write 20 million copies of Lady Gaga's tweet and then 20 million copies of Taylor Swift's reply, or whatever it was.
+
+That would take a while.
+
+It would, like, subdivide and subdivide and fan it out, do that.
+
+And you would end up seeing the conversation, like, out of order for a lot of people.
+
+So, you know, they had this problem where they, um, so they renormalize that, but their general strategy for most users is denormalization.
+
+Right?
+
+Instead of having a relational database and just having, like, having to have kind of the entire data set accessible to a query, they went and, like, optimized for the specific harm.
+
+And again, that is an appropriate, necessary way to do things a lot of the time.
+
+But also, I believe they started with just an ordinary database, and then they grew into that.
+
+And that's usually the best approach for most applications.
+
+Even if you have dreams of being huge, you probably start with post press.
+
+And you grow your way to the point that you actually need to do something else.
+
+Um, really great bit of engineering advice from Jeff Dean at Google was, um, he was saying, like, don't, don't ever, like, try to design for infinite scalability.
+
+You know, don't don't imagine what you're gonna look like in your Google size and plan for that.
+
+Because you will get, you'll guess wrong about where the problems are.
+
+And you have a lot of overhead, I'm guessing.
+
+You want to usually design for, you know, you want to give yourself room to grow, but if you're trying to design for more than, like, 100 times your current data set size, you're probably solving the wrong problems.
+
+You're probably wasting your effort and introducing overhead.
+
+Yes.
+
+Like, they use an example, like Google, Google has an index of the whole web, right?
+
+It's called a reverse index.
+
+So, they will have, um, essentially, you know, data structures where you can look up every word and it will give you a list of all the documents, like ID numbers of all the documents that contain that word.
+
+So when you type, like, a three word query, it looks up the three words, takes the intersection of those sets of documents, and then does further processing to figure out which ones to show you, and so on.
+
+And, you know, they did a lot of optimization, and you make lots of copies, lots of snapshots of it, so that you can run lots of different queries in parallel, and maybe some words are too popular, so you actually divide that up and have two different computers, find half the documents each.
+
+And you keep doing this, you know, fanning out and scaling stuff.
+
+And you can keep going and keep getting higher and higher scalability with that.
+
+But at some point, they realize, by now we have enough machines.
+
+We could just have fewer copies of it, but have them entirely in memory.
+
+So, you know, we could keep scaling and using disks, but by now, what if we just put the whole thing in memory?
+
+And it fundamentally changed how a lot of the design decisions were made.
+
+And they kind of didn't see that coming, right?
+
+They sort of grew into that.
+
+And that was, you know, an illustration.
+
+It's like, if they had kind of planned, you know, this grandiose architecture to go and take over the whole world, which they were essentially doing, But if they plan too far to head, any effort they had done there, where they hadn't anticipated the move to memory, would have been wasted effort.
+
+So you kind of solve the problems you actually have.
+
+And maybe, you know, try to anticipate the next few problems.
+
+You always kind of grow to, you understand your user base, you understand your data needs through experience and through growing with them.
+
+Often, you know, programmers were notoriously bad at guessing what's gonna happen.
+
+We're notoriously bad at guessing how long something is going to take us to do.
+
+We bad at guessing how long it's gonna take for computer to do.
+
+And so it's best to actually get real data and real experience.
+
+And so I think that is actually a pretty powerful argument for starting with a relational database, even if you are planning to, you know, outgrow that eventually.
+
+They just keep winning, all right?
+
+I was very skeptical of relational databases for a long time, and I've given up fighting it.
+
+They're just too good.
+
+So as it says, they're one of the most successful and ubiquitous classes of software ever made.
+
+So, in the relational model, we have a tuple.
+
+So again, I think the last time we mentioned, we have kind of 2 sets of terminology.
+
+We have the relational model as laid out in, like, research papers, and we have sequel databases in the terms that are applied there.
+
+So tuple is kind of a relational model name.
+
+That's what we call a row, or a record, in, you know, in a single database.
+
+Or we call it unordered pair, or I mean, an order pair of math, right?
+
+Um, well, it's not just a pear, it's too.
+
+Well, so two full is the generalization of that.
+
+Yeah.
+
+That is, you know.
+
+Um, so it's an ordering list.
+
+Yeah.
+
+Basic, yeah.
+
+So, in the values of a tool of a 2 volt, excuse me. In the relational model are atomic word, what we call scalar values.
+
+They should be lists.
+
+Now, most databases actually relax that, but that is technically a violation of normalization rules.
+
+That's a violation of personal order.
+
+It's like the most basic thing.
+
+But it's also, it's a tiny amount of denormalization.
+
+If you store a string that is an adjacent list and a field in your database, sometimes it just simplifies things.
+
+But you are giving things up in the process and you are breaking normalization.
+
+So, in the pure model, that would not do that.
+
+There's a special value called Noll, that is a member of every domain.
+
+So every, um, you have a table that's normally, or a column that's normally integers, it can also be null unless you say a cat.
+
+Does that just mean it's nothing?
+
+Like, no?
+
+Like, it's got, there is no value.
+
+Okay.
+
+And it's special, it has special rules.
+
+So it's not zero. You know, it's not the empty st.
+
+And then again, tuples are usually called rows.
+
+Atributes are called columns, but we'll have these kind of 2 sets of vocabulary.
+
+So then a relation is an unordered set of tuples that have the same attributes, which we also call the table.
+
+So a relation is a table, a rose, a two bole, a column is an attribute.
+
+Other matter of fact, thanks.
+
+Mm hmm.
+
+We have the concept of primary keys.
+
+Overall, but our relation's primary key, uniquely identifies a single tubable.
+
+That's its job.
+
+So, we have kind of two forms of these.
+
+There's a natural key.
+
+That's where the data naturally has, um, a combination of fields that uniquely identifies it.
+
+So in our band names here, we might guess, well, maybe the name of the band is unique.
+
+Unless it's not.
+
+And I'm guessing, in reality, it's not.
+
+I guess I'm guessing there have been multiple bands with the same name, but, you know, just never encountered each other or whatever.
+
+But if you were to assemble a big database with music and things like that, you'd find that.
+
+I think this is interesting, isn't it?
+
+Is it the actors union or something like that?
+
+They require that everybody, you know, in Hollywood, they all have to have a unique name.
+
+So that's why you see a lot of actors will go by their middle name, or they'll use the middle initial, or something like that, and that's so that when you're crediting somebody, it's always guaranteed to be unique.
+
+Which was kind of an interesting approach, right?
+
+Force people to change their name.
+
+These are different name rather than, um, But, you're right, it might not be naturally unique.
+
+Maybe a combination of name and country is not actually unique.
+
+So we often have these cerrogate keys, or synthetic keys, a very common practices just to add an integer field. And just number them and say, yeah, internally, we'll use this to make sure we're uniquely identifying one record.
+
+Um, so that's usually just added to the tuple purely to be a unique identifier.
+
+This is something I think that is probably It's a good idea, and it's also probably done too much.
+
+Probably done more than it really should be in a lot of data since.
+
+Mainly because we have tools for using databases for programming languages that will just automatically do that and be designed to assume there's a numeric primary key.
+
+And, yeah, it's convenient, I guess. Also a little ugly, I think.
+
+Um, and all popular database systems can just auto-generate and it is your primary key for you at assertion times.
+
+So you just submit that field and it generates one for you, usually the 1st one hasn't been used yet.
+
+For large databases or distributed databases, this is actually a problem.
+
+Because having a unique counter that's shared widely in a distributed system is actually a hard problem.
+
+It becomes a bottleneck.
+
+And so, you're also seeing a lot more and more now, people use UUIDs, universally unique, user IDs, I guess, or IDs for other things UIDs.
+
+And those are the big, long ones you see, have, like, several banks of numbers of, like, hyphens between them, and they're generated from a mix of, like, a highly accurate timestamp, and a random number, and something else, and they're designed so that everybody in the world can just generate unique IDs constantly in isolation, never conflict with each other.
+
+Although it doesn't actually work, is the question?
+
+Yes.
+
+Well, I know it works in theory.
+
+It works in practice.
+
+It works in practice better than a dozen theory.
+
+I've just heard from some people that UUIPs can sometimes generate a similar number to something that somebody else had like years ago makes sense because I would imagine those are...
+
+So they're actually standards for how to define them kind of securely and robustly.
+
+Okay.
+
+So if you just roll your own scheme, yeah, probably gonna run into problems, but that's why they usually do some variation of a, you know, current timestamp plus randomness, and once you've had it, it's pretty hard to have a conflict.
+
+But what is, aren't there a finite number of UU IDs that can be done, or is it infinite?
+
+Yes.
+
+Yes, there's a finite number, but fortunately, we also have a finite number of atoms on Earth and in the galaxy and so on. Turns out to be not a problem.
+
+Okay.
+
+Yeah, like I say, so that's what I mean when I say works better in practice than in theory.
+
+Because in theory, you could have conflicting ones, but in practice.
+
+If you do it right, you never will.
+
+Um...
+
+It's like cryptographic hashes, secure hashes, you know, Shaw one, Shaw 256, M5, You're familiar with those?
+
+So, I think, currently, everybody uses Sean 256. Kind of the standard, um, SHA's secure hash, secure hash algorithm.
+
+And there's a long history of these.
+
+MD5 was kind of the first really widely used one.
+
+That was message Digest, outer room number five.
+
+And those are hashes of data that should reveal nothing about the input of the data.
+
+So you generate a hash, you get this, and the case of MB5 is 128 is, John 256, is 256, that's, and the others in between.
+
+And they are actually considered broken when somebody has discovered a single pair of documents that hash to the same key.
+
+And they'll usually anticipate that coming years in advance and start trying to move everybody to a newer system.
+
+And as soon as that has been done one time, it's considered, like, a security, like, an urgent security flaw for anybody to be using it at all.
+
+Like, MD5 used to be secure, and now you can actually routinely, you can pretty easily generate, uh, hashes that combine.
+
+But it's, you know, there's some analogies there, I think, to the U IDs.
+
+Foreign keys.
+
+So this is, we had talked about a primary key, the other most important kind of key you'll see is a pouring.
+
+This is a set of attributes in one relation that refers to the primary key of another relation.
+
+So if we have here our albums, So we have names, and then we have this artist's ID.
+
+That is a reference to the primary key of the artist's table.
+
+And this is how they relate to each other.
+
+This is where the relational part comes out.
+
+So this is when you have two, because, you know, relational databases have multiple tables, but you have two tables.
+
+This is how you relate them when basically joining them together.
+
+Like doing an inner join.
+
+Well, we'll talk about those.
+
+But yeah, so this is how you relate.
+
+So it's not a hierarchical thing.
+
+You can always add new relations that refer to existing values, right?
+
+E one is kind of an independent table, but it might be linked to something.
+
+And we call that a foreign key relationship.
+
+Okay, I've noticed something that's a little confusing.
+
+Both okay computer kit A have the same artist's ID, but they're Yes.
+
+Okay, you know what?
+
+That makes sense.
+
+Because they're both Yeah, they're both Radiohead albums.
+
+They're both from the raid.
+
+They're both from radio.
+
+Yeah, those are two, they are there, 2 of the greatest albums ever made.
+
+No, radio, man.
+
+From, from, the greatest band, the Evan Gracier.
+
+I don't know about that.
+
+I know that one song.
+
+Yeah, Yeah, they're one, they're one kind of accidental hit from their 1st album that they've affected their sound.
+
+The Creep.
+
+They're like, No, we don't want to do crouch.
+
+Okay, so, let's see, with these foreign key relationships.
+
+So like this example note is an important thing.
+
+The way we've set this up, we can have an artist with many albums, but we cannot have an album with many artists.
+
+So using just a direct form key to another one creates a one to many arrangement.
+
+Right?
+
+One album, sorry, one artist can have many albums because the relation, the link is going in that direction.
+
+When you say one to many, that's referring to, um, a kind of like a significant other two one to one, basically, like how functions relate to each other, basically.
+
+Like the ones like they point to each other are only one has one, basically one in the domain points to one in the range, one to many is like one of the domain points to many in the range, basically.
+
+Yeah, yeah, okay.
+
+And then you can have many to many as the other relationship you typically want.
+
+Many, many, but I guess we're only talking about relations.
+
+So here's the malfunction.
+
+So here's an example of many.
+
+So here's how you do that.
+
+If we wanted to allow, so, problems and problems set.
+
+So this is something we see in Cobra.
+
+I create problems, but I assign problem sets.
+
+A problem set may have many problems in it, but I may also have the ability, I think, they do this in some classes where they want to have, like, a review set that they hand out, there's problems we've already done.
+
+So a problem needs to be able to belong to multiple problem sets, and, um, a problem set needs to be able to have many problems.
+
+So we need to have many to many relationships.
+
+And the way we do that is we add a new table between them, which is usually called a joint.
+
+And it just links them.
+
+So we have problems over here, we have these names, and the problem ID, and other data, problem sets, we have the IDs, the name, how many points it's worth, say.
+
+And then the one linking them will have a problem ID and a problem set ID...
+
+And we often, we may also want to have data that is related to, that's part of the relationship between them.
+
+So, like, here we might say, this problem is worth twice as much as other problems and the same problems.
+
+So Or like if you have a student and a course, you might have a takes relationship.
+
+That's another many to many.
+
+Students take many classes, classes have many students.
+
+And so on the relationship that binds a student to their class, maybe that's where the grade goes.
+
+So you often create these tables that allow, this is the standard way of kind of creating many to many relationships.
+
+And those are foreign key relationships there.
+
+So, again, this makes sure this allows the database to ensure that all the problems in the problems that actually exist.
+
+Um, okay.
+
+Let's go back and do some more sequel bolt.
+
+Bolt. Sequelbolt.com.
+
+Um, and...
+
+Introduce joints.
+
+So in the queries, the examples we did before, we were working with a single table, and we said, even that's pretty useful, actually.
+
+But it really gets more interesting and more useful, and you have multiple tables. Orthogonal tables.
+
+He's sitting in a process called normalization.
+
+So, this is a data design issue.
+
+This is how there's a process for kind of figuring out how to what should go at one table and what should be separated out into two tables.
+
+We'll revisit that later.
+
+So, having normalized databases, again, one of the things we kind of talked about a little last time, is that it minimizes this redundancy in a single table. And allows the data to kind of grow independently from these different tables.
+
+Great benefits for it.
+
+Let's look at some how we work with them.
+
+So, the process of using a query that involves multiple tables is called a join.
+
+We're joining together two relations and coming back with data based on that.
+
+So here's a an example, well, it was kind of a format of a query. Column, comment, other column, da da.
+
+From my table, so that would be the 1st table.
+
+And then this one's using what's called an inner joint to another table, and then it has a criterion here that says, but only join them.
+
+They have a relationship where my table.
+
+ID is another table side, where those match.
+
+So where the artist's ID reference in the album table matches the artist's ID and the artist's table.
+
+So, Um, In the relational algebra, that this is based on, we're working with sets and tuples, right?
+
+Everything you do in a query affects the set of tuples that you were working on.
+
+So, when you join two tables together, and it's kind of most primitive form, you're taking the cross product of those two.
+
+That's rarely useful, but sometimes is.
+
+But normally, we want to refine them.
+
+We want to filter it.
+
+We don't want to pair together every artist with every album.
+
+We want to pair together, every artist with the albums they name, like...
+
+And so we have this joined condition that restricts it, right?
+
+It narrows it down, says, yeah, I'm only actually interested in these, you know, the ones that have this relationship.
+
+But it's not required.
+
+You can leave that out and actually just get the cross product if you want.
+
+So, we put that as a join condition.
+
+There are a few ways of expressing maps the most straightforward one, I guess.
+
+Use that word off.
+
+So inner joint is only going to give you entries where there is that connection between them.
+
+So you might have, for example, And an artist that has no albums.
+
+And they would not be returned in this resolved set.
+
+If you do it in a trial, they would just be omitted from their assault.
+
+And if you have an artist that has multiple albums, you will have multiple rows resulting from that.
+
+One, where you have Radiohead with kid A, one where you have Radiohead with okay computer.
+
+So those will be distinct rows.
+
+They get form.
+
+You can still do the regular wear, order by, limit those other standard filtering operations that we saw before.
+
+So what a join is really doing is kind of expanding the results set, right?
+
+You kind of start queries have kind of a life cycle.
+
+They kind of start out as expansionary.
+
+You're doing joints, and that broadens the tool and gives you more rose, typically.
+
+Sometimes, you can be smaller, but very often, that's skipping. Growing the set.
+
+And what you kind of want to do is, you need to grow it big enough that encompasses the data you want.
+
+So you kind of have to grow a certain amount, and then you start narrowing it down to only the baby you want.
+
+And it's useful to kind of think of it in those terms, I think.
+
+We'll keep relating it in those terms.
+
+Um, so let's see.
+
+If I wanted to find all students who took database systems in 2024, and I had a database of, you know, naturally formed era, a recently formed database of student data like that.
+
+I would start by saying, OK, let me go, let me find all the students, joined with the courses they took, which is probably via a join table, so I probably have all the students, joined to the join table on ID, matching IDs, joined with the courses on matching IDs, joined with, or maybe that one tells you the year it was there.
+
+But I kind of got to expand out, and, you know, temporarily here is, I'm at least in the, again in the mathematical car of this, the relational algebra, it's okay to just have, like, infinitely large sets or giant ones, we don't really care, right?
+
+When we're kind of defining what the results are.
+
+So we say, you know, start out considering every student who has ever taken a course across all time.
+
+But we only want to pair courses with the students that actually come through.
+
+Right?
+
+We don't want to just, that's our useful set.
+
+And then you start carving it down and saying, But only those who took a class in 2024, I only where the course was database systems.
+
+So you start with this kind of expansionary thing.
+
+Let's crawl all the tables we need to get the data that we want.
+
+Joining them, hopefully, with these join conditions, so that there's kind of the same, you know, set of subset data coming back.
+
+And then you narrow it down to what you're interested in, and then you only select back the college you actually want.
+
+But I think it's helpful that we'll kind of redo this exercise. To kind of think of this, this, you know, there's the growth phase and then the narrowing and then the selection.
+
+And, uh, ultimately, you, but the purpose, the kind of goal we have in writing a sequel query, is we want to just describe the data that we're interested in.
+
+We don't tell the system how to navigate those tables and how to bring it together.
+
+We say if I have this map of the data, give me this table joined, this one, this one, I need data from there, carve it down, just give me the ones that match these.
+
+And you sort of describe the qualities of the data you were interested in.
+
+And then the database's job is to figure out an efficient way to go and get that for you.
+
+So it attempts, at least, to be a declarative language.
+
+You're not telling it how to get the data.
+
+You are describing the data you want.
+
+And it figures out how to get exactly that data.
+
+And that usually works pretty well.
+
+And sometimes you have to figure out exactly how it's doing it, and, you know, get into it for organization, but most of the time it doesn't have a good job.
+
+Inner joint is the default, so if you just write, join, that's what you get.
+
+Okay.
+
+So here we got two tables.
+
+Let's see.
+
+With our Pixar database, example, the box office, has information about ratings and sales, and the movie ID column over there corresponds with the ID column over in the movies, table.
+
+So this looks like...
+
+I don't think we have any duplic, like, I don't think we have multiple box office entries for each movie.
+
+So this is probably a fairly simple arrangement where there's just one to one.
+
+But we can do some practice queries anyway.
+
+So, find the domestic international sales for each movie.
+
+So, let's see.
+
+Okay, so we need movies joined with box office.
+
+So let's just start by getting too much information.
+
+Join box office.
+
+Yeah, I tried this one.
+
+Box, what was it called?
+
+Oh, it's just one word.
+
+Box office.
+
+So, if I just do that much, now, I didn't give it a join condition.
+
+And so, it's giving us.. Given us the Cartesian products, right?
+
+Right.
+
+So look, Toy Story here is partnered with every box office result.
+
+And then if we go down further, a bug's life is paired with every box office result.
+
+Right?
+
+We told it, give me every combination of a movie in a box office.
+
+So I want to refine that and say, and the Guinness is considered part of the join, but I'll put it here on box office.
+
+I got to get the column name. Movie ID, movie, ooh, movie, underscore ID. Think it was capitalized.
+
+Uh, it's case insensitive, so.
+
+Oh, okay.
+
+Movies.id.
+
+So note they have different names in the 2 tables.
+
+That's common.
+
+If they're the same name, it's even easier.
+
+You can do a natural joint.
+
+But, here, we have to be useful.
+
+So now, if we go and look up at our results set, Now we have.. Each movie is only paired with its corresponding box office results.
+
+Yeah.
+
+Wow.
+
+Oof.
+
+I wish I could see more of it on the screen at once, but.. Um...
+
+And then what...
+
+Oh that's well, and so we probably want to narrow it down.
+
+It asks for the domestic international sales for each movie.
+
+So I'm gonna say, uh, we probably want the.. Title.
+
+And title only exists in the movie state movies table.
+
+There's not one in the box office, so I don't need to qualify it.
+
+But if it's a column that exists in both, I would need to prefix it and say, like, movie, stop hiding.
+
+But I'm okay here.
+
+And then what it specifically asks for domestic international sales, so that's domestic sales and international sales.
+
+I'll just copy and paste a cheat.
+
+Oh, except I didn't copy 'cause I'm on Windows.
+
+Domestic box, domestic...
+
+Sales, sales.
+
+International sales.
+
+Okay, now we have just that.
+
+Oh, and just to illustrate here, that number, it's kind of hard to make sense of.
+
+So I could do something like I could say, select domestic sales divided by a million.
+
+Right?
+
+Just to show that you do more than just get the field, you can do some formatting.
+
+And we could format that.
+
+And domestic sales divided by international sales, see what percentage.
+
+Yeah, right.
+
+But so the things we select are computed from the data and the results set.
+
+It's not just pulling it out.
+
+We can do it all, it's number two.
+
+Now we can follow that, what, like, mega dollars?
+
+Ran 80, mega dollars or something?
+
+$1 million, I think, is what we usually say.
+
+But now, look, the title of our column is now domestic sales divided by millions.
+
+So the other thing you can do is rename it.
+
+Uh...
+
+Oh, millions.
+
+It's capitalizing for us.
+
+It's not actually capitalized, but so you can rename the result that's coming back to.
+
+So, it's not asking us to do those, so, but I just wanted to point that out.
+
+Okay, then we're asked to show the sales numbers for each movie that did better internationally rather than domestically.
+
+So, we're just looking for some refinement on this one, right?
+
+We're narrowing it down.
+
+What's the clause for that?
+
+Where...
+
+Well, obviously, we're international...
+
+So where, sorry, which one it was?
+
+Better internationally, where inter national sales is greater than domestic sales.
+
+Yep, that's right.
+
+Sales.
+
+So now we have, it's narrowed somewhat.
+
+Most seem to be still most of them, but.. List all the movies by their ratings into sending order.
+
+That's easy.
+
+All we have to do is we have to just, uh, get the raids from there.
+
+So we have a rating over here.
+
+So...
+
+I'm gonna go back to...
+
+So what we actually just says.. The movies, right?
+
+Title is all I actually need.
+
+Right, and again, to point out, you don't have to select the data that was used in the computation.
+
+For movies joined box office, that part's still fine.
+
+And I actually want all of them.
+
+But I want to order by.. Rating, setting, right?
+
+Yeah, rating, and again, there's only rating in that one table, so I don't need to qualify it.
+
+Rating, probably descending?
+
+Is that what it said?
+
+Yes, yeah, just that.
+
+So, Wall E, Toy Story 3, Toy Story, up, fighting...
+
+We have the highest rating.
+
+Oh, no, it's descending.
+
+No, yeah, that's right.
+
+Yeah, so highest rating comes first.
+
+How in the world is that even accurate?
+
+I mean, Molly's okay, but...
+
+Maybe it was the person who made the database as a being?
+
+Well, I don't know.
+
+I mean, you were wrong on Radiohead.
+
+Maybe you're just wrong on that.
+
+Oh really?
+
+I would expect Toy Story 2.
+
+No, I would expect the Incredibles to be the highest rate.
+
+That's, like, what everyone says is the best, like, Pixar movie.
+
+Apparently not.
+
+Well, critics probably disagree.
+
+I don't know.
+
+So, outer joints, take this joining idea, and, right?
+
+So, we said, an inner joint only gives you pairs that actually match up.
+
+But what if you want to see, uh, we can probably need a new table, because I think this one is a one to one matching.
+
+But let's say, again, back to the artists and albums, Maybe we have an artist that has not released anything, or at least nothing within our database, but we want to see them.
+
+So the tuples that we're returning normally give you some of the columns from table A and some, right?
+
+The artist's information and the album information.
+
+So an outer drawing allows us to say, oh, but make sure I actually see every artist in the results set, or I see every album in the results set.
+
+And if they don't ever pair with something from the other table, just fill in knolls for those fields.
+
+So we'll get all everything we had with an inner joint, plus we'll add these extra fields. To just make sure everything is represented.
+
+So, like, one place, this, uh, comes up is, um, let's see.
+
+Let's say we're cleaning our database, and we wanted to delete all the artists that don't have albums. In our database.
+
+How do you select those?
+
+There's nothing in the artist itself that tells you they don't have an album.
+
+You have to do a join.
+
+But if you do an inner join, that's gonna give you all the ones that have out.
+
+Now, there are other ways you can do this, but one way you can do it is do the outer channel, and then you filter out the rose where the album is present.
+
+There's lots of ways you can, a lot of queries have lots of ways you can write them, but that's one way you can do that.
+
+Yeah.
+
+Um, so, left outer join, right outer join.
+
+So, yeah, the left and right, when you join A to B, if you do a left out or join, it's going to give you everything from A, and then everything that pairs up in B. If you do a ride out or join, you get everything in table B, combined with everything that matches A. And a full outer joint, make sure you have everything from A and everything from B. But again, it's always built from the things that joined up, plus the ones that enjoyed them. Sort of added to it.
+
+Right, so you'll get an entry for...
+
+I bet there's bands bands that have formed and never actually got around the listing their album.
+
+Probably even, like, high profile ones, right?
+
+Where it's, like, somebody goes solo and then Untitled.
+
+Yeah.
+
+So somebody goes solo and then they, you know, don't actually get around to producing an album or something like that.
+
+But if you were to join such a thing, right, you would see...
+
+You're not gonna see Radiohead with Noel Fields when you do an average line.
+
+Because they have data in the outlets field that matches up.
+
+But maybe you will see, I don't know, who would specialate that.
+
+Maybe one of the Spice Girls, you know, Brogana, a solo, and then, you know, made more money doing whatever, whatever they do now.
+
+So we have their left outer joint, right outer joint, full outer joint.
+
+And again, once you say left, right, or full, it's implicitly an outer joint, because there is no such thing as a left inner joint, so often see those abbreviated.
+
+Okay.
+
+So let's try this one now.
+
+I'm just gonna make it smaller so we can see more of what's going on at once.
+
+Still not quite how small do we have to get before we can see?
+
+Is that too small?
+
+No, we could probably make that work.
+
+So find a list of all buildings that have employees.
+
+So here we have buildings with their names, and they are named one E and one W.
+
+Yes, these are like, maybe they're like apartment, but except they've got engineers working, they're an artists.
+
+I guess, I mean, Microsoft campus, their buildings are numbered.
+
+MIQ numbers, everything.
+
+We're taking computer science, that's course six.
+
+And of course, now their courses are just now, it's 6.142 would be, you know, the equivalent of CS 142.
+
+So I guess places do this.
+
+Okay, so let's see, we want to find the list of all buildings that have employees.
+
+Which is all pretty much?
+
+Not necessarily.
+
+I'm gonna guess it's not all of them.
+
+Just a little...
+
+So I verify from what we're saying right now.
+
+So, well, let's, yeah, well, we're, well, fortunately we have a database that can do it for us.
+
+But building names.
+
+So, yeah, building name, it looks like, has a just- it's not just building. Name.
+
+It is building name, from, I'm gonna say buildings.
+
+Interjoin, outer joint.
+
+We kind of want an interjoiner, right?
+
+We just want the ones that pair up.
+
+Join employees on.. Building...
+
+Let's see.
+
+Building name equals building.
+
+But that wouldn't...
+
+Yeah, building name equals building.
+
+That's kind of weird.
+
+Okay.
+
+I don't need to say the table name, because the names are distinct.
+
+So now we're getting the building name here a bunch.
+
+It's not quite what we want, though.
+
+How about.. What's wrong with it?
+
+Yeah, we've got a bunch of duplicates.
+
+So, yeah, remember distinct.
+
+Says I want a proper set of results.
+
+No duplicate.
+
+There's only two cell.
+
+It turns out all the buildings do have a proposal, because there's only two of them.
+
+There were four buildings.
+
+There were four buildings, two of them have a place.
+
+There are two that had employed...
+
+See, this is why you want the database to do the workforce, right?
+
+Well, this is an easy database, too, for that reason.
+
+There's not that many...
+
+Oh, you get the points. You think?
+
+You say that, and yeah.
+
+Well, because I can't see the whole thing.
+
+Yeah.
+
+I mean, it is useful to, you know, manually verify things sometimes, but also when you have, like, a few 1000000000 records, it's kind of hard to glance over it and tell it's right.
+
+So let's give a little not always violence.
+
+No, he's gonna get rid of the join.
+
+So let's see, find a list of all buildings and the capacity, but this was the 1st table.
+
+Yeah, that kind of seems like just find select. Building name...
+
+The fact that I...
+
+Select Star from Buildings.
+
+Yeah.
+
+Yeah.
+
+Yeah.
+
+Oh, that's good, too, right?
+
+Overcomplicated.
+
+List all buildings and the distinct employee roles in each building, including empty buildings.
+
+Okay.
+
+Okay, so I'm guessing we're gonna want an outer join here, right?
+
+So we want, I'm gonna start with buildings.
+
+Left, outer, join, employees.
+
+Is that what they were?
+
+Employees?
+
+Right?
+
+Because we want to have every building including the empty ones.
+
+We want to be selecting building?
+
+Oh, uh, sorry, that was supposed to be from here, I...
+
+From...
+
+And we, what we want is buildings and rolls.
+
+So building name...
+
+Roll?
+
+Thanks?
+
+Okay.
+
+Left outer joint employees, so let's just look at our scroll through here.
+
+So it looks like we do have...
+
+Oh, we're still, we haven't done it on condition, right?
+
+So we're just getting every piring of a building with every possible row.
+
+Including duplications.
+
+So, on, I'm gonna indent that.
+
+I often put it on the same line.
+
+Depending how complex the joint condition is.
+
+So we want building, named, equal building.
+
+Right?
+
+We could say building, stop building name, and employees.building, but we don't need to because they are distinct.
+
+So now, okay, now look at our result list.
+
+So, so far, we have the building names and the roles, and for the buildings that had no people, we have building with no roles.
+
+So that's where we're seeing the outer join doing its thing.
+
+So we still want to put this in.
+
+Right.
+
+Can we throw the stinks on just one of the things we're searching for?
+
+No.
+
+So distinct, again, I think this is often confusing because this looks like, can we just each building once, but it's not distinct building, it is distinct results.
+
+So, it's taken the entire tuple set that would be returned and getting you only to save the food.
+
+So distinct applies to the whole results.
+
+So I'm getting a distinct combinations of building role and building name and role, from building stone to employees of building.
+
+So that collapses the lines where there were. Let's see.
+
+One, E, I think had multiple engineers, but we've seen that extra once.
+
+Building 2W did not have any engineers, so it's not pressing there.
+
+But managers are involved.
+
+Any questions on that one?
+
+Um, actually, before I forget completely, let's look at the hello world.
+
+There, uh...
+
+Speak greater update.
+
+Okay.
+
+Uh, 4307.
+
+So, if you go into the course, there's Sequalite, Hello World.
+
+When you click on it, this will give you the instructions for installing code grinder.
+
+Um, actually recommend reinstalling grind, even if you already have it.
+
+I actually just push out a new version about a week ago that's listening to fast now.
+
+I didn't even realize that it was never that slow for me for some reason, but a lot of people have seen how they saw all the night.
+
+Anyway, just make sure you got an update version, but you click this and run the command that it says, and you click this and run that command to log in.
+
+I think, any questions on that installation process?
+
+I think everybody's done it already, right?
+
+Um, And then let's look at the 1st assignment.
+
+You'll need to make sure that you have...
+
+Okay.
+
+But you have sequelite, sequelite, 3 installed, or brew install, sequelite, 3.
+
+I already have it.
+
+Um, so I didn't do anything, but you'll almost certainly have the sequelite library installed, but what is not there by default is the, like, terminal application for interacting with at the shell.
+
+And so that's what that is.
+
+I do grind list.
+
+So that's first one, sequel light, hello, world.
+
+I'm gonna grab my ID 182, grind get 182.
+
+Puts it into CS 4307, sequel I Hello World, typing make, does not work.
+
+Because, you know, you're supposed to do something.
+
+So, the way the structure on these, let's see, if I look at Doc...
+
+Doc.MT?
+
+Oh.
+
+Oh, yeah.
+
+Hello, world doesn't have much.
+
+There's a query in HelloWorld.sequel, run make to tester solution, grind grade to cement.
+
+So if I look in HelloWorld.sequel, the purpose of this assignment is to test a fear development environment is set up correctly.
+
+Comments and sequel, double hyphen, comments to the end of the line.
+
+So, there can select one, which is a very simple query, not terrible useful.
+
+It doesn't even involve a table.
+
+The correct query we want here is just select greeting from messages.
+
+So I'm just going to punch that in, select greeting, from messages.
+
+And here, I think the semicolon is optional.
+
+I think let's just make sure that's true.
+
+Yeah.
+
+Because again, it knows it's so you reach the end because it's the end of the file.
+
+But you'll probably feel more comfortable leaving a semicolon there so you can fit in.
+
+With the cool kids.
+
+When doing multiple in a row would we need to?
+
+Yes.
+
+Yes.
+
+Yeah.
+
+That's when we get off on the last one.
+
+Yeah, just because, again, the end of the file is the market, the query.
+
+So there's some setup stuff here.
+
+Let's see, just a bit of a few words about the environment.
+
+Um...
+
+Oh, tree minus A?
+
+Okay, there we go.
+
+There are a couple hidden files here.
+
+A dash schema and dot E dash data.
+
+They'll be there most at least from our earliest assignments.
+
+That's the creation statements for the database.
+
+So if I look at dot A schema.. We'll create table messages, has greeting text, and if I do cat.b data, that's the insert that created it.
+
+Insert into messages, reading, values, solo world.
+
+So whenever you do a make command, it actually deletes the database and rebuilds it from scratch.
+
+Using these scripts.
+
+So, that way, you can do destructive queries, and it still, you know, comes the data's back to a reset stage time.
+
+Um, so you can do, like, make shell, if you want to just go into sequel light with a freshly rebuilt database.
+
+You can also just do sequelite 3 in the database name, but you're just gonna get whatever is there.
+
+Another thing it does is in the...
+
+I am a bit intrusive here.
+
+In the lib directory, there's a sequel light RC.sequelite RC.
+
+Oh, Lib. It's quite RC.
+
+And it just does a few setup things.
+
+So every time you run a make, man, if this is out of date, this will, like, copy this to your home director.
+
+So this will be set up for you.
+
+System wide, we see the light.
+
+Just a couple things like turning on 4 and key, enforcement, sequel white started out as a not having that.
+
+And this is another common theme on databases that you find, is they all started out small, the open source ones, limited scope, and then kind of outgrew what the origin intending.
+
+And they're all, and this is probably the right thing, but maybe they take a little too far.
+
+They're all very scrupulous about backward compatibility, whatever they can.
+
+And so, like, sequel light always starts out by not enforcing foreign keys because it didn't do that, like, 20 years ago.
+
+And so if you want that, what you do, you have to turn it on.
+
+So you normally do that in, like, database connection time, uh, in your color.
+
+And I put a couple other things here.
+
+And then these things, the bottom, these are, so these actually go, these are actual commands to the daily.
+
+So pragma is normally like a non-standard.
+
+So, Pragno, we tell it to use UGFA for encoding, which is the default, busy time out.
+
+If you try to do 2 conflicting queries, at the same time, without configuring it, one of them will just fail and say it was busy.
+
+So this tells it wait for 10 seconds before you do that, to see if it's not busy.
+
+Probably won't be anywhere, but it's usually actually that way.
+
+Uh, journal mode, we'll talk more about those things other time.
+
+These commands, the dot ones, are to the sequelite 3 command line shell.
+
+So, headers on tells it to show you the names of each home that returns.
+
+Download table, draws the nice little dashes around the results, make it pretty, it lines them up.
+
+There's no value, I picked this, like, Unicode character that's that's no printable, no character.
+
+So whenever you return a null resole, you'll actually see that character instead of just seeing spaces.
+
+So you'll be able to tell the differences between that and a new strain.
+
+I find that really helpful.
+
+I'll put standard out, so the scripts will still print things to send out.
+
+So, it does some, you know, some stuff there for you, but make, it runs, grind grade.
+
+We'll show you that it's completed.
+
+Again, hello, world, the purpose is to just make sure your environment is set up.
+
+Most likely thing you'll see is sequelite 3 is not installed.
+
+So that'll be your cue to go install it, and then you should be good to go.
+
+So that's the first assignment?
+
+Any questions on that?
+
+Uh, that was pretty easy, actually.
+
+No, that's good.
+
+Do you have two for this week or two?
+
+So the next one's due, like, middle of next week.
+
+So let's look at that. 183 for me.
+
+Simple queries on a single table.
+
+So you should have all the information you need to do this one.
+
+So this one has seven queries, all on the same data set.
+
+Are they all from, uh, Sequel Bolt?
+
+No.
+
+Okay, they're different.
+
+Um, so there's some general directions here.
+
+So, the idea is you'll go through each of the sequel files in the main directory, and they're numbered, you know, in that order.
+
+And rise the query. Each one has comments telling you what to what data you're supposed to find.
+
+And we'll, probably on Monday, because if not Monday, next Wednesday, we'll write some if you want to. Maybe that maybe that comments fine.
+
+Um, which has a comment, a description, what you're supposed to write.
+
+You just write your select query, write below it, or by that, I guess, you replace the comment.
+
+That file should give you your solution.
+
+All of the queries in this problem can be satisfied just using the states.
+
+Database has several cables.
+
+For this, you'll only need states.
+
+So this has some information like demographic information and things about states.
+
+And as we just saw, if you want to go see the schema, you can type dot, you can go look at that dot A schema file.
+
+You can also, like if I could make shell, dot schema will always show you the schema for your current database.
+
+Dot tables will just show you the names of the tables.
+
+And if I say dot schema states, that will just show me the schema for the states, including indices that are associated with them.
+
+So that's the day we're looking at.
+
+So here we have year, name, GOID, total population, white, black, Hispanic, Asian, American, Indian, Pacific Island, really, is always the official categories for government data.
+
+In age, total household, owner occupied homes, median value.
+
+Per capita income, median household income.
+
+I need to go get a more recent version of this.
+
+It is years old now.
+
+Below poverty line, foreign-born population and state.
+
+Um, just a couple other notes.
+
+So, right, if you want to just load the shell, you can just type that, or make shell, will load it.
+
+But, uh, even Voke it directly or through the make file.
+
+And again, that thing about the states, what I recommend is loading a shell, and build your queries up, you know, a little bit at a time, and actually just look at the results.
+
+Sometimes you can just go in and write the solution, that's awesome, but...
+
+On the other hand, I also find it helpful to have a text editor.
+
+So my usual practice is, actually, I have an editor where I'm typing and building it, and then I'm copying and pasting it in to see the live results.
+
+So I guess you could just do that in the main file.
+
+But I do kind of recommend working in the interactive shell, and especially with the early ones, try it out a bit at a time, right?
+
+Do the partial queries.
+
+Make sure you're getting what you expect before you filter the property or before you've renamed the columns or whatever it is.
+
+Play around with it, experimental, right?
+
+This isn't about getting the right result.
+
+It's about figuring these things out.
+
+Yeah.
+
+So, when you're in the command, sequite three, and then the name of a V file, Does that automatically make a new file in that correct directory?
+
+If the file doesn't exist, it will create it, yes.
+
+That's also how you create a new database and seem polite.
+
+And the drivers do that too.
+
+It kind of frustrating.
+
+So if you ever run a program in the wrong direction, you end up with the one that doesn't check for you.
+
+I have to deal with that.
+
+Like, I'm making a new ring, and I'm like, why is everything empty?
+
+Oh, great.
+
+Three different databases, they do the same thing in the wrong.
+
+So, here in the outputs directory, there's a transcript, and this is the expected output of each one.
+
+So that's the first query is countless dates.
+
+But there aren't 52 states.
+
+It's probably including territory.
+
+Yeah, probably so.
+
+But anyways, it's a number of entries in the state's table.
+
+Right.
+
+So you can go and look at it, and the greater than signs are saying that's output.
+
+So it's annotated there a little bit.
+
+But there's this kind of important note in the documentation here.
+
+Some of the stuff is not in the directions.
+
+So there are details that I'll expect you to actually go and look at what the expected result is and kind of figure it out.
+
+Right?
+
+I don't want to be getting, like, overly verbose directions, and a lot of things are kind of obvious, like, if the name of your column doesn't match what I was expecting, rename the column, right?
+
+I want you to be, uh, to just kind of bring common sense and experimentation to it.
+
+So I'm deliberately, you know, not trying to document every single detail of each query.
+
+So play around, look around, and in the end, so that output directory has those transcript files.
+
+That's where you can see what the expected output is.
+
+That's what we're doing, yes.
+
+So, like, the 1st one, the output has a heading estate count.
+
+But the instructions for it.
+
+Don't say that.
+
+They just say, find the number of states listed in the database.
+
+So I could say select, count of one from...
+
+You most often see it as Count Starr.
+
+I usually do count one.
+
+So you'll often see it written that way.
+
+That's an aggregation query.
+
+It counts the number of entries.
+
+So, there you go.
+
+That's right, exactly, except it's not, because the column name is wrong.
+
+Count of one is not, like, a useful column name.
+
+So here I can go and say either as, states, count, was it?
+
+I don't remember what the name was now, but.. And the as is optional.
+
+So, right, I'm expecting you to notice that disparity and figure it out, or if it wants something ordered a certain way, you should look and note that and add the order by queries, and things like that.
+
+So if you feel like something is missing, you're probably right.
+
+Um, and that's, um, deliberate.
+
+Any questions on that?
+
+So, as you can see, like, count, we haven't talked about, there's a few things that are missing.
+
+I encourage you to go and figure out what's missing.
+
+If you need the ability to do something that we haven't covered yet, um...
+
+Just go figure it out, yeah.
+
+Try it out, right?
+
+Million tutorials.
+
+But I don't think there's anything to it.
+
+There's some of them are a little bit tricky. Where I kind of want you to think about it, like...
+
+Um...
+
+Kind of formatting results or bucketing.
+
+Like, I think we have one, is that somewhere?
+
+That's a different college that I forget now.
+
+Some of them I want, like ratios, and again, I'm trying to get you to think about it and be a little bit creative, but let me know if you have any questions.
+
+Otherwise, I'll see you a week from today, right?
+
+Monday's a holiday, so we won't be meeting that.
+
+Yep.
+
+Does it do? 

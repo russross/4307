@@ -3,7 +3,7 @@ syllabus-russ.txt
 CS 4307: Database Systems
 =========================
 
-Spring 2025 Syllabus
+Spring 2026 Syllabus
 --------------------
 
 An introduction to database systems. Topics include the design and
@@ -26,11 +26,11 @@ CS 2420 and CS 2810, each with a C or better
 
 One section:
 
-1.   TR 1:30–2:45 PM in Smith 109
+1.   MW 3:00–4:15 PM in Smith 108
 
-     CRN: 20490
+     CRN: 20451
 
-     Final exam: Tuesday, April 29 at 1:00–2:50 PM
+     Final exam: Friday, May 1 at 3:00–4:50 PM
 
 
 ### Instructor
@@ -58,11 +58,20 @@ Resources
 
 ### Text
 
-There is one required text for this course:
+I recommend consulting any of these texts for this course:
 
+*   [Database System Concepts, 7th Edition](https://google.com/search?q=9781260084504+pdf)<br>
+    by Abraham Silberschatz, Henry Korth, and S. Sudarsha<br>
+    ISBN: 9781260084504
 *   [Database Systems: The Complete Book, 2nd Edition](https://google.com/search?q=0131873253+pdf)<br>
-    by Hector Garcia-Molina, Jeffrey Ullman, and Jennifer Widom 
+    by Hector Garcia-Molina, Jeffrey Ullman, and Jennifer Widom<br>
     ISBN: 0131873253
+*   [SQL Performance Explained](https://google.com/search?3950307826+pdf)<br>
+    by Markus Winand<br>
+    ISBN: 3950307826
+*   [Database Internals: A Deep Dive into How Distributed Data Systems Work](https://google.com/search?q=1492040347+pdf)<br>
+    by Alex Petrov<br>
+    ISBN: 1492040347
 
 
 ### Computers

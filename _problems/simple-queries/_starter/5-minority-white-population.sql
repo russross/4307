@@ -1,0 +1,4 @@
+--
+-- Find the states where a minority of residents are white.
+-- List the states from most populous to least populous.
+--

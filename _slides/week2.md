@@ -1,10 +1,13 @@
 ---
 header-includes:
-- \usepackage{databaseslides}
+- \usepackage{myslides}
+- \institute[Computing]{Utah Tech University---Department of Computing}
+- \title[CS 4307]{Database Systems}
 subtitle: SQL
+author: Dr Russ Ross
+date: Spring 2026
 aspectratio: 169
 fontsize: 8pt
-date: Spring 2025
 ---
 
 \titlepage

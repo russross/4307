@@ -1,0 +1,118 @@
+> +-------------+---------------------------+----------+
+> | department  |          faculty          | COUNT(1) |
+> +-------------+---------------------------+----------+
+> | Biology     | Amber Rose Mortensen      | 4        |
+> | Biology     | Bryan K Stevens           | 3        |
+> | Biology     | Curtis B Walker           | 3        |
+> | Biology     | David W Bean              | 3        |
+> | Biology     | Del William Smith         | 3        |
+> | Biology     | Donald H Warner           | 1        |
+> | Biology     | Douglas J Sainsbury       | 3        |
+> | Biology     | Erin E O'Brien            | 3        |
+> | Biology     | Geoffrey Smith            | 2        |
+> | Biology     | Glorimar L Aponte-Kline   | 3        |
+> | Biology     | Hung Yu Shih              | 4        |
+> | Biology     | James David Meidell       | 2        |
+> | Biology     | Jeffrey V Yule            | 2        |
+> | Biology     | Jennifer L Ciaccio        | 4        |
+> | Biology     | Jeremy W Bakelar          | 5        |
+> | Biology     | Jesse William Breinholt   | 1        |
+> | Biology     | John E Wolfe              | 1        |
+> | Biology     | Joseph B Platt            | 1        |
+> | Biology     | Karen L Bauer             | 4        |
+> | Biology     | Kerby Robinson            | 1        |
+> | Biology     | Kim C Jolley              | 2        |
+> | Biology     | Mark L Dickson            | 1        |
+> | Biology     | Martina Gaspari           | 5        |
+> | Biology     | Megen E Kepas             | 3        |
+> | Biology     | Nathan St Andre           | 1        |
+> | Biology     | Nikell Dodge              | 1        |
+> | Biology     | Randy Klabacka            | 3        |
+> | Biology     | Rita Rae Osborn           | 1        |
+> | Biology     | Scott B Griffin           | 2        |
+> | Biology     | Scott E Bulloch           | 1        |
+> | Chemistry   | Christina M Quinn         | 6        |
+> | Chemistry   | Cutler Cowdin             | 2        |
+> | Chemistry   | David J Burr              | 3        |
+> | Chemistry   | Diana L Reese             | 4        |
+> | Chemistry   | Gabriela Chilom           | 4        |
+> | Chemistry   | Jacson Parker             | 2        |
+> | Chemistry   | Jared M Hancock           | 5        |
+> | Chemistry   | Jennifer A Meyer          | 4        |
+> | Chemistry   | Megan R Liljenquist       | 2        |
+> | Chemistry   | Paul H Shirley            | 2        |
+> | Chemistry   | Rico Del Sesto            | 3        |
+> | Chemistry   | Sarah Morgan Black        | 2        |
+> | Chemistry   | Teisha Richan             | 6        |
+> | Chemistry   | Wendy E Schatzberg        | 4        |
+> | Computing   | Bart Stander              | 4        |
+> | Computing   | Carol Stander             | 5        |
+> | Computing   | Curtis Larsen             | 5        |
+> | Computing   | DJ Holt                   | 3        |
+> | Computing   | Derek Sneddon             | 1        |
+> | Computing   | Eric Pedersen             | 1        |
+> | Computing   | Jamie Bennion             | 1        |
+> | Computing   | Jay Sneddon               | 5        |
+> | Computing   | Jeff Compas               | 4        |
+> | Computing   | Joe Francom               | 6        |
+> | Computing   | Lora Klein                | 1        |
+> | Computing   | Matt Kearl                | 7        |
+> | Computing   | Phil Daley                | 4        |
+> | Computing   | Ren Quinn                 | 8        |
+> | Computing   | Rex Frisbey               | 1        |
+> | Computing   | Russ Ross                 | 5        |
+> | Earth       | Alexander R Tye           | 3        |
+> | Earth       | Christina Pondell         | 6        |
+> | Earth       | David R Black             | 1        |
+> | Earth       | Greg L Melton             | 5        |
+> | Earth       | Hugo Elio Angeles         | 1        |
+> | Earth       | Janice M Hayden           | 2        |
+> | Earth       | Jerald D Harris           | 4        |
+> | Earth       | Marius Van der Merwe      | 4        |
+> | Earth       | Marshall Topham           | 1        |
+> | Earth       | Marzieh Ghasemi           | 4        |
+> | Earth       | Zhenyu Jin                | 5        |
+> | Engineering | Andrew C Schiller         | 4        |
+> | Engineering | Andrew Gregory Toth       | 1        |
+> | Engineering | Bing Jiang                | 5        |
+> | Engineering | Brant A Ross              | 1        |
+> | Engineering | Bruford P Reynolds        | 2        |
+> | Engineering | Christopher Kirk DeMacedo | 3        |
+> | Engineering | David Brent Christensen   | 4        |
+> | Engineering | David M Syndergaard       | 3        |
+> | Engineering | Divya Singh               | 4        |
+> | Engineering | Jeffrey Anderson          | 3        |
+> | Engineering | Jose C Saraiva            | 4        |
+> | Engineering | Kameron J Eves            | 4        |
+> | Engineering | Rick L Peirce             | 1        |
+> | Engineering | Russell C Reid            | 7        |
+> | Engineering | Sai C Radavaram           | 5        |
+> | Engineering | Samuel K Tobler           | 2        |
+> | Engineering | Scott A Skeen             | 7        |
+> | Engineering | Steven K Sullivan         | 3        |
+> | Math        | Amanda Fa'onelua          | 1        |
+> | Math        | Bhuvaneswari Sambandham   | 3        |
+> | Math        | Clare C Banks             | 2        |
+> | Math        | Costel Ionita             | 4        |
+> | Math        | Craig D Seegmiller        | 3        |
+> | Math        | Dawn Lashell Kidd-Thomas  | 1        |
+> | Math        | Elizabeth Karen Ludlow    | 2        |
+> | Math        | James P Fitzgerald        | 3        |
+> | Math        | Jameson C Hardy           | 4        |
+> | Math        | Jeffrey P Harrah          | 5        |
+> | Math        | Jie Liu                   | 4        |
+> | Math        | Kathryn E Ott             | 1        |
+> | Math        | Md Sazib Hasan            | 2        |
+> | Math        | Michael N Paxman          | 1        |
+> | Math        | Odean Bowler              | 2        |
+> | Math        | Paula Manuele Temple      | 4        |
+> | Math        | Robert T Reimer           | 1        |
+> | Math        | Ross C Decker             | 2        |
+> | Math        | Ryan C McConnell          | 1        |
+> | Math        | Scott Patrick Hicks       | 2        |
+> | Math        | Steven McKay Sullivan     | 3        |
+> | Math        | Trevor K Johnson          | 2        |
+> | Math        | Tye K Rogers              | 4        |
+> | Math        | Vinodh Kumar Chellamuthu  | 2        |
+> | Math        | Violeta Adina Ionita      | 4        |
+> +-------------+---------------------------+----------+

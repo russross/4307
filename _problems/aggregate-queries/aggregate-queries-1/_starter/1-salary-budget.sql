@@ -1,0 +1,5 @@
+--
+-- write a SQL query to list the total salary budget for each
+-- department, starting with the most expensive department
+-- note: this only needs to involve the instructor table
+--

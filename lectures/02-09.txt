@@ -1,0 +1,1927 @@
+All right, welcome, everyone.
+
+Um...
+
+Does somebody have any questions?
+
+At the moment.
+
+So I just posted, uh, some more joins, another assignment with some more joins.
+
+Um, looking at some scheduling data, the spring, 20, 24, Like the actual one.
+
+Sort of, mostly.
+
+Okay.
+
+So we did a, it was for a, a euchre research project.
+
+We, with the scheduling system when put, took the actual schedule and put it in there.
+
+We'll see if we can improve on what people are made by hand.
+
+Okay.
+
+We had to make some assumptions, of course, about the constraints.
+
+That's why I say sort of, but it is...
+
+Okay.
+
+All right, there's a few more queries there.
+
+We've got.. Projectors, seems to be dim, and it's kind of loud, and we just keep getting louder.
+
+So, why has it been having issues lately?
+
+Um, I mean, by lately, you mean the last hour or two?
+
+Actually, this way of Thursday, too.
+
+So, I don't know if it means the bulb's about to explode, or what?
+
+It could be the...
+
+The bulbs on those are...
+
+I don't remember if it was, like, $500 or $1,000.
+
+They're expensive, though.
+
+And then they, you know, they swear out over time, so...
+
+They're incandescent.
+
+Yeah, it's basically a number of hours.
+
+So, I don't know if that means this one is, um.. On its last legs, but something's wrong, so anyway, that's why it's loud.
+
+Um...
+
+I didn't notice it.
+
+Well, if I have to suffer.
+
+You do, too, I guess.
+
+Yeah, normalizations.
+
+Where's the...?
+
+And we've already said...
+
+What's the...
+
+No, I'm talking about CSO, or getting backs, for a lot of highs. Is not a Yeah, database normalization.
+
+There we go.
+
+All right, um...
+
+So...
+
+Here we're going all the way back to, um...
+
+1970.
+
+Some of the early, so Edgar Codd, defined the relational model and talked about these normal forms.
+
+So, what...
+
+This is, so we're going to talk today some about database normalization, what that means, and what some of the different levels of it are. Called forms, there's 1st normal forms, 2nd normal forms, and so on.
+
+And again, the core idea here is to create a cable structure and relations between them to, well, to solve a few problems, but minimizing or eliminating certain kinds of redundancies, and then certainly other kinds of hazards as well that can occur if it's not normalized.
+
+So this is kind of the, um, the standard way, you know, the standard set of rules for how to structure your your data in a sequel database.
+
+So, he said, first normal form, which is pretty simple, has these goals.
+
+Free the collection of relations from undesirable insertion, update, and deletion dependencies.
+
+To reduce the need for restructuring the collection relations, as new types of data are introduced, and thus increase the lifespan of application programs.
+
+So let's look at that 1st one first.
+
+What does that mean to free the collection of relations from undesirable insertion, deletions, update the tendencies?
+
+Do want to take a stab?
+
+I mean, that implies that your database system, or your relational database, has the could have a tendency to insert data that is irrelevant or update or delete data that is...
+
+Certainly irrelevant.
+
+That's not the, that's not what we mean by, um, by our desire to insertion.
+
+That's what I'm referring to.
+
+It's not the data being inserted that it's on desire.
+
+It's an independency.
+
+Yeah, tendencies on the other side.
+
+That is one part I missed.
+
+So think about the example we did at the very beginning of class, looking at like albums and artists, right?
+
+When we did the 1st flat file version of it.
+
+Um, right?
+
+We created these and kind of dependencies.
+
+So I want to update information about a band and the very 1st version we did it, we had to go and update it on like every song the band ever produced.
+
+Yeah.
+
+Is it basically about like only update or insert new relationship that is meaningful or more meaningful and just a very, very specific limit?
+
+Yeah, and again, I'm just looking at kind of a big picture I needed here.
+
+We want to make sure that, yeah, when we need to, when a change in the data requires us to go and update something in the database, it should be a pretty surgical update.
+
+Right?
+
+We shouldn't have to then have to kind of follow up with additional.
+
+We should have to be, like, cascading the updates.
+
+Yeah.
+
+But, you know, kind of a big picture.
+
+Don't do more than necessary.
+
+That's the story, right?
+
+Yeah.
+
+And it's, it's not even just about saving work, it's about, like, avoiding kind of getting corrupt data or incorrect or contradictory data of the group.
+
+To reduce the need for restructuring the collection of relations is new types of data, introduced, and that's a crystalized plan of application programs.
+
+Big picture.
+
+What does this, what does this say?
+
+Ooh.
+
+I don't want to restructure our tables, obviously, is not going to be a bad practice, right?
+
+I'm just trying to see.
+
+So what yeah, what are we getting at here?
+
+I'll just, I mean, what's the lifestyle relate to my relational model?
+
+Does increase the lives. Was an idea we talked about.
+
+I'm just going to have avoiding house and skill.
+
+Um...
+
+Exactly.
+
+I would say, but...
+
+So, again, we've kind of touched on this idea, but the, I described it as having your data in this kind of elemental pure form in this sense, right?
+
+That's not really tied to how you're using it right now.
+
+Of course it is to some degree.
+
+But we're not like structuring the tables based on the query patterns we're expecting.
+
+We are modeling the data in a more abstract, kind of, again, to say natural, because what does that even mean?
+
+But a way that's tied around the relationships the data has to with itself.
+
+And give me so, one of the big benefits of doing this is that as your data needs grow, your application grow, and as you have scope creeping and things like that, you shouldn't have to go back and say, oh, you know, when I was modeling the university stuff, I didn't think about, you know, how I'm going to handle 2 instructors co-teaching a class.
+
+If you come up against something like that, you shouldn't, if you're having to go back and like make major edits to the structure of your data, then you're probably not really aligning with this principle.
+
+Right?
+
+So I had an experience I was working on a side project.
+
+My neighbor one time, but, um, I kind of use it as a chance to play around with some of the databases.
+
+So I started out and I was like, oh, let's go use like some of these cloud databases.
+
+The Google app engine have their data store.
+
+It's an old version.
+
+I don't think they even explose it anymore.
+
+I mean, big.
+
+And it has, it's not a relational data.
+
+Database, it does allow you to be limited relational data, but it kind of requires you to structure your data in a way that is focused on the scalability of it.
+
+So you structure your data, you write your queries, everything planned around, making sure the implementation would be proficient.
+
+And I thought that sounded cool.
+
+Actually, that was the 2nd one I did.
+
+The 1st one, I put it in redness.
+
+Everybody used reddis.
+
+Reddis.
+
+R-E-D-I-S. It's a kind of a caching data type server, I think, so some people describe it.
+
+So it's something ram-based that you contact.
+
+It's not exactly a database that has some qualities like it.
+
+It's a key value store, but the values might be a hash table or an ordered list or just a string or there are various other, you know, cues and things like that.
+
+And then the operations you send to operate on that, and they're very, it's very quick, because it's on.
+
+So it's often used as a cash, but it can also...
+
+So I started out by implementing the entire database in Reddis and Reddis lets you run Lewis scripts on the server.
+
+So you could do, essentially, like, transactional behavior by just writing a script, and it would serialize it, where it was single threaded and ran everything, all the queries one after another.
+
+So if you had a multi-step query, the way it would handle making that atomic is you give it a script, it runs the script from beginning to end, and then moves on to the next query.
+
+And so I did this, blazing fast, and I was all excited.
+
+Of course, they needed to be nearly that fast.
+
+But it was kind of a pain if I ever wanted to go on an answer like ad hoc questions another day.
+
+Because what I found myself doing was basically writing a script every time I wanted to answer, like, what the question?
+
+So I moved into this Google Cloud database, and it was kind of the same thing on the worse. Then I didn't have to worry about the, like, maintaining, you know, an instance and worry about, like, what happens when it crashes.
+
+You've got to take snapshots to memory.
+
+Anyway, the durability story in Reddis was complicated.
+
+So Google's database was great.
+
+This is what they use for like Gmail and Google Docs and stuff, right?
+
+Very robust, very scalable.
+
+But for that one, if I wanted to do queries, not only did I have to write a little script, I mean, in this case, a special thing you go, I had to then go like compile it into the project, redeploy a new version of it.
+
+They gave me this endpoint that I could go to query, you know, get one result back.
+
+And then because I didn't want it to be there forever, I had to then go and like delete it and redeploy again.
+
+And it was only a nightmare.
+
+So I finally switched over to postgrass and said, okay, enough of the fancy stuff.
+
+Let's just do the boring thing.
+
+And it was magnificent.
+
+If I wanted to answer a question about it, I just typed the query, just as an ad hoc query, and...
+
+And I think, you know, and again, all this stuff with data evolution, it's like, yeah, this thing about relational modeling, it's real. Real benefit, right?
+
+Your application, as it grows and develops, and you start adding features, what you don't want to have to do is go back and say, oh, well, I structured it to really answer these 3 queries.
+
+Remember our Twitter example?
+
+Every time somebody tweets and was back 20, 10 years ago or 15 years ago, it would make a note about that in the timeline of everybody who follows you.
+
+And that made the primary operation of Twitter very quick, which was, let me see the top of my head.
+
+That, by, you know, dominates all of the traffic.
+
+And so it made that really fast.
+
+And then I made posting tweets relatively expensive.
+
+But they knew from their internal, you know, metrics and things like that, people don't tweet very often.
+
+Even prolific tweeters read way more tweets than they put out.
+
+And in fact, the alterations to the social graph, like following an unfollowed people, there's way more of that traffic than there is.
+
+So, something they knew that wasn't necessarily obvious to me outside.
+
+I could have told you there was going to be more reads than rights.
+
+That's almost how it's true.
+
+So they were optimizing for the common case, right?
+
+We need these queries to be fast.
+
+These operations to get done eventually.
+
+And that's great until you'd want to go and do something else and say, well, you know, what if I want to do a, you know, a real-time search?
+
+So I have a search and I used to support this. If they still do, but did they cut off the guy access to everybody eventually?
+
+But they used to have an A, yeah, you could go and say, every time there's a tweet in the world with these keywords or whatever, I want it to, like, I want to be notified.
+
+And they had a pipeline you could hook up, you'd get it within a matter of milliseconds. Kind of come into milliseconds of timeless tweet.
+
+But that's going to call for a very different data layout, processing engine, than the one optimized for refreshing the timeline.
+
+And indeed, it was a complete parallel when we did that.
+
+It was completely parallel data processing pipeline.
+
+So, again, Twitter was huge and fast and high volume and high scale.
+
+They needed to fix those problems.
+
+So, they did it.
+
+But most of the time, and that's why those options exist. And I go for certain problems.
+
+But for most things, um, you're much better off solving, you know, using something like the relational model and just having a, um, something that's going to give you maximum flexibility, and then you'll see how we address performance.
+
+It's its own problem, but it's a, in most cases, it's a very solvent problem.
+
+Other points here from Todd, to make the relational model more informative to users, make the collection of relations neutral, to query statistics, or these statistics are liable to change as time goes by.
+
+So again, kind of talking about, like, query patterns shouldn't influence how the data is structured.
+
+Okay, so let's go down.
+
+There are a couple kinds of anomalies that can happen in unnormal, let's see, unnormalized.
+
+Data has not been normalized.
+
+Denormalizes like when you deliberately tear down the normalization.
+
+Unnormalized, doesn't, right?
+
+Yeah.
+
+Um, So here is an example of an insertion anomaly.
+
+Let's say we have a table, it is faculty, and their courses, so we can faculty AD, their name, their higher date, and a course code.
+
+What if we hire a new faculty that they haven't been assigned class yet?
+
+And if this is something where we require a course code in there, then we create a situation where we can't actually insert them in the database without breaking our own rules.
+
+I was born.
+
+19, 1999.
+
+Um, an update anomaly.
+
+So here we have, um, the employee ID, their address, and their skill, and an employee skills database.
+
+And, uh, we, they move, they pull it, move, some updates, one of the records that don't catch the other one.
+
+We end up with an update and also.
+
+Employ 519 actually only lives in one place.
+
+We have records that confident each other.
+
+Again, it shouldn't really be possible if this is well normalized.
+
+Right?
+
+It might be wrong.
+
+We might have the wrong address, but we shouldn't be able to have contradictory information.
+
+And I'm not talking about the situation where people have multiple houses or something like that, right?
+
+A different problem, but that's not what this is, right?
+
+This is just, we've created the data where we've made it likely for those things to go wrong.
+
+A deletion anomaly.
+
+So here, if we delete a course that Dr. Giddens is teaching in this example, we end up deleting the faculty member. Because it's the last course we had for them.
+
+So these, again, are kind of some of the hazards of unnormalized data.
+
+These are the things normalization are going to kind of remove.
+
+And then, again, this idea, we don't want to minimize the redesign that's necessary with extending the database structure.
+
+And that's, you know, kind of still a little bit of an ideal case.
+
+If you're adding your tables and things, you're probably going to have to learn all that much.
+
+But, you know, if you well, if it was well modeled before, you can probably keep those disruptions, have much be more localized.
+
+So...
+
+So those are what we just went over our hazards to...
+
+Yeah, so, yeah, deleting, like, um, So these are the things that go can go wrong if we don't have normalized.
+
+Yes, yeah, that makes sense.
+
+So let's go and look at the normal forms here.
+
+So we start with 1st normal form, which he introduced in 1970, then he came with 2nd and 3rd normal form in 19 the next year.
+
+And then he partnered up with Raymond Boyce, and they did Boyce Cod normal form, 1974.
+
+That's about where we're going to stop most of the time.
+
+There are higher normal forms and they get more specific.
+
+You're doing pretty well, though.
+
+You know, if you get up to the boys caught normal form.
+
+Um, so we're gonna go through some examples.
+
+Something's throwing me off.
+
+When we say first, second, third normal form, are we talking about, like, order, like, and I have to bring equation, like, or a 3 or a 2, that's kind of like slowing me off.
+
+Sounds like to me that's just a sequential thing.
+
+Or it's just a sequation.
+
+They have a sub.
+
+It is hierarchical.
+
+You need to be in 1st normal form before you can get into 2nd normal form.
+
+I see.
+
+Or at least, you know, 2nd normal inform implies for a normal form.
+
+That's a better way of saying it.
+
+I don't like it, yeah, it's just like a negative.
+
+Yeah, we're tightening it up, essentially, as you add each new one.
+
+So, um...
+
+Yeah, so I got a nice table there.
+
+I'm gonna we'll skip that.
+
+Okay, so let's say here we got our initial data.
+
+Um, you should just shrink it enough that it fits on the page.
+
+Wow, and then it lost place in the process.
+
+Oh, I'm gonna do it again.
+
+Okay.
+
+So here's our initial data that is not normalized.
+
+So, we have a single table.
+
+Here's the structure.
+
+We have a tight little book beginning my database design and organization.
+
+The author is Chad Russell, the author's nationality is American, the format is hardcover, the price 4999.
+
+Subject has 3 things, my school, database, sign, pages, fitness, publisher, publisher, country, genre ID, and genre name.
+
+All of these in a single record.
+
+It's a publishing country, international competition.
+
+So.. In 1st normal form, let's see.
+
+I guess before we can get to that.
+
+Um, a table in relational, sorry, in uh, yeah, conform circulational model, it has a primary, right?
+
+The primary V is uniquely identifies a role.
+
+And figuring out what the primary he is is hardly based on domain knowledge and profit or solid, right?
+
+My God You know, what did you share among different data or different relations that is a good candidate or a primary key, right?
+
+Well, so, again, the key is it has to uniquely identify a role.
+
+Remember, the whole thing, there's like candidate keys, and then we would find minimal, anyway, there's a whole process for defining primary keys.
+
+You want a minimal Canada key.
+
+Because there might be many sets of keys you need to identify it.
+
+Most of them have redundant field fields, right?
+
+That you could eat, actually pear it down, still uniquely that firewall.
+
+But we do have to have one.
+
+In this case, it's a composite key with title.
+
+So we're underlining them in the table up here.
+
+So title and format.
+
+So the hardcover edition of this beginning, MySQL book, If we came out with a paperback, that would be another one.
+
+So that's like a prerequisite.
+
+We've got to have primary keys.
+
+So in 1st normal form, every field contains a single scalar value.
+
+So the fuel cannot have a set of values, can have nested records, and so subject, right now, is a violation of the 1st moment law.
+
+Because for our subject, we have a list of subjects.
+
+All right, we're talking, last time or sometime recently, about ways to violate this, right?
+
+Putting Jason Fields in, putting other race, and things like that, and you sometimes do that.
+
+But this is the most basic part of normalization, sort of.
+
+So if we go down, so we have to assign a scaler, scaler as a number. Scalar just means unary.
+
+It's one thing. Not a collection.
+
+As opposed to like a vector.
+
+Wait a minute.
+
+Scalar just means uniary.
+
+This means one thing.
+
+Just means one thing.
+
+I thought Skaler was just a number that you can...
+
+And that's a overly specific definition, one context.
+
+Oh, and just in the context of linear autograph is what I'm referring to.
+
+Yeah.
+
+So scalar just means one in this context.
+
+Yeah.
+
+So, um, So to satisfy it, we can split the subjects off into a different table.
+
+So here's one way of doing this that would give us put us in conformance with the 1st normal form.
+
+We had a title subject table that has the title and links it back, and then sorry, on the subject.
+
+So we could basically join these 2 tables and recreate the information that we have.
+
+I see.
+
+So, um, we're just taking what was in that type, that subject, calling, and we're separating it into another relation, and we're using that relation to basically link to this table or link in these 2 tables together.
+
+If that makes sense.
+
+Okay.
+
+Yeah, does no satisfy the 1st normal form?
+
+Can any of those problems, you know, is that a single value, I guess?
+
+Um, I mean, it would be considered single value.
+
+Yeah, I don't think it's...
+
+I'm trying to think if it's actually says in Dominols, um, If you consider each field having its own set of things and you just append gnome, that set, then yeah, would always be scalored.
+
+If you're just assuming that that's included in every kind of value that I feel...
+
+Right, yeah, but we do treat it as, yeah, I guess because it is kind of in the I think where the statement we saw before was that it's in the domain of every time.
+
+T. Yeah.
+
+But yeah, it is skating, right?
+
+In that sense.
+
+It's certainly not a composite value.
+
+So that satisfies 1st normal form, right?
+
+That's all it is.
+
+Get rid of all those.
+
+And again, that's often the very 1st one going violate.
+
+Yeah, we're too lazy to go and actually create that extra table and make every created access is it.
+
+And nobody's ever gonna look into that, you know, look at those individually.
+
+It's very templated.
+
+It's also very tempting, I think, to say, whoa, this is just going to add so much, like, this is going to slow my database down, right?
+
+I'm going to add this extra level to every, every time I access the studio, this extra joint.
+
+I would be very wary of that kind of thing, because, um, you know, that really smacks a premature optimization. Anticipating problems you haven't actually met you yet.
+
+So...
+
+So so that's the 1st normal form.
+
+So, uh, book table has a composite key.
+
+Well, it 1st of all.
+
+Oh, sorry, one other note here.
+
+No, this was a case where Dan, this requires so many knowledge here.
+
+The, uh...
+
+He would be using as a primary, sorry, is a pouring key back to the original cable, is not the primary cable rational table.
+
+The original, the primary key, the primary key was highly plus format.
+
+We're only referencing title, because again, we know that with books, the subject matter is not changed when it comes out as a paperback or...
+
+Right?
+
+That is inherent to like the content of the meaning of the book.
+
+It's not.
+
+So it's okay to lose, right?
+
+I've been saying, like, most of the time, but by far the most common thing we want to do is, you know, corn keys or else mapping the primary keys, and most of the time when we're doing a join, we're just spelling out that relationship.
+
+But not all of us.
+
+Yeah.
+
+Would you say that we were doing that kind of a foreign key thing, it's the minimum amount necessary information?
+
+Um, yeah, I mean, just like all of our keys, but again, most of the time that's going to be exactly the primary key on the other side.
+
+But again, not always.
+
+Like, here's a good counter example of that.
+
+But that's a good default starting point.
+
+And then here you might realize, ah, I don't actually need to Right, that would actually create a kind of new redundancy here.
+
+When I come out with this book and paperback, I now have 2 entries in my subject table for each subject in the same book.
+
+All right, so here would actually count.
+
+But that's the less common arrangement.
+
+Okay, so...
+
+Booktable has a composite key, which is title and format.
+
+This doesn't satisfy second normal form if some subset of that key is a determinant.
+
+Let's go back and find what that means.
+
+Um, I shouldn't be here, please.
+
+Um, so it's 1st norm, if it's in 1st normal form and contains no partial dependencies, and a partial dependency occurs when a non-prime attribute, that is one that's not part of any candidate key, is functionally dependent on only a proper set of the attributes making up a candidate, Canada key, on only a proper subset of the candidate key.
+
+All right, well, that settles it.
+
+Oops.
+
+Um, let's go through the example.
+
+I think this will become clearer as we go.
+
+So here's a table, right?
+
+An expanded version of it.
+
+We pulled out that the subject stuff.
+
+Um, and now you have a hardcover evil condition of our meeting, my scalebook, and we have a couple others that, uh, let's say, right, have this other one's keyboard paid for that.
+
+So, Here's the here's the kind of creaky saving here.
+
+All the attributes that are not part of a candidate key.
+
+So all the other attributes over here, they depend on the title.
+
+But we have the price field, and it's the only one that actually depends on the farm.
+
+Price field depends on, well, after that, right?
+
+That's the sense.
+
+Yeah, hardcover is more expensive than New York, and I, I'm probably more expensive.
+
+I think that was so important.
+
+But the publisher, the publishing country, the genre ID, the thickness, which I think is like a library term or something.
+
+I'm not really sure.
+
+I think there is like, there's like some, I'm not sure that, but.
+
+It was amusing me a little.
+
+I would actually think the number of pages could change too.
+
+Or is that not true?
+
+Will they go from a hard back to paper back?
+
+Is it just smaller?
+
+It's about, like, any charming pages that are, but they'd have, like, format, like, to a different font size.
+
+Yeah.
+
+But in, like, traditional printing, is it all just, they just kind of shrunk it down and it was cheaper home service?
+
+Or is it, I don't know.
+
+I think it's the one thing.
+
+I would just, like, freak that on top.
+
+Well, maybe his number page is also depends on it, but I guess it's just state in category.
+
+Anything matters there?
+
+The price is the only one of these other fields, right?
+
+The author and the office nationality don't change as one between formats.
+
+So the problem we have here is we have this, um, get every non-candidate key attribute.
+
+So every attribute that is not part of a candidate key, a primary key. Must depend on the whole Canada key, not just part of it.
+
+So our primary key that was selected, everything else used to depend on full combination.
+
+Right, in our university model, section, right?
+
+This is the one we were talking about at the beginning of before class, section has like 4 columns in the primary key.
+
+There's like the course ID, the section ID, the year and semester.
+
+And anything else in there, and I don't remember what the other fields are.
+
+But they depend on that full combination of all four.
+
+For them to be right, they wouldn't be over there.
+
+Sorry?
+
+Time slot ID is not in that.
+
+Right.
+
+So, and then so yes, good, good, great.
+
+So the time slot ID, the time slot ID depends on all 4 of those, right?
+
+If you have a the same course and section, like, you know, CS 4307, section one, taught in 2026.
+
+It's possible there's fall and spring versions of it, and one is Monday, Wednesday, and one's Tuesday, Thursday.
+
+So you have to have that full primary key to determine what the, you know, the non-fields are.
+
+So that's what 2nd formal form is about.
+
+So what could go wrong?
+
+Why?
+
+Why?
+
+Why is that improving?
+
+Like, if we look at this, so again, the issue here is like we have all these other fields that are dependent on just the title, and then we have a price that is dependent on a combination title format.
+
+Yeah, did we change it so that we have title format together being composite key?
+
+We started with that.
+
+Yeah.
+
+What are we changing to?
+
+Oh, we haven't.
+
+We haven't fixed it yet.
+
+So the question is, what does this do?
+
+Yeah, why is it a problem?
+
+Why is it a problem?
+
+Yeah.
+
+I thought you said why it doesn't work.
+
+I'm sorry, I might this...
+
+So this is in violation of 2nd normal form.
+
+This is a...
+
+Well, they do give another.
+
+So this is a, I'm sorry.
+
+Could it be that there's a lot of redundant information that's being stored, multiple entries?
+
+We can separate it as, like, the information for a title would have the same offer every time, I say, probably the same publisher.
+
+I see a lot of redundant information between those 2 roles.
+
+Right?
+
+A lot.
+
+Most of it.
+
+Right?
+
+So again, we have this problem.
+
+What if we go and we find out that, um, I don't know, we got the author's nationality one.
+
+So we go and update it, we only do it on the hard back, not the paper back. Right?
+
+Now we've got this inconsistency that has kind of made possible because of our bad data.
+
+Or, you know, incomplete, unnormalized data modeling.
+
+And also just take up more space, wouldn't it?
+
+Yeah.
+
+Yeah.
+
+Again, again, kind of depending on how it's all stored, that's also a more complicated question.
+
+I think that's always our problem.
+
+Yeah.
+
+Yeah.
+
+But yeah, generally that's probably going to be true as well.
+
+But I just, the reason I'm kind of pushing back on that, I guess, is, again, we're really trying to focus on the kind of the correctness of the data modeling here.
+
+All those other, you know, data stores, performance, those kinds of things are, those are different concerns.
+
+They're not unimportant, but they're kind of second, right?
+
+I want to get the data model of right, and then, because quite often we can then, you know, cleverly optimize away some of the other issues.
+
+So...
+
+Okay, so that appears that it is kind of, like, 1st order psychology.
+
+The 1st one has only one column, and that was the subject name.
+
+This one has two.
+
+That's the formatting price.
+
+So it's kind of like a 1st door group.
+
+No, that's, that's just an happenstance.
+
+So here's how was the correctness, what you're saying?
+
+Yeah.
+
+Okay, so maybe.. Not that you're gonna have 2 fields coming out each time.
+
+So now with our book, yeah, now we really just have one row for the tile.
+
+The title is now primary key by itself.
+
+They don't have another table, another relation with title and format, and the data that is dependent on the character.
+
+And so now we only have one place we store the author, nationality, pages, thick, thick book.
+
+I even still, is that slang?
+
+It's still smelling of 2 Cs?
+
+Is that?
+
+I don't know.
+
+These are all thick these books, so just in case you were wondering.
+
+Depends on your definition of thick.
+
+I had no idea.
+
+I'm sure it was actually like...
+
+I'm just a bookstore, if it's a publisher, it's about, like, how many they can fit in a box or the library thing, that's the thickness on the paper.
+
+Oh, paper things.
+
+Oh, interesting.
+
+Yeah.
+
+Wait, where is that?
+
+That's the very 1st table, I think that's what I said.
+
+And then they got rid of them.
+
+Oh, I thought it just said thickness.
+
+Sense.
+
+Well, it seems like the standard is, like, this, uh, fire pick up.
+
+I guess it could be, well, except I wouldn't apply to eBay.
+
+Yeah, what is the favorite thing you guys need?
+
+Yeah.
+
+Yeah.
+
+Wait a minute.
+
+Yeah, you're right.
+
+That wouldn't have fighted books.
+
+That doesn't make any sense.
+
+Are we talking about the thickness of the bits?
+
+No, so it's I, yeah.
+
+I, I, I, I, I, I, I'm kind of gassed.
+
+Those are...
+
+Ooh, kind of classification for things, like, for some reason, or maybe it has to do with, like, waste machines that you can go through.
+
+I don't know.
+
+They probably just threw it in there since they had a bunch of...
+
+No, I, I, maybe, maybe, but I, I can totally see this being some kind of thing, though, that, you know, one, there was a machine in the post office that it couldn't fit through if it was too big, and so you have 2 categories for it.
+
+You know, that kind of thing off.
+
+Print is full of that sort of stuff.
+
+Right?
+
+Upper case and lower case, you had your physical, like, shelves where the different, uh, letter, what are they called?
+
+Or typography, the little bit of metal that has like one letter that you take and you stack them.
+
+The type piece.
+
+Yeah.
+
+Anyway, all right.
+
+So we have a lot of stuff that's based on these historical stuff.
+
+Okay.
+
+So, again, look at that.
+
+This does seem better organized now, right?
+
+And we're now just submitting subjects, but they don't still be.
+
+So again, now I don't see rows here that have just like substantial implication.
+
+Although, we still have some redundancies here, right?
+
+Anybody kind of anticipate, like, what else do you see that you might do better in this modeling book?
+
+No, you know what I mean?
+
+What about it?
+
+Try organiz trying to.
+
+Uh-huh.
+
+So we have our genre ID and our genre name.
+
+So what's That part is fishy.
+
+What's wrong with it?
+
+Yeah.
+
+Two things that I see is there could be multiple authors per books, you probably want a joint table there, and then the publisher, if we have multiple books by the same publisher, we don't need to list the country with the publisher each time that we have them.
+
+Yeah, we're kind of rotten with that stuff, right?
+
+We got author and then the office nationality.
+
+It doesn't change when they publish a new book.
+
+We have the publisher, the publisher country.
+
+Publisher does not like move countries between books. Presumably.
+
+I mean, I think they have different subsidiaries in different countries, but those are distinct enemies.
+
+The genre ID and the genre name.
+
+Hopefully those don't like change between books.
+
+So how could you describe what is the problem here?
+
+We got some of the terms of it, things have been talking about, about this, like, dependencies.
+
+Are you talking about the things that we're talking about just today?
+
+What is the genre name dependent on?
+
+The genre name is independent, actually.
+
+No?
+
+Sean, I can't really think of it.
+
+Depends on genre ID, right?
+
+Okay, fine.
+
+You can say that, but...
+
+No, across this table.
+
+I can give you a 1000000 books.
+
+Yeah, genre IDs, one is always tortured.
+
+Yeah, okay.
+
+What does it not really depend on?
+
+Well, it doesn't...
+
+It's not a direct dependence on the tile.
+
+I mean, it's an indirect one, right?
+
+This tile implies genre ID, which implies tutorial.
+
+How do you describe that?
+
+This one's for you, Charlie.
+
+What's the mathematical name for a dependency that takes 2 steps here instead of being direct?
+
+I'm sure.
+
+It's really a graph problem, isn't it?
+
+Classes would be...
+
+What is?
+
+It's a transitive, right?
+
+Transitive property.
+
+It's a transit independency.
+
+So we don't want to have transitive dependencies here in our, in our modeling.
+
+Is that what we do?
+
+Second, or is that what we're about to do?
+
+That's gonna be, that's the right.
+
+I think, if I'm right.
+
+It's two and a half.
+
+Yeah.
+
+To me, I didn't feel like after what, most of this stuff's kind of intuitive.
+
+I don't think I've ever sat down formally, like, worked through this process, but you kind of recognize, right, these things feel wrong. Feel it or then say like, going there.
+
+So, I don't know.
+
+You buy your triples, right?
+
+By...
+
+So as a transitive, yeah, there we go, transitive functional depends.
+
+Offer nationality is dependent on author, which is dependent on title.
+
+That's the problem.
+
+Similar violations, we have a publisher, publisher, country, depending on publisher, which is depending on title.
+
+John or names, depending on genre ID, which is depending on five.
+
+So this is why this table is not in 3rd form or form.
+
+So, resolve this by taking off a nationality, publish a country and genre name, and moving them each into their own tables, respective tables.
+
+So, our book table is left with title, author, pages, thickness, publisher, and genre, ID, and then we have our price table that introduces the formatted price columns.
+
+And we have the author, and their author's nationality, the publisher, and their country, the genre ID, and the name of that genre ID, or that genre.
+
+Does this seem like a better structure?
+
+Well, yeah, definitely.
+
+This is weird. You just said, you know, an exercise and box ticking or something.
+
+So your obviously, right?
+
+See, here's what's really confusing to me, though.
+
+Sure.
+
+I am having trouble establishing a formal definition of 1st or, I mean, not 1st month. Gosh.
+
+I'm sorry.
+
+First, normalization, 2nd normalization, and 3rd normalization.
+
+The formal definition is not coming to me because it seems like still seems like we're putting this into some kind of randomized order.
+
+I mean, let's go and to be fair, we haven't read the definition, so let's go and do that now.
+
+I think when I mean, we tried it on one, right?
+
+And reading the definition and not really enlighten anybody.
+
+So I think now that we've seen it, now let's look at the definitions and see if we're better prepared for that.
+
+It might help to think of it as a series of hierarchical subsets, where a specific requirement is required for 1st normal.
+
+And there's a subset of different ways of setting it up.
+
+It didn't actually stayed, right?
+
+Each one is dependent, like, 2nd normal form, it must be in 1st normal form, and, like, 1st normal form said it has to be in relational form, right?
+
+We had to have the primary keys for every day.
+
+That was a prerequisite, of course.
+
+So 1st normal form is the most basic level of database normalization is just the Wikipedia definition.
+
+Do you remember when that was like a slur, almost?
+
+Yeah, over one view.
+
+There's the panic about Wikipedia, are you old enough to remember that?
+
+It's like, Wikipedia, you can't talk.
+
+You can't.
+
+It's a not advice.
+
+Anybody, you can go change.
+
+No, now we've now we've attempted that to AI.
+
+And so Wikipedia is unimpeachable.
+
+You can still, like, there's still an editing...
+
+Somebody I listen to is constantly talking about.
+
+Oh, you can't just ask an LLM because it might make something up and give you a wrong answer.
+
+You know, you gotta go do a Google search and read a webpage.
+
+Okay, yeah?
+
+And then you gotta trust that web page and anyway, it's nothing is ever guaranteed, but...
+
+Yeah.
+
+Okay.
+
+Yes.
+
+So, I mean, do you have there any of that?
+
+So let's read this definition.
+
+So remember, personal forms where we got rid of the, like, composite or the fields that were not scaled.
+
+Um, A relation can be said to be in 1st normal form, so it has to be relation already, but it has to be a 1st normal form if each field is atomic, containing a single value rather than a set of values or a nest.
+
+In other words, relation complies with first normal form of no attribute domain, a set of values allowed, and a given call has relations as elements.
+
+So basically saying that it's just a normal form of bid.
+
+It's personal.
+
+I'm sorry, if it's a 1st normal form, if it only follows the A in acid transactions, basically.
+
+Different ethnicity.
+
+Because that's about a sequence of operations.
+
+Here we're talking about a piece of paper.
+
+Yeah.
+
+Right?
+
+You can have atomic data and then still need, like, do multiple, you know, I read field A, I wrote field B. They were each atomic values, but it's the combination of those two operations, treating that as one, the atomic city of acid.
+
+So basically you cannot bring those 2 columns, like we're not defining atomisty in the definition of database.
+
+Right, right.
+
+These terms are general, right?
+
+So we heavily meet the specific meaning, right?
+
+The atomicity of acid.
+
+But why did we pick that word?
+
+Because it's a word that generally means indivisible?
+
+A tonk, atom, or atomic is Greek, I think.
+
+Adam is...
+
+So if I'm, if I'm, um, tripping most correctly, it's kind of like a square rectangle thing, all squares are rectangle, not every rectangles a square with like 1st and second, all first-degree.
+
+No.
+
+All 2nd normal form is also in 1st normal form, but not all 1st normal form.
+
+That's right, yeah.
+
+Yeah, so it is, and I would just view it as hierarchical or it's like, yeah.
+
+I guess maybe that's not the right word, but anyway, so that's all it is, right?
+
+And so again, here you have the more formal version of that.
+
+Standard sequel does not support creating or using table valued columns.
+
+But pretty much all modern systems allow violations of this.
+
+And of course, you can violate it just by having a tax field, and then you encoding Jason, you're going to find it with nothing.
+
+Um, this is one of the this is kind of one of the big things that gets violated in uh, most like no SQL clouds.
+
+You know, when does mom go DB?
+
+Everybody use Mongo DB?
+
+I've heard of it but I've never used it.
+
+I don't understand how it got so popular because for all the problems it has, but anyway, is it just a, it's a key value store.
+
+Yeah, it's a key...
+
+But that value is adjacent document.
+
+So it is like the opposite of this, right?
+
+So the operation of finding a document very easy to implement efficiently across many machines as to bad database.
+
+Another?
+
+Yeah.
+
+I also, I was kind of, use mom to be a little bit of a punching bag because partly just because it, I think it's faded now, but it was such a like, buzzword, everybody telling you, you just need to put your data on WVB all the time.
+
+And it was because it scaled, it was web scale, it scales.
+
+And then it turned out it didn't actually scale beyond like a few cabots or something.
+
+So like technical limitation or it wouldn't even come close to where you can store a sequel light and people, the people advocating for it didn't discover this for a very long time because their data was not actually that good.
+
+I think it's a lot better now, but I still look askance at it.
+
+Okay, let's look at second normal form and get our more formal or, you know, more complete definition.
+
+Our relations in second normal form, if it isn't 1st normal form, and contains no partial dependencies.
+
+Where a partial dependency occurs when a non-prime attribute, that is, one not part of any candidate key. Is functionally dependent on only a proper subset of the attributes to make of the candidate, right?
+
+It needs to depend on the whole canopy, not hard of it.
+
+If it depends on part of the candidate key, then it's in violations.
+
+It has this, uh, really, that is functionally dependent.
+
+So that was the one where we said, what was the price, was dependent on, what was dependent on?
+
+Crisis depended on format, on title and format.
+
+The publisher was only dependent on time.
+
+So if our primary key or our candidate key, in this case, was a title plus format, they have some fields that were dependent on a proper subset, just the title, not, you know, they would change or can't change, right?
+
+Yeah, format changing.
+
+So, you know, proper subset, we have some that are functionally dependent on the proper subset of a candidate key.
+
+So that was one violate the 2nd form.
+
+Okay, that makes sense.
+
+So basically everything in that database has to depend upon one has to depend on the entire primary key.
+
+Well, the entire primary key.
+
+So in the case that we did, the entire priority key, in this case, would be titled because we are taking a format out of the original database.
+
+Just having title here.
+
+But then that doesn't make sense here because we have...
+
+If you're trying to show me what's on your phone, you are wildly overestimating how good my eyes are this whole time.
+
+I'm so sorry.
+
+I'm so sorry.
+
+I'm so sorry.
+
+I can barely read on my phone.
+
+Yeah.
+
+Okay, stuff.
+
+But yeah, so right, that one we saw, again, what that meant in practice was we would have many rows that are kind of like most.
+
+We the same, or at least partly the same.
+
+Um, in our case, like for the publisher, right?
+
+Where if you did make a change to something in the title, correctness would dictate you update multiple rows to make sure they all stay in sync with each other.
+
+And that's not good normalization, right?
+
+We should be able to change it in one place.
+
+Um...
+
+So that was the violation of 2nd all form.
+
+Right?
+
+I think I figured out something.
+
+The reason why we have 2 keys here is because title is actually a quarantine, format.
+
+That makes sense.
+
+Okay?
+
+So we have one primary key, like herding.
+
+Each relation has one.
+
+You designate, right?
+
+There may be multiple that are, would be correct. Times, but there are multiple ways to go about it.
+
+But usually there's, usually, kind of solves one.
+
+Okay, and then let's go look at third normal forms definition.
+
+Okay, if it is in second normal form, and also lax non-key dependencies.
+
+Remember, this is our transient, or sorry, uh, transitive.
+
+Dependencies.
+
+So no non-prime attribute is functionally pendent on any other news.
+
+So non-prime that's outside of the primary heating. Is functionally dependent on any other non-primatically.
+
+So this is where we said, yeah, the genre, E, doesn't really depend on the title, it depends on the, sorry, the genre name.
+
+It doesn't depend on the title so much as it do, does the genre ID, which would end, that is sort of a child.
+
+So having that transitive dependency was what put us in violations that are common.
+
+And again, once we get here, we're doing pretty well.
+
+Like our data is, you know, this will bring you a long ways.
+
+Have you seen examples of, like, where are these, I don't know, I want to say this.
+
+Something that often happens, we love to distribute data as like CSP files.
+
+If you ever do anything in data, data, anything, you've got CSV 5s, right?
+
+It's like the world was a spreadsheet and that's all you need, right?
+
+And so these are, because they tend to be one spreadsheet, essentially, is your data set.
+
+These tend to be rich sources of improperly normalized photograph.
+
+Or, to be more charitable, there usually probably can be relational database, and the report that you're giving you is a result of your joint.
+
+That would be great.
+
+So I see this, for example, in the scheduling.
+
+The process here is they send out last year's schedule, Lastover, building the fall schedule we did most recently.
+
+They sent us a spreadsheet of last fall's schedule.
+
+And it has, it's about 26, 27 columns, something like that.
+
+It varies a little so much to the semester.
+
+Just enough to break my strings.
+
+But you go through it and it is kind of a, you know, well, let's look, actually.
+
+Let's, this might be, ooh, let me see if I can find one in a copy.
+
+Way I can retrieve across the network conveniently.
+
+I bet I can.
+
+Let's see.
+
+Um, let me look at fall 2026.
+
+Actually, it's a sheet.
+
+Okay, now I'm gonna copy that file over to here.
+
+Marmot, fall 2026 sheet.
+
+Um.
+
+Initial...
+
+Blah, blah, blah.
+
+Um...
+
+Yeah.
+
+So this is literally the document they mailed.
+
+Actually, I think I've already converted it out of Excel formatted a CSV, but there was no formatting attached to it.
+
+And this is generated as a report.
+
+And then, I probably have Excel on this machine.
+
+Sorry, I'm just trying to think of how to load this into a spreadsheet. With my Sigwin setup.
+
+I'll just let me load Excel.
+
+I don't think I've ever actually used real Excel before.
+
+It's not very often.
+
+I don't use Windows machines, and it's only, I guess, anyway.
+
+Um, This PC, wow, I hate that, but I had to search for that documents.
+
+Okay, I think it's gonna be easiest to take Mohammed to the mountain here.
+
+Users?
+
+What's it called?
+
+Yeah, users, and I'm...
+
+I have a 975 slash documents.
+
+Whoops.
+
+No, we're not.
+
+I didn't say one drive.
+
+Oh, yeah, well, there's always a call.. Stored locally.
+
+No, home Zoom.
+
+Nope.
+
+All files.
+
+Oh, okay, got it.
+
+CSV.
+
+Okay, here we go.
+
+Um...
+
+So first, some of these fields are coming in blank, but...
+
+Even these blank ones are a pretty good example.
+
+So they strip some of this out.
+
+Faculty ID, last name, 1st name, middle initial in position. On every section.
+
+Right?
+
+So what would this be?
+
+We've got some violations of, I don't know, what would be the primary key?
+
+So the primary cue would probably be the faculty ID, that is because that is the only thing that is...
+
+No, this is the whole schedule, right?
+
+So each one of these is a section.
+
+Oh, my bad.
+
+Yeah.
+
+Not only that, that's gonna be the same for Roe.
+
+That's or for some rules, that's because some professors teach multiple classes.
+
+Yeah.
+
+So the primary key is whichever one is unique, co roast, that will be the CR.
+
+Probably the CRN in this case, right?
+
+So this is a synthetic, or one of those, you know, made up a field, so they uniquely identify a section.
+
+Although, turn out, that is not as unique as I once thought.
+
+We found some weird things in biology.
+
+They have 2 different classes, the way they appear in here that are actually the same CRN.
+
+It's like a class in some of the supplemental instruction versions of them. Which show up as a different line item at different time or anything like that.
+
+But we'll pretend CRN's uniquely identify it.
+
+We're gonna CRN.
+
+So then, all this stuff right here, all this faculty information, Okay, we do need to know which faculty is teaching it.
+
+Right?
+
+So we need that information, but we've got too much here.
+
+What does this violate?
+
+So yeah, the fact of the ID, the last name, person name, middle initial in position.
+
+Sorry.
+
+No, these are distinct columns.
+
+So 1st normalization, 1st normal form is when we have to take, you know, a raise out.
+
+This already looks like it's a.. One.
+
+I mean, obviously, it's so hard because we can't really see that.
+
+But last name and 1st name, those are transitive dependencies, right?
+
+It's a faculty ID, depends on which class it is.
+
+The faculties last name doesn't vary as they teach different classes.
+
+Right?
+
+It varies when the faculty varies, the rest of the fact that the input comes away.
+
+So that stuff should be a separate way.
+
+But again, it probably is, right?
+
+This report was been generated with the joint.
+
+But I didn't think about that the 1st time I looked at this and I was just horrified mostly.
+
+Subject?
+
+Okay, subject and course.
+
+And section.
+
+Um, those all seem good, right?
+
+Yeah.
+
+If I expand the title of the course, The title of the course, let's get out of biology.
+
+There are, like, 900 sections of biology, 1010.
+
+It's come down to classes you know and we're familiar with.
+
+Yeah, CS, there we go.
+
+It's good classes.
+
+Um, what about this field?
+
+Are there any redundancy going on?
+
+Well, yeah, there was a bunch of sheep.
+
+Well, not deal with the classes because they're dead, wait a minute.
+
+They're not separate.
+
+No, they are separate.
+
+Was that a lot of fundamentals of program, right?
+
+And that title.. Is.. Across my fingers and put it behind my back.
+
+That title is not dependent on the section.
+
+What is it depending on?
+
+That title is independent.
+
+No, it's dependent.
+
+We're talking about it on the subject and course not.
+
+Yeah, that's right.
+
+Right?
+
+So it's on some of this, but it's so, before one, it's not dependent on the CRN.
+
+Definitely not.
+
+It's dependent indirectly by way of the transitively, by way of the course number, not the section.
+
+So we kind of need to throw, right, a whole other table for courses.
+
+And then sections would instantiate courses.
+
+Yes, programming partners.
+
+And then there's a little budget stuff here that is kind of inscrutable.
+
+Um, what's that one scream called?
+
+K. We see how many of these I can identify by now.
+
+Which campus it's on?
+
+AO1 is this campus.
+
+And then we have like the hurricane extension or whatever, and there might be some others, and there's like online.
+
+So, oh, I think gives us online sections.
+
+Um, But then there's like, whether it's active or canceled, that one's good, lecture, other formats.
+
+And there's other stuff, credits, workload factors, and things like that.
+
+The reason I was crossing my fingers on the title is there are some, let's see, I remember, we might have even had one here.
+
+I think an SE.
+
+Let me go look at SE.
+
+Oh, you mean like the, uh, you mean like stuff like the senior project, um, for science?
+
+That one's okay.
+
+No, what I'm saying is when you do a special topics class, that can get a specific name on there.
+
+And if you've taken 4990, CS 4990, or SE 4990, I, like, I think there's one there might be going this semester, maybe it was last semester.
+
+I think it might be this semester, which is why it's not as nice.
+
+It's based on fall.
+
+But it's like special topics and it's called like 5 coding.
+
+Mac Curl's teaching a buy, that's class.
+
+So so then they do actually change the time of the classroom, but everything about it's messy.
+
+I remember thinking about real data is messy too, I guess.
+
+So that's fair.
+
+Let's get over here more to the right.
+
+Oops, and see if we can find any other things that are not normal.
+
+Normalized.
+
+It's not normal sounds.
+
+Good different meaning, but please.
+
+What is often done because the data is a purpose?
+
+So what do you do when you do have just special places where it breaks out?
+
+Yeah, so in that case, you might say, well, actually the title is tied to this section.
+
+But we like, maybe, you know, as a programming convenience, we automatically populate it for the worst title or something like that.
+
+Or maybe you have something else that's like an override.
+
+You know, so it's null unless it's, uh, allows you to pull it in.
+
+I don't know.
+
+I haven't...
+
+I'm trying to think in this case, I don't know what I have like a clear answer to what I would do.
+
+Um, something I jumps to mind is, uh, in the in this in my scheduling data, one of the things I have to do is figure out how many sections of a class are being taught, and I do that by joining my college. Agree.
+
+And, um, because when there's a penalty applied, like a conflict, so you have CS 14, 10, and CS 28.
+
+Those can be taken concurrently, so we want to make sure they're taught at different times so students can take both classes at the same time.
+
+But that conflict, that might be a pretty serious, you know, conflict with the outset.
+
+We're just looking at course requirements and stuff, saying, ah, very importantly not, I'll keep on the same time.
+
+Until we look a little closer and see there are 2 CS 2810 sections in like 320 or 14 minutes sections.
+
+So actually having 2 of them at the same time might not be applied as bad.
+
+So that's why I need to collect how many there are going to have this, like, rule for demoting the priorities based on that.
+
+Um, that mainly just like, you know, bumps them down and fall off the bottom.
+
+So, but then sometimes I have to override that.
+
+Um, Because, let's see, See your project.
+
+Required class.
+
+When you make sure it's not taught at the same time as other required classes for people who've taken the right career exits.
+
+Um, maybe you haven't noticed this pay attention, but we have we now often have multiple sections of CS 4600 senior projects. To kind of spread them out of prospect with me.
+
+But we have them taught at the same time.
+
+So my one said, oh, sure, it's okay to have, um, algorithms that everybody has to take and see your project at the same time because there's multiple sections of senior projects. Then that would be wrong, right?
+
+Because they're actually, there are multiple sections, but they are kind of just weird exceptions.
+
+So I have a table that just contains exceptions.
+
+And there's like 3 inches in it. Or something like that, a pretty small number.
+
+And then I have some, you know, ridiculous joining and process where I, um, take the aggregate value, take the one, and I think I like it conditionally, basically, to merge them.
+
+Do you have to group the way that works?
+
+I think there's actually a group by that combines the one that was discovered, the one that was explicit, and if there are multiple there, then in the aggregate, in the aggregation, you can put a case in the slide, which has some logic.
+
+So that's how it handled some exception.
+
+I would probably, I mean, I would lean towards something kind of like that here because Boy, just looking at that, I really, that seems like a lot of redundancy, right?
+
+There's a lot of general biology, a lot of human biology, a lot of principles of biology, one.
+
+And that would feel pretty icky to just have those HB individually instantiated.
+
+And so I think having a pull from the course and then having some mechanism where you can override it, whether it's a column that is null, sometimes, or a separate table, it would probably be better.
+
+And then that messes up every query you ever do, right, during solve that logic.
+
+So you put a view that does it and gives you a clean view.
+
+So something like that.
+
+Or you ignore the problem and hope it's not that serious. That everything will just be okay.
+
+Um, others.
+
+Let's see.
+
+Oh, keep going.
+
+Go back to the top here.
+
+Over here, we have information.
+
+Let's see.
+
+Okay.
+
+The days it's taught, the beginning time, the end type, end time, excuse me, the seat's capacity, enrollment, wait list size, or weightless capacity, weightless actual, which is always 0 and we're, and enrollment is 0 and we're planning for next year.
+
+The building, the room number, do any of those things?
+
+Seem like they might be violations of up to 3rd normal form.
+
+Well, that's definitely a violation of third normal form, because we've got two, what?
+
+Sorry, what is this?
+
+Well, I'm saying room and building do depend.
+
+I'm sorry, room does depend on building.
+
+So those are two. What was the word?
+
+2 non-prime.
+
+Okay, it's that, is that true?
+
+Independent?
+
+Does room depend on building, but not on the?
+
+Well, I would think it does because each room, because we're in, um, where, where we, we're in Smith.
+
+Smith, one away.
+
+Yeah, so we're in one away of Smith.
+
+If I just put Smith, I don't have enough information to figure out its water weight.
+
+Well, true, but I was saying, like, room is dependent on building, not the...
+
+But that's what I mean.
+
+Yeah.
+
+So since it was simple, if that was true, and we were eliminating that, that was...
+
+That was 3rd normal form, right?
+
+Yeah, that was...
+
+So, but if we were, so that would suggest that we could take the room and put it somewhere in a different table where all we could just lean back and find a base on the building.
+
+So I think in this case, we really do need the ability and the room.
+
+But I would say the capacity of the room, that's dependent on the building room and not on the section.
+
+Again, across my fingers, right behind my back, because this is actually a number we enter, and then some admin somewhere yells at us if it doesn't match the capacity because the pro is set, it's the same.
+
+Um, I don't know, I don't have any, that problem is gone now, so...
+
+Because we had some classes where people would go and say, we're just going to set the capacity at 10 because I don't want a big class.
+
+Oh, yeah, it's usually a little more behind than that, but it's kind of an opportunity.
+
+Um, So, again, we got, you know, again, this distribution format of a CSV file is, it's kind of, It's so great because it's simple and everybody understands it.
+
+We have tools to work with it, and it's terrible because the spreadsheet is not actually a good model for real data.
+
+But it's good for, it also means you probably, if you ever go playing around with data sets, you've probably seen a lot of, and you could probably actually de-ormalize table.
+
+It probably came from a relational database and then was joined together and extracted into this, like, spreadsheet format for ease of distribution, and it's made it easy for people to understand.
+
+So you can do all your queries, it's like, it's kind of prejoined for you. In a sense.
+
+With all the redundancy that applies.
+
+I think we're out of time.
+
+We'll look at the glances. Voice cod. Voice cod. Right?
+
+Boy Scout.
+
+Two names.
+
+Oh, yeah, you'd like...
+
+No, I think that's the one that's just a refinement of it, if I remember right.
+
+But we'll look at it next time. 

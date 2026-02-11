@@ -1,10 +1,13 @@
 ---
 header-includes:
-- \usepackage{databaseslides}
+- \usepackage{myslides}
+- \institute[Computing]{Utah Tech University---Department of Computing}
+- \title[CS 4307]{Database Systems}
 subtitle: Introduction and the Relational Model
+author: Dr Russ Ross
+date: Spring 2026
 aspectratio: 169
 fontsize: 8pt
-date: Spring 2025
 ---
 
 \titlepage
@@ -40,64 +43,6 @@ Our approach:
     *   ACID transactions, logging, failure recovery
     *   Concurrency
 4.  What else is out there?
-
-
-Administrivia
--------------
-
-### Attendance, distractions, etc.
-
-*   Attendance is not required in that you will not be graded for
-    being here
-    *   Exception: excessive absense without making arrangements
-        will result in failing (see the syllabus)
-*   You are responsible for what we talk about in class, and much of
-    what we cover will *not* be available elsewhere
-    *   Assignment instructions, tips, etc.
-    *   If you miss class, you may not be able to complete the
-        homework
-*   This is an in-person class. I will attempt to stream it via Zoom
-    on request if there is a good reason, but the AV system is
-    flaky and it will probably fail on some days
-    *   Do not depend on Zoom
-*   You are expected to take notes: bring pen and paper
-*   Laptops and mobile devices are not allowed in class unless
-    specifically called for
-    *   Not even for notes or following along with demos
-    *   Exceptions need documentation
-
-
-### Textbook
-
-There is a textbook:
-
-> &nbsp;
->
-> Database Systems: The Complete Book, 2nd edition
->
-> by Hector Garcia-Molina, Jeffrey D. Ullman, and Jennifer Widom
-
-You can buy it, rent it, or find a PDF copy online. Paperback or
-rental is about $60.
-
-Should you buy it?
-
-*   I will use it for teaching, but do not plan to require readings
-*   Lots of good info, and if you are someone who will go to the
-    text for more info, might be worth it
-*   Most people probably do not need to buy it
-
-
-### CodeGrinder
-
-You should have a Linux (including WSL) or Mac OS environment to
-work on
-
-*   We will use CodeGrinder for autograding most assignments
-*   I recommend Debian 12 (Bookworm) or Ubuntu 22.04 for WSL
-    users
-*   First steps: install CodeGrinder, sqlite3, and Python
-    * `sudo apt install sqlite3 python3`
 
 
 The Relational Model

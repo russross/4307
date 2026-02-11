@@ -1,0 +1,5 @@
+--
+-- write a query to list the total number of classes taught in each
+-- semester. The list should be sorted by year, with semester used as
+-- a tie breaker
+--

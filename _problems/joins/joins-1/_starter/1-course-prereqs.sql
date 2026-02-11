@@ -1,0 +1,8 @@
+--
+-- write a query to list courses with prereqs. most of the information
+-- should come from the course, with just the prereq_id added for
+-- the course's prereq. sort by course_id.
+--
+-- this will require joining the tables course and prereq.
+-- use the JOIN syntax, not a comma-separated list of tables.
+--

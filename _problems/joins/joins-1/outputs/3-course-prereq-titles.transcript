@@ -1,0 +1,11 @@
+> +-----------+---------------------------+------------+---------+-----------+----------------------------+
+> | course_id |           title           | dept_name  | credits | prereq_id |        prereq_title        |
+> +-----------+---------------------------+------------+---------+-----------+----------------------------+
+> | BIO-301   | Genetics                  | Biology    | 4       | BIO-101   | Intro. to Biology          |
+> | BIO-399   | Computational Biology     | Biology    | 3       | BIO-101   | Intro. to Biology          |
+> | CS-190    | Game Design               | Comp. Sci. | 4       | CS-101    | Intro. to Computer Science |
+> | CS-315    | Robotics                  | Comp. Sci. | 3       | CS-101    | Intro. to Computer Science |
+> | CS-319    | Image Processing          | Comp. Sci. | 3       | CS-101    | Intro. to Computer Science |
+> | CS-347    | Database System Concepts  | Comp. Sci. | 3       | CS-101    | Intro. to Computer Science |
+> | EE-181    | Intro. to Digital Systems | Elec. Eng. | 3       | PHY-101   | Physical Principles        |
+> +-----------+---------------------------+------------+---------+-----------+----------------------------+
