@@ -1,0 +1,1243 @@
+Oh.
+
+Where?
+
+So, I just posted, um, some updates to the assignment description, trying to capture a little more of that.
+
+Intentionally, I don't want to be, like, too detailed in the requirements, because I see this very much as an exploration project.
+
+Remember, the goal here is to take things from beginning to end, both through the whole process, and also to explore, integrating, into a project.
+
+We've been talking about sequels, kind of a, you know, standalone thing, just looking at query structure.
+
+And all of these things, I think, the specifics, you can spend some time on stack overflow, spend some time with your favorite LLM, reading people's blog posts, right?
+
+Just do some research into it. To see good ways of integrating.
+
+Python has a sequel light library built in, so it's easy to get to from there.
+
+You don't have to do any special installation.
+
+And actually, it has kind of all the things you need for a basic web app, too, pretty much.
+
+Or you can grab some third-party libraries to maybe do a better way of experience sometimes.
+
+But you shouldn't have to do too much expiration that way.
+
+Most of that's just the standard library.
+
+So, They could even run a red web server.
+
+They're just like signing, basically.
+
+So.
+
+What I want to go on to next is starting to dive more into database implementation.
+
+And here, as before, we're going to use sequel light as a model, um, partly, well, for all the reasons we did before, including just the fact that it's really well documented and quite accessible.
+
+Um, periodically on Reddit and hacker news and things, people would post and say, oh, I'm trying to, you know, like learn C, what's a, what's an example of a code base that has like really good code that I should look at?
+
+And sequelite is always pulled up as one of the top.
+
+It's just a really well architected.
+
+It's like, it's Dr. Richard Hip. Like one guy, I think he has a collaborator, but it's pretty much one person. Has just been working on this project for years.
+
+He publishes it as public domain, so it's not even, so it basically relinquishes copyright to it.
+
+So you can do whatever you want with it, you know?
+
+There's no restrictions, really.
+
+And in order to guarantee that that is okay, kind of a weird quirk of the development, basically doesn't accept outside contributions.
+
+And part of that at least is so we can guarantee that the COVID is in it is uncovered.
+
+No company can come along and say, oh, we contributed this.
+
+It's our copyright.
+
+So it's a little weird in that way, but it's, but it does mean that it's, it's pretty coherent as well.
+
+So, um, sequel light.
+
+Oops, I don't want that.
+
+Sorry, I'm drawing a blank on the name of the page that I want, but...
+
+Um...
+
+Well, gotta Google instead, I guess.
+
+What's going on?
+
+I just can't remember the name of the documentation module. To load.
+
+Okay.
+
+Database file format.
+
+That the one.
+
+Okay.
+
+So, let's talk about the on disk structure that sequel I uses will compare a little with small churns, guessing it uses beetroots for its own disk.
+
+Well, the time, yeah, remember we talked about B plus trees and beetrees, both.
+
+Somewhat unusually, it puts everything into a single file.
+
+Right?
+
+And this is part of its goal of having kind of a simple library, it's an embedded database.
+
+It's not a server.
+
+And it kind of doesn't try to take over your system.
+
+So it's not a distributed system, like most databases are, like we've mentioned, right?
+
+Yeah, I mean, and they're mostly client server.
+
+Newer ones are being built a lot more as the student systems.
+
+But yeah, sequalized a single, really operating from a single file, and then it builds a journal file or some other accessory files.
+
+Yeah. Dependent mode and sometimes temporarily.
+
+But so fundamentally, the file is page oriented.
+
+So, um, There's a fixed page size.
+
+I think it used to default the 512, I believe the current default is 4 kilobytes.
+
+So when you create a database, everything is in their numbered pages, starting with number one.
+
+Not zero. Remember, right?
+
+Um, 4K is usually the block size that of hard drives and SSDs. The block size.
+
+Well, it's really what the operating system exposes.
+
+Actually, those have smaller sectors than that, but that's typically whatever you work with one of these things.
+
+Dana's going back and forth in 4K pages anyway.
+
+But that becomes our beat tree page size, as well as, you know, some other structures and things.
+
+But so you can go to the bigger page, and that just means there's going to be multiple disc blocks loaded for each one, but that, you know, sometimes that gives you different performance characters or different amounts of overhead.
+
+So there's instruction.
+
+But fundamentally, we have this thing is...
+
+Just a big bunch of blocks.
+
+And every page is going to be used for one of a few things.
+
+And we're really just going to focus mainly on the beach repages.
+
+Yeah.
+
+So, um, are we gonna implement the trees in this crust, by the way?
+
+We're gonna do we're going to implement at least some of the coach read sequel I. Okay, so we're not gonna influence patriots.
+
+Not entirely contratched, though.
+
+I was getting excited for that. Welcome to.
+
+But so we're really going to focus on the read side, and then I will give you like the decoding code that pulls the on-disk structures and unpacks it.
+
+Python...
+
+But you'll do all the navigation and stuff like that.
+
+So a B tree page can be one of 4 different variants, which they call a table B tree interior page, a table B tree leaf page.
+
+So these are the B plus trees.
+
+Remember the different, because anybody summarized the difference between bee tree and B plus tree, the main difference?
+
+A beach or 8 has its satellite information and all of its notes are all of its areas.
+
+A B plus street has only its satellite or it has its satellite information only at the leaves.
+
+That's the difference.
+
+So, satellite information, you mean, the actual...
+
+Yeah, that's, that's a more, that's a more technical term for data.
+
+Yeah.
+
+Yep.
+
+So yeah, the core difference is the B plus tree is the kind of weird one, right?
+
+In that it just puts the higher levels of the tree are pure indexing.
+
+So in sequel light, that's optimized, a table bee tree is always indexed by a row ID.
+
+Regardless of what you put in the table structure or table schema, there's always a row ID, which is just an integer, guaranteed to be unique per row.
+
+Now, if you create a table and you declare an integer primary key, that will match the role ID.
+
+But otherwise, it will just assign a hidden field and you can reference it if you want, but it's so that means, and so with a table B tree or a B plus tree, That is the only part that gets replicated in the index.
+
+And so that and that means that you can fit a lot of them in, you know, if you have a 4K page and you're using, um, 8 nights or so per per entry, you can you can fit quite a few of them.
+
+But math doesn't exactly work for some overhead and headers and things like that, but it means that you get the kind of real goal of any tree, which is of any of these, which is a really wide fan out and a shallow tree, right?
+
+We don't want to be hitting many notes or go find something.
+
+Because remember, in that core idea of a bee tree is retrieving blocks is the expensive part, finding stuff within it is the cheap part.
+
+So the fewer blocks you have to touch on the way down to a leaf, whatever.
+
+And that's where the B plus trees are optimized for.
+
+Now, we have tree interior versus leaf.
+
+It's quite a difference in a B plus.
+
+The interior does not contain the payload of any row, but it does have child drugs.
+
+And then a leaf node has the entire contents of the row all the columns, but no children.
+
+With an index B tree, it also divides that. This is the B tree, not the B plus tree, meaning the entire contents of a row can be embedded at an interior node or a leaf node.
+
+There's no differentiation.
+
+So really, the difference is that with leaf nodes, there are no children.
+
+Um, And that's the difference.
+
+Yeah, the main difference between a leaf, an interior node and a leaf pitch.
+
+Oh, a leaf.
+
+So we're going to the 4 kinds of be treat pages, actually.
+
+Now, it has some things we're going to, then, ignore, freeless pages, pale it over full page.
+
+I'll just mention what that is, it puts a fixed maximum size for a given role.
+
+Because you kind of need this tree structure to work, right?
+
+You fan out if you're putting filling a whole page in one row and, you know, go to kind of performance characteristics that when they start to break down.
+
+So it puts a maximum size, which I remember right somewhere in the neighborhood, a quarter of a page. That it is a really complicated form, I think, absolutely.
+
+I can't remember the details, but so anything that's over that, it will put the 1st so many bytes and it's allowed to a middle have like an overflow.
+
+And then it'll have some other page that's just devoted to overflow data.
+
+So if you put big entries in sequel light, cable, you're gonna have, like, the 1st part of it is going to be encoded directly in the name core, E tree, or the plus tree structure, it's a normal table.
+
+And then it's gonna point somewhere else from the world of Florida.
+
+And most systems actually are getting something out of this.
+
+Again, because you want to preserve the kind of known properties of the tree, the search characteristics, making things and scam find things.
+
+But you also want to be able to accommodate much.
+
+Now, again, just while we're on the side note there, Databases are not optimized for holding large objects, right?
+
+This is kind of why.
+
+If you if you're storing like pictures, you probably want to store those in some other kind of Thor and put a link or like an ID or something like that in the database.
+
+The database is for quick lookup and linking and relational, you know, all that kind of stuff.
+
+And if you're putting, you know, if you're if you're embedding JPAGs, for one, the database can't really do anything with them, right?
+
+Doesn't know how to look at them or compare them and things.
+
+It's just not what it's optimized for.
+
+But it's gonna happen. Even put the occasion large data in there or whatever and it works with it.
+
+So we're not gonna, we're just gonna work with data that doesn't happen.
+
+That was my simplifying process.
+
+We'll just make sure that we don't ever use any data to do that.
+
+And some other things here.
+
+And there's some other features that we're kind of going to ignore.
+
+You can you can put extensions in, you can have your pages encrypted, and there's like, you can store some information about that, or it's not gonna...
+
+Again, we'll just, we will work with raw sequelite files.
+
+We'll just make sure, you know, rig it so that none of these complications ever happen to occur. Ignore the possibility that they could.
+
+For simplicity.
+
+Um, let's see.
+
+The first 100 bytes are of the file are a header.
+
+Contains information about the whole thing.
+
+The rest of that block is an ordinary block.
+
+It just happens to be, you have 100 bytes less for its bee tree or whatever, than every other page.
+
+We'll see what page that is, but.
+
+So here's I had a format showing you bite by bite.
+
+The 1st 16 bytes is the string sequelite format 3 and a zero.
+
+So it's kind of its magic number.
+
+You find most file formats or at least a lot of modern file formats. Will put some kind of an identifier right at the beginning.
+
+Maybe easily, the file, usually, in UNIX.
+
+It's called File, but yeah.
+
+Yeah, actually, I have file and you give it a file name and it tries to figure out what that is.
+
+Actually, I have definitely used it.
+
+Yeah.
+
+So like, here, let's go point it to a sequel light file and see if it can tell me what it is.
+
+This is Sage, Cornish.
+
+So if I say file, universe database, it says, it's a sequel three point X database, last written, we're using sequel I version 3046001 file, hundreds, 14 database pages 26, cookie C, and hexadasm, schema four, usually have 8, version valid 4, 14.
+
+Right?
+
+So yeah, it went and got all this stuff in that.
+
+So it knows a little bit about that, but it'll use that magic number at the beginning to identify it.
+
+You can ask it about itself.
+
+User bin file is an L 64 orbit, Ellis, um, let's be...
+
+PIE executable. Anyway.
+
+It's kind of hot.
+
+But so anyway, so that's a common thing.
+
+And very often sometimes, just through the text.
+
+Um, the native's page stockies, invites.
+
+So if you have power of 2 between 5, 12, and 32, 768.
+
+Or if it is one, that represents 64K. You can't fit 64K in 2 bytes.
+
+It's one too big.
+
+So they wrapped around and said, I'm not gonna have any pages size to be wild, so we're gonna have that.
+
+You say, you can't, 6, 4 can, 2 months?
+
+Yeah.
+
+Because you can go up to two, you can go up to 64K minus one. In 2 bites.
+
+Six or 4K, like six, 4,000. 60, 64 cubabytes.
+
+Doesn't that sound bad?
+
+That's the real thing, though.
+
+That's due to the 16th.
+
+Which is 65536.
+
+Yeah.
+
+And that's when I say K, I never mean zeros after it.
+
+I always mean 2 to the 2 to the 10th power. Talking about the...
+
+Well, you're talking about the notation, like the kilo, the mega.
+
+Yeah, right?
+
+In computer science, those mean powers of two, unless you're making hard drives.
+
+And then you.
+
+Then it looks better when you use the other the metric format.
+
+So.
+
+So, you said 2 the K is one bigger than 2 bytes, though.
+
+That's fine.
+
+I'm getting a little drum out.
+
+That's...
+
+No, don't...
+
+Two bytes is a number between 0 and 65535. Which is 2 to the 16th minus one. 64, 64 kilobyte.
+
+Yeah, 64K is the number 65536, and that's too big between 2 bytes.
+
+By one.
+
+Okay.
+
+So they map it to one.
+
+Yeah, I say, don't overthink it.
+
+You're not ever going to need it anyway, but.. File formats and, you know, some things like that.
+
+Yeah, a lot of stuff we're gonna ignore most of it.
+
+But I'll unpack it all.
+
+I'll give you code for that.
+
+Um, Oh, fact, let's, let's see.
+
+Probably demo that if I can remember where I kept it.
+
+Um, so, this is our beet tree, assignment, we'll go into here.
+
+Um, All right, I need to update that.
+
+Well, uh, Python 3, Maine.
+
+I can remember how to use my own thing.
+
+Oh, I need to type header.
+
+We go.
+
+So...
+
+So this is code.
+
+I will give you, um, which is part of the next assignment for a weekend card.
+
+So it just works on, well, a file called database.db, generally.
+
+You run the script and then it takes some commands to kind of query the stock shot, right?
+
+So I just did header and this is showing me the header information, least the most interesting fields of, you know, taken from that.
+
+Oh, this has a small page size.
+
+Yeah, some of the things I will give you some of page, small page sizes in order to force deeper trees to make it more interesting.
+
+So, we'll do that, because right, that will, if you have a smaller page size, you're gonna force it downward.
+
+But generally, you'll mostly use 4K pages these days.
+
+So this information about all that, again, I don't want to get too hung up on.
+
+That part.
+
+So let's go and look at the B tree pages.
+
+And by this, again, it means be trees, and B plus trees, the full set of variations.
+
+I kind of appreciate the, like, modesty here, right?
+
+This is the most used database system in the world by a long shot of this type.
+
+Sequel light?
+
+Why?
+
+Yeah.
+
+Your phone, it makes that as the both Android and IOS provides a default source provider for apps.
+
+It's still got their APIs.
+
+Web browsers use it to store like your bookmarks are all sorted in there, your history, stuff information is sorted in there.
+
+There's just, like, tons of sequel life files.
+
+Basically, it's just used for applications that allow an automated local, which, yeah.
+
+I mean, it's used a lot of places, but it's hidden in a lot of places you would think about it necessarily.
+
+And yeah, it says, yeah, so how do I implement?
+
+Well, I just went and read the Donald Canoes book.
+
+And on the art of computer programming, volume three, pages 471 to 479, that taught me how to do it.
+
+It's like, there's nothing interesting to see here, right?
+
+Most widely used for the store.
+
+I just read the book and implemented anybody who can do that.
+
+So I appreciate the mods.
+
+Maybe time for level.
+
+It's everybody, does everybody recognize the art program?
+
+Yeah, that's a famous...
+
+Yep, that's a really famous one.
+
+Just to make sure everybody's up to school here, because it is part of our culture.
+
+Yeah.
+
+I have that specific...
+
+Yeah, so Donald Knuth, a famous computer scientist, fairly early.
+
+Um, and in the late 60s, I think, was, he decided that he, he kind of works on the theory side of things mostly, but there wasn't such a division back then, right?
+
+Everybody kind of learned everything.
+
+And he wanted to write, you know, kind of catalog all of computer science, basically, or, you know, computer programming is assessed.
+
+So we wrote this series of books. Sent the 1st volume off to his publisher, and it was one of the earliest texts to be used to be typeset with a computer typesetting system.
+
+He got like the proofs back and was like appalled and offended how ugly it all was.
+
+So he said, I'm going to take a one-year break from this and write a new typesetting system. And then come back and finish the project.
+
+Well, spoiler alert, the books are not finished yet.
+
+Today in 2026.
+
+Um, They're not tennis yet.
+
+Like none of the volumes are?
+
+Many of them, but the, it's not, I mean, still working on drafts of, he's still fighting for.
+
+But he's still actively working on it?
+
+How old is he?
+
+Um, I don't know how, you know, I don't know the schedule and things like that, but what type of setting language could be in the then?
+
+So tech.
+
+Okay, which is which is actually written in Tao.
+
+So long Thai.
+
+So, um, he wrote something that requires a fancy type setting, maybe be able to write. Yeah So it's pronounced tech because it's Thai.
+
+And blat type is in the sentence of it then?
+
+So latex is macro.
+
+So it has a macro language and latex is written in that macro language to kind of comply, make it easier to do some sort of default document structures.
+
+So you're doing latex, you're most, it's mostly, it's tech with a macro library, essentially.
+
+Okay.
+
+And that was Leslie Lambert. Who made that, right?
+
+And it wasn't inventing Paxos and, um, back to the clocks and Byzantine qual tolerance and stuff.
+
+Or TLA plus, which is.
+
+But anyway, so he also does that. Took 10 years instead of one.
+
+Um, created, you know, and his goal with that was to, was to say, he loved classic typography, right?
+
+There are all these rules and things that humans want to put in this together.
+
+You sometimes squeeze the text a little bit.
+
+There's certain pairs of letters that you actually replace with a, what's the term for that?
+
+For a little bit of joint letter, whatever.
+
+There's this specific name for it. Yeah.
+
+Um, it's a, A literature?
+
+Is that right?
+
+What is the thing?
+
+Was it?
+
+Well, you have like F followed by I. Very often the bar on the app will sort of replace the dot on the eye.
+
+Wait, wait, wait.
+
+Or maybe it's the, you know, so there's actually space, it's not just them who merge together.
+
+There's a separate brand new product.
+
+So, you know, that's the kind of thing, again, classic typography where you're working with the metal that's, they have extra letters for those and stuff like that.
+
+And certain letters, you don't just put them next until you squish them because the shape of the letters, et cetera, that's curving, right?
+
+So we built tech to kind of embed those rules automatically.
+
+You know how to do those things.
+
+Um, I mean, it's kind of a nerd's paragraph, right?
+
+If you go to grad school, you have to spend a while, like, you know, learning tech, and layjack, and stuff like that.
+
+Grad school is sort of synonymous with procrastination.
+
+And all the way tech modules, they're all written by grad students who should be working on a dissertation.
+
+That's kind of how it works. Students procrastinate a lot.
+
+Yeah, really.
+
+Yes.
+
+As a rule, let's say.
+
+And so, you know, anyway, develop this thing is great, right?
+
+And he made a whole font rendering system because they didn't have like proportional good fonts then.
+
+They were all bit mapped.
+
+So it made a whole language for that called metaphont. And then made it a set of fonts to go with it with computer modern series.
+
+Anyway, eventually came back to writing the book.
+
+And, you know, would publish a volume at a time, got through the 1st three, I think, and volume 4 is what he's working on, and he's done, like, parts of it, and, you know, publishes facsimiles of, you know, parts that you can buy.
+
+A few years ago, we went back, the examples for his algorithms, he does in a made up machine language, so they can be very precise about the algorithms and not have any hidden steps, I feel, trying to talk about efficiency.
+
+So a few years ago, we went and like changed that to being more modern risk style assembly language, rewrote all the books, all the examples to accommodate that.
+
+Another famous part of this is, so, let's see, tech. Only comes out with a version.
+
+So he collects bubble bug reports and offers boundaries for bug reports.
+
+The start out, I think it was like $2.56 and then would double for every year that the bug was out there up to a cab.
+
+But people would, if you'd find those, you would write you a check and send it to you, and then you would frame it.
+
+And so then with the advent on the internet, he had to stop doing that because, you know, his banker told him to stop sending, stop having people all around the world post pictures of his checks with his bank account and stuff.
+
+And trophies, you know, sources of pride.
+
+So now we like just sense in the emails.
+
+Oh, thank you letter or something like that.
+
+But then...
+
+But he would then, AI.
+
+Anyway.
+
+So, but then also, so again, nerd paradise, right?
+
+Started out, so the version of tech is converging on pie.
+
+So there's version 3, then version 3.one, then 3.14.
+
+So he adds it doesn't apply every time the Chinese.
+
+And between releases, the gap, so we collected all bugs for a year, made the fixes, released a version, then waited 2 years, then 3 years, then 4 years.
+
+So each gap is a year longer than the previous one.
+
+For metaphont, I believe E, is the version number going toward the...
+
+Yeah, such embarrassing.
+
+Yeah.
+
+And it's still a great system in a lot of ways and also a terrible system. Uses macrosystem, which is awful, not the way it's going to do it.
+
+So programming it is kind of a nightmare.
+
+And it has a very particular view of what, you know, it's made for documents, so I'm trying to make like slides.
+
+It's kind of weird that I could do some other tricks.
+
+But it's still the foundation of academic publishing, computer science, and math.
+
+And he actually, then, I believe, signed the, what, ownership of copyrights to the American Mathematical Society.
+
+So, um, you basically can't publish math.
+
+It's not.
+
+And they're sort of shepherds, I guess, but it's the goal is to have this be a finished stable thing.
+
+And so now modern systems, you're not just running tax, because it was written in, um, basically a variant of Pascal.
+
+In his literate programming style, where the comments, it's like a book that's going through describing it, shows bits of code, and then the, what's called web, this litter, programming system goes and extracts them all and puts them in the right order so it can be assembled or compiled.
+
+So there are dedicated converters that convert, basically, tech, lab, into C, so it can be a problem in my system.
+
+But it's, so it's something you kind of preserve and amber, this original version.
+
+And, you know, predates anything like modern font formats, so you have to kind of go and get modern versions of those, which people, of course, made. Didn't understand PDFs or postscript even, because it predates any of those, had its own output format.
+
+When it does come out.
+
+Uh, postscript was sometime in the '80s.
+
+What about PDF?
+
+PDF is more like 90s, 90s, or something, I think.
+
+I don't remember exactly, but it was later.
+
+Anyway, so there's all that stuff.
+
+So our computer programming, It's an ambitious work and, you know, it's famous.
+
+And I give his writing paste seems to be kind of like George R.
+
+Martin.
+
+Maybe it's George R.
+
+Martin's here.
+
+That's why.
+
+I don't know if you've ever, in the Game of Thrones books, the, uh, was coming out from pretty well for a while.
+
+I started reading it.
+
+I went to a book signing, we came out with the 4th one, I think, in New England, and, you know, one war and it's like 10 years behind.
+
+So that's me, the same thing is like, slow and distracted.
+
+It's kind of similar, and as long since you're tired now.
+
+But still working on them, so.
+
+All right.
+
+So that's when a cultural aside there, tangent.
+
+Let's come back to databases and seekalike.
+
+But I feel like, you know, you kind of got to know a little of the canoes, uh...
+
+Yeah.
+
+Um...
+
+So, each, so here's the structure of these pages.
+
+Let's see.
+
+They all, here's what a page as a whole looks like.
+
+And this is actually a pretty standard structure across other databases.
+
+This is...
+
+It's not anything very specific, specific, even though bulb points are what the page looks like.
+
+Yeah.
+
+So you, page one has this 100 byte better, but that's unique to page one.
+
+And we already saw that, right?
+
+Right. The one that unpacked in metadata about the whole file.
+
+So an ordinary one, you don't have that there, but you do have an 8 or 12 byte 8.
+
+And we'll see the contents of that embedded. 12 bytes for interior pages, 8 bytes for leaf pages.
+
+The cell pointer array, unallocated space, cell content area in the reserve region, we're not going to use the reserve region.
+
+So let me just kind of draw that.
+
+So up here you have, you know, this 8 or 12 byte header.
+
+And then the kind of key point is, so again, we're gonna skip the reserve region at the end.
+
+What happens is the cells, as they're called here, cell is one row, basically. Or partial role that was too big.
+
+So this is what calls themselves.
+
+You pack those in starting at the end of the page, because there are a variable way.
+
+Especially in a textbook.
+
+It might outline where they face like, they can't be very good.
+
+So you put your 1st row here in your next row, you know, kind of builds its way up from the end, and then up at the top, you have to sell a pointer away. Which tells it where to find each one.
+
+So this is like the logical ordering of it.
+
+This is the physical order.
+
+And then there's a gap in the middle and they grow from the bottom and the top of the page.
+
+So the 1st entry is probably the very last thing there.
+
+The next one is here.
+
+And then, you know, here, I guess. And here.
+
+But you can rearrange them.
+
+You can delete, you can have gaps and you can compress this, but just leave the gaps there, potentially.
+
+Yeah.
+
+Set in the default, so that way you can have variable length in the cells, but that you have a capped maximum length.
+
+Yep.
+
+Um, Well, the cap maximum length is the size of the pay.
+
+Well, it's a fraction of the size of the page.
+
+But the idea here, again, remember the big picture of the beat trees, once you got the block in memory, a little extra processing, we don't want to do gratuitous processing.
+
+Um, doing it for no particular reason.
+
+Okay, just say the same.
+
+Oh.
+
+So, but so they're the top, we have kind of a logical.
+
+Here's a list of rows that are in this page.
+
+But then we pack them, we want to be able to find and give them one very quickly.
+
+So that is, those are thick size.
+
+Those are 16 bit values.
+
+The header tells you how many there are.
+
+That's an array.
+
+So this is, like, a block that would be loaded.
+
+Yeah, because we didn't want these, like, typically 4 K blocks, or 512 by blocks.
+
+This is the structure of the block.
+
+Yeah, of course.
+
+And then the row data packs from the end, so it can be, as it grows, this array grows, and it grows from the end, and eventually they meet in the middle of their house.
+
+You know, that's what you need to do.
+
+But again, and so again, you have kind of an array that represents the rose, but that's this interaction layer to get you to the variable sized.
+
+If you delete an entry, it's going to compact the cell array.
+
+It'll probably just, like, mark his unused down here.
+
+Until too many accrued or they need to, and then they'll go repacking.
+
+So that's, again, avoiding the grocery list.
+
+Don't go repack it every time, just have it.
+
+We'll meet, nobody's actually.. Right?
+
+So tries to save more people, minimize the processing steps, but it can just stop and repack it if you want, which needs to.
+
+So it has some other structure for it, like keeping track. Where's the 1st like unused, um, Where's the 1st used bike down here?
+
+So kind of where is the end of the Boeing region?
+
+Stores that?
+
+And then, you know, there can be other, again, deleted or resize updated entries from leave space in the middle as well.
+
+You know.
+
+It's okay to get a little bit messy there and then it can tidy it up if it needs to.
+
+And again, this is actually the pretty standard structure for the trees across systems that accelerate, top, data, growing through the back.
+
+Yeah.
+
+So does it try and use up all of page one before getting to page 2 or one of those?
+
+Yeah, so here it follows strict B tree semantics, right?
+
+You fit as much as you can.
+
+When you run out of space, you split it, 2 equal size blocks roughly.
+
+And then put an entry in the parent, and if there is no parent, you may impair it.
+
+And so, if you look at the ordering on disk, the root is not at the beginning of a general beatrice.
+
+It's usually a ways later because it's where for the last split of the level below it happens.
+
+Yeah.
+
+Each of these pages represents people to walk in the bee tree.
+
+Yes.
+
+So this is a block, yeah.
+
+Just represented out of wooden memory.
+
+Right.
+
+Yeah.
+
+So Beetree Page, that is one of those 4K blocks or 512 5 blocks. Talking about.
+
+But yeah, once it's in memory, we look at it, this is the structure of the text.
+
+So, Um, the header format, see the details here.
+
+The 1st bite tells you which kind it is.
+
+There's an interior index page, an interior table, portray page, a leaf index, or a leaf table.
+
+Those are the numbers 25, 10, and 13.
+
+And then it has a 2 byte offset telling the start of the 1st free block on the page.
+
+Start of the first free block.
+
+Um...
+
+Is that like the next spot you could put in a variable?
+
+Okay.
+
+Okay.
+
+I was thinking it was from the end. Or tell when we're I might misremembering, but, um, number of cells on the page.
+
+Start of the cell content area.
+
+Um, so, you know, how far from the headers cell content area begin?
+
+Um, number of fragmented free bytes.
+
+So if there are gaps in there that come from leading and inserting, it tells how many there are.
+
+And then the difference between, so he said, the header can be either 8 bytes or 12 bytes, for interior nodes, it's 12 bytes, and the last 4 are the page number of the rightmost child.
+
+This is something, let me just...
+
+So let's say our beach tree has 3 albums in it.
+
+It needs to have 4 child things, right?
+
+Yeah.
+
+So the structure is, each one has its left child, and then the entire page has one right child.
+
+And it sort of matter.
+
+Right?
+
+Because it's not attached to any cell.
+
+It doesn't want to have a special cell format.
+
+So everyone in an interior page always has a left child link and then the page, header, has the one right child.
+
+That looks kind of weird because it's like in a different place, but that's what that's about.
+
+Let's go and open one up.
+
+Open up.
+
+A database file.
+
+So I'm gonna use HD, which is a hex stump.
+
+Pretty standard one.
+
+Okay, thanks.
+
+Actually, I'm going to use the.. Going to explore it first.
+
+So the way, again, this code, I'll give you this part of it, and you'll do the navigation part.
+
+So, the code I give you knows how to, like, unpack the on-disk format into Python data structures and just kind of dumps the content of a page.
+
+So if you run it and give it a page number, like page one, it says one is an interior page with 3 cells and right link 2282.
+
+Um, Takes me the text bigger here, so you can see them.
+
+So page one is always the root of the catalogue.
+
+So this has the list of all the tables and indexes, and the create statement used to create information.
+
+So it is actually a table that is kind of the metadata table phone.
+
+That starts with page one.
+
+So it's missing the 1st 100 bytes because that's the database header, and then the reminding, in this case, 412 bytes, are the root node, and it does always say it's, you know, so no is hard.
+
+So it says here, it's an interior table page with 3 cells right in 2288.
+
+Leftly 580, so I can draw this.
+
+Row ID, one, two, and three, those are the contents of this big vitri.
+
+Those are the...
+
+Oh, no, those are the contents.
+
+Yeah, so these are the actual, like, primary keys of those rules.
+
+Yeah, so those are the indexes.
+
+So we have three.
+
+So we would have 4 children because we have king pluses and chase them.
+
+Right.
+
+So the left link of RoyAU one is page 580.
+
+581, 581.
+
+Yeah, I see. 980 and 2288.
+
+Okay.
+
+Right, so that's the root of this database, how it's structured.
+
+Yeah.
+
+So all of them, besides the right linker, considered left links, despite them being a twist.
+
+Yeah, because it's relative to this row ID.
+
+Everything to the left of, so everything less than or equal to one, can be found going bulge.
+
+And that's how we're determining this.
+
+Yeah.
+
+Right link is everything that you didn't find on the left one, basically.
+
+So let's go and look at page 580.
+
+And again, I can just type 580 and it will decode it.
+
+It's a leaf table page with one cell, and the row has these elements in it.
+
+It's a table called people.
+
+Um, I believe this is the IMDB database.
+
+Also called people.
+
+For indexes, you have to have the name of the index on the table, it's indexing for tables to just replicate.
+
+That's the IMVB.
+
+So is this on a movie called People?
+
+Or a show?
+
+No, this is, remember the structure, this is from our Kevin Bacon assignment.
+
+Remember, we have titles and people and then cruise the link between them.
+
+Okay.
+
+So this is the people table.
+
+The state we used to create it was create table people, new line, person ID, and the primary people, blah, blah, blah, blah.
+
+So that's the information there.
+
+And...
+
+Page 2 is the root of that tree.
+
+So there's a catalog, you find rooted at page one, that link tells you all the tables and indexes and where to find therapy tree rules.
+
+We can go and look, so that was one, right?
+
+If we look at page 581, Here's the titles table.
+
+And it's rooted at 579.
+
+Um, And then if we go to, let's see, 980, here's the crew.
+
+And then our remaining one, what was it, 2288?
+
+Is an index titled by primary title.
+
+So I've got an index on that one. Kind of for demonstration purposes.
+
+So as an index, instead of a table, it has the name of the index and the table that it is indexing.
+
+And then the root.
+
+Actually, we have two, sorry.
+
+Two entries in this page.
+
+We also have crew by title in person, and that will be relevant for a future assignment.
+
+So, um, Let's, just at this level, so we won't quite, I guess we won't get to the hex dumping yet.
+
+Well, today, let's go and find a title. Drilled down and see what that looks like.
+
+So what was the root of the titles table?
+
+We scroll back up here, 579.
+
+So I'm going to query, what is the contents of page 579?
+
+So 579 is titles.
+
+And actually, let's, because we're just working with numbers here, it's not very helpful.
+
+I'm going to go ahead and just query this one.
+
+And so I select star from titles or title equals.
+
+What's the title of a movie?
+
+Uh...
+
+Avengers, Endgame or something?
+
+That might be too new.
+
+I remember what I did.
+
+Toy story.
+
+There's something that's not...
+
+We're gonna do Monsters Inc. Is the example in an assignment.
+
+Let's do a non-pixar.
+
+Okay, yeah.
+
+Close, I will say like.
+
+I've never buzzed encounters percent.
+
+No titles?
+
+This is too close.
+
+Wait, what just happened?
+
+Just, like, star.
+
+Oh, because I didn't open the database.
+
+It was doing an in memory database there.
+
+It's like we're primary titles.
+
+Get out of the space.
+
+Okay.
+
+Let's see. Third.
+
+Close encounters of the third kind, right?
+
+K. Uh, it's not an adult film or prepared in 1977.
+
+Ended as Noll.
+
+Uh, runtime 138 minutes, genres in our un, uh, normalized way.
+
+Title ID, that's what I want, though.
+
+75860.
+
+And let's see, very quickly, drill down and find that in the tree.
+
+So our normalized we just have two entries one each genre.
+
+No, we would have another table links back to it.
+
+We probably have a table of genres and something that joins this one.
+
+So let's go, okay, just do this.
+
+So title started, what did he say?
+
+579?
+
+And then we're looking for 75860, Where do I look?
+
+So that's the root of the table.
+
+Where do I go next?
+
+Remember, the row I.D.E. Says everything less than or equal to this ID is for the left.
+
+So, this one, we want to go to 640.
+
+So I'll run it again, type 640.
+
+Uh, see, we're getting closer. 75, 680, so I think this one here?
+
+Is that right?
+
+678?
+
+Is it like tiles?
+
+Wait.
+
+No, I want to go one more.
+
+I wanna go bigger.
+
+One more.
+
+Right?
+
+Yeah, I need to be the less that are equal to 79.
+
+Shouldn't it be more and more?
+
+So the number we're looking for is 75, 860?
+
+Oh yeah, I didn't...
+
+I can't do math, apparently. Simple math.
+
+Yeah, so we want 680.
+
+And there it is.
+
+Close encounters of the Third Kind.
+
+Awesome.
+
+So, um, we'll continue on Wednesday.
+
+Okay, sounds good.
+
+Very cool. 

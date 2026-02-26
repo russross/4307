@@ -1,0 +1,1623 @@
+All right, welcome everyone.
+
+Um.
+
+I have another assignment.
+
+I will post it after class.
+
+I'm just going to go and update, sort of, um, grading details, basically, um, but, um, we also require some stuff we're going to talk about today.
+
+So, I think we looked at some examples before when we were scanning through some queries, especially in, like, co grinder, the scheduling system.
+
+We saw examples of what are called CTEs or common table expressions.
+
+Common, table, or sometimes you're in a subexpressions, but...
+
+And this is where you can kind of do a sequence.
+
+You could say with, and then do a select query, and that sort of creates an intermediate result, kind of like a little temporary view, and then the future queries in the sequence can query against it.
+
+So you could use that to kind of prep a few individual helpers that you combine or do kind of a sequential building of the result.
+
+And, you know, this is handy when you have something really complicated, where you're doing a series of transformations.
+
+Um, But there's also, it also opens up the possibility of doing recursive queries, and that's what I want to look at here.
+
+So I've got an example here that will kind of work through, to see what that's about.
+
+So here's some data.
+
+Um, let's see.
+
+Where am I go?
+
+Where is it?
+
+They get the initialization file.
+
+How do I get that?
+
+I'm just gonna build it, and we'll do the example on our local machine, sample data.
+
+Can I draw a bunch there?
+
+And it doesn't have the initialization script.
+
+Oh, no, that's this one here.
+
+Okay.
+
+So...
+
+I'm just gonna copy that over.
+
+Copy that sample data file, too.
+
+And now we should be able to build it, and then we'll look at it in a little more detail.
+
+So...
+
+Run the command they gave.
+
+Okay.
+
+Uh..
+
+Oh, I pasted the wrong thing, didn't I?
+
+Sorry, I'm used to Linux, where highlighting copies.
+
+So I keep forgetting to actually do the copy.
+
+There we go.
+
+Um...
+
+Move.
+
+It should be initial, like.. Uh.. Traditionalization sensation.
+
+My fingers aren't reaching the Z key.
+
+There we go.
+
+So let's start by looking at the schema.
+
+Um...
+
+Oops.
+
+So, there's the basic user's table.
+
+They haven't put types equalite their option.
+
+But I've got a name...
+
+CN title of manager.
+
+And if we look at those select star from users.. You know?
+
+Very tall.
+
+Oh, I guess we just look.
+
+So we got somebody's name.
+
+CN is that short for.
+
+Codename?
+
+The username away.
+
+The title, and then their supervisor.
+
+And so We have the immediate supervisor.
+
+What we'd like to find is actually kind of the entire, like, everybody above you and George.
+
+And so you got your immediate supervisor.
+
+Let's find who their supervisor is and their supervisor and actually kind of combine that into one result.
+
+That's going to be our goal here.
+
+So to do this, we'll need to be able to recursively kind of follow these links as many times as necessary until we find people who don't have supervisors.
+
+So, let's see.
+
+Let's go back to here.
+
+So let's select everything, but where manager is Null.
+
+Uh...
+
+Okay.
+
+Manager equals the empty string?
+
+Okay.
+
+So, Ching Leopoldo is the grand master of underlings and has no manager.
+
+Um...
+
+And then you just have a bunch of made up people and made up names, right?
+
+So, how do we do this?
+
+Well, here we'll see, it says the anatomy of a CTE, specifically a recursive one.
+
+Um, and this one's kind of embedding it in a view.
+
+We don't need to do it that way. We'll just kind of skip over the create view part and recognize there's going to be like an extra little bit at the bottom.
+
+But we can just do this as a regular select query as well.
+
+So, I'm gonna really kind of focus here.
+
+There's This one has, um, so this is the recursive query itself.
+
+Again, we're doing this with, that's part of the CTE syntax to say, I'm gonna build a table of results here, then I'm then going to query from.
+
+And so it's the building part of it here that you're cursing, so with recursive, boss pass, the end kind of path, you're saying, I'm going to create kind of a virtual cable here, a little temporary view that will contain the Field CN and path.
+
+So CN will be the code name. Of the individual, and then half will be a string that concatenates together the full sequence of the full management chain.
+
+We're just going to build it as a string in this example of greater than science between them.
+
+So we have a few parts here.
+
+There's really, it kind of comes down with some of these two basic queries.
+
+This is like this is all special.
+
+There's some magic involved.
+
+So once you tell them it's gonna be recursive, we have like the setup and then we have like the recursive set.
+
+And we'll always say union or union all between them.
+
+What it's gonna do is run the setup step once, building the initial, like, set of results as boss path.
+
+And then it's going to keep running the recursive builder down here, which is using Bouse path, and then building on it, and producing new rows, until nothing new emersions.
+
+Meanwhile, they'll all be just kind of merged in, so we may keep reproducing some of the results, but despite the saying, you know, we're going to, they're actually huge, um, with duplicates collapsed.
+
+So let's look how this works for this example.
+
+So the 1st thing we do is we just find everybody with no manager. Query we did before.
+
+So like CNN common names, the users, or managers names.
+
+Let's actually just do that.
+
+Well, I guess I did, but I'll reproduce the exact query they had, which was, uh, C uncommon name.
+
+Right, and we get one person.
+
+Um, and then...
+
+We'll start running this recursive query as many times as necessary.
+
+So what I'm going to do to kind of demonstrate this, and this is a question, we're going to have one of these on our homework.
+
+Um, is how do you how do you test it?
+
+How do you kind of build it?
+
+So I'm gonna kind of demonstrate one approach to doing that, which is instead of like putting the whole query in and just, you know, cross your finger and helping it works, let's actually kind of reproduce the steps a little bit.
+
+So I'm going to build a temporary table.
+
+So I'm going to create table, um, I'm gonna call it...
+
+A, and it's gonna have CN and name.
+
+Nothing else.
+
+I'm not gonna put types or anything like that, right?
+
+We're not trying to make good code here. Demonstrate something.
+
+And now I'm going to go back to my query, my initialization query, and I'm going to say, insert into A, the results of the select query.
+
+So now if I do select star from A, we'll see the results of that query.
+
+Make sense?
+
+So, again, there's just the initialization, this is the basics, right?
+
+And this one, this is the part the people, person or people who have no manager.
+
+Next, we want to look at the recursive step.
+
+So what I'm going to do is I'm going to make another table, just like the first one, but I'm going to call it B. I'm going to take this query here, select, I'm going to modify it, though.
+
+Copy, paste.
+
+It's not users now.
+
+I'm gonna do this as A, so I'm gonna take my temporary building table.
+
+Select A.Cn, A.name, concatenated with an or, or greater than sign, concatenated with, or sorry, this one is user.
+
+Users, is that what it was?
+
+And then, instead of boss path, that's where I'm putting the A, my mistake.
+
+All right, so A is where I did the base level query on this one called Lost Half.
+
+Um, That was just the first line of it from users.
+
+And then this was joined, and I'm going to join A, again, on users.manager equals A.cm.
+
+Oh, that should have been...
+
+Boss passed that path.
+
+What did I do?
+
+Oh, sorry, it was called CN.path.
+
+What did I put?
+
+Cn. Name?
+
+Um, okay, let me drop table A, drop table B, uh, create table A, and it's cn.path, and path.
+
+I'll do the same for B. I get myself a couple of them ready to go.
+
+Go back and repeat that insert statement.
+
+The populated table A, which was just this one.
+
+Verify, we'll rerun the select of everything in A. So the route we're taking the name is the path, I guess, whatever.
+
+Um, let's go back to our search here now.
+
+Okay, so, like, user.cn, user's name, contatenated with a greater than, concatenated with a.path, from users join A on user's manager equals A.cm.
+
+So, again, this is just an ordinary join query here, but using that temporary table we create.
+
+And of course, it's creating something in the same basic format, right?
+
+A CN and a path.
+
+Like I said, as, for being this, but kind of need to.
+
+So now what I have is everybody who reports directly to the, you know, our top level manager, and we have each one of them reporting and their name.
+
+And what we want to do now is kind of merge this set of results in.
+
+Um, That's where the union hall park comes in.
+
+So I'm just gonna leave it like this.
+
+But I'm gonna put these results in my B table.
+
+So this will be kind of what we get after.
+
+Again, it'll be the merger of A and B is what will actually see, but I'm going to go and insert into B the result of that.
+
+So select star from A. I still have just the one user.
+
+So like star from B, I have everybody that would be merged in in the first round of the recursion.
+
+And now what I'm gonna do is I'm gonna repeat that step, but instead of joining against A, I'm gonna join against B. And again, properly speaking, it would be the union of those two.
+
+For demonstration purposes, I'm not going to do that.
+
+But if I did, right, know that I would be reproducing this set every time.
+
+Right?
+
+I would continually keep reproducing all the ones I've seen before and building set out.
+
+Right?
+
+Our 1st join, we got everybody who's a direct report.
+
+Second one we will add people who are reporting to these directory boards.
+
+So he wants to have a 3 level hierarchy, and we'll reproduce these 2 levels, and, you know, the 1st one will still be there too, because there's some urging.
+
+So, um, And then if I run it again, I will reproduce these and those 3 levels and add the 4 levels.
+
+And we'll just keep doing that.
+
+And it keeps doing that until it runs out, until nothing new is produced.
+
+So let's go.
+
+Uh, we'll create a new table.
+
+We call it C.
+
+We've got B, let's go, and insert this into C, the results of doing these, but we're going to join from B instead of A. If I select star from C now, there you can see everybody has a three level hierarchy.
+
+And then I'm going to go ahead and create table D. I'm gonna populate it, the result of doing this query and joining against C.
+
+And then we'll query to see what we got, and this should be all the four level hierarchy people.
+
+Now we're spilling into two lines for some of them.
+
+I will create a new table, E. Merge against, build it by joining against D. And look at everybody we got in E. Oh.
+
+I just switches...
+
+Do I build it on itself?
+
+Let's see, delete from D. I can just upear on my way to where we populated it the first time.
+
+And then I'll do this one, and say, uh, concert H E. Joined against D, now select Fee.
+
+Okay, so there's all the five level hierarchies.
+
+I'm gonna make F. Oops.
+
+Great table F. Populate it with an insert into F by joining against E. There's all the people who have our six levels of management down, one, two, three, four, five, six, or they are the sixth level.
+
+How deep does this go?
+
+F G will insert into G by joining against F. Select everything from G. Ah, nothing there.
+
+We've reached the bottom.
+
+So, really, our final result here would be select star from A. Union B, Union C, Union D, Union, E, Union F. Oh, it wants queries.
+
+All right?
+
+Well, anyway, if we union all those together, that would be the final result we would expect.
+
+So, that's what this does.
+
+Right?
+
+So it's, of course, it's building it in place.
+
+It's replacing it every time. With this union operation.
+
+So we do one slot to see you in the base case, and then we kind of build a query that's joining against the table we're building.
+
+So we're taking in, combining new results and adding new entries.
+
+And it automatically just keeps running that until it converges.
+
+Well, nothing is new as added by running through one more time.
+
+And then that becomes boss half.
+
+So that's, again, from here down to here.
+
+And then, finally, we have the query that uses that to actually give us our final results.
+
+So one thing to kind of build this intermediate table to recursive data, and then we use that to actually do our finished result.
+
+Notice that we were building, we're just using usernames.
+
+Well, I guess we're the paths where we're kind of full stuff, but maybe we want to, you know, often there you'll be building like minimal, like just using IDs, for example.
+
+And then you might kind of want to hydrate that with some more detail in the end.
+
+So it's like user.star, boss, path, path, from user store, boss path, and then, um, This one joins, right?
+
+They brought a user's table to their back.
+
+Questions so far.
+
+Yeah.
+
+Just for policy society, like, treat, kind of, command in single life that, in turn, most pass into geometry.
+
+Or would you have to write that?
+
+Um, I can't think of anything that would do that directly because just because the tree is kind of a, you know, it's a two dimensional thing, right?
+
+So here where you can trace the linear path.
+
+You could have, like, all descendants.
+
+And I guess if you could format that, you know, if you just wanted to stream as a result, maybe you could find a way to format that.
+
+But it's, You know.
+
+We've got enough, maybe we can get make like a Jason nested.. Hyperarchy or something.
+
+Maybe.
+
+Yeah, probably be something, but, um, I just think that a little bit more, but, but it's not like a straight.
+
+Yeah.
+
+So what we're gonna do in the assignment is, um, calculate the bacon number of actors.
+
+Familiar with the bacon number concept?
+
+So there was the idea that everybody in the world is connected to Kevin Bacon within 76 step.
+
+I think it was like 6 steps from Kevin Bacon or something like that, 6 or seven.
+
+So...
+
+Um, and so, For for actors, or people in the industry, Oops.
+
+So Kevin Bacon, an actor who's been in a ton of stuff, and so he has the six degrees of Kevin Bacon.
+
+And so, you know, he's not the most connected woman, he's a pretty connected actor.
+
+They just suspended a ton of stuff.
+
+So I was gonna do through this idea out as like a, um, 5 experiment or whatever.
+
+Um, And...
+
+There's variations of the Oracle Bacon.
+
+So you can look up people and it will compute that for you.
+
+Um...
+
+And so, then there branches out from here.
+
+Here's what I want to look at.
+
+So the break and number of an actors, the number of degrees of separation, you have from Kevin Bacon.
+
+And then there's the one they called the Ergos number, which is, um, Or maybe it was the Arizona 1st.
+
+So there's a mathematician.
+
+Um, named Paul Erdos.
+
+Ordos, ordos?
+
+How to pronounce that, but um, died in 1996.
+
+Hungarian mathematician, who just had a massive number of collaborators.
+
+So I just understand it, he just kind of would like sort of show up somewhere with a suitcase and like write papers with all the faculty there.
+
+And then you kind of like move on to the next place.
+
+So Amsterdam is a little more nuanced than that, but that's kind of just kind of an itinerant, but, um, I did this.
+
+And so we, yeah, it's like 5, I would say, more than 500 colleagues that you co-wrote papers with.
+
+More publish more papers than the other mathematician and history.
+
+That's pretty impressive.
+
+And so, um...
+
+Oiler still.
+
+Anyway, um, And so people compute this as kind of for mathematicians, you know, if you co-authored a paper with somebody who co-authored a paper, who co-authored a paper with, I don't know, said you're, you know, like, you have an arrows number of like fours, you know?
+
+And so, uh, then people compute their their bacon artists.
+
+So if you have worked in Hollywood and can connect yourself to Kevin Bacon, you take that number, and if you've also published in academic literature, you can connect yourself to Palerdos, you take the sum of those.
+
+And then there's another, which is the Sabbath number, which is based around Black Sabbath.
+
+And so this connects musicians.
+
+And so, you know, some people have a combined bacon Erdos Sabbath number.
+
+I think Natalie Portman actually has one of the lowest Portman Bacon Eritos Sabbath number.
+
+Combined number of 11.
+
+So, when she was an undergrad, she published something in psychology, so that was a few steps away from Erados.
+
+Um, but, you know, she's a prominent actor, so she has a bacon number of two.
+
+And then, um, Not sure what she did with the music thing to get her fourth degree connection to Black Sabbath, but...
+
+So this is a Yeah, it's a whole thing.
+
+Um, Oh, wow, okay.
+
+It was this, it's like a Saturday Night Live fair.
+
+Is that that lonely island group that did those?
+
+So that was enough to get her music credit, and that's kind of funny, actually.
+
+Um, okay.
+
+So, so we're, our assignment is to actually calculate the bacon number for a bunch of people in an IMDb database.
+
+So let me go and show it to you, even if it's not quite published yet.
+
+There are actually two problems in here.
+
+There's a.. A delete query, I think we need to do something besides select, or a couple of them here.
+
+Um, And it's got just a little bit of trickiness.
+
+Let's see.
+
+Because...
+
+So have you write a sequel query to delete all students who have ever failed a class or have never taken a class?
+
+You fail once, we cut you off.
+
+This is a tough love system.
+
+Um, And there's some cascading deletes, so it's going to go delete all your entire records.
+
+So to find people who have ever failed or who have never taken a class, that'll take a little bit of thought to do that.
+
+So it'll be delete, you know, from, um, students where and the where part will be the interesting part to do.
+
+So I wanted to give you something to do there.
+
+But let's go and look at the bacon query, which is actually, I.. Is it on.. Kind of in two steps.
+
+So the first one to kind of warm you up and get you used to this data set is to find collaborators.
+
+So let's just look at start by looking at the database.
+
+So, I pulled this from IMDb.
+
+They publish some data sets you can download that seem.
+
+So I don't know if you know the history of item to be.
+
+It used to actually be an open database.
+
+Was the internet movie game was?
+
+And was populated mainly by individuals contributors.
+
+And then Amazon bought it many years ago and built it out into an Apple product or whatever.
+
+And but they continued, I think, I mean, I don't remember if this was something they promised when they bothered or what, but they continued to publish some open data sets, but they are like woefully complete, like, part of the real data, and they just kind of...
+
+But you can go and know it down with these snapshots, they're supposed to.
+
+So I wouldn't grab that, cook just a subset of the day and everything.
+
+I think I based it around finding the 10,000 best films using some measure of that based on ratings. Formula pull off stack or flow.
+
+Um, So I, that starts the kind of titles and then we kind of fan out all people and things associated.
+
+So the core of it is this data set of 10,000 tiles.
+
+And we're gonna use this data set for a bunch of things.
+
+So, Each one has a title ID.
+
+It's just a number.
+
+We have the type, we have like movies and TV shows.
+
+There are other types as well.
+
+The primary title and the original title.
+
+So the primary title is the main title.
+
+I think for at least for the US release.
+
+But if it was a foreign film, it may have a different original height.
+
+Like, um, speaking of Natalie Portman, um, Leon was the original title film was released here as The Profession.
+
+So we just sent out those 2 different things.
+
+Is adult, you know, Boolean?
+
+I'm not that we have any in this set that are adult, but I don't think so. Premiered is like the year that it premiered, ended is only really applicable if it's like a TV series or something. Like that.
+
+I know that those are knowable, sometimes they're just missing information.
+
+Run time and minutes also know a little bit.
+
+Genres here, this is not properly normalized.
+
+It fails for a normal form because this is just like a common set or list.
+
+And then the weighted rating, and this is the one that I pulled that formula, and I think I may even give you the formula, the documentation somewhere, but I forget what it was at this time point, but it was some kind of thing where it's like the, Exclude films, anything that doesn't have enough ratings.
+
+Or when they do, I think, let's see, what was that?
+
+Okay. Trying to remember now.
+
+We found like the average rating processing thing. Use that as kind of a baseline.
+
+And then we say when you have relatively few ratings, we actually kind of weight it toward average, and say if, like, there are only a few people have rated it, then it can be kind of wild.
+
+So we actually kind of dampen the influence.
+
+And then as it gets more votes, we kind of, you know, dismiss the average, you know, like that value actually come out.
+
+I think I think that was basically the gist of this formula.
+
+So it produced this weighted rank, rating.
+
+I did that when I was building the data set.
+
+And then from there, we expand outward, and we really just have two other tables here.
+
+So, kind of on the opposite side, we get, so we have titles here.
+
+We have people.
+
+People have a person ID, a name born and died, and maybe absence, especially if they're alive.
+
+Some people weren't born either, they were saying.
+
+So, it's just, they were out of a clone.
+
+Um, and then crew is the table that joins them together.
+
+So a single crew entry is a person associated with film, a person worried about.
+
+So they have the title and the person, in the category, like what kind of thing they did, their job and characters, it's more or less about comparable.
+
+And I think we just, I may have just brought in like actors and directors, probably just a subset.
+
+And again, this is where it's fairly complete.
+
+You'll find some films where there's like 2 actors.
+
+Obviously, there are a lot more in the database, but, um, so, let's just kind of explore it a little bit further.
+
+Let's go and actually build this.
+
+Uh, let's see.
+
+Um.
+
+So, let's see, you can see we just have those three tables.
+
+Let's just select the count.
+
+From titles of 2,500.
+
+Sorry, I'm reduced to 2,500 here.
+
+If we look at the number of people, we have about 20,500, and then the number of connections there, the crew table, the join table, 33,600.
+
+So that's the size of the data set we're working with here.
+
+So in the collaborator's query, right, a sequel query to find the top collaborators in the database.
+
+So here we're just going to go and look and say, a collaborator, collaborators are two people who work on the same phone.
+
+Um, So actors, directors, writers, I think those are the ones that we put that are in the database.
+
+Actually, that'd be a good one just to test again.
+
+I'll do a select distinct category from crew. Actress, director, self, and writer.
+
+Okay, so we have a few.
+
+So your first problem here, right, is a sequel query to find the top collaborator.
+
+So the result set should include every pair of names and the number of titles in common for those two people.
+
+And we'll end up with them in both orders.
+
+If any worker would be, he also worked with A, he'll just have all those options.
+
+So let's see.
+
+Order results by most collaborations are fewest, and by the name, the 1st person was said, finally by the 2nd person, stuff, the order by clause.
+
+So every pair of actors are will appear twice in the list.
+
+And then just take the 1st 50 rows.
+
+So you should see something like this.
+
+Um...
+
+So, Ethan and Joel Cullen, the Cullen brothers, right?
+
+The brothers, like, directed a whole bunch of films or wrote a direct, a bunch of films together.
+
+So I'm 12 in the state base.
+
+And then we have some other people, I think, working in those vegetables films.
+
+I don't know who, does anybody know who Bill Massett is, or Sutter 7?
+
+This is only 5 notch.
+
+Um, But anyway, that's what, so this is kind of a warm-up query, right?
+
+Right?
+
+To get used to data set. Explore it a little bit.
+
+How would you go about writing this one?
+
+Not at high level.
+
+So Remember what our process is, right?
+
+First thing you want to do is walk the graph, join until you have, what do we need to have in a single world?
+
+Do this work.
+
+A person, right?
+
+And another person.
+
+What needs to join them to get, what needs to link?
+
+So in the middle, there's got to be a title, right?
+
+That's the same title, and then between each person and the title has got to be accrual.
+
+So conceptually, we're starting with person, joined a crew, joined a title, joined a crew, joined a person.
+
+So they leave a rename, you know, some of those duplicates.
+
+In practice, you know, this is one, I think you can probably snip out the title in the middle, because it's actually the title ID on 2 crew entries that might the audio actually need.
+
+But so you start with a join that gets all the data in the right place.
+
+And then use wear to filter it, to make sure the Um, I guess the joining probably gives you most of the commonality, make sure the person is not collaborate themselves.
+
+So a person has to be distinct. Or has to be unequal, I guess, in the 2.5 , And then you would do like a group body.
+
+Right?
+
+You kind of count how many times you had a pair of people.
+
+And, you know, we're fine.
+
+Does that make sense?
+
+Right?
+
+So 1st make sure you've got everybody who works with somebody.
+
+And then filter down, then you're going to do some aggregation to count how many collaborations with the religion people.
+
+Any questions on that one?
+
+So then the fun one, our bacon number calculator.
+
+We are going to say that Kevin Bacon has a vacant number of zero.
+
+Anybody who works directly with Kevin Bacon has made a number of one.
+
+Anybody who works to somebody who works as a vacant member of one as a English, too.
+
+We are going to cap this at four.
+
+I think it actually naturally runs out at 6 or 7 or something like that.
+
+A problem you'll have, I think you will encounter, at least that I have encountered, and I still found a way to work around this. Is you're going to find many baking numbers for everybody.
+
+You're going to find, you'll seed it by saying Kevin Bacon has a baking number of zero, and then pretty quickly you're going to discover that Kevin Bacon also has a bacon number of two.
+
+And 3 and 4 and 5 and however high you look up.
+
+And so with that in mind, this will never converge on its own.
+
+Even though it shouldn't, right?
+
+We can eliminate those.
+
+Um, And that's what again, I just haven't figured out a good way to do it.
+
+There's some restrictions on this.
+
+You can't do, you can only reference the building table at once and then, like, sub-expression or whatever.
+
+And so I try a number of things and each time I came back and said, I can't actually do that.
+
+Because sequel light doesn't sound like that.
+
+So I haven't I haven't figured out what he is.
+
+So instead, I put this lid, bacon number has to max out of four.
+
+So what you're gonna do is, you know, put Kevin Bacon in there at the initial query, join that against the table and add a bacon, add one to the bacon number, merge that in, and have this repeat.
+
+But you're gonna use your ware to filter out anything where the bacon number exceeds four, and that's what they just converge.
+
+Um, This one is fairly sensitive to how you write.
+
+There are definitely slow versions and fast versions.
+
+So you want to think about, you know, trying to kind of minimize what you're gathering and minimize the work you're doing.
+
+Like, one thing that I found very helpful here was to say, in my building table, I'm just putting an ID and a baking number.
+
+I'm not putting anybody's names.
+
+Um, that not only makes the building tables smaller, but it means that the query optimizer can do or the query, execution can do less work.
+
+Because when I keep joining against people, I don't actually have to go to a people table if I just have an ID and that's all I need.
+
+Right?
+
+So that actually can make a big difference.
+
+The other building table would just be a person ID in their bacon number.
+
+And remember, you do the base query, the recursive builder, which keeps getting reapplied until nothing changes.
+
+And then outside that, you go and actually construct your final results.
+
+So then you can join that back against the original user table, give user names, or give people personal names.
+
+They don't they don't call them users.
+
+That's tech, right?
+
+This is the...
+
+These are the scenes.
+
+Yeah.
+
+Like, we don't call people humans, right?
+
+With all abusers.
+
+So that's this one.
+
+Any questions?
+
+I would suggest doing exactly what we did with that example.
+
+Go into the console.
+
+Start by doing the select that gets Kevin Bacon.
+
+You know his name, right?
+
+That's that's hardhearted.
+
+But do an actual, honest query, go and find something.
+
+And then do another query, you know, and just run it that finds everybody with a vacant number of one.
+
+And that will probably be about as much as you need to do, but if you want to do, you know, insert that into a temporary table and join against it to find out people that they can over to, that's a great option too.
+
+Right?
+
+But this is a good way to test incrementally.
+
+If you want, you can just do the, you know, the Leroy Jenkins method and open your editor and write it all and go and see if it all works.
+
+But if you want to kind of take a step wise, that's the way I'm suggesting.
+
+Just go and say, well, this is what the system is going to do.
+
+Let me just do that a couple steps manually.
+
+And, you know, after a couple numbers, you'll, I think, be pretty confident when you've got it working or not.
+
+Um, Just know, again, the building table will have, like, everybody with all their big numbers.
+
+So your final one, you're gonna want to slack out with a minimum.
+
+That's what you're actually after.
+
+So you're going to have to do another, you know, another group buy, find everyone has the same actor or person associated with the number, you group those all, take the minimum bank number.
+
+So that's something we have to go find.
+
+And again, I found that topped out once it got to, I forget what the number was.
+
+It been a little while since I've done that, but it was, like, 6 or seven.
+
+Something like that.
+
+For this data set.
+
+So here's the expected output.
+
+We got Kevin Bacon, Aaron Sorkin.
+
+So these are all the people who have worked directly with Kevin Bacon in this data set.
+
+Some names you'll recognize, probably, some less so.
+
+You can see, it's quite quite a decent number, and then the number with 2 expands out quick, pretty quickly.
+
+Right, now, now I'm scrolling and we're still in the A's.
+
+And the B's.
+
+Cs, right?
+
+So, it grows pretty fast.
+
+And this couple of years old, I haven't refreshed the data set for a couple of years, so some of those really changed as well.
+
+Except we're not really making these rooms now.
+
+I don't know, I guess all the Marvel films have like 900 people each.
+
+So maybe that's actually having a nice flattening effect.
+
+Well they only know one budget.
+
+Was that?
+
+Yeah.
+
+So anyway, any questions?
+
+On that.
+
+Um...
+
+Okay.
+
+Just see if there's something else I should say about...
+
+Yeah.
+
+That's about it.
+
+Um, Okay, well, the next thing I want to look at is we're going to do kind of a midterm project.
+
+Oops.
+
+Suggestions.
+
+Those are suggestions for me.
+
+Um, let's look at the suggestions for you.
+
+Which is to build a social media network.
+
+So you're gonna take on Twitter and Facebook and things. Sort of.
+
+Um...
+
+So I'm gonna do some refinements on this, but here's the version from last year.
+
+So you should be working with a partner.
+
+You should be working working with the program?
+
+Yes.
+
+Okay.
+
+You should.
+
+You should.
+
+Yeah.
+
+I mean, if we have, like, an odd number or something like that.
+
+No, but it's not required.
+
+Actually, I'd rather you do groups of three than one.
+
+Um, you'd need to have at least two people in your group.
+
+So it should be pairs, but threes are okay as well.
+
+Okay.
+
+So, here's, I'm gonna give you some kind of minimums for what you gotta do, and then some additional requirements where there's a little more flexibility.
+
+So we're going to build out kind of the basic structure of a kind of straightforward social network.
+
+So you got to have at least this, users, um, where you store, you know, an email address, possibly other information, one human per user is that.
+
+So we're doing a kind of two tier thing here.
+
+Then we have accounts separate from that.
+
+A person might have multiple cameras.
+
+But an account is only associated with violence, which that's a strict one to many.
+
+Then we're gonna have followers, so an account can follow another account.
+
+Um, if you have mutuals where A falls, B, B falls, A, that's 2 entries.
+
+So we're just going to record them as unidirectionally.
+
+It's directed.
+
+Then posts, which is just some text, posted by an account.
+
+You can add other things to it if you want.
+
+You should have a timestamp at a minimum, though, to go with the text.
+
+And then some additional features.
+
+So at least two more tables worth.
+
+Um, where the join tables don't count.
+
+So tables of other things like cops, likes, bands, walks.
+
+Um, That, you know, that kind of thing.
+
+And then there may be some join tables as well.
+
+And I'm going to kind of flush out some of this stuff.
+
+I'm gonna actually encourage you to do use LLMs to do some of the, a lot of the grunt work, especially like generating data. And have it generate you a whole bunch of users.
+
+And, you know, or a script to generate users.
+
+It's not the kind of trick, nice trick.
+
+Um, so you could go to an LLM, go to ChatGPT or Gemini or whatever, and say, you know, give me a series of like create statements to make a bunch of users, and I can do that.
+
+You can also say write me a Python script that will generate and insert 10,000 users.
+
+Give a pool of 1st names, and a pool of last names, and join them together randomly.
+
+Um, don't allow duplicates, or maybe you do what you want to do with it.
+
+You can kind of give it some parameters and say, you know, use, and quite often that actually gets more reliable results than just having a list of fake data, right?
+
+Right?
+
+The script that makes random books.
+
+But tell it again, use common, um, you know, common names with different kind of person like that.
+
+Um, So again, all the details of the kind of the building stuff, we're gonna kind of skip over for now.
+
+But, um, Let's see.
+
+Yeah, a lot of that stuff were really changing.
+
+Okay.
+
+So here are the some ideas for the other kinds of features that you should you can support.
+
+So one would be the ability to like posts.
+
+So you show the count of likes on each post, um, maybe you have some view in your app where, um, your feed boosts posts that have enlightened.
+
+So instead of just showing you the most recent posts by people you're in your ball network, maybe you actually, it's great in my life.
+
+So you have an alternative one to see.
+
+The most like posts by people you follow in the last 24 hours.
+
+For example.
+
+You should, another suggestion is the ability to report posts.
+
+So if you've recorded a post, you don't need a full vetting process, right?
+
+But maybe you just then hide those from the account they're reported.
+
+Right?
+
+I record a post.
+
+I'd never see that post.
+
+If enough people report a post, it hides it from everyone or it's less likely to show whether it won't show it in that view of popular ones.
+
+You know, be creative, think about it the way you approach this.
+
+Walking accounts.
+
+Everything with social media is now dominated by our scene features.
+
+Exactly.
+
+That's the hard part of social media.
+
+So you can block an account, they are then forbid from following you or seeing your post, DMEU, right?
+
+They're not allowed to interact with you.
+
+Um, You can add the capability for DMs.
+
+I have a whole set of, again, a kind of different view where you see messages sent between 2 accounts.
+
+The concept of app mentions, which is now pretty universal.
+
+This was actually, I think, just developed by the way users were using Twitter in the early days, and then I think it was actually a 3rd party.
+
+All the innovations of Twitter, most of them were invented by 3rd party clients that used to be open to that.
+
+So the concept of the app mentioned, replies, actually, were an informal thing initially.
+
+The word tweet was a third-party client.
+
+I didn't know about that.
+
+Lots of stuff there, but the concept of a hashtag, right?
+
+All those things just kind of develop organically and then they got built into features.
+
+Those are all good things to add.
+
+So app mentions.
+
+So somebody is at mentioned in the post, they maybe they get notified or it shows up in their feed, even if they don't support, if they don't follow the person that. About how you would implement that, right?
+
+Maybe you probably process it, you insert a post, you extract all the adventions, and then you'll have an extra table to make for those or something like that.
+
+Um, boosts.
+
+So, you have some way to boost a post.
+
+Now we're getting the Facebook model, right?
+
+Facebook used to show you, um, things strictly the people you follow, your friends.
+
+And then they started doing the kind of algorithmic feed where that would then be mixed in with popular posts from other places.
+
+And then they made it so you basically don't see anything that nobody's paid.
+
+Yeah, see.
+
+Um, which is effectively what it is now.
+
+But, you know, so maybe you have the ability to poop post and then you kind of decide, you know, how do we do that?
+
+Like, maybe it's visible to everybody if we boost it.
+
+Maybe it's more likely to show up or it shows up probabilistically in people's needs.
+
+You can do random numbers. Right?
+
+There's a RAM function, random function.
+
+And so you can say, you know, you can just put that on like there's a column and say for random number between one and 100 was less than 25, then, you know, put that in the wear clause.
+
+So you select a quarter for them.
+
+There are kind of interesting things you can do there.
+
+Muting, so you continue to follow an account, but don't see their posts in your feed.
+
+Um, this is something, uh, you know.
+
+So nice of you to just go off on something for a while.
+
+Like, I just, there.
+
+I want to hear about the movie you're watching from me.
+
+I'm just turning off for a couple hours.
+
+I don't want to unfollow you.
+
+Or some people I want to follow them and not actually having my timeline.
+
+These are all common. Parents, these shadow banning people.
+
+So they see the world as though they don't know anything has happened but nobody else actually sees theirs.
+
+This is another way that some citizens have kind of dealt with problematic users.
+
+They're cheaters, cheating, cheating island, cheating, cheer island, gaming.
+
+So the thing, right?
+
+So some game servers, like, especially MMR, PGs, you know, people are always constantly trying to figure out how to cheat.
+
+And rather than just banning them, they just kind of move them all into the same server.
+
+So nobody else kind of has to deal with habitual cheaters and they are all just like, you know, wreaking havoc there. But unaware, which even it's happened.
+
+So they look and they see, it looks like everything's working normally, but nobody else has to.
+
+So shadow banning, again, then you know, people are complaining, creating new accounts, so this is sometimes done where they think everything is normal, but they're actually.. Nobody else sees them.
+
+So that's another, some examples of kinds of common features you could do.
+
+Um...
+
+So those are kind of, of course things, and then I want you to have at least two, what I've put in quotation marks here, interesting queries.
+
+So this is where I want you to come up with a couple queries that do something that goes beyond just a select from where, you know, join...
+
+Um, something challenging, be creative.
+
+Here's some suggestions, kinds of things that might be interesting queries.
+
+For a given account, find, and it doesn't have to be just a single query, right?
+
+But another way to kind of use the data that you're generating there.
+
+Which other counts are the most similar?
+
+And you can define similarity by they have a they follow a lot of the same things.
+
+Um, There's a set similarity metric.
+
+Is that something you saw where we had our guest lecture here?
+
+I know one of the people that was here talked about set similarity, but I can't remember which one it was.
+
+But there's kind of a nice miniature of similarity to sets, where you take A, intersect B, the size of that, divided by the size of A, unity.
+
+That's what I'm supposed to be you.
+
+It's supposed to be a, even in symbol.
+
+So, the idea is, if you have, it may have lots of elements in common, that if you have, like, 10 elements in common out of 100, that's not, you know, that's a lot different than 10 out of 15.
+
+Right?
+
+So you take the size, the number of things they have in common, but divide it by the number of total things between the 2 sets.
+
+So that could be a way of kind of measuring similarity to account follow lists.
+
+It's like, oh, yeah, you can follow a lot of, you know, a lot of people, but maybe you're just all following, you know, Taylor Swift and Lady Gaga and, um, you know, the the big name Twitter accounts, and maybe that doesn't mean you actually have much accomplish somebody.
+
+But, um, unless that's all you follow.
+
+It's the topic.
+
+So another direction you could go.
+
+Again, these are just suggestions, encourage you to come up your own Jewish.
+
+For a given account suggests other accounts to follow. And come up with some kind of databased reason for that.
+
+So many people who follow you also follow X, Y, and Z. Or many people you follow, also, you know, they all follow these inconents.
+
+Like, if I find these people interesting and they all follow somebody, but I don't follow that somebody, that's really, it would be an interesting account.
+
+Another, which poster people you do not follow have been liked the most by people you do follow.
+
+Another way of kind of finding, this is what I really wish was a core feature. Of like...
+
+I think it was actually a 3rd party app for a while, which clearly did this.
+
+And that was everybody loved that.
+
+Like, you know, so it's like, oh, everybody you're following, they're all like talking about this post right now, and it's a way to discover that, even though it's most of us.
+
+Again, in the pre-algorithm feed days.
+
+Just ranking accounts, come up with something more interesting than just follow accounts, follow accounts, right?
+
+Think about how would you actually say, these are the, you know, sort of new user company?
+
+These are good accounts.
+
+These are interesting, the best accounts on our system to follow.
+
+How would you bring them?
+
+Now I think it's usually done by human curation.
+
+It's what goes in there.
+
+I know Twitter in the very early days, they maybe just make a, um, a hand generated list or I think when you started out, you were just automatically following a handful of counts.
+
+One of them was Jason Scott's cat.
+
+I think he created an account, and this became, you know, it's just, they had, like, millions of followers of his cat's account, and, uh...
+
+But again, that was just a human choosing, but finds some ways ranking them.
+
+Alt likes.
+
+So hunt down the people who seem to be just liking their own posts using a different account.
+
+See if you could find some way of, you know, digging them out.
+
+And I guess you're assuming they were smart enough to create a new user.
+
+Not just you.
+
+But, you know, that's something you kind of want to do and we say, well, maybe we would actually count as well.
+
+We know that you're just trying to boost your own.
+
+Or you think you're being shady about it?
+
+You could do some kind of bacon number calculation on how far would you be from the account, right?
+
+You have your Facebook with 3000000000 users in your Facebook app.
+
+How far apart are you from?
+
+What's the furthest person in the world, you think, from you on the on the Facebook social group?
+
+I have no idea even, like, the order of magnitude.
+
+But it's probably not more than 10.
+
+Actually, I can, I guess.
+
+I remember she. Probably a lot smaller.
+
+Who are your best followers?
+
+Who interact with the most, or maybe normalize that by the number of posts, right?
+
+There's some people that don't post off them, but there are quality posts and you're like, you always like them.
+
+You always interact with them or something like that.
+
+But you could do a one-way version of that, looking for fans or a two-way version, probably the best friendships.
+
+Maybe some kind of like a ketchup feature.
+
+So display the highlights of the last week, last month, you know, the best 10 posts during that period by whatever measure you decide to find the best ones.
+
+So it combines it with something that they did earlier.
+
+So people who will only check in once in a while, they've been on vacation, they come back and they're not going to try and read everything that's happened, but they want to kind of catch up and see what was the, what was the good stuff?
+
+So, um, again, I'll kind of talk about, I'll rework all the details of what, uh, how to write it, because, um, so before I had writing everything, it was like a Python script that builds the database and has the queries and you kind of exercise it that way.
+
+And now I actually think it's probably I'm really going to have you actually build some kind of a UI on the assumption that, you know, codaks or clawed code or open code or whatever is really going to do it for you.
+
+You can whip up a pretty simple AI or UI with very low work.
+
+So in the past, I would have said, that's way out of scope and too much work, and now it's like, let me just kind of have to tell it to do it.
+
+Yeah.
+
+And, you know, don't worry how about being too pretty, remember?
+
+So, So yeah, I'm going to kind of add some parts that if you're not using AI for it, you're going to suffer a little probably.
+
+You're expected to, is the way I should say that.
+
+Um, Reminder, if you haven't, I think we've mentioned this before, but if you haven't seen this, um, GitHub, education, Let's see.
+
+Uh, which I could never quite find.
+
+Um, profile?
+
+Start here.
+
+Okay, the way to find it is GitHub Education in Google.
+
+And that links you too much.
+
+Um...
+
+You can join GitHub education.
+
+So if you haven't done this already, you can link your GitHub account, mark yourself as a student, and then require you to prove it.
+
+Usually, I think they actually want, like, a scan of your student ID.
+
+My faculty ID doesn't work, because...
+
+It says has to be clear and show a date, and things like that.
+
+And mine is all, like, scuff and fake off.
+
+So I'd find some other document on letterhead to send in.
+
+But once you've done that, and they approve it, that gives you gives you a bunch of, you know, what kind of like you had a paid GitHub account.
+
+But the part we're really interested in is it gives you access to copilot.
+
+So here, if I go to copilot settings, I'm kind of getting to ignore all this stuff.
+
+I think it gives you, yeah, co-pilot pro subscription.
+
+You get it free as a student.
+
+Oh, and I've used 8.3% of my premium requests for this day or week.
+
+I'm not even sure.
+
+Um, you have kind of a rolling.
+
+Window.
+
+And then, let's see.
+
+Somewhere, that's the one I really have a hard time finding.
+
+Coding agent.
+
+You can take those things and let them work directly in your GitHub account, and that's still terrifies me.
+
+So, like, one way people use coding agents is to have them, like, I think Claude has a, They have a product that you, you go and do things that like, you know, works on cloud machines, and what it does run everything in its own sandboxes, and then it sends a poll request here, get out.
+
+I don't, I like to just have work on a machine in a directory, but so I think that's what some of this setup is for.
+
+But there's, um, somewhere, and this is the part I'm really trying to remember, I...
+
+To me, it's not obvious where it is.
+
+I have to click around and find it.
+
+Um, You have to go and actually enable which models you want access to.
+
+But this will give you access to the leading, a lot of the leading edge models.
+
+I feel like I'm kind of in documentation now.
+
+Yeah.
+
+So I want to go back till I'm out of that.
+
+Oh, I'm stuck in.
+
+Your personal profile?
+
+Nope.
+
+Go to settings.
+
+No, don't want that.
+
+Pilot Pro?
+
+No, that's documentation.
+
+Um, I'll, I'll see if I can track it down, or maybe you're better at finding that, um, model.
+
+No.
+
+Oh, so that seemed seemed like the right one, right?
+
+But what you can then do, so I will show this part.
+
+Okay.
+
+So, let's say we're in in a directory, um, social network stuff.
+
+If you use open code, I'll use that as an example.
+
+So that's one, it's an open source harness that you can download.
+
+You can say open code off login.
+
+And it gives you a list of providers.
+
+So you can go here and pick GitHubCopilot.
+
+You would be GitHub.com, public.
+
+If I hit enter on here, where I would then do, the machine is pop up a browser window and get on getHub.com or some of those, you know, you authorize this connection.
+
+And that connects that gives you a token, you're set up to use that.
+
+So I'm not gonna do it because I'm already logged in, so I'm just gonna hit escape.
+
+But then you will have access in here.
+
+Uh, you can say, like, control, uh, well, slash model is one way to do it.
+
+You can pick them and it'll list all your all your providers.
+
+So if I just type like copilot and kind of filter it down to those, these are all the models accessible through copilot.
+
+And if we look at this list, we have Claude Opus and Sonnet, haiku's in there somewhere too.
+
+So all the, I think Opus 4.6 shows up later in the list, but these are the, you know, leading clod models, GPT, various versions of the open AI models, including 52 codex, I think 53 codex shows up later.
+
+Gemini, Grock, code fast, um, They're not in order, they need discernible order here for some reason, but so you basically have the leading models from all of the leading providers.
+
+Which normally you'd have to pay for.
+
+This is a way to get it free through a student account.
+
+I don't believe he can use I'm not sure, actually, you might be able to use one this way.
+
+If you want to use claw code connected to open AI, that might be an option.
+
+I know a plot code recently cut it off if you're doing like their $20 a month plan, and you try to use it in open code, they ban you.
+
+It used to be that you could do that.
+
+They only want you to use their monthly plans from their past homes.
+
+But co-pilot is a good part, not a producer, but.
+
+Um, So that's one way to get some good, you know, to be able to use these, like, from command line, and get access to some rain ones.
+
+You can do things through the web interfaces.
+
+It's a lot clumsier, it's harder to buy context and things.
+
+I think when you're doing programming tasks, you tend to get a better experience from using the kind of tools, you're kind of dedicated tools.
+
+You know, open AI recently released Codex as a stand-alone Mac app.
+
+They have another lease of for other platforms yet, but they have a gooey interface to it, and as part of that to promote it, they've done a promotion where they're doubling, everybody's token budget through April.
+
+And I think even free users can get some access to their, like, kind of my tools and stuff.
+
+During that period.
+
+So, So there's some ways to be able to get it.
+
+I do spend $20 a month.
+
+I've gone through a bunch of providers and kind of back and forth and currently on open AI, which I think is actually the favorite.
+
+I think I think they can make the best products.
+
+I think Claude has had the strongest models for a long time for programming specifically, although Codex, the latest ones, Codex 53 is, is pretty good.
+
+But I feel like open AI makes the best actual, like, the web interface is kind of the best and the extra tools they add are kind of the best.
+
+And so I like that best as an act of product.
+
+And if you have like a $20 a month subscription, they all will let you then connect from their command line tools and give you the weekly budgets, which are far, you get it. A much better deal than actually just paying for AVI access.
+
+Like you have a clawed $20 a month plan, you use plot code, you get way more usage than you would if you just applied API and bought $20 worth of tokens.
+
+You just have to kind of Yeah, quoters every 5 hours, quoters every week, and some kind of got to play this game, but, um, I, I, in one 5 hour session, it would tell me like the dollar equivalent.
+
+Sometimes that would be like $15. Keep.
+
+So if you're, I think it is a, I would say a minimum go get the big pub called pilots and go.
+
+Start practicing.
+
+This is not just a way to, you know, make this a hot check, right?
+
+When you graduate and you go and try and get a job, they're gonna ask you how you use AI, your code.
+
+And if you don't have a good answer for it, you're not going to get out.
+
+That's pretty much the way it works now.
+
+And it is a skill that takes practice.
+
+Using these is not just you go in and prompt it and it doesn't thing, you have to learn how to prompt it well, how to constrain it.
+
+You have to learn what things they can actually do well, what they can't, and some of that becomes almost intuitive as you've used it for a while and kind of explore the boundaries.
+
+And so if you have not been using these and trying them out, now is the time to renovate that.
+
+So for this project, again, we'll talk about it more.
+
+I will post some notes that will also, you know, revisit this next week.
+
+This will be a few weeks or I don't know, a project, I guess.
+
+But yeah, I'm gonna kind of, at a minimum, you should be using this to build your sample data, but you'll probably also use a Canadian UI, a lot of the other parts to it, right?
+
+I, um, This is a thing where like databases and rights, equal praises, is some direction to do that.
+
+I think you should be writing queries by hand, learn how, and you'll kind of think and plan them.
+
+Or maybe you do the thinking and planning and have the AI actually write the sequel.
+
+I think that's what we're used to.
+
+But anyway, I want to encourage you to be practicing and using these will kind of make it a part of these projects, especially.
+
+Is Simon's gonna stick handbritten stuff or contained examples, the projects, like, I don't want to throw it open, right?
+
+Our signs have been really kind of micro focused, so I want this project, we'll do another project near the semester, are much more kind of, now we're looking at the big picture.
+
+Let's bring it all together.
+
+Let's design the scheme.
+
+Let's write the queries, let's integrate the language.
+
+We're kind of throwing all that in.
+
+That's what this is about, is bringing everything together.
+
+So getting her out of town now.
+
+So I'll see you tonight?
+
+Yeah. .
+
+Okay.
+
+Yeah.
+
+So we'll see you next week and we'll, you know, get more details there. 

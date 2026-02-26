@@ -1,3 +1,0 @@
-['The Godfather', 68646]
-read 3 pages with 0 table scans and 1 index scan
-scanned 10 total rows and returned 2 rows to the client app

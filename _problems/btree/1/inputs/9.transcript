@@ -1,0 +1,10 @@
+< table 2 422552 423524
+> rowid 422552: [None, 'Prakash Jha', 1952, None]
+> rowid 422586: [None, 'Ayesha Jhulka', 1972, None]
+> rowid 422638: [None, 'Wen Jiang', 1963, None]
+> rowid 422640: [None, 'Wu Jiang', 1967, None]
+> rowid 422710: [None, 'Penn Jillette', 1955, None]
+> rowid 423381: [None, 'Marlène Jobert', 1940, None]
+> rowid 423524: [None, 'Alejandro Jodorowsky', 1929, None]
+> read 4 pages with 1 table scan and 0 index scans
+> scanned 38 total rows and returned 8 rows to the client app

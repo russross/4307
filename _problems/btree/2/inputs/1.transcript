@@ -1,0 +1,23 @@
+< header
+> header string                       : SQLite format 3
+> page size                           : 512
+> file format write version           : 1
+> file format read version            : 1
+> bytes reserved at end of each page  : 0
+> max embedded payload fraction       : 64
+> min embedded payload fraction       : 32
+> min leaf payload fraction           : 32
+> file change counter                 : 13
+> file size in pages                  : 3148
+> first freelist page                 : 2394
+> number of freelist pages            : 118
+> schema version cookie               : 16
+> schema format number                : 4
+> page cache size                     : 0
+> vacuum page number                  : 0
+> text encoding                       : 1
+> user version                        : 0
+> auto vacuum mode                    : 0
+> application id                      : 0
+> version valid for                   : 0
+> sqlite version number               : 0

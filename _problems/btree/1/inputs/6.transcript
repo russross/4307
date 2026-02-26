@@ -1,0 +1,15 @@
+< table 2 423382 424955
+> rowid 423524: [None, 'Alejandro Jodorowsky', 1929, None]
+> rowid 423525: [None, 'Axel Jodorowsky', None, None]
+> rowid 423646: [None, 'Roland Joffé', 1945, None]
+> rowid 424060: [None, 'Scarlett Johansson', 1984, None]
+> rowid 424103: [None, 'Karan Johar', 1972, None]
+> rowid 424302: [None, 'Dave Johns', None, None]
+> rowid 424318: [None, 'Glynis Johns', 1923, None]
+> rowid 424345: [None, 'Mervyn Johns', 1899, 1992]
+> rowid 424565: [None, 'Ben Johnson', 1918, 1996]
+> rowid 424743: [None, 'Celia Johnson', 1908, 1982]
+> rowid 424848: [None, 'Dakota Johnson', 1989, None]
+> rowid 424901: [None, 'David Leslie Johnson-McGoldrick', None, None]
+> read 3 pages with 1 table scan and 0 index scans
+> scanned 30 total rows and returned 13 rows to the client app

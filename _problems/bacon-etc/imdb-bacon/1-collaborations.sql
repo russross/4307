@@ -1,9 +1,4 @@
 --
--- the database schema is in the file .a-schema.sql, or you can
--- query it from within the sqlite3 shell using .schema
---
-
---
 -- write a SQL query to find the top collaborators in the database,
 -- i.e., the actors, directores, and writers who have the most titles in common
 --

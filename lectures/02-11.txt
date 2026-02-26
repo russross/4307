@@ -1,0 +1,1555 @@
+Welcome.
+
+How are you?
+
+Does anybody have any questions from last time you were talking about those normalization forms?
+
+So there are a few more that get stricter and handle kind of more niche cases.
+
+Um, I don't really want to go spend much more time on it, so, um, I'm kind of focusing on a big picture for a lot of these things.
+
+But I would like to now start talking about indexing index construction.
+
+So we've talked about quite a bit of kind of data modeling and core querying forms.
+
+So I had to do select queries.
+
+And a very curring idea is that, you have data is modeled to be well organized, and simple, and logical, and orthogonal.
+
+We don't want to have repetition.
+
+And then I kept kind of saying in, then, you know, it leaves the database to efficiently query.
+
+And that's really a big part of the value of a mature database system is its ability to figure out how to efficiently where.
+
+So one of the keys of that, we talked briefly, I think we introduced the idea of an index, but I want to go into this in some more detail.
+
+So the big idea of an index, um, is that um, the table data, main table data, has some order on this.
+
+With some systems, it's actually kind of just insertion order or random order.
+
+We're going to talk about how sequel light does it, which is storing it in E plus trees, the most ordinary tables.
+
+But first, let's start with an ordinary D tree.
+
+So we're going to look again at how both the full table data is stored, and then also how indexes are.
+
+And what an index is, is just a copy of some of the data that's sorted by a different key that allows you to efficiently look up some attribute and go and find a roast match.
+
+And they achieve this, again, a big part of it tends to be nutrients.
+
+So B tree is a balanced tree, but not a binary tree.
+
+Here's the basic structure.
+
+So we have notes, and in this case, we're just having these integer keys and no data, just for simplicity in the diagram.
+
+And here's the structure.
+
+We have one single root, some of our number of entries can fit in there, and the number is not really fixed, so much as the container size is fixed.
+
+So in practice, we're usually talking about the block sides that we're using on this.
+
+That's how big a note is.
+
+And how many items do you fit, as many as you can.
+
+So, for simplicity, this one is showing, we can fit four elements per block.
+
+And then between each one, we have a link to children.
+
+So before, so in the room, we have something, right, right, our room out here has 7 and 16.
+
+We're saying everything's smaller than 7 is going to be in this child in the left.
+
+Everything between 7 and 16 is gonna be in this middle, child, everything greater than 60s in this one here on the right.
+
+Um, And note that the all is in the root are included, as they come between their children.
+
+So this is the structure of the bee tree.
+
+Um, I just said, balance, so every leaf node is always going to be the same depth in the root.
+
+And a big part of the goal of, well, the goal of any tree, really, is to not be very unique.
+
+So the deeper it is, the more expensive it is to navigate down and buy entries.
+
+So, B tree can do a good job of really having a very wide, but shallow tree, because we can have many notes coming out of each of many children, child links coming out of every number.
+
+The bigger the block size, the flatter, the trees, the one would be.
+
+So I can sequel light.
+
+I can't remember if it's still the default, but it used to be the default block size was 512 pilots.
+
+So it wasn't actually matched to a disc block.
+
+And I think the default for new databases now is 4K, which is what I typically uses a default anyway, because that matches the block size with the disk itself is using.
+
+Yeah.
+
+So B and B tree stands for block.
+
+Um...
+
+Rather than like binary others.
+
+It seems like I've heard conflicting reports about what it stands for.
+
+They never explained it, you know, a bowing tree, a balance tree between, broad, bushy, and bare, have all been suggested.
+
+And they asked one of the people who originally coined it and he said, um...
+
+Oh, let's treat it here.
+
+The question was, I want to know what B and B tree stands for.
+
+He says, everybody does.
+
+So you just have no idea what a lunchtime conversation can turn into.
+
+So there we were, Rudy and I at lunch.
+
+We had to give the thing a name.
+
+We were working for Boeing at the time, but we couldn't use the name without talking to the lawyers, so there's a B. It has to do with balance.
+
+There's another B. Rudy was the senior author, Rudy Bayer, was several years older than I am, and I had, and had many more publications that I did.
+
+So there's another B. So, and so at the lunch table, we never did resolve, whether there was one of those that made more sense than the rest.
+
+What really likes to say is the more you think about what the B and B tree means, the better you understand B trees.
+
+So, there you go.
+
+You're not the first to ask this question.
+
+What are you saying?
+
+You guys sign this way to answer.
+
+Yeah.
+
+She's not really right.
+
+Um, we'll look more at kind of the physical layout of these when we delve into the sequel light implementation later.
+
+But I guess it's worth noting here, though, that for an internal note, that is anything other than a leaf layer, you have to kind of alternate or you have at least both of these links to children and elements.
+
+Belief node structure is a little different just because there are no child nodes.
+
+So sometimes you can fit a few more in there.
+
+But those links are usually just, you know, an integer, so they're not terribly big.
+
+So, the interesting part is how do we implement, like, insertion and deletion?
+
+There's gotta be a good impact.
+
+Animation show.
+
+Oh, I can see that interface. Can tell this is gonna be bad.
+
+Doesn't that look, doesn't that just look like this is not gonna be a very pleasant experience?
+
+Let's say we can find a better way.
+
+The other one's all around it.
+
+Okay, let's go with this one.
+
+So, oops, I lost my button.
+
+Here we go.
+
+So here we filled...
+
+I want those version number.
+
+These are, but, um...
+
+Okay, what just happened?
+
+Can I undo?
+
+Please find the range, search for a key.
+
+Okay, well, it was full, right?
+
+We went to insert an item, so we obviously couldn't fit any more in the node, so we had to split the node.
+
+Um, and would normally take the keys and put half of the left split, half of the right split.
+
+And then we need to put a new entry in the note above it.
+
+In this case, there was no parent node, so we had to create one.
+
+This is how bee trees eventually get deeper.
+
+They all have the top.
+
+So you're always, you're splitting leaf nodes, those insert entries into the nodes above them, which might cause them to split, which would cause a bubble its way up, and eventually you would go splitting them.
+
+The root node, that's how it was hot.
+
+So that's how it being changed back.
+
+You never add depth to the bottom, the wall's added or top.
+
+So it's fairly trivial to be about this.
+
+So let's add some more entries and watch this one.
+
+Grow?
+
+Okay, if we add one and we're doing random numbers, if it lands here, what will happen?
+
+If it lands over on the left.
+
+So, between...
+
+Would be added to the top one instead on the left hand side.
+
+No, sir.
+
+I was right, and then the middle level will go up to the top part, and they'll be in the top, and then?
+
+Yes, in fact, we can pick a key maybe.
+
+I don't see a box where I can tie it.
+
+I can wait. Imagine. Key.
+
+Oh, that 100. Think that might be a box.
+
+I hope it's a box.
+
+Yes.
+
+I don't want to have to plus my way to 400 there.
+
+So let's pick, let's say, 253.
+
+So here, the process is, you always have it all the way for the leaf to see if it's there.
+
+So your answer, no, we'd never go an insert directly note above, we'll always insert it here, which is gonna force it to split.
+
+So, yeah, which key is gonna be promoted?
+
+Or is she right?
+
+Because, I mean, certainly to the left, we'll have 2 of those and each child know, the 402 will go up here.
+
+Yeah.
+
+We'll do some more randoms.
+
+Got a couple foals, probably gonna have a split again.
+
+There we go.
+
+So it's hoop, we got another split.
+
+And right, so by putting half in the left and half in the right, we're also, every time we do a split, we give ourselves room to fraud.
+
+We don't want to have, like, empty models, because then, um...
+
+Not just so really, it's a waste of space, but more than that, it's a, it's gonna make your treaty, right?
+
+You want it densely packed.
+
+But you do want some space because you don't want to insert operate.
+
+You want insert operations usually be cheap.
+
+So it's kind of a trade off here.
+
+As soon as one of these splits, it's going to.. Cause our root node to split, which will give us a three, a new depth layer.
+
+Um, what about, do we have delete?
+
+What about deletes?
+
+Imagine the league as an operation.
+
+Yes, on the 1st public life, the 1st standard uses.
+
+I did, I wouldn't want to just type too many boxes. Kind of like that.
+
+I've used too many of those simulations where you just end up.
+
+But let's just look at this.
+
+Lets say I wanted to leave now.
+
+Uh, I wanted to leave 527.
+
+Just delete it, right?
+
+And leave a blank spot, maybe move the others over the packet.
+
+And so.
+
+Okay, well what about this one?
+
+446 and 449.
+
+What if I can do with those? .
+
+That'll use less than half full, right?
+
+It started out half full.
+
+Think we'll do anything?
+
+Child go over?
+
+And?
+
+And then, choosing me, like, right?
+
+Me personally, I've moved 375 up and 42 down.
+
+So we do have a whole rotation.
+
+In practice, we normally just don't do anything real.
+
+Like, actually, most databases will, in the normal course of things, will never do any shopping like that.
+
+And even if the block goes completely empty, I don't care, man.
+
+They might trim it then, but I'm not even sure that stays.
+
+With most databases, they say, yeah, if you want to compact, you really have to do like some separate operation.
+
+Usually probably like a vacuum.
+
+When you go and do a vacuum and that's what it does, then usually, and even then it's not usually done in place.
+
+It usually just completely rebuilds the table, copying the data over.
+
+So you end up with like a fully packed version of it.
+
+Could be trying to leave one up.
+
+I mean, you do?
+
+I don't think we have a, I don't see, uh, we can try a different visualizer.
+
+Sorry?
+
+Oh, I thought it was a paint.
+
+Oh.
+
+Oh.
+
+Do you like color or not, I guess?
+
+Okay.
+
+Play insertions.
+
+Oh, okay.
+
+So we can just let it go.
+
+Great.
+
+Oh, and I assume I can stop it if I want.
+
+Oh, it's stopped itself.
+
+Okay.
+
+Well...
+
+Why would you, though?
+
+What about search?
+
+So let's say I want item 315.
+
+What's the process?
+
+What are the steps?
+
+So keep them, yeah.
+
+Those books that are very than we're moving for, some of those things that are very...
+
+So we start here, 463 is too big, so we follow left.
+
+What did I say?
+
+Four, well, 315.
+
+All right.
+
+So it's not less than 253, so we keep going, we need to forward T 2 and see that that's too big.
+
+So, you know, so you can follow.
+
+And then here we stand.
+
+And if you had to do a binary search or just a linear scan within it, depending how I watch something like that.
+
+So finding an individual key, it's really mostly related to the depth that you're searching, but there is searching within the note as well.
+
+So again, if you do what, like a binary search or something, you can optimize that.
+
+But for simplicity, we'll just think of it as a scam, especially with smaller.
+
+Um, So it's pretty good at finding individual values.
+
+Again, part of the design, the premise here is that usually think of it as like loading a block is much more expensive than even working on a block.
+
+Once the date is in memory, binary research, or binary research, or liner span, whatever we're doing, that's gonna be pretty lively compared to going to fetch another block from this.
+
+And that's also why we kind of avoid really doing any reshuffling.
+
+So, anything that involves just cooperation, just that's expensive in dozens, cheap. Makes sense.
+
+The other nice thing about these, what about doing like a range of things?
+
+So let's say I want to get everything from 300 to 500.
+
+How do I start? .
+
+So I 1st used to do an ordinary search for 300, right?
+
+But I keep I keep track of the trail of the bottom.
+
+So we don't, like, discard the higher level levels.
+
+All right?
+
+So when searching and when it's searching, you kind of need to keep the entire spine of the tree across.
+
+It was fine, the tree will understand it.
+
+So we find 300, iterate through all the keys here, because we'll wear the leaf mode.
+
+Then we go up to the note above, advance, and follow every intermediate node, and just kind of stand our way through.
+
+So, um, here we go, let's see, what was it?
+
+315, 375, and up here to 402, 446, 449, we run out of this intermediate note, so we'll go back to the route, 463.
+
+The follow over here is less than 5 to 616.
+
+Our target is less than that, so we follow.
+
+And then we use again 499.
+
+Everything else here is greater than 500, and so we're finished with our school.
+
+So, Yeah, we're kind of moving around the tree doing that scan, but it's actually pretty efficient.
+
+Again, especially when you think of this office.
+
+We had to do load these up to get to our leaf mode.
+
+And we kind of bounced between leaf and interior milk, you know, up and down the tree a little bit, but these are values that were already loaded, and we would have kind of maintained a cursor.
+
+Here's where we were on the search so far.
+
+Right?
+
+If you think of this as a recursive search, or like a recursive procedure, we have said, you know, I come here, um, put my finger here, right?
+
+Say, put my finger here, start scanning these, and then resume scanning here.
+
+Right?
+
+So it would be kind of just the resumption, the recursive call of return, resume the sound, continue back up.
+
+And so we end up not loading any blocks of we need.
+
+We don't necessarily guarantee you we find data all of them, right?
+
+It's possible that, like, we were starting at 38.
+
+So we come down here, it's like, oh, okay, bigger than 253, but less than 42.
+
+Oh, but there's nothing on this spot.
+
+But we couldn't know that until we actually searched it.
+
+But we're not, you know, we hold these others in memory.
+
+And so even though we're moving up and down in our linear scan, it's still a pretty efficient operation. In terms of caches, you know, like, you brought down.
+
+So this is the value of the beet tree, right?
+
+It's tuned to disk versus memory, right?
+
+It's an efficient structure for working okay on this.
+
+It supports efficient stabbing queries looking for a specific value, and it supports efficient range operations.
+
+I can say start in the beginning and scan the whole table.
+
+And I never end up dumping a block and having to relocate.
+
+Right?
+
+Because I always cash the ones above me in the tree.
+
+Um, I can start at the beginning, I can start at the end and scan backwards.
+
+I can start an arbitrary key and go to the end.
+
+I can end it a rain, try it supports all of those operations pretty efficiently.
+
+Performance overall is going to depend, of course, how much memory and how much cash we devote to it.
+
+But it's also pretty good as far as that goes.
+
+So a lot of modern systems, a lot of modern databases, we actually end up having as much memory, a memory that's as big or bigger than the database. That's actually pretty common.
+
+In which case you eventually as the cash warms up, all the blocks are there.
+
+That's kind of an ideal situation.
+
+Actually, if you're doing that, um, the structure's not, you know, they're wasted to really improve on that.
+
+If you know, you can just really remember it.
+
+But in a more, in a, well, kind of standard way of thinking about it, as, you know, disc is bigger than memory, our database is huge, whatever it is.
+
+Um, What tends to happen is, again, as you kind of work over time, is the high levels, the root and intermediate levels of the bee tree, those tend to be cached, even for large tables, and it's mostly the leaf notes that I've been in.
+
+It's not perfect, but we'll kind of tend to have that.
+
+And so that further makes it, so again, with warm cash, when it's been running for a while, it's in a steady stage.
+
+You mostly think of it as, you know, it's usually just kind of one block hit for a typical workout, because a lot of the intermediate and pretty much all of the root level are, for top couple levels are probably going to be memory resident.
+
+Yeah.
+
+So right now we'll probably just talk about like records in a database, but if we're doing this just as general memory loading, what each of those notes kind of be just segment of like, let's say, like a specific amount of kilobytes or something that's loaded from disk.
+
+Yeah, so each block has a fixed size.
+
+Again, I think think of it as 4K is pretty typical in a modern system.
+
+And that usually matches the size.
+
+The disk actually, the block level, the block device level.
+
+And so technically hard drives and things usually have like 512 bisectors, but most operating systems work at a 4 kilobyte level.
+
+So that's usually the unit you're gonna transit.
+
+If you want one bite from disk, you're getting 4K. With most interfaces.
+
+So this tube's it inside.
+
+Well, 4K is a unit don't really work with then.
+
+Whenever we do a disc operation, we're gonna get maximum benefit.
+
+So they're a fixed size.
+
+But you're going to tune to your system.
+
+That's important.
+
+So that's a bee tree.
+
+With sequel light indexes are beetroots.
+
+Regular tables, by default, are being plus trees.
+
+Again, let's just revisit before we, well, we kind of revisit this point in a minute, but, um, An index, In an index, the keys are ordinary data flow.
+
+Right?
+
+I've got a table of movies.
+
+I want to be able to look up my title.
+
+So I make an index, which is a B tree, where the keys are strings of arbitrary length, right?
+
+And so, um, So I choose this.
+
+Yeah, we'll come back in a minute after we look at B plus trees to see kind of the contrast.
+
+So, a B plus tree, oops, database normalization.
+
+B plus tree looks pretty similar.
+
+In fact, in this one, looks identical.
+
+Well, no, it does look, okay, there are visible differences.
+
+The main one is that the full role, the data is only sort of leaf rose.
+
+And the interior knows, the root and everything else above leaf level, only hold keys, and they are duplicates.
+
+So here, the full contents of this table be one, two, three, four, five, six, seven.
+
+And then in the room, you have to look, it's a 3 and 5.
+
+So it really is just kind of an indexing structure above a linear, conceptually linear list of records.
+
+And so, you know, here we have, again, still have links that are sort of between keys in the nose.
+
+So to the left are 3 is everything less than three.
+
+Um, and you have to choose here where there's less than are equal or, um, so it looks like this one, we're saying everything less, strictly less than 3 goes to the left.
+
+Everything be from 3 up to less than five.
+
+Those middle one and everything, 5 or greater. The right child.
+
+So now you can do that greater or less than anything.
+
+Makes them nice here.
+
+At least it's harder to talk about.
+
+He's like, plus 3 will remember which one it is.
+
+Um, So we're going to have some kind of duplications.
+
+Now, in sequel light, when you create a regular data table, the key for a row is always in danger.
+
+If your schema says has an integer primary key declared, then that is the integer.
+
+In fact, actually, generally, just stores a null there and then uses it.
+
+So the way it stores it internally is there's an integer key and there's the record.
+
+And so, if you had declared, as your primary key, it stores a null there, and then swaps it in with blows.
+
+But if you don't do it at your primary, can you have some other primary heat or you don't have any primary key at all?
+
+It still assigns a unique role.
+
+And internally, that is the primary key for query when it's looking things up.
+
+So it's not the primary key in the like database schema sense, but it is in the looking something outside.
+
+And so And accessible is the word role ID.
+
+So you always have kind of a hidden call called rolling.
+
+So with that in mind, here's why a B plus tree makes a lot of sense, right?
+
+The keys that are gonna be stored here, that are replicated in the higher levels, are always integers, because that is always the key word of searching for.
+
+And ensures are quite small.
+
+So what we do is we get a massive fan outfactor.
+
+You have a 4 kilobyte block.
+
+You're storing a few bytes per imager and a few bytes per left per length.
+
+So let's say 8 bytes per child mode, spread across 4K, there's some headers and some other things like that.
+
+But you're getting, you know, hundreds of children per root knowledge material.
+
+And then, Dorothams, throws themselves, might be large, right?
+
+They have all these fields, whatever the columns are, it is what it is.
+
+So the leaf node contains those and would be much less densely packed.
+
+But the key that a B plus tree enables, when you have integer IDs, is you have these super dense index level nodes.
+
+And so, again, when you get that desirable thing of a very shallow tree, with a really wide fan out factor, because each upper level, you know, each note up there is really character.
+
+So that's part of why a being plus tree makes a lot of sense for a database table within your primary key.
+
+Now, sometimes, so they show it, here's also having a link between leaf nose.
+
+So you can do a linear scan, you don't even have to traverse back up to the higher levels.
+
+Maybe.
+
+Um, sequel Y actually doesn't do that.
+
+But as we talked about a minute ago, navigating linearly, you just have to bounce up here and set something odd and you kept in memory to find the next to me.
+
+So it's almost like, you know, having a link directly in the leaf node, doesn't really buy much.
+
+If you're, you know, already tracking those.
+
+So it's like sequel I just dispenses with the entire...
+
+But it's usually depicted that way.
+
+I think you've kind of, um, canonical description of E plus 3 has that point.
+
+Great C standard.
+
+So, okay, so that's a B plus tree.
+
+So if we go back to our bee tree here, why?
+
+Um...
+
+Why not use a bee tree for regular table data?
+
+Why use the B plus tree instead?
+
+Why are you missing wine outside?
+
+Yeah, is it easier to create nearly through complexity?
+
+Again, not necessarily, especially where in the sequel light implementation, that link list, that the link is left out.
+
+So you're still following the same basic pattern.
+
+Yeah.
+
+Sorry.
+
+I'm kind of into life all the time.
+
+Yeah, so that's that's for a B plus tree, right?
+
+So the question is, why not use that for indexes too?
+
+Yeah.
+
+Would it be because not all the data is can be easily indexable?
+
+Easily what?
+
+Inexible.
+
+So we wouldn't want to have like a float as like each other's nose.
+
+Um, you could use a, you can use any type as a key.
+
+So that problem has to be solved somewhere.
+
+How big is a key in an index?
+
+So our movie database is out there.
+
+If I want to have an index that maps movie title to the primary key, the movie title is maybe big, right?
+
+And the value that it's mapping to is one of those row IDs that's small.
+
+So if we're doing a B plus tree, where we're replicating the key in the interior nodes, but only putting the full row with the non-key parts in the leaf nodes.
+
+We've made copies of all the big stuff, and all we left out was the tiny roll item that we had the replication.
+
+So we end up duplicating the big parts and not really saving ourselves in the process, right?
+
+Because the key of an index is going to be everything you told the index on.
+
+And then the value is, oh, here's the prime, here's the raw idea you're going to look for.
+
+I'll find that.
+
+Here's the title and the release year and the budget and the number of Oscars it was nominated for.
+
+Oh, and here's the integer that gets you the rest of the data, right?
+
+And so the reason a B plus tree makes so much sense for the data rose is the key is tiny, relatively speaking, the rest of the data is arbitrarily size.
+
+So we get the densely packed.
+
+And so duplicating just the imager part, it's not that much overhead, because this is a nice structural advantage.
+
+Both an index, it actually kind of flipped around.
+
+The key is big, and the value is small.
+
+So replicating the key, but not the value, at different levels doesn't make sense.
+
+Right.
+
+It doesn't bias anything.
+
+Whereas here, with an ordinary bee tree, we just put the full records wherever they land.
+
+So we have indefore indexing something big, everything's gonna be, you know, not very dense, so we're gonna have a low, um, over order at each one, you know, a small number of records are gonna fit in each node.
+
+We're gonna have a deeper tree, but that's just kind of the nature of the beats, right?
+
+Or something, you can even prove that.
+
+But replicating those things each level doesn't really buy you the benefits, right?
+
+Replicating the heat or avoid having the value sort of there, right?
+
+Because that's the big difference.
+
+This one was the he and mostly the value of it.
+
+And since that is a tiny little atom.
+
+So that's the 2 kinds.
+
+We have the bee tree, the B plus tree.
+
+You can, with sequel light, you can also just ask it to use, when you create a table, if it has a primary key, you can put an adaptation after the create statement, but before you're semi-fold or whatever, to stay without row ID, and it will then use an index table to use an ordinary D tree and not be a real ID.
+
+Why might you want to do that or might you not want to do that?
+
+So again, it's default is to say, yeah, whatever you said is fine, but I've entered a role, I.E. And that's the real primary key.
+
+It's sorted on disk by the role ID.
+
+But as you say, without row ID, whatever you do is the primary key ends up being the way that it's actually sorted.
+
+Right?
+
+So why am I why would one be better, more desirable than another?
+
+Start with, why might you want to use an index structure?
+
+A regular B tree for a table?
+
+What advantages might bring?
+
+It is?
+
+The main one is going to be that on disorder.
+
+Let's say I have...
+
+Let's see, uh, from our university data set, I have, um, Let's see, what would be a good example here?
+
+Well, think about the schedule. Data set.
+
+For each course, the primary key is CS 4307.
+
+Right?
+
+And then it has other fields, the title of the course, uh, database systems, and various other stuff associated with those, but if you don't, that kind of thing.
+
+If you put it in a b tree, So no numeric, no special raw IDs.
+
+And when you go on disk, the natural ordering is going to be by primary key.
+
+So if I'm doing, like, a range query over primary key, that's ideally suited for that, right?
+
+I want to look at all the CS classes, everything with the CS Prefix.
+
+It could drill down and find the 1st CS class, scan until it runs out of CS classes, and no stop there.
+
+And it is it's scanning kind of the natural ordering of the data structure.
+
+How do I do that if I'm using a B plus tree, and actually everything's organized by row ID, that's kind of assigned sequentially as they were inserted.
+
+What does the data look like on Disney?
+
+It is scattered.
+
+It might as well be shuffled, right?
+
+Getting, it's probably assigned by the order they were inserted.
+
+And but we don't know, right?
+
+There's nothing.
+
+So how we scan everything starts with CS?
+
+And recourse name, that's where they, of course, number the writer, the i.e. Or the field.
+
+So you help smuggle a look up table story.
+
+So, Without adding extra structures, right, what we do is a linear scan of the entire system.
+
+That's really, right, without indexes.
+
+So the throw index is away from that.
+
+Our only choice is, yeah, we can look it up by whatever it's indexed by, whatever the key natural key of the storage structure is.
+
+Or we can stand the entire tape.
+
+That's our options.
+
+So I remember my example, trying to delete some coke grinder. As we commence.
+
+And for everyone, there's this thing that, you know, it's easy to look at a record and see if it's pointing to another parent record.
+
+But the hard part was, I want to delete this commit, but I now need to go and look and see if anybody else was referring to this one as it had, you know, a link to it that, which might cause me forbidden to leave.
+
+And because that was not the way the data was sorted on disk and there was no index, they had to do a linear scan of the whole cable every time to find out if there was a link to the record.
+
+So I'm committed.
+
+So the linear falling back to the linear scan, that's kind of the kind of the failure mode, right?
+
+That's what we want to avoid normally.
+
+So having things stored by something, you know, if you have a primary key that's not just a made up number, um, If you're ever going to be doing queries where you're looking, especially range queries across that primary key, then having the data structured, basically sorted on disk by primary key is going to be an advantage.
+
+So that's what an index does, right?
+
+It gives us the ability to have a version on disk that's sorted by whatever key you want and it links you to the primary key you're actually going to access.
+
+So if we just had a, again, our courses in, um, the scheduler stored by with the role ID, the default table structure.
+
+Then we would also, and we want to go and scan all the courses and start with CS.
+
+We can either do a full table scan, or we can have a secondary index that is sorted by course ID, that we can scan range.
+
+And that's still going to be a two-step process, right?
+
+We're going to go find the 1st CS class and it's real ID 506.
+
+So we've got to go look up row ID 506.
+
+Then we go to the next CS course and it's row ID 12.
+
+So now we've got to go look up the Herod U 12.
+
+So we have a nice linear scan where we're finding the row IDs, but we still have to go and do an individual lookup for each row.
+
+Never might be able to optimize that.
+
+Maybe we gather a bunch of them. Sort them, and, you know, see if we can optimize the look up.
+
+But fundamentally, there's kind of a two step process.
+
+That still tends to be, it's pretty good, right?
+
+But if you had the data organized in the first place by something, you're looking at queries in that, that's why we do better.
+
+And if you think about, right, the most common lookup is going to be by primary key, like anytime you're doing joins, if you're joining by the primary key at one table, the 4 and key, a different table is very common, then, you know, you're actually often going to be doing these, even though you're not doing an explicit query by a time that he, a lot of other operations are for one.
+
+So it's a nice way to store things if you have a natural key that is not an integer.
+
+That's kind of become my default for this.
+
+Your name is small enough, it doesn't matter.
+
+But small enough, a linear scan is fast.
+
+So, like the essence grow over, something like that is complexity.
+
+It's also got how we create an index.
+
+So, let's see.
+
+Let's go into...
+
+Look at some scheduling data.
+
+We got a bunch of tables.
+
+Um...
+
+So let's just look.
+
+Here is an example here, let's see, I might just do select, um...
+
+Let's look at our courses table, which has course department, course name, prefix, course number.
+
+So I'm gonna select course, comma course name from courses.
+
+So we're gonna need table.
+
+Um...
+
+So, again, the way this is stored, this is one, uh, I think when we looked at the schema, it has that without row ID annotation at the bottom.
+
+So this is being stored in a bee tree, not a B plus tree, no synthetic row IDs.
+
+Um, so what's an example of an a query here that's going to have to do a linear scan of the whole table?
+
+Well, one is just looking up a course by name, right?
+
+You don't know the number, you know the name.
+
+So I could say, select star, or select, let's just do that same course, course name from courses, but this time say where course name.. Equals, uh.. Database systems.
+
+So that didn't take very long, right?
+
+But the data is small enough that it's never going to take long.
+
+Here's kind of a fun one.
+
+I can say explain, and then the query.
+
+And It shows me an actual little program that is going to run when that query is executed.
+
+So the way it works is you supply the query, it actually compiles it as a terrible little mic code, like, which, they seem to kind of inscrutable, has these fixed numbers, parameters, and, yeah, to...
+
+Nasty little language, but it literally does compile your query into this.
+
+And we can do a different one.
+
+We can say explain query plan.
+
+And that gives us some more kind of higher level explanation of what it's going to do.
+
+In this case, it's gonna scan courses.
+
+So it's a scan, needs, full tail scan.
+
+So what if I want to speed that up?
+
+Well, I create an index.
+
+Create index, course, and I'll usually say like courses, course names, say it's an index on courses, on courses.
+
+Horse name.
+
+So, syntax is created next, give a name.
+
+Tell which table it's indexing and then the in parentheses list of columns in order.
+
+And now, when I tell it to do that same query it was doing a second ago, Now, the query plan has changed.
+
+Now it searches courses using covering index courses course name.
+
+The covering index means it actually just looks at the index.
+
+Because it has all the information for this.
+
+So in this case, it never even has to refer back to the original table.
+
+Yeah.
+
+So, when you're going to create, this is making, like, a B tree, B plus tree, whatever.
+
+A B tree, yeah. Of all of the course names.
+
+Yes.
+
+So that structure has a bee tree.
+
+So again, data in all levels, and the key is the course name, so it's a copy.
+
+It's a duplicate.
+
+Would you introduce your bet in the CCR.
+
+And then that is paired with the primary key, which, in this case, is the course field, right?
+
+So that if you, that allows you to efficiently find something by course name, but then you know the primary key, so you can go and find the original record.
+
+And in this case, my query was select course comic course name.
+
+So it looks up, right, because it was by course name equals database systems.
+
+So use the index to find it.
+
+But the index has both the course name and the primary key, which is coarse, so it noticed it didn't actually have to cross reference back to the original table.
+
+But if I went and said, like, show me course name in, like, department.
+
+Now it knows, okay, the index will let me find.
+
+So I'll search using the index to find that course name, and it's in quality test, so that's gonna be a stabbing query.
+
+That will give you the course, and then it'll go back to the original table and find the record.
+
+And I can create and drop indexes.
+
+On a whim, right?
+
+Which is nice, right?
+
+That's really nice.
+
+So what is an index?
+
+Well, in one way, you can think of it, it's a denormalization process.
+
+Right?
+
+We said, oh, the normalization, we put the data where, you know, where it lies at this organization.
+
+Um, Whereas the opposite of that, right?
+
+Do you normalized one way of denormalizing like the key value stores use, as they say, you anticipate where your queries are going to be.
+
+And you put that in the key so that it's like organized physically in the infrastructure by the thing you're looking for, right?
+
+Twitter, you put the Twitter user ID as the key and the value is their most recent, the most recent ones in their time.
+
+That example used a while ago.
+
+Right?
+
+That's not the complete date of it in this particular lookup table, that's what they've done.
+
+And that's a denormalization process, right?
+
+When somebody tweets, you got found out a whole bunch of copies, put them in the right place.
+
+But now we just look by the thing we want to look by, and that gives us exactly the data we're looking at.
+
+As opposed to having to go and like, you know, follow a normalized relational structure and reassemble things with a bunch of joints.
+
+And so in some sense, that's kind of what we're doing here.
+
+It's not exactly the same thing, but we're saying, let's go make something and let's just makes it efficient to look it up by the thing we're going to use when we look it up.
+
+Right?
+
+We are going to make extra copies of the data, right?
+
+When I insert a robe, if I have a bunch of indexes, it has to go and insert copies of the relevant fields in all the indexes.
+
+So I'm actually introducing the very redundancy that we try to get rid of with normalization.
+
+Right?
+
+Homalization, don't write that down twice, write it down once, and link it.
+
+You put indexes, now we're writing it down a bunch of ways, you know, according to how we want to search.
+
+But the difference is, the system manages that, right?
+
+The data model is still based on the clean table structure.
+
+And then the indexes give us the redundancy, but it's managed by the system, you know, so it's not a modeling problem.
+
+And it's purely a, it's an optimization, right?
+
+And as we see, we can we can add and remove indexes.
+
+It doesn't affect the table data at all.
+
+There's a little time, you know, to construct the index or to tear it down.
+
+But so it's not something you would normally do on the fly, I guess.
+
+All those we will see, many query plans actually involve making a temporary index.
+
+Using the Fube1 query, deleting the temporary effects.
+
+The query planner can actually do that.
+
+Sometimes it feeds out worthwhile.
+
+So, yeah, so I guess again, I, this is kind of how it fits in, right?
+
+This is part of what allows us to have the nice, clean, normalized database structure, but also get the efficient look ups. With the redundancy.
+
+You know, the demoralization kind of happens through the indexing.
+
+And that's what organizes it in a way to make sure the queries are fresh.
+
+So figuring out which indexes to add becomes an important skill in building and maintaining database.
+
+Every index comes with overhead.
+
+There's space overhead, because we're doing this duplication.
+
+There is overhead at insert time and an update time and a delete time.
+
+So any mutations, you have to modify not only the original rows, but also all the indexes that could reference.
+
+So that adds extra expense at runtime, right?
+
+Slows things down.
+
+So you don't just want to put like spray indexes everywhere.
+
+Instead, you want to do the ones that are going to guide the database engine to an efficient query plan, or at least a loud construct, an efficient query plan.
+
+Where would be some kind of natural places to add indexes?
+
+Somebody gave you a big database, you didn't really know much about it, except it was slow.
+
+Where would you start looking?
+
+Yeah.
+
+Don't you call me reference or easily recognized attributes, like a name thing or...
+
+So you might just go with some heuristics and say, seems like people are probably gonna look things up by these fields.
+
+Sure.
+
+Yeah.
+
+And I think about common drawings that I'm done by primary ease.
+
+Yes, or joins that are done by primary keys, where it's a table with a row ideas, not the primary.
+
+All right, this is actually a pretty common situation.
+
+You have a primary key, but it's not an integer primary key.
+
+So it's equalized specific, except that there are other systems that do the same thing.
+
+So it's not just equal white.
+
+But you may think looking up by the primary key is efficient, and looking at my primary key is actually a full table scan.
+
+Or scan until it finds a medical stop or...
+
+But that can be kind of a nasty surprise if you're not expecting it.
+
+And so that's when we're, you know, you either migrate over to a B tree and some of a B plus tree and get rid of the row IDs, or you want to add an index on the primary key.
+
+Um, one that's usually implemented with an index is if you insist that a field be unique, that is not like the primary.
+
+And the best way to, like, that is actually a kind of index, a unique index that basically exists to do that.
+
+I know if you declare it separately, that happens.
+
+I dont know if you declare something unique in the main scheme if it creates one automatically off the top of my head.
+
+What else?
+
+And then it really comes down to, you know, what's the, how do you, let's step back.
+
+How do you optimize anything?
+
+You can build something and slow, what do you do?
+
+You have to always take the most time.
+
+You measure.
+
+Yeah, right?
+
+You run representative data loads on it. That exposes the slowness, right?
+
+But it's realistic too.
+
+Hopefully it's like, give you capture a trace of the thing you're actually running.
+
+And then you go in and you have measure what part was slow.
+
+So that's it's no different with databases.
+
+You don't just kind of dive in and start creating indexes.
+
+You find the queries that are slow.
+
+So usually most systems, this is something people like does not have.
+
+But most, like, my SQL is really post-cresting as well, you can say, like, log every query that took longer than 500 bucks.
+
+Or something like that.
+
+But you can do it in your application layer too.
+
+The database isn't supported natively.
+
+And find the ones that are slow and then you go and, you know, explain query plan, figure out what it's doing, and kind of look at it and scratch your head and see if you can think of a faster way.
+
+We're trying to figure out why it didn't do what we thought was the obvious.
+
+Which then requires, you know, good understanding, good instinct is kind of an intuitive understanding of what's fast and what flow, understanding these data structures, understanding what's possible.
+
+Great plans.
+
+So it requires basically a lot of expertise in how the database is in.
+
+Which is why we're going to spend most of the rest of the semester talking about how databases are going.
+
+Because sequel is kind of a quintessential example of a leaky abstraction, fact, it was one of the ones Joel Spolski's original essay where he coined the term leaky abstraction, used sequel as one of the examples.
+
+So he was a prolific blogger in the early days of blogging, Roosevelt software engineering.
+
+And again, one of his essays, the law of leaky abstractions, said that in computer science, we love abstractions, they're great, right?
+
+They hide complexity behind something simple.
+
+And very often they are eaten.
+
+So it works, except sometimes you kind of have to be able to see through the abstraction to actually use it well.
+
+And sequels are perfect example of that.
+
+The ideal is, I write a select query and I just explain the data that I would like that.
+
+Right?
+
+And how it relates to other data, you know.
+
+But I don't give any instructions about how to go find them.
+
+And the job and the database engine is to figure out the execution plan to go efficiently satisfy my query giving the data I was asking for.
+
+And this works remarkably well, right?
+
+Database engines accumulate optimizations over time.
+
+They figure out ways of, you know, better ways of approaching a query.
+
+Um, as, you know, not natural.
+
+As the developers, like for the find them, identify modeling some things.
+
+But sometimes you do something and it's just, you know, the ideal didn't work.
+
+You have to understand, right?
+
+How do you tell it to go faster?
+
+Bugled an index.
+
+How do you know which index to add?
+
+You have to understand what it's doing now. And what tools it has its disposal.
+
+So if you want to be a good sequel user, somebody who writes good sequel that is fast, and applications that are passed, you need to understand how that database is implemented, at least at a rough level, and what tools the database system understands, and how you can influence it or apply them as a user.
+
+It is.
+
+So, right, in the kind of surface level, you just learn to write queries and maybe learn a few patterns for how to write index.
+
+I agree.
+
+But really, you know, if you want to be good at it, you want to be, have this kind of grow, um, you know, have your skills improve over time.
+
+This is one where you have to peel back the abstraction or can understand how the same actually goes.
+
+Which, I don't know.
+
+To me, that's like.. A good quality.
+
+I want to understand how it's working anyway.
+
+And, um, if I have a good intuitive sense of what it's actually doing, that just makes it a better tool for me, just more comfortable with it, just homebreakers.
+
+Um, There are other kinds of analysis.
+
+Sequel light just has features.
+
+But other engines will have, like, hash fillers, another kind of, right?
+
+That makes a lot of sense if you were looking these up by exact message.
+
+It's not very helpful if you're looking at ranches or prefix.
+
+Now, either a life query, you say everything that starts with CS, uh, that's a full table, so.
+
+You're using hashtags.
+
+Um, So there are other ones, but Beatree is, I mean, just an ode to Beatree's here, right?
+
+This is a great data structure.
+
+Like, it really is.
+
+It's super flexible.
+
+Like, simple life, it just has the bee, tree, and B plus tree.
+
+It doesn't bother with any other kind, is a remarkable database system that handles a lot of stuff really well.
+
+Like most tasks work perfectly well.
+
+We don't really need anything beyond it.
+
+You know, again, there are some cases where it might be helpful, but they tend to be specialized.
+
+And they're just incremental improvements usually.
+
+I think the advantage of the hash table is that order one lookup, right?
+
+But we said, you know, in practice, when you have a decent sized cash, the upper levels of the index are in cash anyway, and so it kind of ends up being another one look up in the tree most of the time until you get to like really big data sets with undersized cash.
+
+And that's kind of not the trend of modest systems.
+
+Modern systems, we tend to have, um, yet as much memory as we do data, is a very common case.
+
+In a case where that's not true, somebody probably made a poor bodies.
+
+You know, they should, you should probably get a bigger, bigger memory of that, if your business actually depends.
+
+Maybe you just don't want to pay Amazon's prices.
+
+So maybe you should just buy your own circle.
+
+But, you know, if your business is actually, like, depending on the database, So there's a kind of a Something we'll look at later in the semester.
+
+Michael Stonebreaker was sort of the touring award winner and kind of a leading figure in database development over the years.
+
+And he was, you know, some collaborators in the paper 15 years ago now, or so, and they were talking about kind of a future databases.
+
+And one of the things he noted was that the database market is kind of separated into different pieces.
+
+There's data warehousing, where your Walmart, you track every time anybody scans a bar code, anywhere in the store for any reason, or check out anything like that.
+
+They should record all of that new data analysis.
+
+That requires a special kind of database called, or especially organized, the one called the call store.
+
+There are...
+
+Anyway, there are a couple places where the market can be kind of carved up, the place where normal relational databases sit, is mostly for online transaction processing.
+
+This is your storefront, where you need to make sure the inventory matches the shopping card, matches the credit card, and that all goes through Tom.
+
+When you purchase something.
+
+And he set a big online transaction processing database, like a pretty, you know, way bigger than most, is terrifying.
+
+Terabyte's pretty big, right?
+
+Well, if your business has a terabyte, you know, like one of these larger databases and it's a terabyte in size, how much does it cost to just buy a server, a terabyte of that?
+
+And the last time I looked, which is probably a year ago before ramp prices started spiking. Was that was like 10 grand.
+
+Which, you know, that's a lot for a phone or a laptop, but for a server that your business runs on, that's not very much.
+
+Maybe you want a couple of them, so you can have replicas and things like that.
+
+But we're getting to the point where, again, looking at real-world database sizes, making sure you have enough RAM is probably just a good idea anyway.
+
+Of course, even further chase the argument and says, that's why you shouldn't, you know, we shouldn't be building relational databases like we do.
+
+You know, the thing he created is now, I'm trying to kill, makes sense.
+
+Because if you're going to assume if it's in round, you should redesign from scratch with that assumption and you take very different approaches and get radically faster systems.
+
+So I keep waiting for those to catch up.
+
+There are a few systems built around that premise.
+
+They've been developing and deploying much slower than I would have expected by now, but yeah, they are radically faster.
+
+But, you know, while we're still here in kind of that interim space, that liminal space, there's, um.. Probably a good server design for most systems, just get more wrap. And make sure it's there.
+
+And again, back to our own 2 of E tree.
+
+That means of each tree, you know, again, why not just use settle on one data structure that kind of gives you all the flexibility for range queries as well as correct lookups.
+
+You can find the smallest key, all those things are really efficient.
+
+And, yeah, well, technically, a hashtable might be faster, and some cases in practice, it's not really faster once you set your nutrient, right?
+
+So it's a pretty great data structure.
+
+And so well too, I think the really brilliant part of it is it's not like this theoretical data structure. Something that was built around how disks actually work.
+
+And now how SSDs actually work.
+
+And the hierarchy of memory, right?
+
+Main memory is much faster than those things.
+
+And it's, it captures that reality.
+
+And I think that's kind of a, you know, kind of a beautiful design.
+
+You have something that is accounting for all the complexity of the real world as well as the theoretical operations you want.
+
+And it gives you a really good balance.
+
+What I think is kind of remarkable, or something that's really interesting, I guess, that people figured out, you know, sort of a decade, though, for a fairly recently, these things go.
+
+Was the beach freezer not just for disc storage?
+
+If we look at the rest of our modern computer systems, they have a big memory hierarchy, too.
+
+Right?
+
+They have level one cash, level 2 cash, level free cash, and main memory.
+
+Main memory is slow when you're talking about caches.
+
+So, We learn about binary research traits, right?
+
+If you want a data structure where you can find things by either key and you can scan ranges of key and it's an in memory data structure, a balanced binary tree, like a red black tree, is usually kind of the word course that you reach for.
+
+If you just want to be able to look up IKE matches, hash tables are great.
+
+If you ever need to do ranges or find the smallest key, a tree structure wins.
+
+But we usually go for a binary show, right?
+
+People figure it out, why not use a bee tree for memory?
+
+So we have nodes, we put some number of, you know, keys in each node, and then have a bigger fan out factor.
+
+And the premise being that, like, once you get to, like, the roof out of the tree, you're gonna be fishing around in there, like, you know, some binary searching where they'll find the child that you need to navigate to.
+
+Then you get there, you don't, like, do a block load operation, exactly like this, except you kind of do cash lives get loaded, right?
+
+In practice, we never access individual bites or words from memory.
+
+The hardware is set up to always transfer cash lines of typically 64 bytes.
+
+So it's not that you squeeze it into exactly 64 blocks, but you're kind of rooting around in neighboring blocks of memory, neighboring blocks never conflict in cash.
+
+So you work out with kind of a range of those, and you end up with something that's faster than using a binary search tree.
+
+Because, again, it kind of looks at the reality of modern systems.
+
+The abstract views we have rack.
+
+Random access memory.
+
+You can access anybody you want without penalty.
+
+You can bounce around.
+
+Except that it's much faster if you actually scan when you're being safe.
+
+Right?
+
+If you play nicely with the cash, or even if you're not playing nicely with cash, linear scans are faster than linear than random lookups.
+
+So when you look at the actual reality of RAM, whose name is kind of deceptive, it's so called, because older ones are sequential access.
+
+They were actually, this one really great kind of crazy thing.
+
+You'd have drum memory, where this like spinning around, you just have to wait for your memory to come under front of the reed, essentially, kind of like a disc.
+
+And that was the, or there are these other kind of crazy things you like send them to a loop.
+
+So random access, compared to that, yeah, you actually can go anywhere.
+
+But it's not to say that every access is like equal performance.
+
+So a bee tree actually works better.
+
+Like the Rust fan library has a bee tree, is one of the standard collections.
+
+You have hash tables, of what you're looking for is purely key value, your key lookup, by exact match key.
+
+And rather than using, like, a red black tree, you go to a beach tree.
+
+And I looked this up recently, because I was kind of wondering how the size of the nose, and I think they ended up going about, like, 12 or 13 entries per note.
+
+And they figured that out by just testing a bunch of different sizes.
+
+And apparently, going with the one to 10 of the fastest, which is really bad.
+
+So I think that's kind of interesting too.
+
+We really, these are strongly identified with databases and file systems and some other storage, but disk-based storage.
+
+But the idea, really, it's this kind of asymmetric speed idea.
+
+I get a block, that's kind of more expensive.
+
+Doing more operations within a lot, that's cheaper.
+
+And that actually applies.
+
+That's actually what memory looks like as well.
+
+Yes.
+
+So I think it's pretty cool.
+
+We'll look more...
+
+We'll go back to doing some more query stuff next time. Before we come back and really dive into the data structures and things like that.
+
+I think it's kind of useless to talk about indexes, about actually getting into a little bit of how they're implemented.
+
+To me, when I hear just abstractions and just interfaces, it just doesn't settle into my head.
+
+I have to know how to sense it how it works before it makes sense to me.
+
+So that's why I'm presenting this way.
+
+So just a reminder, we do not have class on Monday because it's a holiday.
+
+So we'll see you in the next time. 

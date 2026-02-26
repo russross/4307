@@ -1,0 +1,9 @@
+< index 2841 [68646] [68646]
+> [68646, 8, 3996]
+> [68646, 199, 3997]
+> [68646, 338, 4000]
+> [68646, 473, 3999]
+> [68646, 1001, 3998]
+> [68646, 701374, 4001]
+> read 3 pages with 0 table scans and 1 index scan
+> scanned 23 total rows and returned 7 rows to the client app

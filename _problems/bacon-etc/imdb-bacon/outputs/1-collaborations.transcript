@@ -1,0 +1,54 @@
+> +----------------+--------------------+--------------------+
+> | collaborations |       name1        |       name2        |
+> +----------------+--------------------+--------------------+
+> | 12             | Adile Nasit        | Sener Sen          |
+> | 12             | Ethan Coen         | Joel Coen          |
+> | 12             | Joel Coen          | Ethan Coen         |
+> | 12             | Sener Sen          | Adile Nasit        |
+> | 11             | Adile Nasit        | Kemal Sunal        |
+> | 11             | Aysen Gruda        | Sener Sen          |
+> | 11             | Kemal Sunal        | Adile Nasit        |
+> | 11             | Sener Sen          | Aysen Gruda        |
+> | 10             | Akira Kurosawa     | Takashi Shimura    |
+> | 10             | Akira Kurosawa     | Toshirô Mifune     |
+> | 10             | Takashi Shimura    | Akira Kurosawa     |
+> | 10             | Toshirô Mifune     | Akira Kurosawa     |
+> | 9              | Adile Nasit        | Aysen Gruda        |
+> | 9              | Adile Nasit        | Ertem Egilmez      |
+> | 9              | Adile Nasit        | Sadik Sendil       |
+> | 9              | Akira Kurosawa     | Hideo Oguni        |
+> | 9              | Aysen Gruda        | Adile Nasit        |
+> | 9              | Ertem Egilmez      | Adile Nasit        |
+> | 9              | Hideo Oguni        | Akira Kurosawa     |
+> | 9              | Kemal Sunal        | Sener Sen          |
+> | 9              | Sadik Sendil       | Adile Nasit        |
+> | 9              | Sener Sen          | Kemal Sunal        |
+> | 9              | Takashi Shimura    | Toshirô Mifune     |
+> | 9              | Toshirô Mifune     | Takashi Shimura    |
+> | 8              | Adile Nasit        | Halit Akçatepe     |
+> | 8              | Akira Kurosawa     | Ryûzô Kikushima    |
+> | 8              | Daniel Radcliffe   | Emma Watson        |
+> | 8              | Daniel Radcliffe   | J.K. Rowling       |
+> | 8              | Daniel Radcliffe   | Rupert Grint       |
+> | 8              | Emma Watson        | Daniel Radcliffe   |
+> | 8              | Emma Watson        | J.K. Rowling       |
+> | 8              | Emma Watson        | Rupert Grint       |
+> | 8              | Ertem Egilmez      | Halit Akçatepe     |
+> | 8              | Ertem Egilmez      | Kemal Sunal        |
+> | 8              | Ertem Egilmez      | Sener Sen          |
+> | 8              | Gunnar Björnstrand | Ingmar Bergman     |
+> | 8              | Halit Akçatepe     | Adile Nasit        |
+> | 8              | Halit Akçatepe     | Ertem Egilmez      |
+> | 8              | Ingmar Bergman     | Gunnar Björnstrand |
+> | 8              | J.K. Rowling       | Daniel Radcliffe   |
+> | 8              | J.K. Rowling       | Emma Watson        |
+> | 8              | J.K. Rowling       | Rupert Grint       |
+> | 8              | Kemal Sunal        | Ertem Egilmez      |
+> | 8              | Martin Scorsese    | Robert De Niro     |
+> | 8              | Robert De Niro     | Martin Scorsese    |
+> | 8              | Rupert Grint       | Daniel Radcliffe   |
+> | 8              | Rupert Grint       | Emma Watson        |
+> | 8              | Rupert Grint       | J.K. Rowling       |
+> | 8              | Ryûzô Kikushima    | Akira Kurosawa     |
+> | 8              | Ryûzô Kikushima    | Toshirô Mifune     |
+> +----------------+--------------------+--------------------+

@@ -1,9 +1,4 @@
 --
--- the database schema is in the file .a-schema.sql, or you can
--- query it from within the sqlite3 shell using ".schema instructor"
---
-
---
 -- write a SQL query to delete all students who have ever failed a class or
 -- who have never taken a class.
 --

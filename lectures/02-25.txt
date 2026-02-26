@@ -1,0 +1,1895 @@
+For you EBI is train All right, I guess welcome everyone.
+
+Uh, any questions, starting off?
+
+Just little Caesars again?
+
+It's a habit.
+
+Um.
+
+So, I'm gonna basically pick up where we left off last time, looking at the file format, the sequel light uses, and kind of drilling into some details.
+
+So, we saw the header, format, and then we, let's see, use the starter code, I guess, for the next project, to kind of navigate some media tree structures, right?
+
+So we looked up.. Close encounters of the 3rd time, I think, in our IMDb database. Right.
+
+So maybe we'll just kind of repeat that exercise, or do something similar, as a way of warming back up here.
+
+So let's pick an actor this time.
+
+Or a person in the movie industry, I suppose.
+
+Um...
+
+Or a name.
+
+What's the name of an actor, actress, director, writer?
+
+Kevin Bacon.
+
+It's just somebody other than Kevin Bacon.
+
+Michael.
+
+Anthony Hall.
+
+Another stable people, okay?
+
+Well, let's start with.. Tables.
+
+Oh, yeah.
+
+So I did this my same trick of forgetting to specify the database when I started. And then ignoring the thing here that says connected to a trans in memory database.
+
+Let's try that again.
+
+Okay.
+
+People.
+
+So maybe the name's not right.
+
+Select star from people.
+
+Or name, like...
+
+Michael, Mike Something Hall.
+
+Is that a real person?
+
+I thought it was.
+
+Sorry?
+
+I've heard scissor hands.
+
+Oh, I've never actually seen it.
+
+Didn't he play Bill Gates in that fire in the valley?
+
+I think of the right person.
+
+Anthony Michael.
+
+Anthony Michael Hall.
+
+Okay.
+
+Yeah, there's a bunch of 80s movies, but then I think...
+
+I'm thinking, who am I thinking of?
+
+Pirates of Silicon Valley.
+
+Yeah, Anthony Micro Hall is Bill Gates.
+
+It was the thing about early Microsoft and Apple and stuff like that.
+
+Okay, so let's get, let's try again with Anthony Michael Hall.
+
+Oh, there we go.
+
+So now we've got his ID number of 1309.
+
+I'm gonna write it down.
+
+So, um, person ID.
+
+It 1309.
+
+Now let's go through our look up exercise here.
+
+Um, so back out of here, I'll run.
+
+Maybe run main.
+
+By the way, if you're doing Python?
+
+How many do you use UV?
+
+Here to make your life better.
+
+Yeah.
+
+Don't ever use PIP again.
+
+Use UV instead.
+
+So, right, Python has this whole environment concert, right?
+
+You install packages, you know, step back even further.
+
+This is the problem that is, that's all programming languages.
+
+Even though we now have lots of projects going on, and they may have incompatible requirements.
+
+So, the Python has really kind of gone strongly in the direction of saying, You should not be, like, installing packages in your system.
+
+You should be installing them as part of your project.
+
+And so, uh, there's still kind of hybrids going on with that.
+
+But that's kind of the way you're supposed to now structure the preferred way of structuring iPhone packages.
+
+So you create like a virtual environment and, you know, you source some incepts and environment variables and things.
+
+And I kind of hate doing that.
+
+UV will do it as well.
+
+So you can use a replacement for PIP, and it also just kind of a general, like, Python environment management system.
+
+It's much faster and nicer and more modern.
+
+So, uh, let me just go, let's see, where's a project that I use that?
+
+Um, Trying to remember, uh, like, I'm using this all the time, and now I can't think of the projects that I've used it in.
+
+Um, Uh...
+
+Oh, here's a project that I have vibe coded and never actually tried running.
+
+I don't really trust it.
+
+I think I gave it too much leeway.
+
+Um...
+
+Oh, and it's in rusted way.
+
+Never mind.
+
+That's how much I was involved.
+
+The writing of it, I couldn't remember what language I did it in.
+
+Um...
+
+Uh...
+
+Here, I'll do it, uh, something I'm working on, a co grinder refactor thing.
+
+Um...
+
+So, here's a fairly typical Python project now, and.. One thing you'll see is the, let's see, PiProject.tommel file.
+
+So this is the, again, the kind of modern way of doing this. Is you have this file that declares information about it.
+
+So I'm playing around with a Python port of Code Grinder.
+
+I'm doing that because all the LLMs are a lot better at Python than anything else, a lot of their training, especially a lot of their post-training is done on Python.
+
+A lot of the benchmarks are in Python, so they are trying to, like, they train for benchmarks.
+
+Um, so I found with some things that I've had more success, like doing something in Python, then pouring the results where I actually wanted to be, like, trying to work directly, but, like, no, I was surprisingly going to draw the script.
+
+For what?
+
+For surprisingly, they're on the script.
+
+Yeah.
+
+These are things that have lots of info, lots of training data, but yeah, a lot of post training, especially, because anyway, so you can tell, you know, your description, your version number, whatever, the version requires, and then the dependencies here.
+
+So this one needs GRPC, IO, at least this version of proto bus, at least this version.
+
+And then I also have some tools.
+
+So TY is a type checkter for Python.
+
+I use a tool called pie test, but just like finds the tests and runs them and some other helpers and things like that.
+
+So you put all this stuff in a declarative fashion here, you know, in this this file.
+
+Um, And then you say things like UV, oops. Run Thai, check, and this is gonna run the Thai, type checking tool, giving it the parameter check, which shows and checks the types of everything, all the statically to clarify phone types, but it also sets up the environment for the column.
+
+So I don't have to, you know, pollute my environment, I guess.
+
+Um, and it will, like, install things that are missing if they're, if necessary.
+
+So you can see this is in a broken state right now.
+
+And if you just want to run the code, you can say, or like, you want to run a Python shell, um, again, with these dependencies of it, you know, all the environment available.
+
+So, that's just something, again, kind of the modern Python landscape.
+
+You should be using that.
+
+So let's go back to where we were.
+
+Did I have a?
+
+4307 problems, B tree, step one.
+
+So if I do UV run, uh, in the name of a file, Python file, it, um, again, this one doesn't actually have any external dependencies, but, uh, but that's kind of the way you should be doing things now.
+
+Um, and I would highly recommend setting up tie checking, so using a tool like Thai, there are also a bunch of linting tools, um, which linter just looks for common mistakes.
+
+COVID is probably, I mean, technically correct, but probably wrong. Or against the idioms of the language.
+
+So they're like, there's one called rough, that's popular.
+
+And all these supporting tools now are being written in rust.
+
+So all the python supporting stuff, rust and speed, becoming more and more load bearing there.
+
+So you get something that's a lot faster, among other things.
+
+Okay, so back to what we were doing.
+
+So, yeah, I was gonna try to start demoing this, so I'm running just main dot pie, and remember, our interface here is you type one command, and it, like, runs some stuff, and your code goes here at some point to do implement some of the missing pieces, the actual searches.
+
+So we said, page one, if you just give it the number of a page, it decodes the page and just dumps the contents of it.
+
+So, I looked at the header to see how big the pages are.
+
+I think these are 512 bites, if I remember, I had scrolled off the top.
+
+And, um, So when I say page one, it loads the 1st 512 bytes of the file.
+
+It notes that page one is special and the 1st 100 bites were reserved for the header.
+
+So then, true to the rest of it is the ordinary E tree page, look to the header of that, to figure out what kind of E tree page is, and be code search.
+
+So in our lookup process, right, we're going to go look up Anthony Michael Hall.
+
+Um, We need to figure out where the people table is.
+
+So the page that's root or the table that's rooted at page one is the catalog, the schema table.
+
+So, um, I can look, we can write this here, let's see, what's called schema.
+
+Starts at page one, and then it has 580, 581, uh, sorry, 980 here.
+
+With links, now, one, two, and three, sorry, one, two, and 3 are the row IDs, and then we have links down to 580.
+
+581, 980.
+
+And the right link is up in the page header.
+
+So that's the structure, the beach restructure, this catalog.
+
+So we'll use that to go and just kind of examine these pages.
+
+So if I look at 580, that's where the people table is, that's actually the one I need.
+
+So, we can stop there.
+
+So, if we're looking at it, so, people.. Starts it's rooted at page two.
+
+So the format of this is, is it table or an index?
+
+What's it called?
+
+What does it act on in case of an NS?
+
+Just repeat the name for cable.
+
+Whereas it rooted, what was the statement to create?
+
+Some databases actually have a whole relational structure describing columns and all that kind of stuff.
+
+CQLI just goes to it as a string and says, well, just recarcelation.
+
+It's a perfectly valid way to do it, but you can't do like queries on the structure of your name.
+
+It's like, you can with others.
+
+So this starts with page two.
+
+Um...
+
+That was one, right?
+
+So let's go look at page two.
+
+Sure on the command again, look at page two, and.. Uh, we know we're looking for 1309.
+
+Nice, mercifully short number.
+
+So if we look at this, this B tree structure has 1845, 101, 508, dot, dot, 393-7434.
+
+As of right, week of 537.
+
+Over here, we have left link, going to 68.
+
+Between these two, it would be 69.
+
+Um, There was a 128, uh, dot dot, 490.
+
+All right, that's our beach restructure, and we need all the way left, right?
+
+Because we are less than or equal to 1845, therefore follow the left of that entry.
+
+So we'll run this again and get page 68.
+
+I'm not going to try and draw that. 1,309, but if we look down here, we want something, we want...
+
+This is our relevant entry, right?
+
+It's always, what, less than equals, are they name key, follow that last link.
+
+The one above it is too small.
+
+So I think we need to go down to the...
+
+One of 40 or 13.
+
+44. 44 is the last one.
+
+Royal ID 1322.
+
+Now we're to a leaf, and look at that.
+
+There's Anthony Michael Hall right there.
+
+Uh, let's just get an index.
+
+See how it compares.
+
+So I remember an index is going to have a B plus, sorry, a B tree, whereas this is a B plus tree.
+
+And again, the difference, the reason for it is with row IDs, they're compact, so we can solve those intermediate notes, you have, well, these weren't very filled.
+
+The one we were looking at, at least, but you can pack quite a few of those in.
+
+And then all the data is belief ones.
+
+For an index, what was the reason?
+
+Why doesn't that make sense to you to be plus true for the index?
+
+Remember?
+
+So remember, the difference is, the bee tree index trees put a full row in the intermediate, you know, the root and the intermediate nodes, as well as the leaf, all the same in that way.
+
+And right, the issue was with a B plus tree, you're copying the key at each level on the way down.
+
+And when that's just an integer, that's not very much copying, and that gives you these really densely packed intermediate novels for the future, high levels.
+
+Whereas if you, for an index, the key is kind of the whole thing, or most of it, everything except, and in fact, the value is usually just like an integer.
+
+So the part you're saving, you know, to play leaf is the smallest part.
+
+And the part you would be copying all along the way is the big part.
+
+You might as well just be a hole.
+
+So all right.
+
+We just kind of don't save anything by doing a B plus treat for index trees.
+
+So let's go look at one of those.
+
+Let's go back to one.
+
+We'll go over, I think it was our last page, so 2288 is where we had a couple indexes.
+
+Here, our indexes are called Title 5 Primary Title, and they create statements a little hard to read there, but, well, this is the first one, sorry.
+
+The table on ratings, we're going to say ratings, actually.
+
+That's the table.
+
+So yeah, the index title by primary title acts on the titles table, rooted at 2395.
+
+I should write that down.
+
+Articles.
+
+I also think I'm just gonna remember these numbers and I never remember the numbers.
+
+So that's why I write it down.
+
+Title five, primary, title.
+
+The phone is rooted at 4395.
+
+And the statement creating it was created as titled by primary title on titles, parentheses, primary title.
+
+So, what's gonna be in an entry in this series?
+
+And...
+
+So we'll start with the primary title, right?
+
+And that's when we be sorted by, and then it will pair it with the role ID of your original title.
+
+We have another one down here, crew by title in person.
+
+Um, and we see in here, it has 2 entries, specified, title ID, and person ID.
+
+So every row in that is going to be a triplet, title ID, person ID, crewing.
+
+So if we go, let's see, so now let's go, let's go find a title.
+
+And this time we will use the index to find it, and then we'll go and look up the main entry.
+
+So, uh, 2395 is the root of the index.
+
+What's a title?
+
+New title.
+
+No, we haven't done it before.
+
+You want to nominate a film or a TV show?
+
+Dinosaurs, dinosaurs, dinosaurs.
+
+Okay.
+
+Um, so, where do I go from here?
+
+Right, 2773, right?
+
+I want to follow, I want to go left from Hot Fuzz, but not as far left as Cratching Tiger Hidden Dragon.
+
+Um, if I did want hot fuzz, uh, it's ID, it's title ID is that, it's 425 112, right?
+
+We won't see hot fuzz in this next thing.
+
+So here's all the values down here.
+
+Um, the dinosaurs would be to the left of dolls, but to the ride of diehard with a vengeance.
+
+2989.
+
+We're to a lease.
+
+We don't have any left links coming out of here, and.. We don't have dinosaurs.
+
+Didn't make it in the top 2,500 or whatever.
+
+Yeah, it's a show about movies.
+
+Oh, maybe.
+
+All right, well, let's pick a new one.
+
+So the land before time?
+
+Is it no land for them, or is it land for?
+
+And that one has nothing blue lines, so, and thus Florida Project.
+
+But I actually don't know what the movie was, so they do include the Buff.
+
+It's there in here, but I don't know if it was there in the movie.
+
+Let's see, Dan.
+
+And it's the...
+
+Well, so it's not a cartoon.
+
+How about that?
+
+Beetlejuice.
+
+Okay.
+
+2733.
+
+A bit cartoonish, perhaps, but, uh...
+
+Fair amount of, like, effects, I think, but, um...
+
+Beetle is spelled...
+
+B-E-A?
+
+D-E-E?
+
+Sorry, because the Beatles are not named after the insect.
+
+They're named after like Beatnix or something.
+
+Isn't it like a musical beat or something?
+
+I think there's some argument about that.
+
+It's a music beat, but I think it's actually specifically after some movement, you know, related to that.
+
+But yeah.
+
+B, okay, so 2853, is that what you're telling me?
+
+Beetlejuice.
+
+We got it.
+
+So...
+
+Evil juice.
+
+Th 2 different ve.
+
+Oh, there's a lot back to one, too.
+
+Yeah, I didn't include a lot, actually.
+
+Yeah, actually, that's good, but a good thing to know, right?
+
+Titles are not unique.
+
+Yes.
+
+Beetlejuice is 9, 4, 7, 2, 1.
+
+So now we would need to go back.
+
+Let's see, movies, I think we go to 581.
+
+There's the titles.
+
+Titles.
+
+We've not written down yet, titles is rooted at 579.
+
+So let's go find fetle juice, which is titled 94721.
+
+So we start at 579.
+
+And again, it's 94, so it's going to be follow left link 697.
+
+Does that look right?
+
+And, again, you look, there's a fair number of entries in there, and I don't think that's very densely packed.
+
+I think that's still got a lot of room for expansion, but if we want 94, let's see, 94, 721.
+
+So we would go on this row, I think, and follow its left link.
+
+So 712. There it is.
+
+So it's comedy, comma, fantasies, its genre, came out of 1988.
+
+Okay.
+
+So, again, I want to spend a little time looking at the low level details.
+
+I want to look at the binary of the format.
+
+I think it's just kind of good sometimes to do that a little bit.
+
+We are so, like, high up the abstraction ladder most of the time.
+
+And I think file formats, especially binary file formats, are something we just kind of work with that much anymore, which I use like Jason, Toml, and XML, and, you know, stuff like that.
+
+So I think it is kind of worth just getting down in the muck a little bit.
+
+So I'm going to do HD on database.db.
+
+So HD, short for hack stump.
+
+I'll pipe it to less.
+
+And this is just dumping the bites of the files.
+
+We're getting 16 bytes per wine.
+
+Those are shown the bite eyes, hexadecimal, addresses on the left, also hexadecimal.
+
+And on the right, anything that renders this ASCII is shown there, if it doesn't, they just replace it with a dog.
+
+So you can see up there the header, that sequel format 3 and a zero, right?
+
+That's the pursuit, 16 bytes of the header format.
+
+Where does the header end?
+
+How big is the header?
+
+A way of asking that. 100 bytes, right?
+
+With 100 X of that small?
+
+Um...
+
+Five by 16. 100 divided by 16, We go ask ChatGPT to...
+
+No.
+
+They can't do it write a Python program.
+
+Right.
+
+It's 64.
+
+So right here is the beginning of the actual age.
+
+Where's this page ad?
+
+How big are the pages?
+
+512?
+
+What's that an accident?
+
+Your powers are two?
+
+Oh, it's the power, too, so it's easy, fitness.
+
+It should be easy.
+
+It is easy to access.
+
+And yet, here we are.
+
+Right here.
+
+200.
+
+Right?
+
+That's, that's for 100 hexadas ones, 256, right?
+
+To the eighth.
+
+So 512 by a page is we're talking about the head successful 200 per page.
+
+So that's the end of a page right here.
+
+Right?
+
+Um, and we don't quite get the next full page, but it would end, it would end at, like, 400.
+
+I guess that is...
+
+Yeah, because we're getting two.
+
+Yeah, so this actually ends in the next couple of days.
+
+So we've got two full pages on the screen.
+
+And right, this is the XV utilities just showing a star when there's just a bunch of zeros.
+
+So it's we got a bunch of shit.
+
+Yeah, there.
+
+So let's go look something up.
+
+And decode the page.
+
+And actually, and then we'll, and we'll go back to look up some more file format detail formula.
+
+So let's go, anybody remember where we ended?
+
+Well, let's just start with one of these.
+
+Um, with one of the these, uh, the, schema, pages, specific page one.
+
+So it starts right here, right?
+
+And do you remember the size of the header?
+
+It's from page. 100 is for the whole database. Happens one time.
+
+And so this page just starts 100 bytes which. To be.
+
+Remember the header was going to be 8 bites for 12 bites?
+
+Interior pages have the extra 4 bites into the right link.
+
+So this week, it is going to be an interior page, right?
+
+That's making that.
+
+So this should, right, because it's the root of the catalog page.
+
+So we should see this and, let's see.
+
+Right?
+
+You should be the order all the way over, yeah.
+
+And again, that should be the right link.
+
+Uh, What number is that?
+
+Remember what number it should be?
+
+It's been like 20, I just erased, 2288 or something like that.
+
+This is in...
+
+I think this is Big Indy. A lot.
+
+So, um, Eight times 256.
+
+It's a power of 2 that's 2048.
+
+Plus F zero.
+
+And I'd say that one's easiest to start at 256 and count down by 16.
+
+We give you 240.
+
+Add them together, it's 228.
+
+So, a good 70 shack there.
+
+So that leaves us the other 8 bytes of the header, so let's go back to the header description.
+
+Um, I think if we scroll down, we'll see the page header.
+
+IS, one bite, indicating the B tree page type.
+
+So, we had a five there.
+
+That was this one right here.
+
+So 5 means it's an interior table.
+
+AKA B plus tree page.
+
+As expected, that's good, right?
+
+That's what we have here.
+
+It is an ordinary table.
+
+It contains the schema.
+
+And then, let's see, the next bite is the 2 by integer at offset 1.
+
+Okay, 2 by integer, gives the start of the first free block on the page, or 0 if there are no free blocks.
+
+Let's see what that actually is.
+
+Start the 1st free block.
+
+I guess zero, I guess there are no free blocks.
+
+Again, I forget off the top end, but I think this is when you have, you had all your data there, you deleted something in the middle, so there's like a hole.
+
+I think it's the indexed refresh one.
+
+So this one has tightly packed data.
+
+I might be remembering that wrong, but I think that's right.
+
+The 2 byte injured offset 3 gives the number of cells on the page.
+
+Again, these are big Indian throughout.
+
+So, we expect to have three cells on this page, right?
+
+And again, for some reason, I delete, erased, you know, delete things from the board.
+
+I erased, we had a little charge at the top level of our meat tree, right?
+
+So there were 3 entrants.
+
+I think it was real IDs, one, two, and three, and then he's, at least, probably enough of those.
+
+So that's that's good.
+
+And then let's see what comes next.
+
+The 2 byte integer, it offset 5 designates the start of the cell content area.
+
+So the cell content area starts at 01 F1.
+
+Let's go and find that.
+
+01 F0, right, and this is relative to the beginning of the page, but this one starts at zero.
+
+So, um, So it would be right here?
+
+Start in the cell content area.
+
+And then, let's see, let's see, let's just make sure we got the rest light.
+
+So there's one bite at offset seven, gives the number of fragmented free bytes within the cell content area.
+
+Um, okay, we...
+
+That should have been marked.
+
+So we had a one byte page tied, then two by its telling where, like, where to find the first free cell or whatever, how many cells there are, where the main data begins, something about fragmented bytes, and then we have the right wing that we saw before.
+
+So that 01, F1, starts here.
+
+And we know this page ends here.
+
+So that should be the contents of the page.
+
+What follows the header.. Is 2 bytes per cell.. Telling where those cells are. Where they are, you know, down here.
+
+So you can see it is this kind of descending order, because when you add one cell, you normally put it at the end.
+
+So it's, 01, F, B, 89, A, B. So here's one full salve.
+
+O and a six.
+
+So that's 876 here.
+
+That'll be next one, and then the next one add after that, that's where it kind of works its way backwards.
+
+Right?
+
+Yeah, so you're starting at the end, right, building the data, but then the header points to where they are.
+
+So generally that's how it fills them in.
+
+It's okay to like have them shuffled in some different order, right?
+
+This is the canonical list ordered list here.
+
+But generally, when you're starting from scratch, those things get, you know, if we deleted something, it might complicate this, I guess, but I've got a pretty simple format.
+
+So let's go and see how to Interpret that.
+
+Uh, let's see.
+
+Okay, so 1st of all, one thing we have to know about is the variant.
+
+This is a variable length integer, and I'm sure this will be a very helpful description for you.
+
+It's a static Huffman coding, 64 bit choose complement integers, that uses less space for small positive values.
+
+A variance between one and 9 bytes in length, the variant consists of either 0 or more bytes, which have the high order bit set, followed by a single mite with the high order bit clear, or 9 bytes, whichever is short.
+
+I see, did y'all, you know, heard static, Huffman encoding and you're like, oh, I got it.
+
+So, yeah, so every bit by it that goes along there, it has a high word that's set, then means like, keep going, right?
+
+The rest of the 7 bits are part of the number and there's more to come.
+
+With the exception, once you get to 9 bytes, the last one does not, it will have a, the whole body can be used to stay there, regardless.
+
+Let's do the math.
+
+We want to go up to 64 bit integers.
+
+So if we're only getting 7 bits per bite for the 1st 8 bites, how many bits is that?
+
+7 times eight?
+
+7 times eight, 40...
+
+Is it 56?
+
+Right?
+
+So 56 pitch.
+
+And this is why there's a special exception for the last one, because we want to get up to 64 bits and we don't want to have to wait still over to buy a 10 for that.
+
+So I'll work out to the capture.
+
+So for small integers, we're just going to see a one bite integer with a high bit clear.
+
+And that's what we'll see first.
+
+So the goal of this is to have small, positive integers, have a compact encoding, and then bigger, positive ones, and all negative integers end up being 9 points each.
+
+So this is used, among other things, for row IDs, row IDs always start at zero.
+
+Sorry, start at one.
+
+So there, again, they densely packed normally.
+
+So you tend to have a lot of small, you know, they start with small ones.
+
+And it's also used for them in like length fields.
+
+So this encoding is used for things that are expected to be small, positive.
+
+So we are a table, bee tree, interior cell, right?
+
+And over here we have marked the 3 cells.
+
+So let's start with the first one, because this is our first actual entry.
+
+And let's see what to make sense of that bite sequence of zero, zero, two, 44, one in hexadesimal.
+
+So it has the four variants of bee trees here, and how to decode each one.
+
+Let's actually, I think it's...
+
+There's kind of a sequence, and then things are omitted when they're not needed for that kind.
+
+So here, um, Here's the kind of master sequence.
+
+This is what all of them could be, and then which kinds include them.
+
+So there might be the page number of the left child.
+
+But not for a leaf.
+
+So that's for both the interior types, not for the least type.
+
+The number of bytes of payload.
+
+There's actually a header for the cell, right?
+
+The cell contents, and it has a header and added halo as well.
+
+Yep.
+
+Just going back into the beautiful end of abstraction.
+
+Are all of the data we've set as integers gonna just end up getting stored as Martins?
+
+Or do we have to, like, when we're creating our table specify?
+
+Um, So there'll be some rules like for the for the encoding here.
+
+But if you sort of integer, it will normally be encoded as, well, there, there, sorry, no.
+
+There's a there's an encoding for data cells that's different.
+
+Okay.
+
+So it's mostly using the met data.
+
+So I don't have to do anything about, like, setting on my table a certain way so that it takes advantage of these properties.
+
+No, if you do an ordinary table throw IDs, they will be packed in as far as...
+
+The role item.
+
+Oh, this we'll see the main content cells for the series.
+
+Okay.
+
+Um, So the number paid by its a payload, that is, again, a bar in it, because again, there's a solid wall, margalite small, and lots from really small, so that tends to be a food.
+
+So let's actually look, okay.
+
+So we were in an interior node, right?
+
+Where did we mark?
+
+Here.
+
+So that's our 1st cell.
+
+So those.
+
+No, sorry.
+
+Here.
+
+I was in the header for some reason.
+
+Uh, 00 So we are an interior note, so it's going to be the page number of the left child's a 4 byte integer.
+
+So, boom.
+
+Wait.
+
+Is that right?
+
+Okay, we're at a table interior.
+
+I guess there's only 2 fields.
+
+The only other one is the ROID.
+
+So I was getting insecure, it seemed too short.
+
+Running out of bites.
+
+So this number is the left link, and that 244.
+
+What's that in decimal?
+
+512 plus 444, 40 would be 64 +4, 68.
+
+I think that might even be right.
+
+Um.
+
+Yeah, left link for row ID is 580.
+
+Okay, good.
+
+Um...
+
+And then, okay, so now we have all these what we need for these others.
+
+Here's going to be the value of the left link, here's the role ID.
+
+That is the last link for OID.
+
+So you can see we're using right now like 5 for these 1st centuries, 5 bites per.
+
+So, yeah, we can pack quite a bit of quite a few of those into.
+
+And after a little while, we're still over 2 and then 3 bites, row IDs.
+
+Again, B B plus treat is this pretty compact representation.
+
+Let's go down to a leaf.
+
+Let me see how that fit first.
+
+Um, so...
+
+Like, like when we were looking for Beetlejuice, that was, we started at 579.
+
+We were looking for key 94, 721.
+
+So we followed 697.
+
+Um, nine, four.
+
+So then we followed 712.
+
+So let's go look at page 712. Write that down.
+
+Eagle juice, and it's on page.
+
+Sorry, what was it?
+
+Sorry, sorry, sorry.
+
+That's why I'm writing it down.
+
+Okay, so if I do an HDE on the database again, uh, and I'll have to go. Race here.
+
+What page do I want?
+
+Like, let's, where do I need to, how do I go find that?
+
+It's page 571. 5 page 712.
+
+Is that really?
+
+That that already, that does not sound right.
+
+That's my...
+
+Is this correct?
+
+Yes.
+
+Okay.
+
+Wow.
+
+Okay.
+
+Here, I'll use Python.
+
+Uh, Python.
+
+Uh, so 712 times 512.
+
+And then I want to see that in hexadesimal.
+
+So at offset, 59000, I should find the beginning of this page, right?
+
+Offset.
+
+Five, nine, three zero.
+
+Five, so it should be zero, zero.
+
+Zero, 5900 zero?
+
+Okay.
+
+Hi, look.
+
+Right next to a short film doctor.
+
+So, we started to talk.
+
+We should have, we expected 8 by header on this one. Right?
+
+Because we're lef note.
+
+We're gonna start with a D. Um, that first bite is D, uh, to tell us what kind of page it is, and that is, in fact, a cable B tree leaf cell.
+
+And so the header is going to be, again, the variant, which is the total number of bytes of payload, including any overflow.
+
+We didn't have payload before, really.
+
+Oh, wait, sorry, that's the cell format.
+
+The header format.
+
+Yeah, okay, here we go.
+
+Leaf, then it's.. Can't reach that high.
+
+Mhm.
+
+Some zeros, the six was...
+
+First free block, we don't really care.
+
+Number of cells.
+
+So that should be 6 cells.
+
+And then it will be the start of the cell content area.
+
+One E, that's not very far.
+
+That's right here.
+
+So this page is densely packed.
+
+So, again, I wish I could draw on this, but I'm not going to stand on that stool.
+
+Um, so here's the offset where, so we are expecting 6 cells starting at one BB past the beginning of this page, 16E, 11E, 00 CB.
+
+That was 4 of them, 0074001 E. Then we have this many unused bytes in the page.
+
+And then that's where the last one begins, right?
+
+So again, it was packing from, since these were probably all inserted in order.
+
+Um, We end up with this, very full page and, uh, I mentioned that's a lot of beetroot implementations.
+
+If you're inserting at the end, they'll let, they'll kind of arrange nature and make pacts.
+
+So the splits, right?
+
+And split into 2 halves, a bunch of half empty pages along the way, because that's the action.
+
+So then there's some special cases.
+
+But anyway, okay, so, um, And which one did we want?
+
+Remember?
+
+So the...
+
+Is this the right page?
+
+The movie we're looking for is Beetlejuice.
+
+They see Beetlejuice.
+
+Hmm.
+
+Oh, yes, because the page numbers are one based.
+
+So page 712 is...
+
+It was 0 indicated. 0 base, it would be this, it's one base, so we need to go, oh, 7, 13.
+
+Um, I think we need to go back.
+
+Yeah.
+
+So it'd be 58 E 00 is where this page starts.
+
+Still the right kind of page.
+
+This one has seven cells.
+
+One, two, three, four, five, six, seven, and the offset of the 1st used bite, I guess, is...
+
+There's not a number we were looking at.
+
+That's this one, I believe.
+
+So I think, yeah, right here is where the data begins for the page. Goes down to the end of it.
+
+And let's just try and look ahead and find Beetlejuice.
+
+Here's Beetlejuice.
+
+I see the string beetlejuice.
+
+So let's figure out which cell it is, based on these offsets.
+
+Okay, let's see if I can find this.
+
+Okay.
+
+Sorry.
+
+We need to Fitsy where Beetlejuice was.
+
+Beetlejuice.
+
+Okay, I'm gonna stew the, change my search to be...
+
+00, 0, 5, 5, 8, 5, 8, E, 0, 0.
+
+What am I doing wrong?
+
+Five, A, E, 0.
+
+Okay.
+
+So if I scroll down and we will look for a Beetlejuice, it's starting here somewhere around FA0, probably a little less than that, maybe a little more, I guess, that's the title anyway.
+
+I think it's got the type and a few things.
+
+So FA 0 is in the range.
+
+So let's find one up here that points us to the right place.
+
+Um, so F would be one, one A 0 past the beginning.
+
+So this is, um, This is too far.
+
+So it's probably this one.
+
+So the 2nd to last.
+
+This gives us an address that precedes it. Entry after it, or sorry, it was placed after it, but the one that physically comes after it is too far.
+
+So I think a one, 018E, come down here.
+
+That would be E E starts right here and continues until, what was it, C9 or something like that?
+
+Um, Yeah, one C 9 was the next one.
+
+Oh, I lost my highlight.
+
+So, uh...
+
+Sure, what was it, 8E?
+
+And it goes down.
+
+C 9 is too far.
+
+So I believe that's the range of our data.
+
+For this cell. That look right?
+
+Right?
+
+Because one of them started here.
+
+Another one starts there.
+
+So let's go look at the format of table leaf cell, and so we can become this.
+
+It's also a good lesson on why we have computers do this stuff for us, right?
+
+Yeah.
+
+I do think again, I think this value can kind of going through it and actually just like seeing, you know, wallow in the mud a little bit and then...
+
+Um.
+
+So a bee tree leaf cell.
+
+A viron, which is the total number of bytes of payload, So 37 is the total number of bytes of payload.
+
+So, again, each cell has a head or a pay mode.
+
+So at least that's the start of our, I think it ahead includes the role.
+
+So let's see what that is.
+
+Avarat, which is the integer key, aka row ID.
+
+So.
+
+Uh, this?
+
+How do I interpret this as a bar page?
+
+That's gotta be, that one's gotta continue, right?
+
+The high bit is set, because it's 80 or higher.
+
+So this is this continuing here, which also has the high bit set.
+
+So we got to come all the way there.
+
+Let's see if we can extract the bits and make this into an album.
+
+What's 85 with the 8?
+
+Five?
+
+Okay.
+
+Good. Good, good.
+
+Right?
+
+Because that, the A is just the bid indicating there's more to come.
+
+Oh, yeah.
+
+The E4, if we remove 8 from that, 9, A, Z, E, right?
+
+It's like 14 minus eight.
+
+So six, four.
+
+Then exit Esselon, then we have an 01.
+
+Now that I like do the shifting to make this work, So, one, it's 7 bits of that.
+
+Six, seven, right?
+
+The high bid is to indicate this is the last one. 64 as a binary number is, let's see, the 4 would be 0100.
+
+The 6 would be 0, 1, 1, 0.
+
+And then the five, we only need those bits, so 101.
+
+It's to me, I mean, like, a bat, I don't know, we did this right.
+
+But do you need another 0 before though?
+
+I mean, it's implicitly, it's just infinite, yes, left.
+
+Um, so we pack those fish together and now take this as a exit as a number, I guess.
+
+We have one, 0, 2, 8 plus 3 is 11, B. And then this is two.
+
+So, hex...
+
+2 B 201.
+
+We're hoping, hmm, not, I am unconfident.
+
+That's the same number as this.
+
+Big Indian.
+
+E four Let's just convert to a bed.
+
+Can get another window?
+
+So I don't lose my place.
+
+So, to B 201...
+
+Sure doesn't look like the same number to me.
+
+Okay, let's try this again.
+
+So, whoa, oh, I just deleted, but I think it was here.
+
+I was an E that we started and went down to see E. So the first bite was the number of bytes of payload, and then.. Barn, which is the integer key, then the initial portion of the payload, and then we don't have an overflow, so...
+
+So the other test we can do is, if we know that our whole thing starts from, in this range of fights, um, and 37 of them, hexadecimal, is how much of its payload after the header.
+
+Oh.
+
+I mean, you can just, from at least see if we're looking in the right place.
+
+We covered our bar not. Our our end.
+
+So 37, each number there is right is exactly, each of these digits is one row, exactly.
+
+So seven, let's see, one, two, three, four, five, six, seven, plus 3 rows.
+
+So that part, I think, is good.
+
+I should start here.
+
+This would be 3 zero, that's 3 seven. 7 out there.
+
+So that seems to pass a smoke test, subtracting 8 from E, right?
+
+So let's, yeah, so let's go back and see if it was just our variant decoding that was the problem.
+
+So if we look at this, let's see, we had 85.
+
+Oops, 85.
+
+And I'm just gonna add it with 7F to strip that bit.
+
+And then I'm gonna do the same thing with E4.
+
+And it with...
+
+Wow, 7F. What am I doing?
+
+Uh, E4.
+
+Gives this a 100.
+
+Okay, we'll do it with decimal.
+
+And we know what one is.
+
+So, um, I'm going to take five, that first one, I'm going to times it by 128, which is, like, shifting it left 7 times.
+
+Then I'm going to add 100, and I'm going to shift that left.
+
+I'm going to write it a shifting left. 7 times.
+
+I'm gonna take that, and I'm gonna shift that left seven times, and I'm going to add one.
+
+Is that the number we came up with before?
+
+It's a different number than the one that's a different number.
+
+But it's great.
+
+Well, we're getting, like, warmer, you know?
+
+We're getting closer. Circling around.
+
+You want to be with the instructions on that?
+
+Sorry?
+
+Sure.
+
+Far in is between one and nine bytes in length, far in consists of either zero, more of either zero, or more bytes, oh, which have the high order bit set, followed by a single byte with a high order bit clear.
+
+The lower 7 bits of each of the 1st 8 bytes, an all 8 bits of the ninth.
+
+Oh, we didn't have a ninth, which is ever shorter.
+
+Lower 7 bits of each of the 1st 8 bytes and all the 8 bits are used to reconstruct a 64 bit 2s complement number.
+
+They're big Indian, bits taken from the earlier bite of the far end are more significant than bits from the ladder bytes.
+
+Lower meaning blast, so...
+
+Yeah, the least significant.
+
+So it really, so let's try this one more time.
+
+We just keep trying.
+
+Yeah, you know, I don't get there eventually.
+
+We'll just all these text numbers binary.
+
+So.
+
+So I'm gonna do this, and then I'm just gonna shift it left 14 times.
+
+And then I'm gonna add, I'm gonna put parentheses too, 'cause it seems like bit shifting is a weird precedence level.
+
+Uh, E4 ended with 7F, left shifted 7 times.
+
+Should be orring those.
+
+Ord with.. A one, ended with 7F. No shifting.
+
+Oh, look.
+
+There you go.
+
+If we just try more times, it will work.
+
+It did work.
+
+You just came, yeah, it kept going.
+
+You didn't think doing it one more time was gonna work.
+
+But what did they call the definition of anxiety doing the same thing and expecting different results?
+
+Yeah.
+
+We didn't do this.
+
+There's no different ways each time, but yeah.
+
+Okay, well, that's how you do that.
+
+Um...
+
+So that got us our row ID.
+
+So now let's look at what the payload contains.
+
+Now, here's all this is a calculator, and I've never made it all the way through this description. To see if there's an overflow, because remember, long cells, or long, yeah, long cells, the prefix of the cell is there, and then there's an overflow somewhere else. And we just said, we're just gonna make sure we don't have any of those.
+
+Let X be U minus 35.
+
+The payload size P is less than they're equal to X, and the entire halo is sort of gonna be.
+
+I don't know what what U is.
+
+Let MBU minus 12 times 32÷25-23.
+
+It doesn't sound like we just made this song.
+
+I'm sure there's, I think this is originally intended to be, I think there's somewhere else in there that says, this is going to be like a tunable parameter, but now the, it's just hard.
+
+These are just the reach, but...
+
+Anyway, I should probably just work it out sometime and figure out what the exact numbers are, but I have not done that.
+
+Here's, oh, here, this is an alternate way of doing the same computation.
+
+Um, Okay, record format.
+
+So, the header size far end, a serial type far end, let's see.
+
+Record contains a header and a body in that order.
+
+So, so we had a page header.
+
+The lettuce to a side.
+
+The cell had a cell header and a payload.
+
+Within the payload, we have records, each of which has a header and a bottom.
+
+And we'll just keep decoding these until we run out of space until we use them all up.
+
+So here's what it is.
+
+Each record, the header, is a single bar end that determines the number, total number of bytes in the header.
+
+The far it values the size of the header and bytes, including the size of our inch itself.
+
+Wait, what?
+
+Batter begins with a single bar end.
+
+Or at value, it's the size of the header and bytes, including the size far end.
+
+Following the size of our end are one or more additional var ins, one per column.
+
+Oh, so we?
+
+So here, we said it starts here, right?
+
+We had our...
+
+Right?
+
+This one was the end of our encoded row ID.
+
+And so the payload, we think, begins here.
+
+And it was 37, which was So counted seven, one, two, three, four, five, six, seven.
+
+What am I doing down here?
+
+Does this end right?
+
+Where did this end?
+
+It was C9 is where the next one began.
+
+Okay, that's what I got.
+
+I was getting wrong.
+
+So I think that is our payload right there.
+
+Margaret.
+
+Right?
+
+So we have a bar end, which is A, and that's telling.. Get rid of this.
+
+Okay, let's just actually start the whole thing.
+
+The data for a table, B, tree, leaf page, and the key of an index, B tree page, is characterized as an arbitrary sequence of B, bits.
+
+Um...
+
+Okay, payload, either table beatry data or index beatry keys is always in the record format.
+
+The record format defines a sequence of values corresponding to columns and a table or index.
+
+The record format specifies the number of columns, the data type of each column, and the content of each column.
+
+So there's going to be a.. Header for the record.
+
+So what was the 1st one we had was like the total length of the payload.
+
+Then we had the row ID.
+
+Now we're gonna have another header for the record, and then we'll have the individual record items, the individual columns.
+
+We're getting close to the actual data here.
+
+So a record contains a header and a body.
+
+The header begins with a single var in which determines the total number of bytes in the header.
+
+So, A is the total number of bytes in the header. 10, including itself.
+
+1, 2, 3, 4, 5, 6, 7, 8, 9, 10.
+
+So this is the record header.
+
+Record header.
+
+That's probably the next few letters, movie.
+
+Yes, right?
+
+And this 4 from the end is where text recognizable text begins.
+
+Um, I should probably get a different color from there.
+
+So what we're going to see in the header is now going to tell us how to interpret each call.
+
+So rather than kind of interleaving them, like here's here's what kind of college series a day, we get like all the column types and lengths, and then the raw data follows.
+
+So raw data starts here.
+
+How to interpret, solve 3 speakers.
+
+So each one of these is going to be a serial type here.
+
+It's a far end, but mostly these are going to be one bite.
+
+I think all of ours are.
+
+So the 1st one that we see is a zero.
+
+I should leave that highlighted.
+
+So how do we interpret 0?
+
+0 is null.
+
+So 0 doesn't consume any bytes.
+
+No, right?
+
+So there was an old value here that's omitted, specified in the header omitted from the content.
+
+What do you think that is?
+
+Remember the definition of a title?
+
+Or if that taught that table rather?
+
+Spoiler, the 1st one is the row ID or the primary C.
+
+So here's a little work, something to be aware of.
+
+When we have that case, remember, all of our B plus trees always have the role ideas to keep.
+
+And he said, if you declare your table to have an integer primary key, that is also the real idea.
+
+Well, as we've just seen, the row ID is a special part of the format, right?
+
+It came before we got to the actual table.
+
+It was Harv's head.
+
+And so to preserve that quality, regardless of whether or not you have an interprimary key, it's always encoded as the rotor ID, and then to avoid wasting space, it encodes a knoll where you declared the call.
+
+And then you have to know that from the from the table definition to say, ah, where the integer primary key field was, I need to do a real idea.
+
+So raw IDs are kind of structural to this table.
+
+They're part of the directly encoded format rather than just being another column.
+
+And then again, to avoid duplication, there's that special rule.
+
+So, I believe that was, we could confirm that, uh, here pretty quickly, I guess, Cornish. 4307, problems, B tree, step one.
+
+Oh, I guess we don't actually have a scheme of definition for the schema definition.
+
+I was gonna call them, just look at the scheme of definition for that table, but it's not actually declared anywhere. Implicit.
+
+So we had just looked at the values, right?
+
+We said, like, UB Run, Maine, and we looked at page one.
+
+Or sorry, what page are we on?
+
+We were on page.
+
+712.
+
+So here, okay, there we can see that clearly.
+
+So there's the knoll, and that's just the row ID duplicated.
+
+Then we expect the string movie.
+
+Oh, wait, this is, no, this is an ordinary table, right?
+
+Schema, oops, sequel light.
+
+We're not in the catalog page.
+
+I'm going insane here.
+
+Schema, this is titles.
+
+There we go.
+
+We do have a schema.
+
+Yeah, so the integer primary key, so it's just stored as knoll, and your recycle, fill in the ID.
+
+Then we have those other fields.
+
+Now, one thing to note is in the sequel light, the type that you specify for column is kind of advisory, it kind of ignores it.
+
+You can put whatever you want.
+
+So what it does is it takes the value you give it and encodes it.
+
+And then, you know, leaves that there for you to look at if you want.
+
+Or you declared it was integer or text.
+
+Because originally sequel, I didn't really have typing.
+
+It was meant to go with Tickle, a script, a dynamic scripting language, and kind of adopted this very laissez-faire attitude toward the rules of, you know, data types and things.
+
+Um, so, okay, so we're expecting a string for movie.
+
+So let's see.
+
+So the next bite is one seven.
+
+So we need to figure out how to interpret one seven.
+
+Well, that brings us down here to this range. 17 in hexadecimal is 16 +7, 23.
+
+So it's greater equal to 13 and odd.
+
+So that means it is a string encoded in UTFA, and its length is 23-13 divided by two, just 5 minus.
+
+So what we have up here is some specific size to objects that just get a one bypeder.
+
+And then, um, everything greater and equal to 12, for even numbered, you, you know, subtract out the headers that were used up here.
+
+So you bring it back to the 0 base.
+
+So by by 2 and that's going to be a blob.
+
+And any for odd number ones, that indicate it's similar, there's binary data or character data.
+
+And then you can be variable length, and since they're just alternating, after the pocket, it's formed, like, great depth, common life.
+
+It's kind of an interesting thing.
+
+So the goal is to have one byte for all of the, like, integers and things like that in headers and characters and blobs up until, you know, those kind of grow in their far engine coding. Slow as possible by doing central leaving.
+
+Right, these are all kinds of low-level details you think about when you're trying to like minimize, you know, do a compact binary formatting.
+
+So 17 that says, yeah, 5 bytes for the string, for movie.
+
+And that brings us up to this next field, which is 23 in Hexadecimal, which is 35, that's odd.
+
+So we subtract 13, which gets us to 22, divide that by 2 is 11.
+
+So, B, E, E, T, L is 5, E, G, U, I, C is 10.
+
+Wait.
+
+What were we looking at?
+
+I can't count.
+
+Um, you juice, I'm scanning 11?
+
+Yeah, 11 is what it was supposed to be, right?
+
+And then if we look at 25, another string, and that's going to be beetlejuice.
+
+And then we have an eight.
+
+So let's look up eight.
+
+Eight is integer zero.
+
+So I have a special encoding for 0 and for one, so that Booleans, which are encoded, is 0 and one, don't require an extra vite for the energy.
+
+All right, that's why that was kind of added in there later in the schema format.
+
+If we just scroll up here and look at these others, so we have Noel, takes no bites.
+
+And then we have, like, entry, you know, special types here for very sizes of industry.
+
+So these aren't borrowers for the data company.
+
+And we're only reserved for those for the ones the data serve controls.
+
+So we have 8 bit numbers, 16, 24, 32, 48, and 64 bit integers.
+
+IAAA floats, and 64A numbers, and special coding for 0 and one, special like header values, but then use 0 bytes in the coding for the actual content.
+
+So 0 and one, you can sneak in there, one by shoulder, that would be otherwise.
+
+And that's why, let's see, so over here, 8 was the zero.
+
+Um, and that's is adult.
+
+So Beetlejuice is not an adult film.
+
+Um, premiered is the next field.
+
+We have an O2, which is a 16 bit big Indian 2s complement number.
+
+So that would be, uh, le, let's see, le, juice.
+
+Um...
+
+So I think that's this 07 C4.
+
+What's 7 times 256?
+
+It would be, um, 4 times 256 is 1024.
+
+If it was 8, it would be 2048.
+
+So it's, yeah, that sounds like a year.
+
+Right?
+
+Um, 7 C4, uh, does it understand select OX?
+
+What was it?
+
+7 C 7 C4?
+
+There.
+
+Ill use sequel to do it.
+
+Selected 7C4.
+
+And it's 1988.
+
+Which, in fact, is the year of BL juice was released.
+
+We saw that earlier.
+
+Um, okay, so there's that and then another zero.
+
+So, uh, for the ended is Noll.
+
+Um, runtime minutes.
+
+Uh, we have a one field here, which is a one byte integer.
+
+So the next one should be a single bite telling us how many runtime minutes it was, and that, I think, is this 5C, maybe?
+
+Um, 5 times 16 is 80 +12, like 92, 92 minutes sound plausible.
+
+And I can look it up if I scroll up on the other page. 92, it is that.
+
+Okay, good, good. 29, this is another string, and I think we have comedy comma, fantasy.
+
+Um, And that brings us up to movies, so that's our last field.
+
+So, and that's all right, we're out of time, actually.
+
+So, I'm gonna try and push this out. Today and you're welcome to look at it if you want.
+
+You probably want to wait till we go over to class, though, the assignment is.
+
+What it is basically is to navigate the patron.
+
+But you need to do it with a python iterator, using yields and things, and, um, you probably, most of you probably never use those before.
+
+So there's some Python stuff we got coming first.
+
+So I will try and get it out, but I don't feel, you know, if you go there and you're halfway, partway to the documentation and have no idea what it's talking about, that's sort of...
+
+But, you know, you're welcome to it if you want. 
