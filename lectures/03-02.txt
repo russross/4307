@@ -1,0 +1,2163 @@
+All right, let's get started.
+
+Mm hmm.
+
+Um, is anybody any questions?
+
+So, I think I posted the next assignment, right?
+
+The Beach Street iterator.
+
+And, uh, I introduced that, and, but first, we're gonna need some background information.
+
+So, it's not like I'm fine.
+
+Our goal with this, is to be able to navigate the beach trees and sequel.
+
+The B plus trees and B trees.
+
+And what we really wanted is a nice interface to use, though.
+
+So we want to be able to find a specific element, but also to, like, step forward from that point.
+
+So there are a couple different access patterns we want to be able to use.
+
+We want to be able to scan an entire table, beginning to end.
+
+We want to be able to look up a specific element of efficiency, having queries, and we also want to be able to search for a specific element, and then scan from that point forward.
+
+So what we're going to do is just implement that last one, and that will give us the ability to do to implement all opportunity.
+
+We can just use that for the others.
+
+So, to scan an entire table, we can just search for, like, 0 as a row, I think, which is less than any valid row, I mean.
+
+That whole fine beginning and you can scan forward.
+
+We'll kinda make it work for other table types.
+
+If you want to find a specific element, we can just say, search for that, and then just never call it a mask.
+
+So that's how we'll deal with using that.
+
+And then get the basic interface would be defined, will be scan for specific element, and then let us just keep asking the more elements, and how we run out.
+
+So that's kind of the general version.
+
+So that's the iterator that we're constructing.
+
+It's something to navigate the beach trees and give us that interface.
+
+So we can use it in any of those ways.
+
+Looking forward, we're going to use this to implement a series of queries, but without using sequel, instead going directly to feature data structures, and, you know, implementing the query, execution plans, directly.
+
+Better understand how that works.
+
+Um...
+
+So I've given you a bunch of code to, like, read and unpack the different pages.
+
+So decoding, right, all that stuff we were doing last time and trying to figure out how to get the varants correct, right?
+
+I'm getting wrong, or I kept getting wrong over and over again.
+
+Got right in the end, but I've given you code to unpack those.
+
+And to unpack all the other types and to, like, find the cell headers and all that kind of stuff.
+
+I want to go through and see what look like by hand, right?
+
+Make it real.
+
+But I'm giving you the low level unpacking code for all that.
+
+So, you have the ability to, if you get a page number, it will go and get that page, unpack it in the python data structures.
+
+So the part we would really think about is how we then implement that interface where I can say, I think it's pretty easy to say, you know, here's a function that says, go find this key.
+
+It runs off and finds that key.
+
+And without that row of data, right?
+
+The hard part is then how do we say, you know, it returns and gives you that row of data, then we want to turn around and say, oh, now give me the next one.
+
+That's the part that's a little challenging.
+
+You mean, like, going from one query, a key to another query, a key, like you're wearing key after key after key.
+
+Yes, within a single B tree.
+
+So there's a search process in the bee tree, right?
+
+Navigating down the branches, so we find, well, the case would be plus tree, we'll start with, you find the leaf node that has the key you're looking for, you return it, that's great.
+
+But what we want to be able to do is, like, resume that search from deep in the recursion that led to it.
+
+So, I feel like somehow all of my classes end up with end up having a discussion about co routines.
+
+This is that moment in this moment.
+
+Oh, you mean the co-working and while operating systems?
+
+Yes, switching.
+
+It's kind of like, um...
+
+So it's usually been like hand-controlled between basically 2 stack faced contacts, right?
+
+And St.
+
+Louis Post has a feature on that, too.
+
+I don't know if it's the exact same thing, but they call it the same thing.
+
+Yeah, the city has very implementations of it, but it's a language feature that is kind of important, another lies a lot of things, but very few languages actually show it to you directly.
+
+So like in operating systems, that is like the basis of threads in the kernel.
+
+So if you're in that class, well, if you took that class last semester or the next semester, that's one of the 1st things we learn about is it's important mechanism for implementing the kind of control it currently is to do.
+
+Here, again, we're Python kind of gives us something like co routines.
+
+They're slightly different generators, but they are basically a form of code.
+
+It's actually kind of nice.
+
+The Python has it in the core part of the language, and that's something that's not terrible about.
+
+So I love that.
+
+They're called generators?
+
+They're called generators, yeah.
+
+Generators.
+
+Is that, like, import generator?
+
+Like, there's a library generator.
+
+Are they just built in?
+
+They're built-in.
+
+I love you.
+
+Yeah.
+
+So again, let's 1st define what I need here, right?
+
+For those of you who haven't, um, had this before.
+
+So let's look at a problem.
+
+So we're gonna look at the same fringe problem, which is kind of a, you know, an example problem where this makes the code a lot nicer.
+
+Um...
+
+So I got some coat I've written here.
+
+Um, I get another window.
+
+Thanks, guys.
+
+What's this problem calling in?
+
+I forgot.
+
+Same fringe.
+
+I've never heard this before.
+
+It's the same.
+
+So the fringe is this, we're going to look at binary search trees here, and the fringe is the, well, it's just the items in the order, I guess.
+
+It's really what you're navigating the lease notes, I guess, technically do the fridge, but we have elements there first.
+
+So if we were to construct a array of those items, there would be all those items, and these are sending orders when you're saying...
+
+Um...
+
+So yeah, so the train's in order, right?
+
+So there's an in order traversal.
+
+You always go to the left child first, then you look at the current item, then you follow the right child, right?
+
+So you do it in order to reversal.
+
+So here let's find some basic help for this.
+
+So got, um, a node.
+
+I know it has a key, a left and right child.
+
+Just this basic python class.
+
+We build trees with this, here's an insert function, and I'm doing a kind of a functional style.
+
+So in a lot of implementations, you'll have like something that represents the overall tree and then a separate type in the nose.
+
+I'm just doing the note type.
+
+And I'm tending to create new notes rather than altering existing ones.
+
+So I'm mostly treating these as immutable, just, I think it actually makes it simpler.
+
+So if you ever do program in LL or something, this is how you do things, but anyway, so we asked you to insert an element into an existing tree represented by an...
+
+It's kind of the root, but it might also be some intermediate structure.
+
+So we say if that node is none, then we construct a new node containing this element with no children.
+
+So we are doing a leap before you look implementation, which is common to functional programming.
+
+So let's look at kind of the core here and say, okay, that's the special case, right?
+
+We've got an empty an empty tree.
+
+But otherwise, we look at the element represented by that we're supposed to insert.
+
+We compare it with this node key, and if it's less than the key, we need to insert it down the left hand branch somewhere.
+
+So what we're doing is we call insert on the left, and then we reconstruct this current node, but with an altered left branch.
+
+So again, instead of going in like modifying it directly, we just make a new one.
+
+So the old one is still there.
+
+I could still be there.
+
+This is kind of something called a persistent data structure.
+
+Like, hold onto a reference to the old version of it as it evolves, the changes are happening somewhere else, with shared structure, but they're never all from the original.
+
+Which is kind of nice.
+
+So we're treating these trees in the view and just because that's kind of how I default.
+
+So construct a new node has the same key, the same right branch, but an altered left branch.
+
+And then we return that, and whoever called us is gonna say, Oh, that's my new, whichever child it was.
+
+So if we have a big tree and we insert something that comes most of the way down here, we're gonna end up, well, starting where we insert it, constructing new notes, basically cloning the path back up to the root.
+
+And anything we didn't change, which is linked to the originals, anything we did, we will construct a new sort of spying down from the route to that leaf branch.
+
+So that's just the style of using for these.
+
+I think that might be different than what we do in 2420, typically, but...
+
+I think that one classics more to compare, so...
+
+Um, Okay, so the element is less and less, less than the key, insert on the left side.
+
+It's greater than the he and sort of down the right hand side.
+
+Otherwise, I guess it must be equal to the key and so we're kind of going to say, well, it's already there.
+
+So we just return our stuff.
+
+We don't need to modify anything.
+
+It is going to end up clone the path back up, but whatever, this is what I know we did in 2420, yeah.
+
+It's got a, it's going to be, I imagine pretty similar, but I think.. Class in 2420, we had a beat, binary searching for class, so we weren't doing the functional method that you're doing.
+
+That's bold.
+
+I don't even I don't know if I understood fully when...
+
+So the leap before you look, whenever you do recursion, you got to bottom out of some point, right?
+
+There's a base case.
+
+And something like the trees here, let's say I tell it like here, okay?
+
+I say insert it on the left hand side.
+
+That might be nut, right?
+
+That may be null.
+
+And there's a loose branch.
+
+Oh, I see.
+
+So the question is, do I kind of peek ahead and say, oh, there's nothing to insert it in?
+
+Let me not make that recursive call, a handle base case.
+
+Or that would be a look before we leave.
+
+And I, you know, this we're doing leap before you look.
+
+So we just blindly follow it, and then we have to say, oh, was I gonna nothing as a note?
+
+Am I inserting this in a non-existent tree?
+
+And actually, yes.
+
+Exactly what you're doing, I respond.
+
+So would look before you leave, be more be more appropriate in a professional setting?
+
+Would you say?
+
+No.
+
+So this would be more appropriate to have a professional set.
+
+It very. Depends on the content.
+
+Okay, I would say, okay.
+
+So, in this case, if you look at consolidates 3 cases, basically.
+
+He started with an empty tree.
+
+This is what happens, right?
+
+You're that non case.
+
+And if the left branch for the right branch was none, they all get consolidated from those.
+
+But it makes an extra call to get there, to figure that out.
+
+And so it reduces co redundancy, but involves an engine call.
+
+And it's not that different here, but.
+
+In some context, you know, it really depends on what we're recursive for the algorithms.
+
+But this is kind of this is like bog standard code for, again, functional, an immutable tree.
+
+Which is not.
+
+That's how we're working with.
+
+Let's go and...
+
+So then we also have the lookup function, which is also just following that basic recursive structure.
+
+All right?
+
+This is called the structural recursion. The, I think, easiest kind of recursion to understand.
+
+We have a recursive data structure.
+
+We write recursive code, that sort of mimics the structure of the day we're working with, right? .
+
+So we're getting none here, we're looking for an item.
+
+It obviously wasn't there.
+
+If the item we're looking for is less than the item we're seeing, we need to just defer the answer to a look up on the left-hand branch.
+
+If it's greater than the key we're looking at, we deferred to a recursive look up on the right hand branch, and it wasn't less that we were afraid of everything, so it's equal to a research.
+
+So look up is just returning true and false.
+
+Yeah, we're just looking for something simple.
+
+So let's, and then some, we're going to store like integers in the street, but make them uneasy.
+
+So let's look at a function to print all the items.
+
+You mean a bunch of envelopes?
+
+Yeah.
+
+It's called print all.
+
+So this is a pretty standard, again, very simple, like, recursive traversal.
+
+This one is also, you know, structural inversion.
+
+Now I want to visit all.
+
+And I just to make a nicer, we're gonna actually print, like, the tree depth that we're at.
+
+So we're passing that to the parameter.
+
+There's nothing, there's nothing to print.
+
+Otherwise, you just print everything down the left hand side, print the current item, and I'm going to print this, you know, this little prefix marker. Using that python thing where you can multiply a string by an indiger, it just homes the string that many times.
+
+So I multiplied by depth.
+
+And when I do the cursive calls, it'll be that plus one.
+
+So when this runs, we should see that depth kind of various it goes.
+
+And then we put on the right hand side.
+
+This is more of a python question.
+
+When that debt +one gets increased and the backup, that depth, but one does not ever subtract.
+
+We would have to do death minus one for that happen, right?
+
+No, because, again, I'm not modifying that.
+
+Okay, yeah, you're right.
+
+I'm just getting a new value for it in your cursor call.
+
+Yeah, that was more of a question.
+
+Okay.
+
+Okay, makes sense.
+
+All right.
+
+Just keeping track of where are, yeah, how deep we are in the recursion, until we hit the bottom, or no, there's not, and then we backtrack, then we go back down again and backtrack.
+
+Yeah.
+
+So, let me go into the right directory, 4307 fringe.
+
+So, I'm gonna load all that code up, and this editor, and if we peek down at the bottom, this generates a, makes a list.
+
+So list is, um...
+
+So these are the, that ghetto, that's the generators you were talking about.
+
+Yeah, well, we'll come to that and like, okay.
+
+That's what I saw on those.
+
+So list is making a...
+
+LST.
+
+I'm making a list of, I guess it's 19 integers.
+
+Shuffling it, using a random library shuffle function.
+
+Um, It's an official weights shuffle.
+
+Start with an empty tree and then just insert all the list items in whatever we're making out and shuffle list.
+
+So let's just look at that at root.
+
+Yeah, that's not very nice to look at, right?
+
+So let's do print all of root.
+
+And there's the tree that we've got.
+
+So, uh, how do you interpret that?
+
+What's the root of this tree?
+
+Five, five, everything from its left comes first, right?
+
+Because this look at the item that the order of the items.
+
+Yeah.
+
+They are in order, right?
+
+This is the in order traversal.
+
+And we're just showing, again, you kind of got to...
+
+Let's see.
+
+I don't know what it could probably come up with a better way of printing it, but it's not really the point, though, right?
+
+But if we do this exercise again, make another tree with the same 19, 11 to 19 items.
+
+We're gonna have a different tree shape, right?
+
+Because we get around the binary trees, the order in which you insert them matters. In the shape of the tree.
+
+So this brings us to our saying furniture.
+
+Which is, given to trees, do they have the same items in the same way?
+
+So if we were to follow the fringes of those trees, you know, would we just see the same elements in the same way?
+
+That's the problem.
+
+The constraint is, they have the same amount of elements, 12 trees, is that right?
+
+I mean, if they're gonna be the same, they would have to.
+
+Yeah, okay, so that's part of the question to be answered.
+
+Yeah, that is.
+
+All right.
+
+So, now, one way to do this is just make a list.
+
+You know, make 2 lists and then we're saying putting that off the table, saying that's not...
+
+We actually want to measure it directly.
+
+Looking at the two circles.
+
+We can make 2 lists and they happen to be the same, so that...
+
+Well, but I'm saying, like, that's that's not asking the question or answering the question directly, right?
+
+That is transforming the problem into a simpler problem, which is our 2 list.
+
+Asking if 2 lists are equals pretty easy, right?
+
+You just iterate through them in the same order.
+
+And if you ever find anything different, you stop and say no.
+
+If you reach the end of both of them at the same moment, you stop and say yes.
+
+That if one ends before the other, you also say.
+
+And that's pretty easy because you can do one loop with both arrays, scan from beginning to end.
+
+It doesn't really work so well for the tree though.
+
+Because of this recursive structure, right?
+
+I started the root.
+
+I navigate down the left, right?
+
+The left child of 5 is two.
+
+And it has a child, one, one children, one and three, and three has a child, four.
+
+So the navigation order here is we start the route, we go left, down to one, then we backtrack.
+
+Then we dig down, dig down, backtrack, backtrack, backtrack five, navigate to 15, And it's left child is six.
+
+Right?
+
+And then we backtrack, uh, no, let's see. Let's.
+
+14 I think The attractive...
+
+I know, it's true format, it's kind of true, right?
+
+But the point is in fact, here, let's do this. Better.
+
+Five.
+
+His left child is two?
+
+Threat child is 15.
+
+Two has a left child, one, and a right child, three, which has a right child of four.
+
+Well, I did not plan this well.
+
+How about 15?
+
+So, 16, has a rough shot.
+
+So, So it's left child will be six.
+
+The right child would be 16.
+
+And from six, do they have any children?
+
+Yeah, I think that he has a right child who looks like eight.
+
+She has a left child of seven?
+
+14, be considered, a child of 16.
+
+We're not there yet.
+
+Oh, okay.
+
+Eight would have a right child of 10, I think. 10 as a left child of 9 and a right child of 11. 11 would have a right child, was 13, which has a left child of 12.
+
+Very balanced to the bank.
+
+Yeah.
+
+And then 16, then let's see.
+
+So, can we see a 14 yet, 14, or the child of?
+
+Yes.
+
+I think, would it be so nice?
+
+I have more...
+
+No, because I'm practically a lot.
+
+We haven't backtracked 15 yet, so it is somewhere left.
+
+Yeah, so we would have the benefits.
+
+Uh, what's, what's, like, tri-terol 6?
+
+The red child was like, so about 14 years, fresh child.
+
+How was it.
+
+Yeah, because we would backtrack whole...
+
+So we have enough time to trade.
+
+We're at 12 right now.
+
+So 15's two children are, well, it has only one child.
+
+No, I'm 16.
+
+Oh, it's on its left, child, sorry.
+
+Okay, so six.
+
+Six, six, has child 14.
+
+I think we got that part off.
+
+So it's actually this.
+
+Okay. 14 whose left child is eight.
+
+Oh, boy.
+
+Oh, boy.
+
+I think that's a good looking tree.
+
+Yeah, good.
+
+Oh, well, you can just...
+
+95.
+
+So this isn't a child of eight, man.
+
+Yeah, so, but...
+
+And then 16, it has right child 19.
+
+Oh, which has left child 17, which has right child 18.
+
+Yeah, it's all level.
+
+I think that's the whole truth.
+
+Oh, we still have 19.
+
+Uh, they missed 190?
+
+Yep. 19, the child was 16.
+
+Oh, I'm sorry.
+
+We did get 19.
+
+Yeah.
+
+Okay.
+
+There's 14 dry child, 10?
+
+No.
+
+Oh, no?
+
+Eight, eight, was it?
+
+The right child, it is their child.
+
+Oh.
+
+Is that one right?
+
+Yeah, I think that's right.
+
+That's so...
+
+This is I like the food.
+
+This is a good tree.
+
+Yeah.
+
+Let's, uh, make a new version.
+
+Oops.
+
+Hmm.
+
+And then let's print that one.
+
+Ah, it was so much fun the first time.
+
+Wow.
+
+Oh, really?
+
+Yeah.
+
+Really?
+
+That's awesome.
+
+I'm gonna do its right child first.
+
+Yeah.
+
+Got that out of the way.
+
+That's one.
+
+Left child is one.
+
+Coming out, of course.
+
+One has no left children, and its right child would be six.
+
+Yes.
+
+And six, two and seven.
+
+Two and seven, two and seven.
+
+And then, two, two as a right child, three.
+
+So, three?
+
+Right, child, five, five, child, four.
+
+Okay.
+
+Okay, good.
+
+Seven as a right child of nine.
+
+I love that it just make patterns.
+
+Yeah.
+
+And the right child is team. 15 pounds, 11, 17.
+
+Um, 11 has 10. 13, which has left child children.
+
+Oh, look at this.
+
+We got a neat, little balanced...
+
+It's so balanced. Tiny one, right there.
+
+So, so about this.
+
+One balanced sub tree.
+
+I don't know.
+
+A single bell is 17.
+
+Um, has 16 as a life child.
+
+That's it.
+
+That's the whole thing.
+
+So the question is, do these 2 trees have the same elements in the same order?
+
+By the way, constructed, I'm gonna say yes, right?
+
+But look what happens if we try to write an ordinary recursive traversal.
+
+Okay, we start here.
+
+We're given the two roots, and we say, okay, I gotta go left on both of them.
+
+Great.
+
+Oh, this one, we're ready to return.
+
+We saw, but this one we got recursively element, our traverse left again.
+
+I was gonna say, no, they're not the same word.
+
+And then we got to return here and navigate right, but here we got to go right and left.
+
+Um, sorry, and then right, you get the three.
+
+And then here we got to go right to get to fours.
+
+Here we've got to go right and then left.
+
+How do we recursive function that navigates these two trees at the same time?
+
+Well, we can use threads, but I'm sorry, what were you gonna say?
+
+What subtrees are the same?
+
+Well, but that doesn't give the right answer.
+
+This subtree is not the same as this one.
+
+Oh, wait, so are we trying to see if it's the same elements in the same in the same?
+
+Oh, okay.
+
+So if they have the same frame, We're walking these trees, you know, traversing the edge of the bottom.
+
+So, in order to traversal, basically, do we encounter the same elements?
+
+So for this one, we would say no.
+
+Well, say yes.
+
+Yeah.
+
+We don't okay, so again, in order traversal orders, what we're after, not the pre-order, which is the order when we 1st hit the ones.
+
+Remember there, your tree traversals?
+
+Yeah.
+
+Are you talking about from?
+
+In order, I'm talking about some computer science.
+
+So there's in order, there's pre-order and post order.
+
+Um, Well, I think there was something else.
+
+It wasn't the main ones.
+
+Layer, what is the what's the layer?
+
+Oh, in breath 1st and depth.
+
+So you but you generate those orders by doing a depth 1st search.
+
+Yeah.
+
+They just do like a look up for each element in one tree, another, another one.
+
+I mean, we could, I guess, except then we'd have to also make sure there weren't other elements and stuff.
+
+So we'd have to do it twice.
+
+We could use the principle of mutual inclusion, right?
+
+Because, okay, this is ugly, but like, can we just have a variable storing, an empty string, and then every time we Everything, in order, we just concatenate onto this empty string, and you do that again.
+
+That's what we said at beginning, make a list out, right?
+
+Okay, but now we have, um, you know, a board, we're big data for some reason and we have, you know, a 10000000000 elements.
+
+That we can't, which is not the right data structure then.
+
+But right, but no, we wanna focus on the, we wanna do the problem directly, right?
+
+And again, we're not so interested in the same fringe problem.
+
+This is a good example of it, but there are lots of places where the same problem happens.
+
+Here's what I see as the fundamental problem.
+
+It's easy to recursively traverse one tree.
+
+It's easy to turn cursively traverse the other tree.
+
+But if I say, like, even on this one, if I said, tell me, is 8 in here?
+
+It's like, ooh, yes.
+
+But then what we do, we return, all right, the look up that found 8, we turns into the look up that was looking at 14, and we kind of return, it bubbles its way up to the root, and exits out through turning out.
+
+And the stack that contained all the navigation history, we unwind that as we're returning the value and throw it away.
+
+So we can't come back and then say, what comes after age?
+
+We would have to start over and reach a verse and then go, you know, find whatever the next album is.
+
+So the problem with a simple recursive traversal tree is we can't like pause it and resume.
+
+And this is where co routine is coming.
+
+So cover genes give you the ability to kind of name one like active function call syntax or contact. The stack essentially.
+
+Yep.
+
+And then explicitly hand off control through a different one.
+
+So here, Python doesn't make exactly this, but this is kind of the core underlying negligence.
+
+The ability to basically say, ah, yes, the stack that is supporting this recursion, Maybe when I when I get to seven, I want to be able to say, I found something, kind of hand that out, but I don't want to, like, unwind the sack and kind of, you know, exit this context.
+
+I want to put my finger here and say, Let me step out of this and go over to the context that's navigating the other tree.
+
+And resume where it left us.
+
+So what I really want is two distinct facts, and the ability to kind of stop one, switch to the other, you know, an alternate back and forth.
+
+And really for this one, we would probably use three, where we would have one that is asking the question.
+
+One that is traversing this green tree, one that's traversing this red tree.
+
+And we have the controller that says, hey, Greentree, what's your 1st element?
+
+Thrill down comes up one.
+
+And then, again, kind of, you put a finger here, and it says, one, you know, hence control back.
+
+And then that caller says, Hey, red tree, what's your first element?
+
+And it goes, and it finds one, and it says one.
+
+But we remember where a word communicates that back to the controller.
+
+Then the controller comes back over to the green one says, what comes after that?
+
+So it resumes its navigation, because we suspended the sack, froze it where it was, and let it resume, comes and says, two, and here I am, right, in the middle of that, you know what?
+
+We did the left child traversal.
+
+We are now looking at this element.
+
+Here's my answer.
+
+We're gonna use the word yield.
+
+We're gonna yield a two.
+
+And yield, it's kind of light in turn, but it doesn't like unwind everything.
+
+It stops this, returns the two for the call.
+
+And then you have the ability to resume where it left off.
+
+So yield is kind of like a return that comes back.
+
+So it doesn't exit the current function.
+
+It stops, hands the value out, but then suspends that stack so we can reason it later.
+
+So I can just have these 2 independent traversals of independent trees, and from another routine in the middle, I can kind of control and say, okay, give me one more, give me one more. Going back.
+
+That's built into hypon.
+
+Yes, so this generators is a python app that are a form of code, in this case.
+
+There are those yields?
+
+Are those the generator, or is the generator, the whole bunching?
+
+I'm looking at a page, and it's not very clear.
+
+Are the yields a generator?
+
+Well, we'll come.
+
+Okay.
+
+So, get all is an implementation that uses this.
+
+Now, compared to print all, what do you see?
+
+For all the obvious differences, the meal.
+
+And it's almost the same pretty much.
+
+I'm sorry.
+
+And note that yield is taking the place in this case in print hall, right?
+
+How do we visit all of them?
+
+Well, we didn't return elements as we found them, right?
+
+We spacked them out by printing.
+
+So we had an audience and we told them, you know, here the 1st shows, you know, yelled the items at them and they were, you know, that was us.
+
+We were there.
+
+Looking and listening, right?
+
+And so that part where what we want to be able to do is get us revert, this allows us to like invert the flow of control.
+
+Instead of print all walking through the tree and yelling at us whenever it finds an element, we want it to return each element or yield each element as it finds it.
+
+So then, instead of me being kind of passive and having this information yelled at me, I can go and control and say, what's the next one?
+
+What's the next one?
+
+Right?
+
+I can have a loop that kind of walks through the elements.
+
+And again, we're kind of inverting this flow of control, and this is the value of this.
+
+This is the power of code machines, or this one place to use.
+
+So every time we would have printed, we yield instead.
+
+Right?
+
+We weren't really, we were returning before, we're still returning because we're still doing a recursive traversal.
+
+And then crucially, we have this yield from heart.
+
+So here's where it gets kind of python specific.
+
+As soon as you put yield in a function, something magic happens.
+
+So it is completely transformed and is no longer an ordinary function.
+
+It no longer returns strings, or I guess this one was returning nons, but returning none.
+
+But it no longer, you don't call it, no longer a function that you call, but does a bunch of workman finishes.
+
+Instead, it becomes a constructor for a generator.
+
+So when I call that all, let's do it over here.
+
+Is this is called an asynchronous function.
+
+Is that right, or am I thinking?
+
+No, we're not, this is not with async away.
+
+This is just purely with...
+
+Just purely with.
+
+Yeah.
+
+Just a generator.
+
+So I call get all, and I give it my root node. Again, this is not going to traverse the tree.
+
+This is going to construct one of those stacks for the code that I'm calling, this generator.
+
+So, what that returns is a generator object from get all, and, you know, an address number.
+
+So it's saying, okay, I build it.
+
+And then what I can do is say, I, so again, it hasn't actually traversed yet.
+
+And I can say, hey, go get me, go, go do it until the 1st yield happens.
+
+And I just do it by calling, oh, I didn't capture that element, that.
+
+So, I'll call it Jen.
+
+Right?
+
+That object, I just let it throw away and be garbage collected.
+
+So now I've recreated it.
+
+And so now I can say next, next gen.
+
+And what that did, is it called it?
+
+Right?
+
+It started running the code, navigating down from the 1st yield, which is the 1st item in in order traversal, right?
+
+The precursory home, the 1st time it actually yielded something, and it tells me, oh, yeah, here's the prefix, and here was the number, because I yielded 2 iOSs, so...
+
+We did a two-fold.
+
+But I'm back here. Made it down there.
+
+It got to one and stopped and it's frozen here.
+
+If I call next on it again, it resumes, turns down on, no left child, so yield itself, and we get two, and it's frozen at this point in our version.
+
+So I used to keep calling next on it, and or I put it in a for them.
+
+For element in.. Get all, right?
+
+4 loops work on, they know how to work on generators.
+
+They generators are kind of difficult.
+
+So let's look at the heel from thing.
+
+The problem here, right, the original code, we just called print hall recursory.
+
+When you call get all, what happens?
+
+Well, well, we already established that when we called Seattle.
+
+It returns a degenerator off.
+
+It makes a generator and returns it.
+
+So it doesn't do any good to just call it.
+
+That's why we have this yield problem.
+
+We have to say, okay, I'm going to give you a generator object, and I want you to yield all the, I just want you to pass through everything that it does until it finishes.
+
+So we have to do this when we make, like, effectively recursive.
+
+When we're going to recur normal recursive call, is now actually making a new generator, and then we're saying, okay, I will pass through the elements that you give.
+
+So that's why we need that.
+
+So yield everything from, yeah, I don't want to yield an item.
+
+I want to give back the generator object.
+
+I want to pass through everything that it generates.
+
+And then, So to convert imperative, let me just shout the results at you into this much more polite, You tell me what your life is, and I'll give it to you, and I'll resume form.
+
+You yield the items instead of, hey, well, whenever you have something you want to pass back, that's what does it.
+
+And then if you're making a call to another generator, recursively or otherwise, you have to say yield from, because otherwise it's just gonna make it a greater object.
+
+So think about where else this might be useful.
+
+Well, here's the question I actually have.
+
+Because this can be directly met.
+
+I know co routines are the basis of threats.
+
+So, um, this is a little bit more primitive than breads.
+
+Why would you want.. Resume would be independent, right?
+
+They are fully concurrent.
+
+So logically, threads are running at the same time.
+
+Yeah.
+
+Whether they actually are physically in the hardware or not.
+
+But they are logically dependent.
+
+They just keep going until they do, like, deliberately stop, end, or walk.
+
+A car routine deliberately like pauses and hands control to another.
+
+So a pure color routine, there's like this baton passing mechanism.
+
+Like, kind of like relay races, except relay races, you know, like, go back and forth.
+
+But there's like one thing running at a time and you nominate the next one and say, you return, you know, and you can hand a value across them.
+
+And then the baton may get passed back to you. Can be pastor among many current routines.
+
+But it's inherently like a single threading thing.
+
+So, yeah, and like in operating systems, in the kernel, we use co routines and we build threads on top of them.
+
+But car routines by themselves are this, you know, pretty simple, pretty lightly mechanism. Just the ability to have multiple stacks and kind of handoff control between them.
+
+You can make them insane, basically.
+
+They're not, like, inherent to see, you can kind of build them using, like, water drops, just outdating the stats.
+
+So, um, let's see.
+
+So other places these are useful or really anytime you have this this problem, right?
+
+Where there's a lot of context that's in a staff that you don't want to just throw away.
+
+So if you've ever I mean, um...
+
+So probably I feel like used to come up more when machines were just like smaller and less powerful.
+
+Now we kind of avoid the problem in other words.
+
+So one place this came up a lot was when you had to parse, like, XML.
+
+XML is gross, and so, like, we're, thankfully, like, let's stop using it as some action I would use today, so.
+
+Yeah, but how do we do how do you parse, Jace?
+
+You had it over to something and say, parse this whole thing and give me an option, right?
+
+So this is called, this is like the DOM method or approach, the document object model.
+
+So this all comes up in HTML.
+
+If you've ever worked in HTML, you use that word, the Dawn, right?
+
+The documentary that model.
+
+You take that, you parse it into an object's tree.
+
+There was another style parser called a sax parser.
+
+This is like the next Mel was...
+
+It was a big thing for a while.
+
+It was like a hot technology. Believe that.
+
+All was terrible, but also trendy at one time.
+
+So a sacks parser, what even stands for.
+
+So it's...
+
+But anyway, to use it, you like handed it callbacks or an object and said, whenever you encounter anything interesting, call.
+
+And so it would work through parsing, recursion, all that stuff, because that's how parsiers work.
+
+And every time it found a node, it would call a callback function and say, hey, I found, you know, a, I did a finger HML.
+
+I found a paragraph.
+
+I found a bold tag.
+
+Just kind of call it.
+
+And you're sitting there, again, kind of having stuff shout at you.
+
+The advantage of this was it didn't have to use, like, a whole bunch of memory for a big, gnarly XML data structure or HTML data structure.
+
+And again, most of the time what we do now is just say, we got enough memory.
+
+Lets just do that.
+
+Because it's easier.
+
+So we parse the entire thing into a tree in memory, and we give you the tree.
+
+Right?
+
+That's what we do with Jason.
+
+Almost universally.
+
+Tying that into this, the reason why this is useful is because it's less memory, right?
+
+Right.
+
+Again, we could have just converted everything into 2 lists.
+
+Converting a tree to a list is a pretty standard exercise if you're learning function programming.
+
+So we're not concerned with efficiency.
+
+Like, I thought we were concerned before.
+
+We're concerned with the memory.
+
+So it's all about space complexing, not time complexing.
+
+But it's it's, uh, it could be efficiency too, right?
+
+This one is really giving you the information kind of as soon as it's discovered.
+
+Yeah.
+
+So, we could bail out at any point.
+
+Right?
+
+If we discovered one of them starts with one and the other starts with 15, we're done.
+
+Whereas the convertual list method, we have to convert all 2 million elements into a giant list, and allocate all the RAM and stuff, and then, and then we start comparing the list, we discover, oh, I just do a lot of this work.
+
+In the case of RV trees, what do we want to do?
+
+We want to be able to scan and find an element, and then the client wants to be able to say, huh, that's all I want.
+
+I just like throw that away.
+
+Which you do, Python, I just ignore him, right?
+
+Letting it fall out of school.
+
+The generator itself falls out of spill, all his resources are free.
+
+But sometimes you want to say, oh, I am interested in the next style in this feature.
+
+Go find the next side, and that may be just the next one in the single leaf node, but it might have to go back up and polish another child, you're navigate.
+
+There could be complex navigation.
+
+So what do we want to do as programmers to permit this, like, ergonomically, right?
+
+And the way that makes it like nice for us.
+
+We want to write just ordinary, simple, recursive code, structural recursion over this recursive data structure that just navigates the beat tree.
+
+And whenever we find an item, we would kind of like to just, like, shout it at our client and say, I found one and I'm going to keep going.
+
+Right?
+
+That's what the code, that's the nice kind of code.
+
+Right.
+
+The ergonomic for the program.
+
+But the client doesn't want that.
+
+Nobody liked riding clients for sax parsers.
+
+We like doing it for Don Parsons.
+
+It's like, you go, give me a tree back, and then I will peruse this tree in my position.
+
+Right?
+
+We all want to be in control.
+
+That's what it kind of amounts to.
+
+Writing callback code that gets yelled at, not as far.
+
+Um, I once had a real trauma for a year or two, a couple years.
+
+Was it in Boston?
+
+Is that where you worked?
+
+Yeah.
+
+And we're actually riding, like, a bunch of parsers.
+
+And I remember once we were having a planning meeting, and, you know, it was assigned out, there were a couple people who were gonna, like, write, there was, like, an XML parser, JavaScript parser, a few others, because we were doing, like, extracting, sort of parsing HTML documents, but then finding, like, scripts tags with it, parsing out the JavaScript, ultimately looking for strings to be trained in natural languages.
+
+I saw this program coming a mile away.
+
+And so, um, When we were talking about what should the interface look like for this?
+
+I very quickly said, you know, what we should do is there should be an iterator.
+
+The parser should implement an iterator in Java, which means it's an object that has a next method.
+
+You call it, it gives you the next thing, it eventually tells you what's done.
+
+It's kind of like the iterator's objects and the sequence plus, right?
+
+Is it the same thing, John?
+
+Um, see...
+
+In general, it's an actual defined interface.
+
+So you can make any class that implements this interface and that, um, It just, it's really just defined as something that you, once you construct it, it has this next method or whatever it's called.
+
+So you'd use it like we're doing that.
+
+And so I was like, yeah, that seems like a very natural error.
+
+I was a consumer, by the way.
+
+And everybody kind of nodded along.
+
+That seems sensible, no problem.
+
+And so then they went off and started riding their parsers and realized, oh, I...
+
+Because it didn't have co routines or generators or anything like that.
+
+Instead, what you had to do was just make an object that basically kind of where you could stuff all the information that would have been on the stack.
+
+And remember, oh, yeah, that was like, at this node, and the parent, here's the list of parrot notes that got us there.
+
+And here's like where I was in this, right, the kind of stuff that would be there in local variables and function calls, if you're writing the kind of code that just shouts and answers out.
+
+But they had to go and actually, like, implement that directly, and that is kind of, I believe, painful, even if writing a state machine.
+
+State machines are incredibly useful and important, and they are miserable to reliers.
+
+So, right?
+
+It's time certain systems.
+
+All the time.
+
+Let's see, well, we do.
+
+Yeah, but no, you're not implemented.
+
+Yeah, we're not.
+
+And you're doing very simple ones, my person.
+
+So, So write co-routines, generators, for each that gap.
+
+So if you have a parser or in our case, we have a beetree navigator.
+
+We can ride it and be kind of straightforward way.
+
+And then, but instead of returning when we find an eye, printing when we find an item, we yield.
+
+And when we're making a recursive call, we put yields on the product.
+
+And that's it.
+
+And suddenly, we have code that is nice and ergonomic to navigate the B tree, and the user of it could just say, next, next, next, or write a 4 loop.
+
+And we get both of them get a very ergonomic interface.
+
+So, Python has a lot of these, like, built-in, you know, any built-in type you want to navigate it, you're gonna get a, so it's an iterator, a generator is this.
+
+An iterator impython is some more generic, here's an item.
+
+Here's an interface that has an X method.
+
+I can call it.
+
+So when you write a fort, For loops, I always work on errors.
+
+So what do you do for, you know, eye and range, range gives you an in rate.
+
+It doesn't pre-compute the list, it used to.
+
+I fun 2.
+
+Range would actually make a list with all the items, and then you would iterate over the elements, which is fun when you're doing like a 1000000s of iterations.
+
+Yeah, that sounds like it took a lot of space, though, so it makes sense when you got rid of it.
+
+Yeah.
+
+So they had x-rays, they did, and then they made extra into the range of the range of pipeline free.
+
+And so it's just an object that remembers the parameters you gave it and remembers where it is.
+
+That's a pretty simple statement.
+
+You call next, it's not too hard to kind of wake up and look and say, oh, here's a nice value.
+
+There's holiday, that story.
+
+It's a lot harder, though, for a dictionary.
+
+But Python does it, right?
+
+You can navigate, you can be able to list the items in a dictionary.
+
+So it provides this.
+
+It's a pretty universal component of this iterator interface that python is sort of ubiquitously.
+
+But a generator is one way of kind of implementing that in this...
+
+So it's a pretty cool feature.
+
+I really like this about my phone.
+
+Isn't you able to other money with this, too?
+
+Or, um, might be...
+
+Is that, you know...
+
+You might be thinking of the yield function in the XP6 kernel.
+
+Which was what deliberately had, you know, that was what invoked a contact switch away.
+
+I have a, yeah, simply done question.
+
+Why is it that the if note is none determined, you know?
+
+Because there's no value associated.
+
+And we only yield when we find a number.
+
+Okay.
+
+So that one is actually, and that is when the actual recursion unwinds.
+
+Right?
+
+We call, get on heel from, get all to deepen recursion, the return is one of the backs.
+
+So we choose the points at which we are, right?
+
+When we yield an eye, it's not tied to a then locate a recursive, deepening or shallowing or unlighting, it's one we choose.
+
+So this doesn't have to be done with recursion, right?
+
+This would be any kind of sequence you generate.
+
+You want to have somebody else that is kind of a client with that, that can access a nice way.
+
+Um...
+
+So what's that called?
+
+That's, oh, crap.
+
+I forget about that.
+
+But that's all the squares up to 20.
+
+Ah, what is that called?
+
+Perfect squares.
+
+Because you can take.. About the contract.
+
+It's a, it's a...
+
+Oh, you mean that?
+
+Oh, okay, yeah.
+
+So it totally is less comprehension, I think.
+
+Python makes a distinction, but yeah.
+
+But those are all used, these generators like under the covers for many of us.
+
+That's another thing I like about it, actually.
+
+Um, that's another thing kind of wild for the past.
+
+Python was a stealth infusion, a lot of functioning programs, stuff, mainstream, a way that non-factors go.
+
+So that's our background.
+
+Actually, let's see.
+
+Let's try this.
+
+Whoops.
+
+This one's not like crazy bad, but what's it called?
+
+Codex.
+
+Um...
+
+Open AI goods, yeah, that's right.
+
+I like Vietnam.
+
+Use this tree dot pie code as a demo, to motivate, um, check, check, generators.
+
+Make another version of it that.. Implements an iterator, interrager, directly without using, um, generators.
+
+E...
+
+It defines a state machine directly.
+
+Add it to the, uh, the file as a new, um, function class, the same core.
+
+Interface, and function now, then she...
+
+That's get all.
+
+We didn't know that, but, you said, like, you...
+
+We'll just read it.
+
+Oh, so it just works in the directory, and it reads it, and then it generates new code. Another what you told another.
+
+Right. Right?
+
+This is why we're using for social media things, right?
+
+This is our power of it, right?
+
+It's able to do this stuff directly.
+
+And work with your code.
+
+And right, I didn't have to give it too many details.
+
+I just went and found it.
+
+I gave it probably more details than it needed.
+
+Well, we probably got some.
+
+But, yeah, I think I always tell it to do type checking and stuff.
+
+So let's just look at what this looks like if you don't have generators.
+
+So, we make a get all iterator class.
+
+When you instantiate it, well, crazy object, right?
+
+And then the method is called inter, that's what gives you the iterator or something like that.
+
+X is what actually advances it.
+
+When it's finished, it's supposed to raise a stop iteration exception, this is just the iterator interface.
+
+But look, okay, so let's look up there.
+
+We're actually creating a stat, right?
+
+Because how do you navigate a tree?
+
+You kind of have to have a stack.
+
+You can use the system stack by writing recursion or you can make your own stack.
+
+Um, if you think that's better for someone to say.
+
+Do you think you are better at managing SAC resources than, like, pilot?
+
+But it's the sugar, but right, that's kind of how you do this.
+
+So it's got a stack, it has current, it has current depth.
+
+And every time you call next, again, it's not resuming, it's getting called fresh, you know, right, a fresh invocation, and what it has to resume is the state that is stored.
+
+And so, we have this, well, self-dot current is not none or self-stack, so all a stack is not empty.
+
+And while self-current is not none, cell stack of penned, current, current depth, current is self-current left, current depth.
+
+So we're kind of simulating a recursive call, but writing down what would have just been remembered on this stack, pushing it.
+
+And then we pop the current item, pop it from the stack, generate the result value, update it so we know where to resume next time we go, and then return the results.
+
+Now, I would argue this is, like, not obvious what's going on.
+
+I'm reading this.
+
+This is doing the exact same thing as the generator.
+
+This is kind of what the generator gives to us, but it's using an ordinary system stack to caption the state.
+
+Right?
+
+And remembering where we were, all right?
+
+You can be in the middle of an if statement, in the middle of a loop, and it like remembers that, because all that stuff, that all that context is stored in staff.
+
+All your variables and, of course, the program counter, right, set down, use switch.
+
+And so all that state that is not only the execution context of a running program, we can just kind of say, breeze that.
+
+Go do something else with a different one, and we can resume.
+
+When we don't have that mechanism, we can still write this.
+
+This still works.
+
+But yeah, this thing is like works by creating a stack and trying to remember, have we done the left child yet?
+
+Have we done it in our right child?
+
+Right?
+
+We need to remember which one we're on, so we gotta, like, push that and, you know, write this number of ways.
+
+But this is...
+
+This is not as nice.
+
+Right?
+
+We want to have nice things.
+
+Generators give us the niceness, right?
+
+The comparison, when we look to print all, and get all, they're like the same code with, you know, a couple strategic edits.
+
+That's nice because that was simple.
+
+Print all was not hard to write.
+
+Might have been better, you know, harder if we've written a piece of treatment to her.
+
+But as it was, right, it was pretty straightforward.
+
+So, um, Yeah, that's the lesson, right?
+
+That's that's why that's why these are nice.
+
+If you have anything where there's a lot of contacts and you're kind of emitting these items as you go, having the ability to kind of freeze that in a co routine or some variant of co routine, it's really, now you can do the same thing with threats.
+
+But threats are a much heavier weight methodism.
+
+You can have an actual or independently running thread, then and then have some kind of like a channel and go to turns. You know, some way of kind of saying, here's the next item, and then you gotta like deliberately go to sleep and wait until somebody says, you should resume, and now you add concurrency control to it.
+
+When, like for this, we're not actually, we don't actually want to be concurred.
+
+We just want it to be independent, right?
+
+In the case of our B tree iterator, we don't really want the the scanner to be like running rampant in the background.
+
+We want to go get us one item, and then be ready to get another one if we want another one, but also not go and do that if we don't ask for it.
+
+So a cover routine or a generator is kind of a perfect match for what we want.
+
+Now, this is not just a crazy weird idea here.
+
+This is also how, like, sequel life works now databases work.
+
+Think about joins, and we haven't, like, talked about during implementation, we're building that.
+
+What are they involved?
+
+They involve kind of taking a few tables and like navigating them at the same time.
+
+Right?
+
+Navigating one table and using it to go and search another one table, and then come back and pretty soon.
+
+Or you might actually be taking like 2 tables and kind of zipping them like zipper merging them together.
+
+And so what it does internally in seek the light is it makes co routines for each navigation and tells this woman to give you the next item, give you the next time.
+
+What we're doing is very similar similar to the kind of real sequel implementation.
+
+Ours is much slower as Python, so, you know, we're not, we're looking for simplicity, conceptual clarity, level performance.
+
+But this is actually how these get in practice. Is what you need to be able to do is be navigating a bunch of tables simultaneously and kind of going back and having a control over those back and forth.
+
+Oops.
+
+Oh, I think I've still got Kodex running in the accident.
+
+That's so nice, being able to.. Just construct the demo and say, Hey, make another one for me.
+
+Come on, at least for simple things.
+
+Uh, beetree.
+
+It's called...
+
+So...
+
+We're gonna look at the, uh...
+
+So this is the assignment.
+
+So, here's, it's called step cable, the function, called you're writing here.
+
+It's given an open database by vitriot pi.
+
+It's in the page number, the root of a table.
+
+So somebody's already looked it up in the catalog.
+
+That's you.
+
+Oh, well, please, I guess, but, um, and a key or row ID, because these are B plus trees, every entry has a row, it uses key.
+
+So that's where we want to start scanning.
+
+And it should navigate the B plus trees, what finds the key or the next higher one, right?
+
+So it's skipping everything rollers.
+
+And then start yielding every road in order from that point.
+
+And if the client gets tired of reading stuff, it will just stop and.. We give like 0 investation where it goes to If you get 0 is the row, like, because row ID started.
+
+Yeah.
+
+So again, we kind of just as a hack, right?
+
+Rather than having a separate, high year interface for a certain life thing, you just have to...
+
+Um, so, I would say start by just making a version that yells the results out.
+
+I think that's an easy way to get kind of get going.
+
+And then you replace print with essentially the cursor cosmic.
+
+It's a little hard because it's all kind of lacked into an existing project.
+
+You might even just want to like take it out.
+
+Like, don't don't invoke Maine.
+
+I think part of one of the easiest things, Orgo just like defaced me.
+
+So, you're right, you can do that.
+
+As soon as you type grind anything, it's going to replace it with the original version.
+
+But that means you have the freedom to go and change it, right?
+
+So don't have it call it as an iterator.
+
+Change the type that it's expecting to be one that just you invoke it and it calls and just prints a bunch of stuff.
+
+And then don't heighten May, Python, you know, with Aruby, UV, run, or whatever, we're trying to do now.
+
+So I think start by just doing recursive code, figure out the navigation process.
+
+And that's all detailed here.
+
+Um, and then, and then, go from there.
+
+So, I would say, like, if you're looking at step.pi, this is the code you're supposed to write.
+
+So, like, one thing I would do, you could do, um, you're gonna get type errors right away.
+
+So, I'm turning, I could turn on like tie check.
+
+We're using type python, as you should, pretty much all the time, I think.
+
+I think they should enforce that.
+
+I do.
+
+Yeah.
+
+So we have the type annotations here.
+
+DB is a database, which is just defined in one of the files.
+
+Root is an ink, key is an ink, it's giving you back an iterator.
+
+And the items that it lists that it returns are lists of stuff of anything is whatever happens to be, you know, in that particular database struggle.
+
+So list of any is what the iterator returns each time in returns.
+
+And right now, it says pass, so it doesn't actually implement that interface.
+
+So before the coding starts running, it's gonna say, this is not right.
+
+Now, one thing you could do, if you just want to satisfy that, and say, we're just going to return or yield an empty list.
+
+And this is probably actually what this should do.
+
+Now, when I run it, it passes the type check.
+
+It is just not right.
+
+So, okay, let's see.
+
+When I typed make, it starts by doing this command.
+
+UV run Thai, check, startup, high.
+
+High is a type checker for Python.
+
+UB is the UB is a like python environment aperture.
+
+If you don't have UV installed, assuming you got my make file, right, assuming Codex got this make file, right?
+
+It will print a message and say, you need UV and it'll point you to the URL or you go down to the installers.
+
+So this is what is kind of replacing pip and all and some of the other tools that, um, that are kind of old and slow and terrible.
+
+So UV seems to be what modern Python developers should be over to.
+
+You'd be replacing that?
+
+Yeah.
+
+So it manages your whole system, your dependencies, all that kind of stuff.
+
+And is that an umpire?
+
+Sorry?
+
+Was it you mean that a number?
+
+It has access to the full python.
+
+It's just a different manager for it.
+
+So there's kind of a trend going on right now.
+
+All the, like, infrastructure for Python is being rewritten rustically, these one of those.
+
+Same thing's kind of happening in JavaScript too.
+
+So UD is a tool that does that.
+
+Okay, so step back even first.
+
+There's an environment issue in Python.
+
+It's kind of a nuisance.
+
+You probably may have encountered this before.
+
+Right?
+
+You were, when you install a package to use with some project, You're not supposed to install it on your system.
+
+You're supposed to install it in a project environment.
+
+Have you encountered this?
+
+So, yeah, so you're supposed to, like, initialize an environment, and then whenever you go to develop in there, you're normally supposed to say, like, dot slash BM or it's dot BM.
+
+It's a hidden directory slash bin slash something to like activate it. And then just set some environment variables and stuff like that.
+
+I kind of hate it.
+
+It changed my prompts too, and I kind of ate that.
+
+I'm too lazy about it except.
+
+So UV is aware of that system.
+
+Okay, so like if you install a package, you want to install a python package that you're using it.
+
+Again, you're supposed to install it within the project.
+
+And so that all goes in that VM directory.
+
+That's where they all go.
+
+So if you have different projects that like different versions, they're requiring and things, they all they don't interfere with each other.
+
+So this is a good idea.
+
+It's kind of necessary for large development.
+
+It's a pain, you're just doing tiny, toy problems, is you have to, you're forced to adopt these, like, industrial strength tools.
+
+So UV is actually the nicest way to do this.
+
+So let me show you the setup that went into this.
+
+So there is a PiProject.tommel file.
+
+So this is a new, again, this is part of the python standard.
+
+UV understands it.
+
+And you go, you name it, version it, require a tele-pine version.
+
+And then if there are independencies, then there are no dependencies in this case.
+
+So it's empty.
+
+But that then tells it what you need.
+
+And then you can say, like, UV sink in this directory and it goes in, like, pulls any independence, make sure everything matches the version numbers to be specified.
+
+It will then create this UV lock, which has the version numbers of all of the, like, all the files you downloaded plus the indirect appendencies.
+
+So it pulls them all in.
+
+The goal, kind of a goal in a lot of modern development environments is to have reproducible buildings.
+
+I want to be able to go to a new machine, sync the project, and actually generate the same code, right?
+
+Actually be running the same thing with the same versions of everything.
+
+So the lock file pins down the versions of all the dependencies.
+
+So I didn't generate that, that just happened to me.
+
+Something also just as an aside, you can take the same information.
+
+There's a special comment format. You can put it top of the Python script.
+
+So if you just want to standalone runnable program, you can do that, and you can either say UV run and name the file.
+
+It will read it temporarily downloaded and solid independencies, put them in a cache, run it without you having to make a directory and move both of all the soup blocks.
+
+Or you can make just a regular runable scratch.
+
+So I need that for some lightly things.
+
+But for normal projects, it's kind of process.
+
+And then within interview, also, you can just, like, invoke the environment.
+
+This has created a, I believe, one of these hidden directories.
+
+Yeah, so here's VM.
+
+And you can go and, you know, all the junk is in here.
+
+I don't have any dependencies, so it's not too bad.
+
+But I don't need to.
+
+You can also just say UV Run Main, and it runs it.
+
+Um, what was it, header?
+
+I think I need to have that print something.
+
+But that then like activates the environment and runs it.
+
+And you can say, UV run, if it wasn't, didn't know it was a Python file, you can say run Python.
+
+You can do Python, it doesn't have to be Python 3 with this too.
+
+So that's another alias.
+
+And you can also then install tools here.
+
+So I can say tool, install, pie checked, I think it is.
+
+So here's a different one.
+
+That didn't work, but...
+
+I don't know why, but, no, I haven't got, anyway.
+
+Um, but you can install other tools like Thai, I think you can install that way if you want.
+
+And I think it tells you to do that if it's, I have it installed already in a central location, but...
+
+So that's kind of nice, right?
+
+And it's all fast and convenient, it kind of handles the environment stuff for you.
+
+So trying to model the behavior here, right?
+
+So just switch it over.
+
+So you're trying to be which is like, no.
+
+Yeah.
+
+This is massively, uh, recently installed, so I used to, it's different kind of, like, well, I was like, oh, you're right now with this.
+
+Um, it does increase the small side.
+
+Yeah, install things on a per project basis.
+
+You can, again, install things kind of in a more system level, especially if you're like tools, make everything cash them, but generally this is, it's like gifts, you know, keeps the entire revision history.
+
+It just an assumption that this space is cheap.
+
+It goes into all the environments.
+
+It's social.
+
+Um, Okay, so, again, instead of running make, which is gonna yell at you immediately, So what I would say is go into Maine, and...
+
+Let's see.
+
+Wherever it calls, what was our call, step?
+
+Oh, here we go, from Steppenport step table.
+
+So here's the code that calls it.
+
+Just go in Maine and, like, delete anything you don't want, right?
+
+You want to get to a version where you can just have it print.
+
+So once you could just kind of do it, don't run the tie check.
+
+You can go and make it compliant, like I did yield an empty list, and then it doesn't yell at you.
+
+And go straight to the generator implementation.
+
+Oh, but I was gonna show this again.
+
+So all that in mind, so all that background is UV, what I run make, it starts by doing UV run Thai, so it's running a tool, but in the environment is a tight checker.
+
+It's gonna go check, make sure, you know, all those annotations are water properly.
+
+All checks passed.
+
+Okay, great.
+
+And then does UV run main high, right?
+
+I always print out the commands, run these things directly.
+
+So you could just skip the type check if you want while you're developing the things which are really broken.
+
+UV run main pies and run the code without a time shot.
+
+And that might be what, you know, maybe you have a call, your code, call step table, and then maybe it just prints everything, you know, and main crashes and place afterwards.
+
+That's fine.
+
+Or you could go and change it to do what you want.
+
+When you're developing, it's okay to have things like in these temporary states.
+
+Don't focus so much on like the tasks, right?
+
+Get the core stuff, bro. Right?
+
+That's just a good general development. Sense.
+
+But as the environment, it more complicates and users.
+
+So mate is gonna try and go through the fold, like normal workflow.
+
+You want to bypass that that's good.
+
+Step one is to go for table, step 2 is to go for indexes.
+
+They're very similar, but not the same.
+
+And I'll leave it to me, directions, as you know, your starting point on that.
+
+Let me know if you have questions.
+
+This is a very different assignment, what we've been doing.
+
+So, you know, I'm happy yet.
+
+Clarify, kind of walk through examples, whatever you want.
+
+On Wednesday, what I'd like to do, at least for the part, and the most of the day, is actually just sort of a check in on the social media thing, and then I want to give you spring break before it's actually.
+
+Oh, so it's not your own what's it?
+
+So what we're gonna do is have you, like, report on it, and I want, and again, kind of a preliminary, like, what how's the AIT going?
+
+Anything you've learned from that process, um, talk about your features you're adding, right?
+
+This is everybody can then kind of learn from each other.
+
+Does anybody not have a gold?
+
+Or so we have one, does anybody have a two-person group that would like a third?
+
+Well, I don't know, maybe we can do it for a person.
+
+Well, we could take it 3rd person.
+
+Well...
+
+There's somebody in me, so...
+
+Oh, yeah, yeah.
+
+I'm not gonna, like, force anybody to do anything, but, um...
+
+I'm going to say.
+
+So Wednesday, like, again, I kind of want to, you know, it's not shouldn't all be finished.
+
+But if you have some, like, UI stuff going, you know, if you've been vibe coding a nice app interface for this, I'd love to see what that's like.
+
+Again, use this to be experimenting with these things, right?
+
+I think this is, it's a whole new skill set using Codex or Gemini or whatever to, you know, controlling and making sure it's going to move on, not taking over the project for you.
+
+So I'm interested in hearing your experiences with that kind of, how you're learning to navigate. Do like?
+
+No, we'll just have a, you'll share with the piles. Just share with glass Okay, so we're doing...
+
+It's like it's an informal.
+
+It's a show in town.
+
+Okay, so we don't have a checkpoint.
+
+It's not a.
+
+You're not expecting me finished yet, but...
+
+But you should have progress, you should have things to report.
+
+Okay.
+
+So I'll see you on Wednesday.
+
+All right, see you Wednesday. 
