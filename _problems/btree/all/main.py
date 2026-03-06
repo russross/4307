@@ -29,11 +29,12 @@ def main() -> None:
         elif len(rest) == 2:
             end = int(rest[1])
         else:
-            print(f'table scans must have a start rowid and option end rowid, but nothing else')
+            print('table scans must have a start rowid and option end rowid, but nothing else')
             sys.exit(1)
         for rowid, *row in step_table(db, number, key):
             assert(type(rowid) is int)
-            if end is not None and rowid > end: break
+            if end is not None and rowid > end:
+                break
             print(f'rowid {rowid}: {row}')
         report()
         return
@@ -62,29 +63,30 @@ def main() -> None:
             sys.exit(1)
         for row in step_index(db, number, key_list):
             row_key = row[:len(key_list)]
-            if end_list is not None and row_key > end_list: break
+            if end_list is not None and row_key > end_list:
+                break
             print(row)
         report()
         return
 
-    print(f'Usage: expects a single line of input on stdin')
+    print('Usage: expects a single line of input on stdin')
     print(f'always acts on the file {FILENAME}.')
-    print(f'Input can take one of the following forms:')
+    print('Input can take one of the following forms:')
     print()
-    print(f'To print the file header:')
-    print(f'    header')
-    print(f'To dump the contents of a single page:')
-    print(f'    <root_page>')
-    print(f'To step a table B+-tree from a specific rowid to the end:')
-    print(f'    table <table_root_page> <start_rowid>')
-    print(f'To step a table B+-tree over an interval of keys (inclusive at both ends of range:')
-    print(f'    table <table_root_page> <start_rowid> <end_rowid>')
-    print(f'To step an index B-tree from a specific key to the end')
-    print(f'(note: the key is a list and must not contain brackets)')
-    print(f'    index <index_root_page> <start_key>')
-    print(f'To step an index B-tree over an interval of keys (inclusive at both ends of range:')
-    print(f'(note: both keys are lists and must not contain brackets)')
-    print(f'    index <index_root_page> <start_key> <end_key>')
+    print('To print the file header:')
+    print('    header')
+    print('To dump the contents of a single page:')
+    print('    <root_page>')
+    print('To step a table B+-tree from a specific rowid to the end:')
+    print('    table <table_root_page> <start_rowid>')
+    print('To step a table B+-tree over an interval of keys (inclusive at both ends of range:')
+    print('    table <table_root_page> <start_rowid> <end_rowid>')
+    print('To step an index B-tree from a specific key to the end')
+    print('(note: the key is a list and must not contain brackets)')
+    print('    index <index_root_page> <start_key>')
+    print('To step an index B-tree over an interval of keys (inclusive at both ends of range:')
+    print('(note: both keys are lists and must not contain brackets)')
+    print('    index <index_root_page> <start_key> <end_key>')
     sys.exit(1)
 
     report()

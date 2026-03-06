@@ -1,4 +1,4 @@
-from btree import *
+from btree import Database
 from typing import Any, Iterator
 
 # An iterator to step through the values in a table
@@ -18,7 +18,7 @@ from typing import Any, Iterator
 #   * inc_rows_scanned() called each time a page cell is examined/compared against the key
 #   * inc_rows_returned() called each time a row is yielded
 def step_table(db: Database, root: int, key: int) -> Iterator[list[Any]]:
-    pass
+    yield []    # remove this line when you write your code
 
 
 # An iterator to step through the values in an index
@@ -40,4 +40,4 @@ def step_table(db: Database, root: int, key: int) -> Iterator[list[Any]]:
 #   * inc_rows_returned() called each time a row is yielded
 def step_index(db: Database, root: int, key: list[Any]) -> Iterator[list[Any]]:
     # note: ignore this function in step 1. You will implement it in step 2.
-    pass
+    yield []    # remove this line when you write your code
