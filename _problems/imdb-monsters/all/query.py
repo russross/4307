@@ -77,7 +77,7 @@ def findPeopleIndex(db: Database, catalog: dict[str, int], title: str) -> None:
             print(people_row)
 
 def findPeopleCoveringIndex(db: Database, catalog: dict[str, int], title: str) -> None:
-    titles_root = catalog['titles']
+    # titles_root = catalog['titles']
     people_root = catalog['people']
     title_index_root = catalog['titles_by_primary_title']
     crew_index_root = catalog['crew_by_title_and_person']

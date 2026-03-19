@@ -1,0 +1,1639 @@
+Microsoft has always been weird.
+
+Yeah, so I don't know how exactly that stuff works with with, although I think I got an email from GitHub saying that copilot, student, access was going to lose some of the models.
+
+I think it's gonna lose some of the latest opus and sonnet from Claude, and I think the latest from GPD from Open AI as well.
+
+So...
+
+Um...
+
+I won't get stood by that.
+
+Yeah, I don't remember.
+
+I forgave timings on it, but, um, they're changing.
+
+It's all in flux, right?
+
+So.
+
+What models have you been using?
+
+Yeah, Gemini.
+
+Gemini?
+
+Which, I think, for code is kind of the worst of the big three.
+
+Google seems really good at like the kind of training the base models and things, but the worst, it then kind of, you know, the refinement afterward.
+
+But, yeah, they're still pretty good, but...
+
+These things change every couple weeks, it seems like, but who else is using Gemini?
+
+And is that just using it in free quotas, or do you are using, like, the web interface, or?
+
+Yeah, I've seen the web interface.
+
+Then you can at least, I guess, use your pro account or whatever it's called so you get it for being a student.
+
+Do they have a project interface in the web yet?
+
+Yes.
+
+They do.
+
+Okay.
+
+That makes a lot easier.
+
+At least somewhat better, I guess.
+
+I still have found a lot more productivity from the command line agents, but...
+
+One thing I've liked about Kodaks is it's much lighter on its resource usage, so I've been doing some things on a cloud server that I have that's like a, you know, $3 a month. One gig of RAM or something like that, and Codex runs fine on it.
+
+And I struggled to get clawed code going at all, partly it just had a lot of dependencies.
+
+And Claude Code is like a react app or something like that that like renders it in the background and then clones that.
+
+It's a really weirdly complicated system based on web technologies.
+
+Yeah, it's kind of odd, but...
+
+Codex has been my favorite so far, um, because I, I count for how much time do I spend, you know, sitting in a quarry, especially if I'm in the indirectory developing, right?
+
+Yeah.
+
+And Codex, Codex is quick.
+
+I like the response.
+
+I like the nid, the resource usage.
+
+I liked everything about it.
+
+It seems like, um, what I've, it's kind of, like, my impression, I guess, switching from clod to open AI or rents rock and Copen AI, clawed to, uh, GPT.
+
+The codex is codex, there's kind of less back and forth.
+
+It seems like, um, it feels like the anthropic models are a lot cattier as they're doing things.
+
+And...
+
+Um, Codex kind of goes quiet for a while and then just sort of does the end result. Like kind of jumps to it.
+
+It's kind of how it's felt a little bit, but, um, I don't know.
+
+They they both just got so much better about December.
+
+For a while, I think clod was clearly ahead of everybody else, and now it feels like Kodex and Claude are really neck and neck.
+
+Um, But, you know, everybody seems to have different experiences with it.
+
+Well, any other social media project questions?
+
+Before we dive into some other stuff.
+
+So, um, I wanna go into, uh, start talking more about query implementation.
+
+Um, So we've got our assignment, right, to do the B tree iterator.
+
+Let's see.
+
+So, we're coming up to a seven part assignment.
+
+Just warning here.
+
+Um, that builds on top of the beet re iterator.
+
+So, our beet reiterator, right, we're, uh, implementing the ability to do both stabbing queries and to beat tree structures, beat trees, and B plus trees from sequelite, and also the scan range values.
+
+And so what we're going to do in this next project is use those to implement a series of queries, fairly simple ones, on the IMDb data set.
+
+Each one basically just asking, I think it's like, who are the people who worked on monsters?
+
+So, right, in that data set, we would call the structure of it.
+
+There's a titles table, there's a people table or person table, if they see, you know, singular, and a crew table, which is the join table between them.
+
+So crew entry, links a person to a title, you might tell their role it was.
+
+Um, So let's just look at some of the, um, Well, here's the schema.
+
+So let's look at this query.
+
+Let's start with a simpler one.
+
+Let's just select star from titles, or primary title equals monsters, Inc.
+
+Oh, and there are different ways.
+
+So I said it, so you'll, by default, you get this table layout that you're familiar with by now.
+
+You can also go, I always forget the name of the command.
+
+Um, You can change that.
+
+Um, What's it called?
+
+Mode.
+
+So dot help mode.
+
+Um...
+
+The one that's when you've got really big tables like that, and you're looking at single entries, that table format is sometimes unhelpful.
+
+Um, But you can do like a...
+
+Box.
+
+It's Q box.
+
+Oh, so it's got quoted elements inside a box, and it's more, it's my, it's got the, the lines instead of just ASCII art.
+
+Now, what I was gonna do, like, um, you can also do, um, Just the one.
+
+I feel like I'm not seeing the one I was expecting to see.
+
+List is the default. Don't like it.
+
+Um.
+
+There's one that gives you key value pairs, just like a list of all the columns and one element of a line, and now I can't see it.
+
+I'm hallucinating.
+
+Okay.
+
+Well, anyway, so we got our query.
+
+Um, So let's start looking at what I'm asking, looking at the query optimization, or to see how the execution plans.
+
+That's what I want to look into a bit more.
+
+And then talk about how that relates to indexis.
+
+So there's a concept here.
+
+Now, there's a few, I think, useful ideas.
+
+So I have a few asides here.
+
+I think we talked about the sequel as kind of one of the canonical leaky abstractions, right?
+
+We look at that, Joel Svolski blog post from 25 years ago, whatever it was.
+
+And he talked to me, he coined the term law of the Ethi extractions.
+
+He said, computer science would love abstractions.
+
+It told us to deal with complexity, but there are lots of abstractions that are leafy.
+
+You know, they work right up until they know.
+
+They work for simple cases, but for complex cases, you kind of have to know what's happening behind the abstraction.
+
+A sequel is definitely one of those.
+
+Right?
+
+So the more that we understand about how the database engine actually executes a query, the better able we are to to kind of drive it, right?
+
+And build databases that work efficiently and fast.
+
+I think there's in the case of sequel, there's also another idea that I think we're kind of mentioning, which is the idea of empathy for the machine.
+
+It's an engineering chart.
+
+But it's the idea that you kind of, you understand like the physical limits and stresses and things that a machine is under and are kind of mindful of those when you're using it.
+
+And in software, that kind of comes down to understanding the hardware limitations and how machine actually works.
+
+So, like, one example is, if you've ever seen somebody pull a cord out of the wall where they just grab like a couple feet away and pull, right?
+
+Why does that make you cringe a little bit?
+
+When you think of that?
+
+Or maybe you do that. You're a monster, but But you know, that's gonna, like, damage the cord, right?
+
+Because it's putting stresses on places that were not designed to have that kind of stress.
+
+And right?
+
+If you're technically minded, I think most of us understand why, not why, right?
+
+You go, you grab the plug and actually pull it out.
+
+Or like pulling something out of your laptop or you put something in.
+
+If you don't kind of grab, just wear me, you can get the cable and start yanking.
+
+Uh, that's a good way to destroy your cables, uh, you know, possibly a computer, right?
+
+Whereas if you go and take it, like, when I'm pulling out a USVC cable, I usually grab it, like, as close to the body of the laptop as I can.
+
+It's almost like a pinching motion, you know, jams enough of my flesh in there to kind of pull it out.
+
+I don't even have to grab a pull.
+
+You kind of just do this like, or you're actually pushing them apart.
+
+And I know, you know, I like that because I'm like minimizing the stress.
+
+And so I have a mental model of what, like, damages it and what's designed and takes stress, which is like the body of that plug and what's not, which is the core going into it.
+
+I've had a lot of cables sailed before, and it's usually the join points for the cable engine, the plug.
+
+That's the weak part.
+
+And then, you know, when my kids were little, I would see them, you know, using an iPad or something like that with a power cord, and they would have it resting on the table, like, on the cord, right, as it comes out.
+
+And I'd see that and just be like horrified.
+
+And my kids, you know, like little kids, they have no idea why, you know, what's what's wrong with that because they don't have, they didn't have like this mental model of, you know, again, what's what's physically going on there, what how are we stressing it?
+
+You know, there's lots of things when you drive a car, right?
+
+If you're thinking about how the car works and the physics of it, you drive differently than if you are completely unaware of those things.
+
+In software, we have the same idea.
+
+Right?
+
+So we want to kind of, I talked about how, like, sequel light, you can store blocks, you can store images.
+
+And that's okay, but it's not really ideal. Right?
+
+It's not what it's made for.
+
+And one retort to that is, well, I don't really care.
+
+I don't care about hurting and feelings, you know, by using it the wrong way or something like that.
+
+But when you start thinking about how bee trees are structured, and how large objects are implemented in sea polite, which is the prefix of each row ends up in the main bee tree, and then it has a link to some other overflow table somewhere else.
+
+You can start to see, oh, this is not actually going to be very good at working with me.
+
+There's gonna be a lot of overhead.
+
+It's gonna be kind of slow.
+
+And again, for little cases where, you know, infrequent use, it's probably just fine.
+
+But if you're developing a large system and care about performance and then just usage and everything like that, if you're aware of how that works, that's gonna guide you to a different solution.
+
+So I want to look at talking about the, again, how execution plans are created and what the database actually ends up doing in response to a query.
+
+Which I think is actually a really practical tool for programmers of databases or people using them, as well as just kind of for the better understand how they work.
+
+And fortunately, this is a built in part of sequel database that they will explain their query plan sheet.
+
+So, Let's look at this one, a very simple one.
+
+Um, Sorry, let's go and look at the schema again.
+
+I'm going to drop the end.
+
+Oh, no, I don't want to do it on this one because this is the input to the assignment.
+
+And I wanted to modify that database.
+
+Okay, now I've got a copy of it that I can safely destroy.
+
+Um, okay.
+
+So I'm just gonna drop the drop the index titles by primary title.
+
+And.. Crew...
+
+Oops.
+
+No.
+
+Can't go back, draw a crew...
+
+Okay.
+
+Copy, paste.
+
+There we go.
+
+Okay, so I'm gonna run that query of Gwent again.
+
+Now, when I run it, and that feels pretty fast.
+
+For a single query like that on a database set side, it's pretty hard to make it slow.
+
+But now let's go and do explain query plan.
+
+Oops, and just prefix the query with that, explain query plan.
+
+What is it gonna tell me?
+
+How does it find that information?
+
+It's like star from title or primary title songs, just?
+
+How much work is this gonna have to do?
+
+Sorry?
+
+For, like, 10, it's going to be in the right database as well, which is.
+
+Yeah, so it's going to have to scan the entire titles.
+
+It can't even stop when it finds the match.
+
+Because there might be multiple titles that are the same, right?
+
+Nothing in the data precludes that.
+
+The data is not ordered by title.
+
+It's ordered by title ID or whatever it is, the signature.
+
+And so there's simply no way to go and find that, right?
+
+So when we ask you to tell us a query plan, Scan titles.
+
+That's the abbreviated version.
+
+If you just do explain, leave off the query plan, it gives you the full version.
+
+And what this is, it has a little bike code, it actually writes the program, and it has an interpreter that runs it.
+
+And so, you know, kind of sees, has an invitation to give us a sense of what's going on, opens for reading, and, you know, it's the table number.
+
+It looks up in the catalog, 579, I don't know if that number seems familiar, that's the root of titles table.
+
+So it says it defines that, it points it, right, the query planning found that, but hard-coded it in there. Says like rewind, you know, go back to the very beginning, grab a column.
+
+If it's not equal.
+
+Oh, grab column two, and if it's not equal to the title that's down here, um, anyway, it's a really kind of unreadable high code.
+
+But that's what it's doing.
+
+If it's not equal to that, then basically keep going.
+
+If it was equal, then go and find all of them and output that as the next row, then.
+
+So, again, it's pretty ugly.
+
+I thought about actually learning it properly and having you program it by hand or something, but...
+
+But I'm not.
+
+Sure.
+
+But if we wanted to write things actually, generate queries, that's what we'd do for it, right?
+
+You seem like...
+
+And this is quite similar across a lot of other databases.
+
+I don't I can't catalog them, but but this process of writing a little program and having a special, like, bio code language, to component queries is pretty standard.
+
+There are actually some high performance systems, some modern systems that will do better than that.
+
+So it kind of depends where your bottlenecks are.
+
+We're assuming the bottleneck is mostly the disk, it comes less true with SSDs and the closest car drives.
+
+But there's something this is will actually take this and write it as an actual program and run it through a compiler.
+
+So they will use like LOVM, the compiler library project behind claim, and like rust and swift and my brothers.
+
+And they will actually like compile and optimize it so they have like, you know, a minor, especially when they're doing more complex calculations on it.
+
+So here we're mostly, it's beet trees doing the work when we're doing that, that streaming person.
+
+There are some systems where that's a standard kind of way of approaching a lot of modern systems.
+
+So, okay, so that's so how do we improve this?
+
+Well, we had that, we had an index before, right?
+
+So I'm just gonna recreate it or something like it, create index, um, titles.
+
+Uh, or, like, tight title, by primary title, or what was it called?
+
+Something like that. On titles, primary title.
+
+And now when I do a query plan, I get a different plan.
+
+Because I phrase an index that prefixes each row with the title, and then the row ID will be, right, using be pairs in the actual index.
+
+South, we have a strain followed by a row.
+
+But now because it's sorted by the string, the query is able to just drill down so it says using this index, titled by primary title.
+
+So it's able to search titles by way of meeting notes.
+
+Let's again expand this to the full query plan and see if we can make any sense of what it says.
+
+So now it's opening two things.
+
+You can see it's opening.
+
+Here's our original table, and then this one is the index.
+
+And, again, it's how that string ready to go.
+
+And so now it does a seek.
+
+Um, And, um, seek greater evil.
+
+Okay.
+
+All right, what does our BTree scanner does?
+
+It finds all the keys that are greater because of the research, right?
+
+So this is basically doing the operation.
+
+Well, I think this might know how to cut off that.
+
+I don't know.
+
+But then it goes and finds the matching ones and then goes and does a seek over into the other cave in the original cable.
+
+Or, no, see, maybe that's the index throw ID, finds it in a column column.
+
+This is just extracting all the columns and returning.
+
+So this is going to run this loop once for each hide over the fines rather than once or every title in the database.
+
+So it's a little more complex process for the hits, right?
+
+Instead of just finding it and admitting that emitting the data, it has to find it and then kind of like joining between these 2 between the next and the table.
+
+But the result is going to be much better because that index lookup is a stabbing group, right?
+
+I can go directly to the results.
+
+If there are multiple results, it just iterates until it doesn't find matches anymore.
+
+So iterates through all the monsters, inks, monsters, monster, monster, inks, the monsters, Inc.
+
+It's already monsters.
+
+The monsters in the ink.
+
+I don't know.
+
+Um, But as soon as it finds something that's not a match, it's got.
+
+So there's very little wasted, doesn't there?
+
+But what about joins?
+
+So that was for doing a single lookup, right?
+
+We just wanted to find matching the truth.
+
+And how did it decide that this was a better approach?
+
+Maybe that's go to that question first.
+
+So I think we talked about at a high level how it's working.
+
+You've got to remember that or I'm not seen it last year and I think it hallucinating.
+
+It's after spring break. You know, only about half here naturally.
+
+But did anybody remember any discussion about curing optimization?
+
+Um, what does seems like there is a lot of discussion that we've had that seems to kind of imply query optimization.
+
+Yeah, we talked about there, whether we talk about it or not, we'll talk about it enough.
+
+So there are kind of 2 basic approaches, right?
+
+The original databases use what was called rules-based organizers.
+
+So they had a bunch of rules, right?
+
+You want to find something on a table, look and see if there's an index.
+
+If there is an index, use the index.
+
+And you kind of end up with, like, these big decision trees, you know, a bunch of ifs, a bunch of FL statements, essentially.
+
+Any time you, like, figure out a better way to optimize a certain joint or something like that, you go away and you write code trying to detect the situations where it will work.
+
+And those will replace decades ago with cost-based off the monsters.
+
+So your query is compiled, like it's actually loaded in a parse, so you get an abstract syntax tree, like a programming language.
+
+And then each step, each part of it, what you have then is like a toolbox of ways to do things.
+
+So, you know, how do you find a matching title and a table?
+
+Well, one way scanned.
+
+So you put that as a you propose that as a possibility.
+
+If you have, you know, another ways to use an index to look it up.
+
+So you propose that approach.
+
+And then what you do is you calculate or estimate the cost of each one.
+
+So internally there's a cost model that says, well, you know, this, I think, will take about this many disc accesses, this many steps, you know, but you'll have a model in there that approximates the, gives you how you want to think about pasta in particular machine.
+
+Again, it's usually going to be dominated, like random reads or worse in sequential reads and full table scans, you know, the cost is roughly, depending on how big the table is, right?
+
+Index lookups, you assume those are log ads or some number of steps for the requirements.
+
+Basically, so the idea is every operation that you can perform, you have to then have a way of estimating a cost for.
+
+And then what the query optimizer does is, you know, look over sort of all of those and find the cheapest caused.
+
+And study algorithms, it uses, like, dynamic programming, kind of optimized that process, right?
+
+You're not actually looking at every possible combination, you're, um, again, dynamic programming comes in naturally here as a way of optimizing that.
+
+Well, you don't sign up programming.
+
+Yeah, dynamic program.
+
+The, uh, programming paradigm that's kind of similar to greedy algorithms where you're trying to.. Memorize subproblems.
+
+Yeah, you're right.
+
+Memois, it's called the Yeah, yeah.
+
+Yeah, there you go.
+
+Yeah, so when you have a problem that can be composed out of sub-problems, you calculate the sub-problems and then calculate the costs of combining the sub-problems rather than recalculate the whole thing.
+
+Anyway, they're they're kind of fun and kind of famously hard to have a conversation for your 1st time.
+
+Not actually that hard in concept and at least my experience with that was, 0 yeah, you know, I look at one and not along.
+
+Oh, yeah, that makes perfect sense.
+
+That seems elegant, simple, and then I come to a new problem.
+
+Yeah, everything.
+
+But I think they get easier over after after a while.
+
+Yeah, kind of get the hang of it.
+
+So this is one that kind of lines itself naturally about.
+
+So again, we're not looking at every possible execution plan, you know, obviously, the process of finding it.
+
+But according to our cost model, we adopted the cheapest or fastest execution plan possible using the bag techniques that we have.
+
+So what are techniques do we have?
+
+Let's talk about jobs.
+
+Let's talk about, I want to join 2 tables.
+
+Let's see.
+
+So, let's go back and we'll just use this.
+
+Um, let's go, let's do a different one.
+
+Let's uh, copy 4307 University, um, Univ.db.
+
+This one has a more interesting schema structure, right?
+
+This is our university example.
+
+So let's go and say...
+
+I don't know.
+
+What's a pretty simple joint?
+
+We could do?
+
+Sorry?
+
+Um, forces that, uh, teaches insurance. Teachers?
+
+Sure.
+
+So one instructor's Let's look for a specific one.
+
+Um, to get a fairly small result set.
+
+So let's say, um, we'll start by just doing select Starf Instructor.
+
+These are singular.
+
+So let's say we're gonna go find everything that cats teaches.
+
+How would I write that?
+
+So I'd start out, yeah, I'd take instructor, instructor, join, probably natural join here.
+
+Teaches, but I only want to do it where name is cats.
+
+From...
+
+All right.
+
+Seems simple enough.
+
+How do you do that?
+
+How do you run that?
+
+How could you know for that?
+
+So, okay.
+
+Fundamentally, a joint is a nest of food.
+
+Right?
+
+Let's say I wanted to, and our goal is to not implement that way.
+
+That's kind of how it works, right?
+
+So say I wanted to find, you know, let's get rid of the wear clause and just say, I want to find...
+
+Let's just do a natural join, instructor, natural join teaches.
+
+Unfortunately, this database is small enough.
+
+That's not too bad.
+
+So, we could look at this, basically, again, as a pair of nests.
+
+Let me scan over all the instructors.
+
+For each instructor, let me scan teaches and find those that have matching fields.
+
+And whenever I find a match, I end it.
+
+So why do I not want to implement that way?
+
+That's good.
+
+Yeah, N squared and N could be really good.
+
+And in fact, we kind of have to be conservative if we don't actually have statistics about the table sizes and things like that.
+
+We kind of have to assume they're always large and be working on big old assumptions.
+
+So one thing that helps the cost optimizers is you can calculate statistics.
+
+So there's a command, you can do, I forget, what is off the top of my head.
+
+But you can just tell sequel I, go and update your students.
+
+And it just looks at each table and figures out how many rows there are.
+
+And I think it computes like, I don't remember if it's like the average size of each row or the average density in each page.
+
+The calculates a few things like that and uses that to inform kind of better process.
+
+So we could do, yeah, we could do this.
+
+How else can we do this?
+
+How could we do better than nested loops?
+
+Better than square or end times M's?
+
+What are they, let's look at the schema of both tables.
+
+There's instructor...
+
+There's Teaches.
+
+What is this ID?
+
+And teach us.
+
+What is that idea?
+
+Isn't that just the unique identifier?
+
+That's just like a unique yeah, ID. That right?
+
+Is that something like that?
+
+Instructor identified?
+
+Yeah, the instructor.
+
+The instructor.
+
+Yeah.
+
+Yeah.
+
+We got a 4 key constraint down there, 4 key ID references instructor ID.
+
+Um, So, these are so far cars.
+
+Those are numeric...
+
+No, they are not necessarily.
+
+Are they American American?
+
+I guess they are all those numbers.
+
+I can't. Not sure off the top of my head if this is gonna recognize that those are all integers and user OID, or not.
+
+It might not.
+
+So they might not actually line up.
+
+It's like the 1st digit is reliant on the apartment or that.
+
+Yeah, but so teach is definitely can't use this throwing, right?
+
+Right?
+
+Because this is not a single field primary field.
+
+Maybe it does for instructor, but as we declare it the primary key, but I'm not sure it does because it's not integer.
+
+And it's not even not mold.
+
+Well, let's see.
+
+I guess primary keys have to be replaced.
+
+I'm not sure.
+
+Remember that was something we saw in the communication?
+
+We were drilling down by hand, is, um, If the primary key of the table is an integer, then that just becomes an alias for the world, right?
+
+But I don't think that's kind of applied here.
+
+So these are not even ordered by the same idea, right?
+
+I was gonna hope that they were maybe an order by the same IE that they're on.
+
+So, I don't know, what else can we do to try and improve the execution of this?
+
+Should we...
+
+Well, let's actually go and ask what it does.
+
+Scan teachers, scan teachers, excuse me, and then search instructor using index, C polite auto index instructor one on 90.
+
+So, I believe what that's telling us is it has automatically created an index on the ID, since that is the primary key.
+
+So it's scanning the entire teaches list, and then for each teaches, it takes the ID and does a stabbing query, by way of the index, into the structure.
+
+So it looks like the infrastructor.
+
+So it's gonna do a full scan of teaches, and for each one, it's gonna do stabbing infrastructure to compare about.
+
+So that's better than end times end, right?
+
+So you're saying this, that's like the cheapest cost model that has determined.
+
+That's what, based on what I was a, Yeah, what it has.
+
+That's what it's actually doing.
+
+But the cost models, the zip determine that every time you guys do something or is there like a predetermined thing?
+
+Yes, every time you compile it, every time you give it a query, there's actually prepare and execute faces and go down to like the C API.
+
+Um, And actually, most client interfaces will let you prepare a statement separate from executives.
+
+And one of the main things that happens when you do the prepare, it actually goes in compiles, it does the cost analysis, and everything like that.
+
+And then you can execute it many times.
+
+It's mostly for inserts, I guess, but you can do other queries too, where you kind of cash an outlook.
+
+But so it is but it is starting fresh everything.
+
+Is that the best?
+
+Why not go through San instructor and Sabin to teach us?
+
+Or would it be about the same?
+
+What do you think?
+
+What do you mean?
+
+Yeah, So are there more teachers records or more instructive records?
+
+Changes?
+
+Or teachers, right?
+
+Well, we just kind of know that.
+
+We haven't told the computer statistics, so it probably doesn't know that.
+
+So again, it's got to kind of go based on worst case assumptions.
+
+There's what else?
+
+I think there are other more compelling reasons here again, because I don't think it knows that.
+
+So let's say it did its stand and structure, and then each time wanted to go and stab and you teaches, can it stab and teaches?
+
+I guess it depends if there's an automatic index for this cracker.
+
+I don't know, is it automatic?
+
+I guess it must.
+
+Let's just ask that.
+
+Um, Uh...
+
+We use Gemini here.
+
+The sequel light always create an automatic index for the primary key, assuming it is not, uh, it is, not alias to row ID.
+
+Does that implicit index creation?
+
+Okay.
+
+Um, Well, okay.
+
+So, So according to that, there is an index here.
+
+So I guess it could use that to look it up.
+
+Um...
+
+Yeah, I don't know if there's any, I was thinking 1st maybe that wouldn't be an option, but yes, it is, the instructor, he is a prefix of the teaches to.
+
+Again, that would be something, you know, you kind of would work out all the things that they didn't do a cost analysis.
+
+So how could we change this?
+
+Like, if we wanted to optimize this query, these are gonna be big cables.
+
+What can I do to make this run faster?
+
+So we're doing the whole thing. Lets go to the one where we only did it for a single faculty. Single instructor.
+
+So, we had it was where teach name equals cats, right?
+
+And so let's have it explain that query plan.
+
+Same query.
+
+Scan instructure, search teaches using...
+
+Sorry, it's not the same. Flipped around.
+
+So now scanning the entire instructor table, it has fine cabs.
+
+Search teaches using covering index sequelite auto-index teaches one.
+
+What does that mean?
+
+Okay.
+
+What's a?
+
+Okay, yeah, good question.
+
+So a covering index means it doesn't actually have to go to the main table because the index contains all the equipment.
+
+So let's see, teaches, what do we need from it?
+
+Oh, sorry, we're getting an index on teacher one.
+
+So it's going to have the index itself is going to have IE for section ID semester a year, which is the entire cable contents, right?
+
+This is some kind of interesting one where the whole thing is the primary key.
+
+And so that means it uses the index, it stabs into it, but then it doesn't follow up.
+
+You just so happen to be that's covered all the fields of action.
+
+So how can we improve this?
+
+I mean, like, we create an index.
+
+What index would help this particular book?
+
+We still have a full table scan of instructor, right?
+
+And, you know, we're expecting to have, like, one match.
+
+So what would an index look like that would get rid of that scan?
+
+Create index, um...
+
+By name.
+
+Call it whatever you want, but on, uh, let's see, sorry.
+
+Instructor by name, on instructor.
+
+Your name?
+
+So, I make an index on the instructor's name, and now, when it does, it's able to search index using our search instructor using index instructor by name, and then it's able to go to teaches, using covering index, see the light out of it.
+
+So now it's going to be right once having query followed by another.
+
+Well, okay.
+
+It will do a saving query at the index, use that to do a stabbing query on the main table, right?
+
+It will find a real ID, go look about, and then follow up with the query into the hovering index or teaches.
+
+Can we do better?
+
+This is pretty good, right?
+
+We're not doing any scans anymore.
+
+But who may constructor?
+
+So it's a covering advance. Or at an index that is a covering index.
+
+The question is, I guess, what does it need?
+
+So the reason it had to follow up and go to an instructor, it got the ID, it has the name, so it's really department name and salary.
+
+Those are the ones that are missing, right?
+
+The reason it has to go to the main table is to find those too.
+
+So let's just do one where we just don't ask for those fields.
+
+See how that changes it.
+
+So let's see, let's just get the right query first.
+
+So I'm gonna go and say, I want ID, name, course ID, section, ID, semester, year.
+
+So I've just trimmed the department name and salary. And see if it's smart enough to figure that out.
+
+Huh.
+
+It didn't change anything.
+
+Did it?
+
+Was remebe, right?
+
+Okay.
+
+Still the insertion structure.
+
+So it's using the index to get it.
+
+Looking at my name, getting the, oh, it's getting the row idea.
+
+This is where this is confusing, right?
+
+Because remember that table, the ID field is not an integer.
+
+And so this gives us the row idea.
+
+It doesn't give us the idea, it's like print out.
+
+Um, which is that or the one that we actually need in order to search this one?
+
+It's the ID name that matches.
+
+So it's having to go back to the full instructor table to get the ID field.
+
+Which is, because it's not there in the index.
+
+Right?
+
+Does that make sense?
+
+Because of this, yeah, that's weird, weirdness.
+
+So let's change that index.
+
+Drop index, instructor by name.
+
+And let's go recreate it.
+
+We'll do name ID.
+
+And see if that gives us a covering index.
+
+Now it does.
+
+Yeah.
+
+So now when it goes instructor by name, it finds oobi name, and then it will just have the ID there as well as mapping your low ID.
+
+So it will scan all of them to have their matching prefix, right?
+
+The same as our V tree generator does.
+
+And for each one, it will get the idea so it doesn't have to go.
+
+So covering indexes are kind of a nice idea, right?
+
+It's not like a, this isn't like a kind of big O kind of savings.
+
+We're still, we already had one record where just not having to tag on an additional record for it.
+
+It's not a really big one, but it is, you know, is an improvement.
+
+So what about when we do multi-wage alliance?
+
+So, um, That's our main...
+
+Um.
+
+Let's see, schema department.
+
+And, uh, some instructors have a department, right?
+
+As a department name.
+
+Um, So let's find all classes. Taught by department.
+
+But let's rope in, um, the building, the department is housed in, I guess.
+
+So that it actually has to join.
+
+So something that can often, I think something we've seen in some of the journeys we've done, right?
+
+Conceptually, you have this five-way join, but you can actually talk the ends off, because in kind of like the covering index idea, the join information actually gave us all the information, right?
+
+So, I'm going to join the department, I just go by the department name, and that's all I bring from it.
+
+It's not actually going to go on a consultant apartment, just a lot of other apartment needs an instructor.
+
+So let's say we do a department, we want the name, the building it's based in, even though that's not where the class is taught.
+
+Instructor, and of course, the image.
+
+Let's see.
+
+Right that out.
+
+So select, um, Department name.
+
+Building.
+
+Um, we'll just say instructor, I guess I can just say name.
+
+Um.
+
+ID, name, and then, oh, I don't even remember what we were getting from courses, okay, let's see.
+
+Course ID, section ID, semester year.
+
+Section ID, semester, year from.. Department, natural join, instructor, natural join, teaches.
+
+So...
+
+I get that right.
+
+The department name, the department building, the ID name of the professor, course ID, section A semester year from the instance of the classification.
+
+So I think that touched all 3 tables.
+
+How do we end on this query?
+
+What would our plan look like?
+
+Let's draw these 3 tables.
+
+It's just a sketch here.
+
+So department.
+
+We have instructor.
+
+And we have teachers.
+
+And we're saying, here, the join here is on department name.
+
+And the joint here is on ID.
+
+And then we have miscellaneous fields for each one.
+
+So, again, massive, massive queries, or nesting loops work, right?
+
+I could say for every department, look up for every, you know, for each one, and find all instructors, and for each pairing of those, find all, you know, the Cartesian products.
+
+Right?
+
+Remember when we was talking about that very early on?
+
+We could just start with the Cartesian product and then filter it.
+
+And that's essentially what the nested loop version does.
+
+But we don't really want to do that, right?
+
+Because that gets pretty big, pretty fast.
+
+Not so much on the tiny, tiny data set here.
+
+On anything else, I get pretty primitively large, very cool.
+
+So what would be a better execution strategy?
+
+So let's assume there are no indexes unless except the ones on primary keys, I guess, that are automatically created.
+
+So I was like, what would you do?
+
+W?
+
+I didn't actually do that.
+
+I started indexing, you know, trying to learn. That's searching requ.
+
+But where do we start?
+
+Right, we're not filtering by faculties here.
+
+This version.
+
+So we could start with department.
+
+For every one that we have reached department that we find, we've gives the department name.
+
+So then we could, then we really would have to scan the instructor table to find matches.
+
+And let's see.
+
+From there, we could do the covering index thing and thinking of the teachers.
+
+But that's still, and now we're still talking about the number of department entries, times number of structure entries, and then a more refined lookup for the court and the teachers.
+
+How can we do better?
+
+What would be better starting?
+
+Let's say, again, we have indexes.
+
+Let's do the basic version 1st and then we'll see if we can improve it with the Texas.
+
+I'm assuming the only indexes are primary.
+
+That's seem to me efficiently, probably.
+
+Cool.
+
+So the lip.
+
+I'm gonna do something here.
+
+So let's see.
+
+Sequeli?
+
+I'm just...
+
+Uh.
+
+Just get into a directory here, so it's not quite so noisy.
+
+Um, I'm gonna take the university database, and I'm just gonna dump it.
+
+So that's a useful thing, if you haven't seen that.
+
+So when you run sequel light 3, point of the database, you can also then just, you quote it if it's multiple words, and you can just give it a command to run, and it runs it, and say, you typed it.
+
+Dum dumps the entire database as sequel statements.
+
+So I can say, I'll do it as univ.sequel.
+
+So, it starts right there, begins a transaction, creates each table, inserts all the values.
+
+Um, goes all the way to the end.
+
+And note that it creates the indexes at the end.
+
+And it temporarily, well, it turns off foreign key enforcement.
+
+Just to, so there's no extra work we've done, right?
+
+The assumption is this is complete database.
+
+So, um, But this is actually a common backup strategy is you just dump it into a, then you've got a human readable file.
+
+But what I'm gonna do is go and change each of these.
+
+Um, classroom, I'm gonna do without row ID.
+
+So what this does is, instead of doing an E plus tree with a table, it uses a B tree.
+
+So instead of mapping everything by row ID, it just uses the complete row of contents.
+
+Well, that's gonna do, um, let's see, I'll remember, is this gonna give us a table that is sorted by its primary?
+
+So we'll get rid of that kind of weirdness, the primary key not being real ID.
+
+That kind of table was added later in the life of sequel light.
+
+So, um, I mean, it's been there for a long time now, but it's still that it doesn't seem like it's used nearly as often as I kind of think it should be.
+
+And you put it here, so I'm gonna go ahead and do that.
+
+Probably for all the tables if I can.
+
+Primary, they all have to have a primary key, and I, I don't know if the primary key has to be the beginning entries.
+
+So this will just get rid of all row IDs, basically, course ID, section ID, semester, year?
+
+Yep, that works work.
+
+Teaches ID, course ID, section ID semester year.
+
+Good.
+
+Student ID works.
+
+I'm just making sure everything's as expected.
+
+So I mean, this will just match her intuition a little better, and, uh, it'll make this discussion a little easier.
+
+So depth info, we don't have a primary key, so it's not eligible for that.
+
+Oh, and I'm gonna go ahead and delete that table too, that or the index that we had added.
+
+And so now I'm going to delete university.db.
+
+And I'm going to do sequel light, unit.db. With input from that sequel, and that should have recreated it now, but with those changes they made.
+
+Okay.
+
+So again, I think maybe this will match our intuition a little better.
+
+So, Well, we were explaining the query plan, right?
+
+So we see anything we can do to improve, rather than starting this department, but then having to do a full table scan for each entry of the instructor to join how we improve that.
+
+Well, if you think here, is right?
+
+This is this empathy for the machine.
+
+What does it have?
+
+What are you forcing me to do?
+
+What is it?
+
+What could it do, I guess?
+
+I really just want avoiding scans is kind of totally.
+
+It's unavoidable in this case, right?
+
+So we do have to actually look at all the data.
+
+But what we want to do is make sure there's only one place.
+
+How could we ensure that?
+
+What if we start from an instructor?
+
+So if we scan instructor, Department name is the primary key of partnership, right?
+
+So we can do a stab into department for each structure.
+
+And then for teachers, that ID is still a prefix of the primary key of teachers.
+
+So it can do an index look up there as well.
+
+So let's see what it actually does.
+
+Oh, it, not what it did.
+
+It starts with teaches.
+
+And then searches instructor using the, so it gets the IDs, is that finding structure.
+
+And then finds the department name in the instructor, uses that to look up the department.
+
+Is that better?
+
+Is that the same?
+
+So we asked it what it did, and it's...
+
+Yeah, so it starts by scanning teachers, and then gets the ID, you can use to look up instructor, and there finds an apartment into a little apartment.
+
+Is that better, worse, the same as starting an instructor and 7 in both ways?
+
+Outward?
+
+Seems like to me, you're going to start following the tables, smallest.
+
+Yeah, statistics.
+
+These are all times.
+
+They all probably fit on the page.
+
+Okay, why?
+
+So, then, the sand, for sure.
+
+That's one.
+
+Yeah, let's say again, the database doesn't, here's a, somebody's kind of hard as humans, right?
+
+The database has no intuitive understanding of the meaning of the data.
+
+Right?
+
+So we look at it and we say, well, of course there are going to be more teachers than instructors.
+
+Because instructors teach multiple classes, particularly.
+
+And they're probably, you know, the fewest will be apartments.
+
+But it doesn't know that, actually, right?
+
+If it doesn't play for statistics and it's not going to have that intuitive understanding.
+
+But yeah, let's say that what if there were, you know, a 1000000 instructor records?
+
+And like, well, it's a large number of instructors and a small number of teachers. Be a small number of apartments too.
+
+We don't know, right?
+
+Or it doesn't know that that institutes.
+
+So like there's a college at Oxford, we call it All Souls College.
+
+It is a graduate student only college.
+
+Um, So, my student graduate student only or is it faculty only?
+
+I think they mentioned suits, but it's, you know, it's called all souls in the bodies.
+
+So they don't have students.
+
+So that was being a case where you'd have more of that, you know, yeah, graduate students, but you'd have more instructors than not actually, you know, classes being a problem.
+
+Um, Yeah, so starting with the smallest one, if we're going to be just stabbing out with reach records that we find, what we really don't want to have is, um, and I guess this has precluded a form key relationships, since we haven't, if not Knowles.
+
+Okay, sorry, let me try and carry my train of thought over here.
+
+Um, We didn't do any left at, like, any outer choices here, right?
+
+So we're not guaranteed we'll get every entry from any particular table.
+
+So I'm wondering if any of these foreign key relationships are annulled in some direction.
+
+I think we have, certainly, okay to have a department, an instructor, who doesn't teach anything.
+
+In which case, starting with teaches, we never bother to look at those instructions.
+
+But I don't think we're allowed to have a teacher that doesn't have an instructor.
+
+Right?
+
+Because the primary key of teaches includes the instructor.
+
+So that would argue for, to get everything else being equal here, starting with teaches, again, without knowing the statistics, that will find, let's see, we will not find any teaches that are not linked to instructors.
+
+But if we started with instructors, we might find those that are not linked to teachers.
+
+Every instructor has to have a department, there's no guarantee that the department has instructors.
+
+So we know that I think we can prove here that every row it teaches is going to have a row of out for it.
+
+And then we will sparsely contact the other ones to fill in information to.
+
+That makes sense?
+
+So, I'm assuming, guessing, maybe I should say that that's how this is, that's how it came to this decision.
+
+Right?
+
+So that would mean, and it's like cost model, right?
+
+We need to estimate, there's probably, if I go with, from instructor to teachers, I'll only find some, right?
+
+That will cost some lookups that aren't don't bear food, but don't end up with a result of those words might go the other direction, which I've never happened.
+
+So this is only cheaper.
+
+They're all scans for the starting point, but this one's more likely to have scans than don't or find entrances, but don't actually yield out with those.
+
+That was a little more, a little more sub, I guess.
+
+So something brings back a goal, then that's like wasted.
+
+Yeah, so if we're standing entire, let's say let's say we start with the park.
+
+So we can go through and for each department, if we were then went to try and find every instructor in the apartment.
+
+We might find a purpose to have no instructors.
+
+So we were scanning the apartment, we had records, we did a look up, we found nothing.
+
+And so we moved on.
+
+But we're definitely going to find our way to all teachers' records.
+
+Right?
+
+The schema constrains it, so we're not allowed to have a teachers that doesn't have it for our language.
+
+So it's kind of dense if we start here and it's potentially sparse here. Whether the real data bears that out or not, We don't know, but from the schema it conferred that.
+
+And even if we find an apartment, it has an instructor, we might then go and find that instructor as a teach.
+
+And so that will be, you know, 2 steps of, you know, scanned data that we then did a stabbing query to find, matching instructor, or, you know, a scan, I guess, potentially all the instructors in the department.
+
+And then some are all of them don't teach.
+
+And so we've gone like multiple steps now, but again, we just have like a background for them.
+
+Was that a lucky guess on this?
+
+What was doing here?
+
+Or why did it go for teaches?
+
+So I, no, I'm assuming that it's, I don't know this for sure, but I'm assuming that the query optimizer, when it's estimating the cost, it considered all those different possibilities, and it estimates a higher cost.
+
+Like, the fact that teaches records cannot exist unless there's a corresponding, right?
+
+Guaranteed to find a matching structure.
+
+I mean, instructor is guaranteed to find a magic department.
+
+So it probably estimates that as a bit cheaper than the other direction, because here we might find records that don't actually, I'll go through.
+
+So if it has a, you know, if it's cost model is refined enough, it'll fun.
+
+And that's something, you know, maybe initially it wasn't that sophisticated and then somebody found that, you know, you add that and now suddenly it all was discovered that.
+
+It's like compilers, right?
+
+You build an optimization once and now every program that's going to have is better.
+
+Databases are like that, right?
+
+Each refinement for the query optimizer bears through across every database that we can sit up, right?
+
+I'm them, and I'm just kind of making some assumptions here, but, um, that would make sense.
+
+Because I would have guessed, I would have jumped in and said, oh, start constructor.
+
+Now I'm having looked at it and then worked backwards.
+
+I think it could actually do a better decision.
+
+So this would probably change then if we were searching for, you know, a certain instructor.
+
+Or a certain all of them for just filtering my apartments.
+
+All right, so let's do it by department.
+
+Now, I guess, and then we're about out of time, so we'll, um, where depth name equals, um, Music. Doesn't really matter.
+
+And that changes.
+
+Now we don't have to do well, we do something.
+
+Oh, interesting. Search department using primary key, and then do a full table stand for each match for instructors.
+
+What is it?
+
+Let me just look.
+
+Oh, yeah, I guess it does have to scam, doesn't it?
+
+So here's one where it really probably depends on the size of the data, yeah?
+
+Right?
+
+Because, uh, And maybe it has stats.
+
+Okay, let me just let's just try it actually.
+
+We'll do this.
+
+That'll be our last thing.
+
+Uh, sequel light, compute, stats.
+
+You just find the command.
+
+Analyze.
+
+Oh, didn't change anything.
+
+So, analyze computes, it's not much.
+
+And it just creates some new tables that I'm actually going to look at and see, and see if there's not much.
+
+Um, But some other, some databases would be more sophisticated, statistics, like a lot of things.
+
+And here it's probably just noticing, but it knows, wow, you're just going to stay out.
+
+So kind of isn't that much.
+
+Um, But you know, a constructor was very large or if there were many duplicate...
+
+No, I guess it's a primary key, isn't it?
+
+So it knows, it can guarantee there's only one hit here and then it doesn't stand that.
+
+And I guess it didn't have any way to optimizely, a constructor.
+
+So the next step, we need to optimize this, we need to add index delays, and do a search.
+
+It's almost structure.
+
+It's almost.
+
+Um, I was going to send that and I'll send that an announcement for canvas, um, but I'm going to...
+
+My plan, I'm definitely doing this 2010 classes.
+
+I think I want to do it here as well, is to start adding some quizzes from just what we talk about in class.
+
+Okay.
+
+You all are here.
+
+But there's, you know, there's a certain type of student who says, it's not in the exam, it doesn't matter, and you know, since we don't have exams in this class, and, you know, it's like, well, if I can muddle my way through the assignments, then I need to go to class.
+
+And I kind of hate that, because I feel like, you know, I like to talk about a lot of things in class and fill in detail and stuff like that, and there's no way I can make, like, assignments that cover every single thing you talk about, or what I want to.
+
+And so what my goal is kind of align to, right?
+
+Because I think there's this psychological thing here at work.
+
+It's like lectures don't actually matter.
+
+They are a means to the excitement and exams.
+
+And to me, it's kind of the opposite.
+
+It's like assignments and exams are sort of necessary, but really just talking through stuff like them today, this, I think, is where a lot of time comes from.
+
+And so then I was trying to figure out ways to kind of align those a little bit more and to, you know, structure the course in a way that the value of being in lectures is there.
+
+I don't like taking tenants.
+
+That's kind of gross.
+
+And that then creates a different incentive, right?
+
+So it's partly a way of just putting value on the things you actually talk about.
+
+So I'm going to try it out.
+
+So we'll go so over the next, we'll do like 2 weeks and then I'll make a multiple choice exam or quiz, I should say, that will do the testing.
+
+So you can bring notes.
+
+It'll be in the testing center?
+
+Yeah.
+
+So then you'll have like the whole next week to be able to do whatever you want.
+
+So I don't want to make a lot of time constraint for them.
+
+How do you So, um, let's see, one would take us into early April, so be about three.
+
+Three over 2 weeks. That's one of our rest the after them moving possible to do them in class.
+
+Um...
+
+Just takes a lot of time.
+
+I like Listen Center.
+
+I wish my I'm thinking I'll just like open up the whole next week. Until, you know, Monday, Friday or the time.
+
+So again, it'll be open, though, but no, internet or, um, And so those of you take notes like on iPads or whatever, as you print those.
+
+So anyway, that's my plan.
+
+I'm also, I'm going to go and finish or get the assignment ready, which gives this kind of 7 step Monsters Inc. Query thing, which is going through the same kinds of things we're doing here, but you'll actually then be writing little Python functions that implement a specific query by using your B treaterator.
+
+So we'll see the details of that on Wednesday.
+
+I'll try and post it before Wednesday and we will early introduce the property on it.
+
+So, So, coming up.
+
+Thanks, everyone.
+
+We'll see you in 2 days. 

@@ -126,32 +126,32 @@ class Database:
 
     def print_header(self) -> None:
         head = self.head
-        print('header string                       :', head.header_string[:-1]);
+        print('header string                       :', head.header_string[:-1])
 
-        print('page size                           :', head.page_size);
-        print('file format write version           :', head.file_format_write_version);
-        print('file format read version            :', head.file_format_read_version);
-        print('bytes reserved at end of each page  :', head.bytes_reserved_at_end_of_each_page);
-        print('max embedded payload fraction       :', head.max_embedded_payload_fraction);
-        print('min embedded payload fraction       :', head.min_embedded_payload_fraction);
-        print('min leaf payload fraction           :', head.min_leaf_payload_fraction);
-        print('file change counter                 :', head.file_change_counter);
-        print('file size in pages                  :', head.file_size_in_pages);
+        print('page size                           :', head.page_size)
+        print('file format write version           :', head.file_format_write_version)
+        print('file format read version            :', head.file_format_read_version)
+        print('bytes reserved at end of each page  :', head.bytes_reserved_at_end_of_each_page)
+        print('max embedded payload fraction       :', head.max_embedded_payload_fraction)
+        print('min embedded payload fraction       :', head.min_embedded_payload_fraction)
+        print('min leaf payload fraction           :', head.min_leaf_payload_fraction)
+        print('file change counter                 :', head.file_change_counter)
+        print('file size in pages                  :', head.file_size_in_pages)
 
-        print('first freelist page                 :', head.first_freelist_page);
-        print('number of freelist pages            :', head.number_of_freelist_pages);
-        print('schema version cookie               :', head.schema_version_cookie);
-        print('schema format number                :', head.schema_format_number);
+        print('first freelist page                 :', head.first_freelist_page)
+        print('number of freelist pages            :', head.number_of_freelist_pages)
+        print('schema version cookie               :', head.schema_version_cookie)
+        print('schema format number                :', head.schema_format_number)
 
-        print('page cache size                     :', head.page_cache_size);
-        print('vacuum page number                  :', head.vacuum_page_number);
-        print('text encoding                       :', head.text_encoding);
-        print('user version                        :', head.user_version);
+        print('page cache size                     :', head.page_cache_size)
+        print('vacuum page number                  :', head.vacuum_page_number)
+        print('text encoding                       :', head.text_encoding)
+        print('user version                        :', head.user_version)
 
-        print('auto vacuum mode                    :', head.auto_vacuum_mode);
-        print('application id                      :', head.application_id);
-        print('version valid for                   :', head.version_valid_for);
-        print('sqlite version number               :', head.sqlite_version_number);
+        print('auto vacuum mode                    :', head.auto_vacuum_mode)
+        print('application id                      :', head.application_id)
+        print('version valid for                   :', head.version_valid_for)
+        print('sqlite version number               :', head.sqlite_version_number)
 
     def load_page(self, number: int) -> Page:
         inc_page_reads()
@@ -292,9 +292,9 @@ def print_cell(cell: Cell) -> None:
     for field in cell.fields:
         if field is None:
             fields.append('NULL')
-        elif type(field) == bytes:
+        elif isinstance(field, bytes):
             fields.append(f'{len(field)}-byte blob')
-        elif type(field) == str:
+        elif isinstance(field, str):
             fields.append(repr(field))
         else:
             fields.append(str(field))

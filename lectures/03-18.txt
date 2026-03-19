@@ -1,0 +1,1621 @@
+All right, welcome, everyone.
+
+Thank you.
+
+Thank you.
+
+So...
+
+We've been looking a lot of, uh, you know, using sequel light or anything, right?
+
+And using it as our kind of taste studies.
+
+They don't wanna step back a little bit and go over some.. More kind of general things, talk about how other databases are implemented and just cover a little more, um, the basic ground on the implementation of databases.
+
+So, we'll carry some of the data storage structures, and we'll see some overlap with what we've seen in the sequel light, but also some different things.
+
+So I'm going back, these are the slides from the Silver Shots book.
+
+Um...
+
+So, normally, right databases are sort of a collection of files, as we've seen with sequel light.
+
+Just puts it all into one file, for convenience, has another one for the transaction log, but, um, Most databases tend to work this way, some of them will actually take over entire disk partitions.
+
+So you give it an entire block device, or like let it own this.
+
+This can be advantageous.
+
+Databases are kind of unique in that they know a lot more about their disk access patterns than most applications do.
+
+So something that is kind of generally true in a lot of, especially a lot of research systems, but also some commercial systems.
+
+The operating system's normal policies don't often work that well.
+
+Take cashing, for example, for instance.
+
+Most programs that we use, we read and write from the disk, and we know the operating system actually speeds things up by using memories of cash.
+
+And we don't really worry too much about how it does that and the policies it uses.
+
+Now, it's going to generally be some approximation least recently used, right?
+
+Assuming the pages of the blocks that we've accessed recently are the ones that it should keep in cash.
+
+But that's not always a good idea for a database.
+
+Think about when we do a full table scan.
+
+And let's say the table is larger than memory.
+
+If you do least recently used, you'll start by filling up the cash, and then, you know, you keep reading, you start having to evict pages from the cash, and what you do, you evict the ones you haven't access for a while.
+
+And so you know, if your table is this range of data, you kind of keep the most recent buffer cash size number of pages in memory.
+
+And then let's say you do another query that reads the same cable, you go back and read here and start evicting values, and you never end up hitting any cash.
+
+Again, for most applications, you know, that's not that common, I guess, or...
+
+For databases, we're doing that kind of thing all the time.
+
+Not only that, but the database knows when it's happening.
+
+It kind of deliberately goes out because it does all the query planning in advance, the execution planning.
+
+What would be a good, like, caching strategy?
+
+I'm just based on what we've seen with sequel live, if you know, it has no cash, and we're building a cash from scratch, and we assume the data was too big for memory, or too big for our cash.
+
+What kinds of things would you prioritize for staying in that versus the ones who can kick out pretty readily and go back to this convenience match?
+
+Sorry.
+
+Sorry?
+
+Yeah.
+
+I don't learn, like, constant population.
+
+The high cost for computation?
+
+So, I mean, our focus here would be for this, I guess, would be on, um, if we're just asking you a question of like, you know, if we want to minimize the number of discreets, right?
+
+We want to have as many items already in memory as possible.
+
+We assume that we're not, we're keeping them in memory, and they're, like, on this form.
+
+So, the computation would kind of be the same other way, I guess.
+
+Things that might be used far more often, not only.
+
+Sure, absolutely.
+
+What would those be?
+
+That's a good question.
+
+Think about a bee tree, and let's talk about the B plus tree, right, a table where it's just you can grow IDs and all the data's in the lease.
+
+What would we want to put in camp?
+
+What could we reasonably keep in cash on?
+
+Yeah.
+
+Yeah, through, you know, the ones that just...
+
+Yeah, all the all the top levels of the beach, right?
+
+And with a B plus tree, it fans out so aggressively that there probably aren't that many in comparison.
+
+So we definitely want to keep, like, you know, the root of every table, probably, or at least everyone who accessed.
+
+And really, you know, if we could just kind of keep all the upper levels of all the tables, and then, you know, as much as we can of the leaf thoughs.
+
+Every traversal or lookup is, you know, likely drills down to a leaf node.
+
+But if you could, you know, control the captions so that you keep those upper levels in cash, then you're really only going to be getting this hits when you're, you know, from the item itself.
+
+It kind of turns those into almost like constant time operations rather than blocking.
+
+What about that scanning scenario, that linear scan of a whole table?
+
+How could we, what would be a better way to manage the cash for that?
+
+Yeah.
+
+I'd more like take a trunk another tr?
+
+Well, let's say that our query plan calls for a complete scan of the whole thing.
+
+So we're gonna read the whole thing.
+
+What do we do about the cash, right?
+
+Because the problem, as we describe it is, we're definitely enough, just eventing everything else from the cash, and we didn't get anything useful.
+
+Yeah, a more naive approach maybe, but just to take the 1st certain elements and just always keep those in cash so then you're always hitting cash for the 1st buffer size.
+
+Okay, so we could say, yeah, we got, I don't know, a million elements, let's keep the 1st 100, 1st 10% in memory, because that'll fit.
+
+And then just not cash anything else.
+
+We could do that.
+
+Of course, if we have a bunch of tables and we're moving between them, you know, that might be a little too specific, right?
+
+It might not generalize well, it costs one day basis.
+
+But one thing we could do is just when we're doing the linear scan like that, basically just turn off the cashing.
+
+Or the way it's often done is you switch the policy to the most recently used instead of the least recently used.
+
+So you're kind of just kicking them out, right?
+
+You're just using one page over and over again.
+
+And basically just like kind of freezing the rest of the cash temporarily, because what you really want to avoid doing is just flushing all that.
+
+That's what that linear scan.
+
+Or, you know, again, maybe a more refined version, maybe we do kind of somehow pin those top pages, top levels, but when we're sweeping through all the belief notes, just tell, yeah, don't don't don't take this as a signal, but this is...
+
+So anyway, that's just a little bit of kind of food thought there. Databases because of all this pre-planning and this kind of aggressive data management they do.
+
+It is an interesting case where here the application really knows a lot more about what's going on in the office, you guys.
+
+The OS is built for general purpose, right?
+
+It needs good policies to work across a wide range of applications.
+
+Databases are pretty extreme application.
+
+And so there are some systems, actually, that, and especially in research, where the operating system kind of grants a greater level of control to the database.
+
+You have to do that in a way that doesn't, you know, risk compromising the whole system.
+
+And that's why it's an interesting research question, but, um, But that's also, you know, get a reason why you might say this database is just going to own this entire block device and kind of manage everything from scratch rather than going through an ordinary file system.
+
+And that we can kind of bypass the lot of cash.
+
+So you'll see a bunch of variants.
+
+To get sequel Y, it was designed for convenience and simplicity.
+
+And so we put everything in one file.
+
+It can actually handle surprisingly large databases, but the vast majority of them are not that good.
+
+And so a single file works straight.
+
+At the most common situation is the, you know, the database is smaller than that.
+
+When you start, when you create a connection, we've seen a couple of those pragma statements.
+
+There are pragma statements to set the size of the cash.
+
+And it starts out quite small.
+
+So it's a good idea, actually, to bump that up.
+
+In fact, let me just show you, I think, because I give you Um.
+
+Um, from your home directory, so this is just in the main file, so you got this, whether you're tended to or not.
+
+It's a bit invasive, but you'll have a dot sequel IRC file.
+
+It's a standard kind of old school name from the resource file.
+
+And here's what I have it set things to.
+
+Let's just go through the options here.
+
+I think these are kind of decent ones.
+
+Pragmatic encoding is UGFA.
+
+That's not a default.
+
+So it probably into each and include that.
+
+I temporarily send the outward to death null, so you don't see feedback because it applies all of these.
+
+But the busy timeout, that's a very easy polite specific thing.
+
+In its default mode, default walking mode, it's, um, and you know, journal mode, I guess.
+
+It just locks the whole database as soon as you start a rideable transaction.
+
+And if there's a 2nd user or 2nd thread or application that tries to access it, it, instead of just waiting for it, it returns immediately with like a busy, like a walk this year or something like that.
+
+So if you set busy time out, that's number of milliseconds, that tells it, wait for up to 10 seconds for this 10,000 millisecond time out before returning.
+
+So it's very confusing the 1st time you do it, you know, you think, ah, yeah, database is handled comparing connections and you start getting errors. As soon as you do it.
+
+That's usually, I think, also a good one for some release cases.
+
+For he's on, they are off by defaults.
+
+Um, because they didn't even exist when it was 1st created.
+
+See, life was very simple.
+
+You always want them on, right?
+
+Of enforcement, you have to come out there, right?
+
+Um, Journal mode.
+
+So this is something we'll talk about a bit more. How far we'll get today, but we're doing the old, simple one.
+
+So to be very, you know, brief about the way that it does journaling.
+
+Remember we have our acid properties, transactions?
+
+And one of them is the A is the atmicity, right?
+
+The for durability, those are kind of 2 big ones.
+
+And so what that applies is we need to be able to make changes within a transaction, and then we need to be able to roll it back, and it should be as though not to be changed.
+
+But also, when we successfully commit, even if there's a power failure at an awkward moment, it should, when you start back up and come back into the application, you should see the transactions.
+
+Once it is set, it's complete, it needs to be durable, and so everything's applied comically or not applied, and sturable against the surfers.
+
+So the standard mode for the default kind of older system for doing that is to use an undue log. In sequel life.
+
+And it works very, very fairly simple thing.
+
+So while you were in the middle of a transaction, there's a 2nd file that temporarily appears.
+
+And what it does is every time it's gonna go right to a page, it's a very simple mechanism.
+
+Before it writes to it, it makes a copy of it to the undue log.
+
+Right, sat to disk, right?
+
+Or anyway, and then makes the changes in the original.
+
+And then if you finish, you know, and you succeed with a transaction, you commit, all it does is delete the undue law.
+
+So that's what delete mode is.
+
+Yeah.
+
+So you purposely make a transaction fail in case you realize that you're making a state with it.
+
+Yes, you can roll back. Is the is the same.
+
+So commit, commence, it will back. On those.
+
+Um, And if you, but you can also testify, just, you know, you can open one window and start doing rights and things like that, and then go, like, kill it from another terminal.
+
+And when you come back to seeing all the changes that I thought, I'm done.
+
+And so then what it does is when you start CQI, it always checks for the undue log.
+
+And if it sees it, you know, and there's nothing actively working with it, so it sees it's the only app when accessing it.
+
+It didn't hit the right wall.
+
+Then it goes and just takes all the pages in the undo log and applies the bat.
+
+So it doesn't try to figure out which ones had actually been changed and not anything.
+
+It's much simpler, just copies from one at a time, until it's copied everything, and then deletes it, and now back bit forbid in the exact state it was before the transaction started.
+
+So that gives us, you know, those property school launch.
+
+Um, so that's a simple one.
+
+Sits in, uh, sequel I has a little more sophisticated one, which is a wide headlock.
+
+Usually abbreviated as WAL.
+
+And in that one, instead of doing an undue log and making the changes in place, you kind of flip that around.
+
+So you write the things you intend to change into a log, and then you apply them back to the data.
+
+And it then usually collects a bunch of transactions with different commit records, and then kind of applies them in bulk.
+
+And the way that one's implemented, supports a little more concurrency and tends to be able to go a little higher performance when it's under intention as well.
+
+So it's newer and you know, probably better for most production uses.
+
+But then you have this persistent log file.
+
+It's usually there, even when things are successful and not doing anything.
+
+So again, I, for our class stuff, I just default to the simpler one, which is, you know, is great for most places.
+
+But I'm just saying, if you're using this in a production environment, we'll probably want to explore that in a situation right ahead.
+
+Actually, as an aside too, there's a really cool open source school called Light Stream. That takes advantage.
+
+It only works in right ahead logamot.
+
+And it's a real-time backup for a sequel line.
+
+So it was CQI, and it works one file, one of the weaknesses there was the whole machine crashes.
+
+So, like, the one goes away or something like that.
+
+Oh, it's corrupt.
+
+And so what LightStream does is you run it and you can have it like stream all the changes to Amazon S3 or Google Cloud Storage or a machine you own or another directory.
+
+It has a lot of different destinations.
+
+And what it does is it puts the right ahead, the log, you have to be a right headlock.
+
+It just acts as kind of another client so it like opens the database.
+
+And um, watches the log as it grows and just like clones it to the destination.
+
+And then periodically, and you know, it does some tricks to make sure the sequel light's not allowed to complicate the log, so it just keeps, like, hotting it as it goes and sort of streaming it to your backup source.
+
+And then every once in a while, it combines it all and cleans it up the magical checkpoints, and you can think of that.
+
+But it's really nice because so I use that like a coat grinder and it costs me effectively nothing on Google Cloud storage because the sizes are so small, you know, traffic, right?
+
+Cloud services are famously expensive.
+
+When you're using them for like large things, but for this, I'm getting like multi-day center replication and everything like that. And it tosss, like, all 10 years from long.
+
+Um, so, but it's a really nice thing that's being widely used and it just kind of injects itself into the right aheadlock mechanism and it inflates a little bit.
+
+But it's a pretty great tool.
+
+And then now I think they made it so you can even restore to like anytime since the last, you know, since you're keeping records for 2 weeks or something like that, you can you can restore it to the state it was at any point longer, the life it was also turned out.
+
+Locking mode, normal.
+
+You can weaken with some magics or using, you know, with walking modes.
+
+Synchronous is another is more interesting one.
+
+Part of it in kind of durability part of acid is that when data says it's finished, it should be durable.
+
+So that means it's not when it's just made the changes, it's when it's made the changes. Pushed through the disk and made sure they were actually written down, right?
+
+When you 1st write, it just collects things in a buffer and then operating system.
+
+And then the operating system asynchronously writes into this.
+
+So applications like databases, VIM, and emacs, editor, you know, decent editors do this as well.
+
+When you say save, they don't just stop at writing system calls.
+
+They then follow up with a sink or an F sync system call that waits until it's all been pushed to disk and then they save it.
+
+If you're doing a bunch of transactions in a row, that's actually really slow.
+
+Um, because, you know, again, everyone is waiting for an external device to finish, and all the metadata will be updated and everything like that.
+
+This is also why, in some of you may have noticed this when you're inserting bulk data.
+
+If you do it all in one transaction, it's much faster than if you don't.
+
+Because if you don't, it applies one transaction per insert.
+
+And part of the overhead of that is all those things.
+
+So if you do one, you know, writes everything, sinks one time, deletes the file, and that's much faster.
+
+So you can change the synchronous mode and you can say, As soon as you give it to the operating system, go ahead and tell me you're finished and don't like FC.
+
+Just, you know, let let that, let's, I'm okay with a, you know, winter of vulnerability, that's whatever the, a couple seconds or whatever, is still, you know, less.
+
+I usually don't do that.
+
+I like my consistency semantics.
+
+Um, And I think normal actually is somewhere in between.
+
+I think for delete mode, it's not actually completely secure.
+
+They're in some, like, weird edge cases where it might use something.
+
+Um, but when you're doing right ahead, log mode, normal is secure, or like is completely concerned.
+
+Anyway, there's some nuance there, but there's some control you can get there to kind of speed things up or slow them down.
+
+Another one that I didn't put in here, that I kind of thought I did, you can tell it when it creates, like, intermediate, like, temporary data structures to do them in memory rather than monkeys.
+
+Something I don't think we've seen, but a lot of queries will actually create a table, a create an index for the query.
+
+Execute it, and then drop it.
+
+Because they, the cost optimizer says that seems cheaper than doing it without you, yes.
+
+Or if you ever do like an order one. Or distinct, or various other things, and where it has to order the data, the results, the way CQI does that is by creating a bee tree, writing them into it, and that's how it soars.
+
+And then reading them back.
+
+And when you're doing when you're doing a distinct requirement, it does that to protect people.
+
+And so those are, by default, they're going to go be written to the disc as temporary structures and then delete it.
+
+And there's another flag and you can tell it to do all that kind of stuff.
+
+Everything is not like a user controlled, creating a variable table, do all those in them, which I would useful to. Inarently.
+
+So anyway, I think it's worth noting some of those things.
+
+I do the mode table, a nice printing, and then this one's one I had recently, and I love this.
+
+Got no value.
+
+Whatever that U code symbol is, it says you know.
+
+Otherwise, by default, it just prints like a nothing or space.
+
+And so you can't really tell in the result printouts if you're seeing a knoll or an MD screen.
+
+So here it has a special symbol that a prints were its null.
+
+I love that.
+
+It's been really helpful to me at least.
+
+But you have to get kind of opt into it.
+
+All right, I seem to be very distractible today.
+
+Um, so, this is mostly old database.
+
+This is how a lot of things started, and this explains some things in sequel.
+
+A very simple storage format is just fixed length records.
+
+So you have a file, you figure out how big each row is going to be.
+
+And then you just store it like a bigger ring, only it's on disk.
+
+Um, So if you want to load a certain record, you know, it's record number, you can do math, do a simple seek on disk, jump right to the right location, read the right number of bites.
+
+Same for rights.
+
+Very simple.
+
+Not very flexible.
+
+And you get weird things like a record might cross block boundaries.
+
+And I guess that's not the worst thing. Just means it has to reach 2 blocks.
+
+But, again, this is kind of an old way of doing things, basically not in the modern system, students.
+
+But it has some implications like every column has to have like a known maximum size.
+
+This is why this is what the where our car comes from, our car, you know, people say.
+
+Um, I would say char, it's C-H-A-R, but I know people other people say bar car, and so I'm kind of foreign, right?
+
+So right, those basic stream types and sequel, you have the charts, right?
+
+Where you tell, this is a string of exactly this length, and that's great if it's like a social security number or something, I guess. Or no.
+
+Or you can do a VAR car where you give it the maximum.
+
+And what it does, what that was kind of about, was these early systems, that meant that was the width it would use on the disk.
+
+And then, you know, just had it with knolls or something like that if you'd used the whole record.
+
+And so I've always thought that was, I was kind of hated that, like how, how long should I say, what's the maximum length of a name?
+
+You know?
+
+I hate coming up with those arbitrary values.
+
+Um, so, and and see why doesn't enforce them anyway.
+
+So...
+
+So I choose text there.
+
+Now that said...
+
+Well, so so I think that's how most people do things now.
+
+You just like, because the database is now all handled variable with fields and store things in those ways.
+
+Why not take advantage of that?
+
+But also, having, I think this is a bit of a kind of design wisdom, actually having arbitrary limits is really important.
+
+Let me ask you this.
+
+What's the maximum length?
+
+You should allow a user to set their password.
+
+You shouldn.
+
+64.
+
+32, 60.
+
+We got some power too, aficionados and then unlimited.
+
+Um, I don't know what the maximum you should do, but there should be a maximum.
+
+Yeah, because the problem I'm gonna do is, you know...
+
+Some bot attack.
+
+So you never store passwords, right?
+
+If you have the talk about passwords, you never store actual passwords.
+
+You store a hash, a cryptographic hash of them.
+
+So that's what you're storing is going to be fixed with, right?
+
+And then you when you check a password, you recompute it based on the password, you compare the hatches.
+
+That's good.
+
+And there's various other things you do too.
+
+But and that's to prevent password databases, right?
+
+If somebody gets your database, they shouldn't actually be able to figure out what those passwords.
+
+Um, So you don't just need an ordinary hash because then they can do, like, rainbow tables or whatever, where you have pre computed hashes of all the, like, most common things people probably use for passwords, and you just look and see if you find any of them in the database.
+
+Or you start calculating, you know, to start, do all the one letter words, and 2 letter words, and 3 letter words, and you, for each hash that you calculate, you check, and see if any of those, any of the database records change.
+
+So even starting hashes isn't enough.
+
+What you want to do then is put a salt for each one.
+
+So a random number that's stored with it doesn't slow you down in computing it or verifying it, but somebody just computing hash values now has to do it for each individ.
+
+They now have to attack each individual password record rather than being able to attack the title once.
+
+And, you know, there are other things you, then you, to, you make it even more secure, and it gets to about the base level of what you should actually do, you choose a hash function that is intentionally slow to compute.
+
+Make something that takes a millisecond, 10 milliseconds.
+
+If it's low traffic, why not go for 100 milliseconds?
+
+When a user's typing it in, computing it, you know, you hardly notice that.
+
+But somebody who was trying to bulk attack the database and try 1000000000s and 1000000000s of password combinations, now they have to spend instead of it being as fast as possible, which has function to make the B, now it's deliberately slow, and so they have to invest massive resources for each individual password they're attacking.
+
+So, best practice says you should be using a pretty expensive hashtag.
+
+And there are a few families of these.
+
+Some of them do expensive computation, another family, like, I think, as crypt, deliberately adds memory access.
+
+It says, you can make something, you know, it's sometimes there are clever ways to speed up computation, but if you do a calculation requires a lot of memory, you know, now you can't even do lots of parallel calculations, now you can give them, like, gigabytes of memory for each parallel attacking.
+
+So, it's like, you know, and the memorabandwidth is kind of constraint. Hard to make that any faster.
+
+There are all kinds of fun things that are.
+
+Now what happens when a user decides they want to do a denial of service attack, so they go and do a login and say, and you say, okay, what's your username?
+
+And what's your password?
+
+And for the password, they give you 10 gigabytes of random days.
+
+And you hand that over to your slow hash function, and now you suddenly locked your server up for, you know, an hour or something like that.
+
+Because you didn't have an arbitrary maximum.
+
+So, it's important to have arbitrary max.
+
+Maybe you make it long.
+
+Maybe a kilobyte.
+
+You know, these are just supposed to be typing this thing.
+
+That's pretty unreasonably law.
+
+So it probably covers all reasonable uses, but then also now you go test your maximum length and see how that, what that does to your sister.
+
+So this is something I used to say, you know, ah, arbitrary maximums are bad.
+
+And then I learned that actually arbitrary maximums are...
+
+And for all fields, you know, once the maximum length of the name, I don't know.
+
+So make it long like a 100 characters.
+
+And then just make sure everything in your system is okay with that way.
+
+If you ever count or something, you know, make it longer than seems reasonable.
+
+Because some people have long names, you know?
+
+Um, but, It is good actually, especially in the modern world and distributed systems and hostile users and mod attacks and all that kind of stuff, actually having arbitrary maximums is, uh, it's kind of important design principle.
+
+If you have fixed length records, again, these kind of suck.
+
+What if you want to delete?
+
+Now you go and like shift the entire database back, fill the hole, or do you go to the end and copy one or to fill in the hole, and now they're in different order?
+
+You know, none of those were really great.
+
+Do you keep a do you just leave it there as a hole?
+
+And then keep a list of them somewhere, or maybe make a 3 a length list of all the unused gaps.
+
+Yes, I guess, on any of those, but they're all pretty unappealing.
+
+Oh, I should say, like, in our bee trees, right, when we looked at sequel light, it kind of does that within a single wall, right?
+
+It just deletes it and then it actually just tracks where the gaps are, you know, just keeps tracking, I think how many gaps there are, how many bytes are used up.
+
+And then if it runs out of space in the main, the main free chunk, they can just say, okay, fine, go and, like, recompact everything.
+
+But it doesn't actually do it aggressively.
+
+It doesn't do all this data motion.
+
+Um, But here we're talking about for an entire table, which is a very different prospect.
+
+I'm gonna get past those.
+
+Oh, variable length records.
+
+Yeah, there we go.
+
+That's better.
+
+You store everything in order, and now you need some way of tracking how long each field is on a per record basis, right?
+
+The nice thing about fixed length record is you have to store that once from the entire cable.
+
+It's kind of part of the catalog.
+
+And then you don't have to store that data anywhere else.
+
+So variable length record is introduced overhead on a per record basis, which is what we saw with the life, right?
+
+There was a record header, um, and then we recommend confidence.
+
+And we saw the kind of fun encoding issues. About how to do that, right?
+
+People have explored different ways of encoding.
+
+Those headers and sort of space efficient and time efficient ways.
+
+Now, look at this.
+
+Does this look familiar?
+
+Slotted page structure.
+
+This is exactly what's even like those.
+
+We have a blockheader at the beginning, but among other things, tells us the number of entries.
+
+And then we have a list of just links to the individual records, and then at the end of the block, we have the records, which start at the end, build backward toward the middle.
+
+So this is exactly what CPI does.
+
+You can move records around within the page.
+
+But often you don't, um...
+
+Maybe you don't be altered.
+
+So, or you don't do it unless necessary, right?
+
+Why waste that CPU time if it doesn't actually?
+
+And it may be that, you know, you got plenty of CPU time because you're disk bound, but but even then, why use the CPU?
+
+Why not let somebody else use that when it's necessary, right?
+
+Still better to be efficient.
+
+And actually, databases do use a lot of CD as well.
+
+So, store in large objects, I think we hinted this a little bit.
+
+How people does it, right?
+
+You said it has a maximum length for a single record of a page.
+
+And then it has like an overflow link.
+
+And then you go off to a completely different page somewhere else and store the rest of it.
+
+Or it may require more than that.
+
+So, let's see, records must be smaller than pages, right?
+
+That fit the beat tree structure, keep the beat tree working.
+
+You don't want it to degrade to this, like, really generous structure where nothing works very well, and all you guarantees it wants.
+
+So alternatives for large objects, you can store them files in the file system, and they just have like a link there.
+
+Now you've got to coordinate your transaction semantics and make sure they apply there as well.
+
+Sort of those files managed by the database.
+
+That might be actually easier to kind of maintain those semantics.
+
+Post-crest, break into pieces and store multiple tuples in separate relation.
+
+That's more or less what C1 does.
+
+Postcrest is a kind of more pure form on that.
+
+They call them toast, and I can't remember what it stands for.
+
+Anyway, it just has tables that are just like chunks of large object files.
+
+And I think it is good to, again, kind of be aware of this.
+
+Yeah, it's not that they can't handle a large object now and then, but they're not that's not what they're tuned for, right?
+
+And so if you have a system where, you know, you're storing images or something like that, you probably don't put those in a relational bit.
+
+Or maybe, you know, maybe there's a little, you know, user thumbnail, it's tiny, you know, okay, slip that in there.
+
+That the only thing.
+
+But if you're actually having lots of images and things, you probably want to store those somewhere else and, you know.
+
+Be thinking about those images of issues.
+
+Um, like with Code Grinder, there are files associated with every assignment, files from every student's submission.
+
+I just storm the database.
+
+It's low enough traffic at all. The simplification for management is worth it.
+
+So you, sorry, um, you just store every index to the file.
+
+I store the files themselves.
+
+Every part of the files themselves.
+
+Interesting.
+
+All right.
+
+And I actually used to just have a big Jason object that was one column.
+
+And it eventually switched to actually having a separate table, it was just files, and then, you know, a relationship connection, kind of, so each record in there is a file name and the contest.
+
+And so I just kind of say, oh, that thing where I was just accessing them by, you know, by a primary key anyway.
+
+Nothing ever asks to scan them, right?
+
+I don't ever do wear clauses that look at the contents of the files.
+
+So I'm just relying on it to store them securely, but intentionally keeping them out of my queries.
+
+And again, you know, if it was a big high performance system or something like that, I might rethink that, but it's not.
+
+And it's not intended to be, right?
+
+So having everything in one file makes backups really simple and everything about the management great.
+
+So.
+
+So, my point there, I guess, is don't be like dogmatic about it. Right?
+
+You know, I mean, consider the truth.
+
+It's always the right thing to do.
+
+How do you store records in files?
+
+There are, you know, a bunch of different ways you can do this.
+
+A heap?
+
+Now, heap is a pretty generic term, it's used in a lot of different ways.
+
+And I mean, the metaphor here is, you know, somebody's messy dorm room, right?
+
+Where there's a bunch of clothes on the floor.
+
+There's just a, there is no organization.
+
+You find a blank spot, that's where you, you know, throw that t-shirt or whatever.
+
+So, yeah, some systems will do that. Sequential based on the value of the search or each record, this is especially for like the dislike records. Multi-table clustering file organization.
+
+That sounds exciting.
+
+B plus trees, we talk about passions.
+
+So something will use hash tables.
+
+On this caching is a little different than in memory hashing.
+
+In memory hatching, right, you have your list of buckets, and then each one is like, well, like usually a link list or something like that for the data.
+
+That doesn't really work that well on disk.
+
+You kind of need something, you know, different structure.
+
+Wait, so actually, as a worker, well, disk is what you're saying?
+
+A conventional hashtable data structure doesn't just translate nicely to an non-disk structure.
+
+Okay, interesting.
+
+Because it kind of assumes a lot of random memory access.
+
+Yeah.
+
+So there are variations that you still hash the key to kind of jump to the right location or, you know, tell you where it is and whether there's usually some kind of, um, you know, which block should be placed in, but it's a little different structure.
+
+So that basically has she works very well on a brand because Rad can be random, um, access pretty fast.
+
+This cannot, basically.
+
+Right.
+
+So your item can be kind of stored anywhere, and then the hash table might, you can almost think of that as an index into it, right?
+
+It gives you order one look up.
+
+But For this, you've got to pack the actual data in there.
+
+And then the hash key look up.
+
+They're a little more specialized too, so we know it's equal light doesn't use these at all.
+
+One thing you lose here is the ability to do in order scans.
+
+All right, this is why bee trees, bee trees give you both good performance for individual, you know, key lookups, stabbing queries.
+
+And you can scan in a canonical order, and they handle that as data comes and goes.
+
+Hash tables give you, look up a precise keys, but they don't give you any, like, good scanning speed.
+
+So maybe you can scan the whole thing out of order.
+
+You know, that's most hash cable data structures in the programming, like, just letting you iterate through the elements that they're, you know, not in the guarantee order.
+
+And actually, some modest systems like go, I think Russell's done.
+
+This is well deliberately randomized.
+
+Every time you iterate through a hash table and go through a map, they actually start at around an elephant. So that you don't accidentally write the tendencies in your code on the order to happen to be in more time adjustment.
+
+I think it's kind of interesting.
+
+Saving users for themselves.
+
+Sorry, you were gonna say?
+
+Oh, so they take home message for the introduce versus hash tables.
+
+Is bee trees, have bulk, fast look up, and order, hashtables, have fast look up, no order.
+
+Yeah.
+
+Okay.
+
+And, you know, hash tables do have, again, some Some benefits, right?
+
+A lot of real systems do use them, and they have all kind of alternatives, but they're a little more specialized, I guess.
+
+And bee trees have all that overhead of the kind of duplicated indexing and things.
+
+Um, but yeah.
+
+In general, would a hash be the faster option between the B tree, the hash?
+
+Um...
+
+It's not necessarily the faster option because again, in practice, you end up cashing most of the upper levels of a bee tree.
+
+And so in the steady state, the only disk access tends to be the block you're looking for.
+
+So, um, but hash tables, let's see.
+
+Well, it's been a long time since I thought about this.
+
+They can be advantageous, like...
+
+No, Beatrice can do that too.
+
+Um, There are certain join strategies that work well with hashtables. And actually use in memory hashing, I'm trying to think if those can be applied to a non-disk structure.
+
+I think I'm mostly just simpler.
+
+So there might be a little, little edge there in terms of simplicity, but I, I can't really think of a very material advantage off the top of my head.
+
+And I haven't, again, I haven't.
+
+I remember there were, there were systems that used them very heavily.
+
+Berkeley B. B. I think it had a bee tree, but it also had a hash table and I tend to use the bee tree because I like beetrees and, you know, feel like they're good and flexible.
+
+But I can't remember.
+
+I think there are some advantages.
+
+I can't remember what they are off the top of my head.
+
+So, like, beetrees, again, they are a war course, right?
+
+They are really useful.
+
+They using a lot of places.
+
+It's a great data structure.
+
+And so you might have, again, some kind of more specialized situations, but, um, but, you know, there's a reason Sequelite just uses bee trees.
+
+Like, if you're gonna do one thing, that's...
+
+That's a very good one.
+
+Um, yeah.
+
+Partitioning.
+
+What happens when the thing gets big?
+
+Well, we have to split it into, that's what partition is.
+
+We're studying it.
+
+Partitioning it, yeah.
+
+So sometimes you'll, and it's not just because of, like, huge necessarily, but sometimes you'll have a storage strategy where a single relation or a single table will be broken into different pieces or partitioned, right, by key range, usually.
+
+Um, so they use the example of, you know, maybe you've got a transaction table and, you know, this is something where you're probably rapidly adding items all the time.
+
+And so they partition them year by year and have set everything aside and start with, you know, the file.
+
+But logically, it's still there.
+
+So if you do queries, it will still, it'll know where the petition boundaries are and can scan across them and things like that.
+
+So you have more complex engine and understands there are effectively chains of trade cables here instead of just one.
+
+These are also used when you're trying to split across multiple computers, trying to distribute it, partitioning is a standard strategy there.
+
+Especially in your kind of older systems.
+
+Modern distributing systems often take, they do partitioning, but they, it's not just symbol table conditions.
+
+Um, You know, a lot a lot of kind of systems were designed to be split across, you know, maybe a few machines or a dozen machines in a data center or tightly clustered with a networking.
+
+And the goal of those systems is to kind of treat the whole thing like it really looked like one system.
+
+It's just too big to fit one place.
+
+So also kind of has a reputation for being difficult to manage, especially when you split across machines.
+
+What the partitioning has that impression for being difficult?
+
+Yeah, I guess that makes sense.
+
+When we say partition, partitioning, I usually think of splitting data into sets of two, mutually exclusive sets.
+
+That's what we're talking about here, right?
+
+Okay.
+
+So I can see why that would be difficult.
+
+In particular, yeah, let's say, so, like, um, A fairly standard growth trajectory might be, you start with, you know, minus QL, Marine, you know, likely, or post-grass.
+
+You build your business on it, it grows, it starts to get big, you get a bigger machine, right?
+
+And at some point, that's strategy runs out, and maybe you say, well, what if I use four machines instead of, and do partitions?
+
+So I petition my data across the floor, have the transactions work across those and kind of tightly coupled.
+
+That gives you some runway, you go, you get bigger, you're more successful.
+
+Maybe more money, everything's great, and then your database starts to get too big for that.
+
+What do you do?
+
+So here's where the problem really comes.
+
+Now I've got to take my running active system where I've kind of, you know, in some cases, the effectively hard-coded knowledge of the petitioning structure in order to get my queries running quickly and things like that.
+
+And it was, you know, the partitions happen at boundaries that kind of logically separate the data so that we didn't do too many queries across partitions, right?
+
+All that kind of stuff that ends up actually happening in practice.
+
+Even though theoretically, you weren't gonna do any of that, and you do, and, you know, because that was necessary to make your system run well.
+
+And then, you know, you outgrow that and you want to grow to 8 nodes or 16 nodes, and that becomes a really difficult project.
+
+Especially because your system's running the whole time too.
+
+So you kind of need to live migrate and split to multiple nodes, to, you know, to a new partitioning scheme while the system runs and, you know, and this is the kind of thing that will sometimes take companies multiple years to accomplish.
+
+So that's definitely a little bit difficult management.
+
+So, you know, more modern distributed systems that are designed with this kind of mind, use different partitioning strategies where it's not really evident to. Anyway, they take different approaches. Talk about some of those. Another time.
+
+But it can also, again, just be on a single machine.
+
+Maybe you just have multiple files for a relation rather than one big file.
+
+And that can make things like free space management easier.
+
+The dated dictionary storage, this is table, this is page one, basically of sequel I, right?
+
+When you look at that page with the B tree rooted at page one, you skip 100 by header, and then the rest of the page is just the root of page one.
+
+And remember, that's the one that lists all the tables and indexes.
+
+And sequel I, we look at the whole thing, right?
+
+It's a very simple scheme.
+
+There's not much going on there.
+
+Um, like it stores just the create statement. Those used to create the table.
+
+And the idea being that the reader of this is sequel light, which has a parser for create statements.
+
+So it just sort of recreates the data structure every time it reads.
+
+Which, again, is a nice, simple structure.
+
+Others, you know, more complex database, bigger databases, will often have a set of relational tables that describe the relational structure of the rest of the main database.
+
+So you can actually go and query and learn about, discover the structure of the database by querying the database.
+
+And they will tell you, every column is type, the constraints on it, 4 and D relationships, all that stuff becomes queryable.
+
+You have good respect. Interesting.
+
+So, yeah, all this kind of stuff.
+
+Let's talk about storage access.
+
+So that's kind of the data structures, right?
+
+We need be trees, it's the starving point, maybe some other things.
+
+I think, cover that reasonably well by this point.
+
+So the next thing is to think about, so this is kind of one of the main components of a traditional relational database system is the like block and buffer manager.
+
+Right?
+
+On your disk, right?
+
+Nice little cylinder here.
+
+And you have some buffer in memory.
+
+All the higher level systems, they don't go to the disk.
+
+They go to the buffer cash manager and say, I want this one.
+
+And it may already have the block in memory, in which case it just gives you a link to it, and also puts a lock on it so that it stays in memory while it's being used.
+
+That's important for a few reasons.
+
+They won so that we don't like load 2 copies in 2 different blogs.
+
+And, you know, the reason that's important is if we have 2 transactions that are accessing it, or we come out from different parts of the same transaction, we want to make sure those all join are looking at the same up to date version of the date, right?
+
+We don't want divergent versions of a single block running off doing different things because they happen to be like loaded at different parts of the cache.
+
+So we funnel everything through the cash map, the buffer manager, and it ensures that there's one and only one cash version of a particular locker at a time.
+
+It looks at the like life cycle of them and it can regard cross transactions.
+
+There are multiple transactions, right?
+
+The one that tracks, whether it's the most recently or at least recently used.
+
+If we've deliberately asked that it stay in memory, or deliberately kicked it out, or whatever, maybe.
+
+So this is an important system, and it also then resolves concurrent access to that block.
+
+So then there's a, when you access a block in a concurrent database system, you normally need to block the block or sometimes you go record level.
+
+Um, because, They kind of decide to grind you know, here it is for walks, I guess, but, um, they're actually 2 different concepts that are, both of them would kind of call locks in a generic sense.
+
+But in databases they're called locks and matches.
+
+Um, And latches are what you, if I remember right, or what you applied to buffers to the page, you just say this stays in them.
+
+It's not allowed to be kicked out or replaced for the life of this transaction.
+
+And, you know, do that.
+
+So, yeah, okay.
+
+If the block's already in the buffer, it just returns the address.
+
+If it's not, it allocates space, maybe kicks out some other block.
+
+Um, The block that is kicking out might need to be written to disc first.
+
+So, all right, that's all the job is plus the match.
+
+I have a question.
+
+Yeah, the buffer, let's say something has changed.
+
+That doesn't, and so is there, um, whatever's in the buffer, is that kind of a copy of what is on the disk?
+
+So if you change in the bunker, it's not the same as what it is on the right.
+
+Right.
+
+It's only, like, until it's kicked out.
+
+U until you write it. Yeah.
+
+Or sort of like when you're writing a transaction, when you commit the transaction, it needs to be written from the buffer to disk.
+
+Right?
+
+Before the transaction can be declared durable.
+
+And this gets more complex when you have multiple concurrent transactions, right?
+
+You need to make sure that only the changes from one transaction are success are written to disk and not, like, partial changes from an unresolved transaction.
+
+They don't go with it, so you have to make sure those are separated out.
+
+That gets more complicated when you have, like, roll level locking, you know, roll level concurrency instead of page level concurrency.
+
+If you're doing page level only, then the 1st transaction to get there or however you resolve that, I guess.
+
+One of them blocks the entire page and nobody else is allowed to access until it's finished.
+
+But if you are doing more fine grained concurrency control, you may need to actually, like, apply some of the changes and write those to disc, you know, like undo some changes temporarily while you write it and then reapply them so that you're never storing, like, an intermediate state.
+
+So this can get kind of gnarly and more complex situations.
+
+And, um, and I think the right headlock on sequel light, you're going to that one, I believe happened, switches over to page level blocking.
+
+So that'll allows a lot more concurrency than file of locking that they, the default, the original, the remote.
+
+Which kind of gave you no concurrency.
+
+But the right of that log, does that make, like, one, because it, um, I'm forgetting, it's gonna set up a redhead log, it, like, makes a draft, right?
+
+And then you, and then you, but it's like a state.
+
+If you writes a record, the intended changes, commits us in the log, puts a commit record at the end, and then at some point in the future, actually applies him back to a day structure.
+
+But as opposed to the undue log, which writes the pristine, a copy of the pristine version of the page, then makes the changes directly.
+
+But it can always undo them by copying the copying pristine copy over top of the top modify.
+
+Does the right of that log is up?
+
+Is it, you know, how far back does it go and tell you, does it just do that until you commit and go back or is it just like, No, it's kind of variable.
+
+So it can be like, you know, like I mentioned, the live stream, lights can forces it to be just like really long.
+
+And sometimes it will be as long as the entire day it is.
+
+When you do an opt, you know, if you let it run for a while, it, uh, I've had that happen before.
+
+Normally, the main constraint on it, though, is it normally waits until there are no active transactional rights, like, well, there's nothing going on, then it writes all the changes back and trying to get the log.
+
+And if you have a situation where there's always transactions going, that can go, sort of, in depth.
+
+So.
+
+It's a more complex situation, but it does, at least the implementation sequel light.
+
+It supports greater concurrency and higher performance.
+
+So other things about the buffer manager, we've talked, we've hinted at least of the buffer replacement strategies.
+
+And this ocean of pitting a walk is not allowed to be written back to the disc.
+
+So the implementation, right, if you're executing the query, one thing you kind of need to do, well, that you're always doing, but you'll go and pin a block.
+
+And then do all the reading and writing and then unpin when you're finished.
+
+And again, you may support, maybe your database supports multiple concurrent accesses to a CU.
+
+Actually it's more like a counter than just a.
+
+But you know, this is like a bulletin board thing, right?
+
+You're sort of sticking it in there as a marker, you know something.
+
+Um, Yeah, and then and then there are lots of different, there are different strategies for walking.
+
+So at a high level, you have shared locks and exclusive locks with an exclusive lock.
+
+When you lock it, nobody else gets access until you release it.
+
+With a shared lock, they're shared.
+
+And a lot of systems, you know, kind of simplest way to do that is you have shared locks for readers and exclusive locks for writers.
+
+Because it's safe to have many concurrent readers, any number of them, or to have a single writer.
+
+So that's the typical scheme there.
+
+Yeah.
+
+Different transaction strategies too.
+
+But what about buffery placement?
+
+So, you know, we talked about LRU, we recently used, This is kind of the basic standard for cash replacement policies.
+
+And practice is actually kind of hard to implement precisely.
+
+So usually actually get some approximation out of it.
+
+Because there's kind of a lot of bookkeeping.
+
+Every time you access something, you need to keep like a, I don't know, sorted list of changes that's often prohibitively expensive, but it's kind of a, it's a good, you know, some approximation of this is a good overall general purpose strategy.
+
+This is just, like, pure implementation of temporal locality metric, that idea, right?
+
+The hint that the more recently you've accessed something, more likely you are to access it.
+
+And the longer expenses, the last time you accessed it, the less likely.
+
+So LRU is based on that observation.
+
+Really, what you want is, let's see.
+
+You want to peer into the future and find the one you won't access for the longest time, and that's the one you should create.
+
+But that requires magic oracles and things, and so we can't actually, you know, practice no one using approximation.
+
+Unless you're a database, you know, you might actually have plans and know that better.
+
+So, again, it's a good place for some differentiation.
+
+So yeah, again, LRU is usually what the operating systems are some approximation what it's going to do. As we talked about, right?
+
+It's really bad.
+
+It's kind of like the worst case for some queries because it just ends up evicting, you know, flushing your entire cash.
+
+It gives you no benefits in the insurance.
+
+And because we have these well-defined access patterns and we plan our queries in advance, we have our execution plans, databases often have a lot of information about the future ordering.
+
+So they actually can see into the future, certainly not.
+
+So they can sometimes go with mixed strategies, provide hints.
+
+Yeah, here's another, here's a, right, of what, here's an example of LRU Haley, right?
+
+Um, if you do a join, just using nested loops, instead, right?
+
+The base level, that we always try to avoid if we can, but if you're doing a Cortesian product, that's gonna, yeah.
+
+Um, so you just for 2 nested for each loops and then a comparison in the middle.
+
+And again, if you imagine this inner loop is LRU just flushing the entire cash by the time you come to the next iteration on the outer loop.
+
+You've got nothing, you know, you're going back to this, you get the next TR 2 pool here. And you're starting over with a useless cash with it, you know.
+
+So.
+
+So sometimes they'll do toss immediately, free the space occupied by as soon as you've finished processing that block.
+
+Um, And then, you know, you kind of do the most recently used, which is just a variation of that.
+
+And you can get more sophisticated than that, of course.
+
+Um, Right ordering is another thing you kind of got to worry about.
+
+The operating system chooses the order that it's going to write things to this.
+
+It's not necessarily the order that you wrote.
+
+So you may carefully plan the rights that you're doing, you know, to your data structure, and say, okay, tell me when you're done.
+
+And it may go do those, but in a completely different order and interleave with other activity on the system.
+
+Um, And does these for good reasons.
+
+But this is partly why logs are so valuable, right?
+
+Because logs, you can have an in order, a sequential right, and you'll usually get some stronger semantics about, like, it won't write.
+
+It won't append a later record before an earlier one is written.
+
+I might be able to get some better guarantees about that.
+
+But also just kind of being able to step away and say, okay, it doesn't really matter what the US does.
+
+I write the log, I commit that.
+
+I know that's durable.
+
+Now I go, I put this over the right headlock, right?
+
+Now at some point in the future, I go and apply the changes to the data structures.
+
+And, again, I may be doing carefully choreographed rights, and it doesn't matter what all the BLBs system implements them.
+
+If we crash in the middle of it, when we start up, we just go to the beginning of a log and replay it in order.
+
+We don't try to pick up where we left off and move on that.
+
+And so that allows us, that's, again, why log strategies are so great.
+
+They make it really simple to reason about these complex situations.
+
+We kind of just don't need to care, right?
+
+We rewrite them and then we say, commit them to this, tell me what all those rights I need are to apply, then, you know, the transaction's finished, then you write a record, or you trunk it, log, or whatever it is, and say, okay, now I'm done.
+
+But you don't have to think about the interactions between these different systems.
+
+And then there's that general principle that I think is really important systems, recovering procedures should be simple.
+
+That's not the place for complexity.
+
+And also, ideally, if you can integrate them, make the normal operations, that's even better, right?
+
+If these are things that are happening, if playing the log forward is the normal way data gets certain disk and it is also the recovery procedure after a crash. Then that is good battle testing code that you're commonly doing.
+
+Sometimes your recovery code only gets used to recovery.
+
+Then you kind of have like a really good testing strategy, right?
+
+Because lots of weird things can happen when things don't go wrong.
+
+And the worst is to have complex recovery code that is only exercised when there's an actual failure.
+
+That's the way to get a really low trust environment where mystery things go wrong when they go wrong, right?
+
+So, you know, I guess then there's some just general good software engineering practices to think about there.
+
+Why would a, why would the operating system reorder your rights?
+
+Why would it, were you ordering you, right?
+
+Yeah, why would I write them a disk in a different order?
+
+Let's say there's nothing else on the system.
+
+When you think of any reason, I do a series of rights, to me, you know, I need to go to update this, then this, and this, and this.
+
+Go do it, and it doesn't just completely different order.
+
+Yeah.
+
+It might just leave similar types of rights together or right centers, more parts of the memory.
+
+You're getting close actually there.
+
+So, um, One of the, the 1st reason that jumps mine for me is spinning hard drives.
+
+There's so much work over the years. That has been done to, um, to optimize spinning pladders to rust.
+
+So, remember what makes these slow?
+
+Yeah, there's there are 2 things, right?
+
+Yeah, it's spinning.
+
+You have the head, the spindle, right?
+
+You have multiple layers of the disc.
+
+You have the spindle, it has a read and right head, or read right heads on both sides of each disc.
+
+So I try and model that with my fingers here, this little cloth formation.
+
+Imagine a spinning platter running between each finger.
+
+And you can move it in and out toward the center, toward the outer side.
+
+But you move the whole thing, right?
+
+You have to do this physical motion, that takes time.
+
+And then when you get there, you've moved it so fast, because it optimizes so much, you hit the spot, you're going, you stop the stepper mode.
+
+And it jiggles a little because it's physical and it's made of metal.
+
+And you want to move this thing as fast as you can, because you want good performance.
+
+So you do that and this hits there is just like wobbling for it.
+
+And then, um, and then once you got at that, you then still have to wait for the disk to actually spin till the data that you want is under the ad.
+
+So there's seek latency and there's rotation latency.
+
+If you want to speed it up, you got to make the seat heads faster, and we kind of just reach the maximum seats we can for the materials we have, and he's like, I say, they're already jibling once you get there.
+
+This was true 20 or 30 years ago.
+
+I remember my PhD supervisor talking about this one time.
+
+Oh, this thing he told me which kind of horrified me ever since. Where he was talking about it in a meeting, but when it gets there and starts jiggling, it just starts reading.
+
+And so it still hasn't stabilized and starts reading, and there's there's check sums on each sector, but they're pretty weak check sums.
+
+Like they're not cryptographic ashes.
+
+They just little basic ashes.
+
+And if it gets a successful check zone, it says good and sends it back.
+
+But it's actually quite prone to failures.
+
+And so you'll often get transient, wrong wreaths that pass the Chuck sum, and just hands the date off and says it was good.
+
+Because that makes it faster.
+
+In the benchmark, and the vaster is what sells hard enough.
+
+Um, so we are kind of pushing the limbs there.
+
+You can spin the platter faster to improve the rotational latency.
+
+Typical consumer devices are, well, for like desktops are about 7200 RPMs, servers you get like 15,000 RPMs that are very hot, they're very rattly.
+
+You go much faster than that, but platters just like shatter and explode.
+
+So it kind of, you know, pushed the limits there again based on the materials.
+
+But, okay, so those are the 2 problems, right?
+
+So one standard strategy that has been long ago and widely applied, you have a lot of activity you want to get to this, you know, happening as quickly as possible.
+
+What you don't want to do is just sit all over the disc back and forth.
+
+You know, that you get this rattling noise, you can hear it.
+
+Like, uh, you never had a hard one.
+
+See, anything that I'm going to get on.
+
+Sound like a dinosaur, right?
+
+Talking about this thing is completely irrelevant.
+
+I think it was like last year, maybe 2 years ago, that we finally sold more SSDs in our lives.
+
+So up until a year or 2 ago, we were still deploying more hard rides than this.
+
+It going to take a while for those to flash out a system. And we're not discontinuing.
+
+We just added more SSTs.
+
+We haven't slowed down car drivers.
+
+So there's still lots of these inservers.
+
+They have some really great properties.
+
+Um, just sequence, it's not one of them.
+
+It's terrible.
+
+So to avoid that, one thing you, a standard practice is called the elevator algorithm.
+
+What you want to do is sweep from, let's say, the outside of the inside and just do all the rights that we're ready to go along the way.
+
+So you reorder them by their physical position on the disk, by which cylinder they occupy, right?
+
+Because you think of all the, there's a logical circle that cuts through all the layers and that forms a cylinder.
+
+That's why we use cylinder diagrams.
+
+And so you line them up so that you do one sweep and you write everything in order as you go along there.
+
+And then you zip the head back to the other end and repeat it.
+
+You might think, well, I go both ways, right?
+
+Well, if you do that, then you end up biasing, you know, reads in the middle of the disk, get 2 chances for everyone on the extremes, and you get weird pathological cases, usually, just in one direction.
+
+But that's a that's a reason that's pretty standard in a lot of, you know, operating systems to give you good, it doesn't prioritize the latency of an individual request.
+
+It prioritizes the throughput of the disk.
+
+And but it involves just rewriting the ordering, right?
+
+So it's a good, you know, it's a good practice.
+
+SSDs are different, but they have their own weird quirks.
+
+You tell to write a block.
+
+It said, yeah, I got you.
+
+And it writes a sequel, you know, Siri, reads all the surrounding blocks, writes them all somewhere else and rewrites a catalogue telling you where it did.
+
+It has a remapping tablet where it walks in there.
+
+Because what you don't want to do with an SSD is to keep rewriting the same block over and over.
+
+It wears it out.
+
+You just wear level, you keep spreading, you just keep, you want, you really just want to like write everything sequentially and then start over and do it again, regardless of what the activity was.
+
+It was this divorce between the logical block numbers and the physical layouts.
+
+There's all kinds of stuff like that going on in hardware and so, you know, those things can happen.
+
+Um...
+
+There's some kind of cool systems, uh, non-volatile ripe buffers.
+
+This I've never had a system that actually works this way, but I share all the sounds cool, which is you get a bit of non-volatile RAM or NV RAM.
+
+Now I'm kind of redefining that thing.
+
+But it used to be you have a you have a stick of DRAM in the batter.
+
+And so when you're...
+
+So if this power went out or you were really, if you rebooted, that stick would hold or that, you know, badly not, the NVRAM would hold its value.
+
+So you reboot.
+
+So you treat it as a separate device, like there's a block device, but it's made of red, you know, a rate of deer.
+
+And so what you do is you do all your logging there, right?
+
+All that, yeah, quick stuff and then you just write the durable thing.
+
+The parts that you're just writing and deleting, you know, the parts that are, um, performance sensitive, right?
+
+To get to the point you set a transactions committed.
+
+You do the logging on your file system, the journaling, you do that there, and then you don't have to zip the disc head around between the log and the main parts, and, you know, it's kind of cool.
+
+The system, but it requires specialized hardware.
+
+So, you know, it's pretty exotic, really.
+
+Um, People have also been some systems, uh, I don't know how widespread this was, but at some point they were, uh, envy rant or basically kind of fast flash, they were calling envy ram, and I'm not sure they've, again, they've redefined that.
+
+But they would basically have an SSD and DRAM and some capacitors.
+
+So you read and write to this ram at Rams speeds.
+
+And then if the power goes out, it uses the storage that it has to write it all to flash.
+
+So that when you restart, it's there, it receives the rent.
+
+So it's basically RAM that survives across all his power situations.
+
+So you get the full speed of RAM, which I know, you know, slow compared to other computer parts, but fast compared to storage systems.
+
+But the durability.
+
+Anyway, lots of fun things you can do if you want to play around with exotic hardware.
+
+Yeah.
+
+Separating out the logging and the journaling and stuff like that.
+
+Not, you know, good.
+
+Sequel I doesn't do any of those things.
+
+Most postgress doesn't either, right?
+
+But these are, this is the kind of thing you really pay for when you go for high end database systems.
+
+Especially in the past.
+
+Now, I think they're usually better alternatives than new distribution, and you can even solve this problem in other ways, but we'll call that good for now.
+
+Oh, that the class will end class because time is up.
+
+So I will stop talking. 
